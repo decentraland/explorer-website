@@ -2,6 +2,8 @@
 
 echo "Post Install Script:"
 
+echo "Setting kernel version"
+
 if [ ! -f ".env" ]; then
   echo "file .env does not exist. creating..."
   touch .env
