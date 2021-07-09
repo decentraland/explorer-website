@@ -1,5 +1,5 @@
 module.exports = function (app) {
-  app.use("/cdn/:package/:version/*", (req, res, next) => {
+  app.use("/cdn/packages/:package/:version/*", (req, res, next) => {
     const options = {
       root: `./node_modules/${req.params.package}`,
       dotfiles: "deny",
