@@ -1,34 +1,27 @@
 const fs = require("fs")
-const path = require("path")
-const md5File = require("md5-file")
+const dotenv = require("dotenv")
 const childProcess = require("child_process")
 
-let ENV_CONTENT = []
+let ENV_CONTENT = {}
+
 if (fs.existsSync(".env")) {
-  ENV_CONTENT = fs
-    .readFileSync(".env")
-    .toString()
-    .split("\n")
-    .map((line) => line.trim())
-    .filter((line) => line.trim() !== "")
+  Object.assign(ENV_CONTENT, dotenv.parse(fs.readFileSync(".env")))
 }
-
-const VARS = ["REACT_APP_EXPLORER_VERSION", "REACT_APP_WEBSITE_VERSION"]
-
-ENV_CONTENT = ENV_CONTENT.filter((l) => {
-  const [name] = l.split("=")
-  return !VARS.includes(name) && l.trim() !== ""
-})
 
 const commitVersion = childProcess.execSync("git rev-parse HEAD").toString().trim()
 
-const websiteVersion = md5File.sync(path.resolve("./public/website.js"))
+const kernelVersion = JSON.parse(fs.readFileSync(require.resolve("decentraland-kernel/package.json"))).version
+const rendererVersion = JSON.parse(fs.readFileSync(require.resolve("@dcl/unity-renderer/package.json"))).version
 
-ENV_CONTENT.push("REACT_APP_EXPLORER_VERSION=" + commitVersion)
-ENV_CONTENT.push("REACT_APP_WEBSITE_VERSION=" + websiteVersion)
-ENV_CONTENT.push("WEBSITE_COMMIT_HASH=" + commitVersion)
-ENV_CONTENT.push("GENERATE_SOURCEMAP=true")
+ENV_CONTENT["REACT_APP_WEBSITE_VERSION"] = commitVersion
+ENV_CONTENT["REACT_APP_RENDERER_VERSION"] = rendererVersion
+ENV_CONTENT["REACT_APP_KERNEL_VERSION"] = kernelVersion
 
-console.log("VERSIONS:", ENV_CONTENT, "\n")
+console.log("VERSIONS:", Object.entries(ENV_CONTENT), "\n")
 
-fs.writeFileSync(".env", ENV_CONTENT.join("\n") + "\n")
+fs.writeFileSync(
+  ".env",
+  Object.entries(ENV_CONTENT)
+    .map((e) => e[0] + "=" + JSON.stringify(e[1]))
+    .join("\n") + "\n"
+)
