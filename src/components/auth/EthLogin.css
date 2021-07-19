@@ -30,9 +30,8 @@
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 600;
   font-size: 22px;
   line-height: 27px;
@@ -47,7 +46,7 @@
 
 .eth-login-welcome {
   color: white;
-  font-family: sfregular, "Helvetica Neue", Arial, sans-serif;
+  font-family: sfregular, 'Helvetica Neue', Arial, sans-serif;
   font-size: 16px;
   margin-bottom: 2px;
 }

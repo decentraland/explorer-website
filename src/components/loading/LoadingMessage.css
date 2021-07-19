@@ -15,7 +15,7 @@
   color: white;
   text-align: center;
   font-size: 1.25em;
-  font-family: sfsemibold, "Helvetica Neue", Arial, sans-serif;
+  font-family: sfsemibold, 'Helvetica Neue', Arial, sans-serif;
 }
 
 #load-messages-wrapper div {

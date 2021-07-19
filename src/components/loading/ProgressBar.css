@@ -26,12 +26,7 @@
   width: 0;
   height: 100%;
   display: inline-flex;
-  background: linear-gradient(
-    270deg,
-    #fc9965 4.62%,
-    #ff2d55 58.77%,
-    #de3959 100%
-  );
+  background: linear-gradient(270deg, #fc9965 4.62%, #ff2d55 58.77%, #de3959 100%);
   transition: width 0.2s;
   animation: none;
 }

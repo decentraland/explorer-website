@@ -29,22 +29,22 @@
 }
 
 .eth-accordion .eth-accordion-title::after {
-  content: "+";
+  content: '+';
   opacity: 1;
 }
 
 .eth-accordion .eth-accordion-title::before {
-  content: "-";
+  content: '-';
   opacity: 0;
 }
 
 .eth-accordion.eth-accordion-open .eth-accordion-title::after {
-  content: "+";
+  content: '+';
   opacity: 0;
 }
 
 .eth-accordion.eth-accordion-open .eth-accordion-title::before {
-  content: "-";
+  content: '-';
   opacity: 1;
 }
 
