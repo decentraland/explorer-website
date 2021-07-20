@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "react-scripts start",
+    "start:linked": "NODE_ENV=development react-scripts start",
     "build": "GENERATE_SOURCEMAP=true react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -33,8 +34,11 @@
     ]
   },
   "dependencies": {
+    "@dcl/kernel-interface": "^1.0.0-20210719232932.commit-89890cc",
+    "@dcl/unity-renderer": "^1.0.7346",
     "decentraland-dapps": "^9.7.1",
     "decentraland-kernel": "^6.6.6-20210705191533.commit-894f7d2",
+    "eth-connect": "^6.0.0",
     "md5-file": "^5.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

@@ -9,3 +9,8 @@ The responsibility of this repository is to generate the React UI to configure t
 `npm run start`
 
 You must test that the application works both in http://localhost:3000 and in http://localhost:3000/cdn/packages/website/index.html since it provides a CDN-like environment.
+
+## How to test with local Kernel
+
+1. Edit `.env.development` to point the `KERNEL_PATH` env var to your local kernel forlder
+2. Run `npm run start:linked`

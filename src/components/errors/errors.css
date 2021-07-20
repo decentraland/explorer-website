@@ -1135,7 +1135,7 @@
   -webkit-appearance: none;
   -webkit-font-smoothing: antialiased;
   -webkit-rtl-ordering: logical;
-  -webkit-border-image: none;
+  border-image: none;
 }
 
 #error-nomobile.error-container .errormessage .cta .submitemail {

@@ -1,33 +1,40 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Overlay from './common/Overlay'
 import ErrorContainer from './errors/ErrorContainer'
 import LoginContainer from './auth/LoginContainer'
-import LoadingContainer from './loading/LoadingContainer'
 import { Audio } from './common/Audio'
-import WarningContainer from './warning/WarningContainer'
+import { StoreType } from '../state/redux'
 import './App.css'
-const mapStateToProps = (state: any) => {
+
+function mapStateToProps(state: StoreType): AppProps {
   return {
-    error: !!state.loading.error,
-    sound: state.loading.showLoadingScreen
+    rendererVisible: state.renderer.visible,
+    error: !!state.error,
+    sound: true // TODO: sound must be true after the first click
   }
 }
 
 export interface AppProps {
+  rendererVisible: boolean
   error: boolean
   sound: boolean
 }
 
-const App: React.FC<AppProps> = (props) => (
-  <div>
-    {props.sound && <Audio track="/tone4.mp3" play={true} />}
-    <Overlay />
-    <WarningContainer />
-    {!props.error && <LoadingContainer />}
-    {!props.error && <LoginContainer />}
-    {props.error && <ErrorContainer />}
-  </div>
-)
+const App: React.FC<AppProps> = (props) => {
+  if (props.error) {
+    return <ErrorContainer />
+  }
+
+  if (props.rendererVisible) {
+    return <React.Fragment />
+  }
+
+  return (
+    <div>
+      {props.sound && <Audio track="/tone4.mp3" play={true} />}
+      <LoginContainer />
+    </div>
+  )
+}
 
 export default connect(mapStateToProps)(App)

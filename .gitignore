@@ -134,6 +134,7 @@ yarn-error.log*
 /public/loader
 /public/systems
 /public/website.js
+/public/kernel.js
 /public/0.js
 /public/1.js
 /public/2.js

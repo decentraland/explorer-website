@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { StoreType } from '../../state/redux'
 import { NetworkWarning } from './NetworkWarning'
 
 export enum WARNINGS {
@@ -11,9 +12,11 @@ export interface WarningContainerProps {
   onClose: () => void
 }
 
-const mapStateToProps = (state: any) => ({
-  type: state.loading.warning || null
-})
+function mapStateToProps(state: StoreType) {
+  return {
+    type: null
+  }
+}
 
 const mapDispatchToProps = (dispatch: any) => ({
   onClose: () => dispatch({ type: 'CLEAR_WARNING' })
