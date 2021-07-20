@@ -1,7 +1,7 @@
-import { connection, ProviderType } from 'decentraland-connect'
+import { connection, ProviderType, ConnectionResponse } from 'decentraland-connect'
 import { WebSocketProvider } from 'eth-connect'
 import { ChainId } from '@dcl/schemas'
-import { IEthereumProvider } from '../../../anti-corruption-layer/kernel-types'
+import { IEthereumProvider } from '@dcl/kernel-interface'
 
 export const chainIdRpc = new Map<number, string>([
   [1, 'wss://mainnet.infura.io/ws/v3/074a68d50a7c4e6cb46aec204a50cbf0'],
@@ -20,10 +20,9 @@ export async function getEthereumProvider(type: ProviderType | null, chainId: Ch
   return result.provider
 }
 
-export async function restoreConnection(): Promise<{ sendAsync: any } | null> {
+export async function restoreConnection(): Promise<ConnectionResponse | null> {
   try {
-    const result = await connection.tryPreviousConnection()
-    return result.provider
+    return await connection.tryPreviousConnection()
   } catch (err) {
     return null
   }

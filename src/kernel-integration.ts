@@ -62,11 +62,11 @@ async function initKernel() {
   })
 
   kernel.rendererVisibleObservable.add((event) => {
+    console.log('visible', event)
     store.dispatch(setRendererVisible(event.visible))
   })
 
   kernel.loadingProgressObservable.add((event) => {
-    console.dir(event)
     store.dispatch(setRendererLoading(event))
   })
 
@@ -77,7 +77,7 @@ async function initLogin() {
   const provider = await restoreConnection()
 
   if (provider) {
-    console.log('got previous provider')
+    console.log('got previous provider', provider)
   }
 }
 
@@ -86,9 +86,7 @@ export function startKernel() {
     .then((kernel) => {
       store.dispatch(setKernelLoaded(kernel))
 
-      initLogin().catch((error) => {
-        console.error(error)
-      })
+      return initLogin()
     })
     .catch((error) => {
       store.dispatch(setKernelError({ error }))
