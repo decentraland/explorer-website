@@ -141,3 +141,4 @@ yarn-error.log*
 /public/3.js
 /public/default-profile
 /public/voice-chat-codec
+storybook-static
