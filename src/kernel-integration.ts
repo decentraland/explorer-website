@@ -43,6 +43,11 @@ async function initKernel() {
     trackEvent(eventName, eventData)
   })
 
+  kernel.openUrlObservable.add(({ url }) => {
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+    if (newWindow != null) newWindow.opener = null
+  })
+
   kernel.accountStateObservable.add((account) => {
     if (account.identity) {
       identifyUser(account.identity.address)
