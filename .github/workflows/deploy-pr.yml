@@ -12,7 +12,8 @@ jobs:
         with:
           node-version: 14.x
 
-      - name: install
+      - id: install
+        name: install
         run: npm ci
 
       - name: build
