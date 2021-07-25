@@ -25,7 +25,10 @@ export async function authenticate(providerType: ProviderType | null) {
 
 declare var globalThis: { KERNEL_BASE_URL?: string; RENDERER_BASE_URL?: string }
 
-async function resolveUrn(urn: string): Promise<string> {
+globalThis.KERNEL_BASE_URL = process.env.REACT_APP_KERNEL_BASE_URL
+globalThis.RENDERER_BASE_URL = process.env.REACT_APP_RENDERER_BASE_URL
+
+async function resolveBaseUrl(urn: string): Promise<string> {
   if (urn.startsWith('urn:')) {
     const t = await resolveUrlFromUrn(urn)
     if (t) {
@@ -34,7 +37,7 @@ async function resolveUrn(urn: string): Promise<string> {
     }
     throw new Error('Cannot resolve content for URN ' + urn)
   }
-  return new URL(`${urn}`, global.location.toString()).toString()
+  return (new URL(`${urn}`, global.location.toString()).toString() + '/').replace(/(\/)+$/, '/')
 }
 
 async function getVersions(flags: FeatureFlagsResult) {
@@ -49,7 +52,7 @@ async function getVersions(flags: FeatureFlagsResult) {
   }
 
   if (qs.has('renderer-branch')) {
-    globalThis.RENDERER_BASE_URL = `https://renderer-artifacts.decentraland.org/branch/${qs.get('kernel-branch')!}`
+    globalThis.RENDERER_BASE_URL = `https://renderer-artifacts.decentraland.org/branch/${qs.get('renderer-branch')!}`
   }
 
   if (qs.has('kernel-branch')) {
@@ -80,11 +83,11 @@ async function initKernel() {
 
   const kernel = await injectKernel({
     kernelOptions: {
-      baseUrl: await resolveUrn(globalThis.KERNEL_BASE_URL || `urn:decentraland:off-chain:kernel-cdn:latest`)
+      baseUrl: await resolveBaseUrl(globalThis.KERNEL_BASE_URL || `urn:decentraland:off-chain:kernel-cdn:latest`)
     },
     rendererOptions: {
       container,
-      baseUrl: await resolveUrn(globalThis.RENDERER_BASE_URL || `urn:decentraland:off-chain:unity-renderer-cdn:latest`)
+      baseUrl: await resolveBaseUrl(globalThis.RENDERER_BASE_URL || `urn:decentraland:off-chain:unity-renderer-cdn:latest`)
     }
   })
 
