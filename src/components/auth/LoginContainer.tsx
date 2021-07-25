@@ -10,7 +10,7 @@ import { BigFooter } from '../common/BigFooter'
 import './LoginContainer.css'
 import { StoreType } from '../../state/redux'
 import { LoginState } from '@dcl/kernel-interface'
-import { authenticate } from '../../kernel-integration'
+import { authenticate } from '../../kernel-loader'
 
 const mapStateToProps = (state: StoreType): LoginContainerProps => {
   // test all connectors

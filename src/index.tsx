@@ -2,7 +2,7 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import App from './components/App'
-import { startKernel } from './kernel-integration'
+import { startKernel } from './kernel-loader'
 import { store } from './state/redux'
 
 let INITIAL_RENDER = true

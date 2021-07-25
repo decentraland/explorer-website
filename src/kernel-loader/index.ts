@@ -1,14 +1,14 @@
-import { getEthereumProvider, restoreConnection } from './eth/provider'
-import { trackEvent, identifyUser, disableAnalytics } from './integration/analytics'
-import { injectKernel } from './kernel-loader'
+import { getEthereumProvider, restoreConnection } from '../eth/provider'
+import { trackEvent, identifyUser, disableAnalytics } from '../integration/analytics'
+import { injectKernel } from './injector'
 import {
   setKernelAccountState,
   setKernelError,
   setRendererLoading,
   setKernelLoaded,
   setRendererVisible
-} from './state/actions'
-import { store } from './state/redux'
+} from '../state/actions'
+import { store } from '../state/redux'
 import { ProviderType } from 'decentraland-connect'
 
 export async function authenticate(providerType: ProviderType | null) {
@@ -28,14 +28,12 @@ async function initKernel() {
   const container = document.getElementById('gameContainer') as HTMLDivElement
 
   const kernel = await injectKernel({
-    container,
     kernelOptions: {
-      baseUrl: new URL(`${KERNEL_ROOT}`, global.location.toString()).toString(),
-      version: performance.now().toString()
+      baseUrl: new URL(`${KERNEL_ROOT}`, global.location.toString()).toString()
     },
     rendererOptions: {
-      baseUrl: new URL(`${RENDERER_ARTIFACTS_ROOT}`, global.location.toString()).toString(),
-      version: performance.now().toString()
+      container,
+      baseUrl: new URL(`${RENDERER_ARTIFACTS_ROOT}`, global.location.toString()).toString()
     }
   })
 
