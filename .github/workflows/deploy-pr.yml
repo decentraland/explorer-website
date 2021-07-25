@@ -26,10 +26,11 @@ jobs:
           AWS_DEFAULT_REGION: us-east-1
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          EXPLORER_WEB_BUCKET: ${{ secrets.EXPLORER_WEB_BUCKET }}
         if: ${{ steps.install.outputs.public_path }}
         run: |
           npx @dcl/cdn-uploader@next \
-            --bucket explorer-web-decentraland-io-contentbucket-53fd97a \
+            --bucket $EXPLORER_WEB_BUCKET \
             --local-folder build \
             --bucket-folder ${{ steps.install.outputs.public_path }}
 
