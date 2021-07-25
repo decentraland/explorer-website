@@ -15,7 +15,7 @@
 
   background-size: cover;
   background-color: #74a4d5;
-  background-image: url("../../images/background.png");
+  background-image: url('../../images/background.png');
   background-repeat: no-repeat;
   background-origin: border-box;
   background-position: 0 0;

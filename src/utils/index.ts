@@ -1,16 +1,7 @@
-import { ProviderType } from "decentraland-connect/dist/types"
-import { Kernel } from "../components/types";
+import { ProviderType } from 'decentraland-connect/dist/types'
+import { trackEvent } from '../integration/analytics'
 
-const kernel = (window as Kernel).webApp;
-const ethereum = window.ethereum as any;
-
-export function filterInvalidNameCharacters(name: string) {
-  return kernel.utils.filterInvalidNameCharacters(name);
-}
-
-export function isBadWord(name: string) {
-  return kernel.utils.isBadWord(name);
-}
+const ethereum = window.ethereum as any
 
 export function callOnce<T>(fun: () => T): () => T {
   let result: { value: T } | null = null
@@ -49,12 +40,12 @@ export const getWalletName = callOnce(() => {
 
 export const getWalletProps = callOnce(() => {
   return Object.keys(ethereum || {})
-    .filter(prop => prop.startsWith('is') && typeof ethereum[prop] === 'boolean')
+    .filter((prop) => prop.startsWith('is') && typeof ethereum[prop] === 'boolean')
     .join(',')
 })
 
 export type TrackEvents = {
-  ['open_login_popup']: {},
+  ['open_login_popup']: {}
   ['click_login_button']: {
     provider_type: ProviderType | 'guest'
   }
@@ -63,5 +54,5 @@ export type TrackEvents = {
 export function track<E extends keyof TrackEvents>(event: E, properties?: TrackEvents[E]) {
   const wallet = getWalletName()
   const walletProps = getWalletProps()
-  kernel.utils.trackEvent(event, { wallet, walletProps, ...properties })
+  trackEvent(event, { wallet, walletProps, ...properties })
 }

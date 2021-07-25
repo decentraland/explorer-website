@@ -1,24 +1,26 @@
-import * as React from "react"
-import * as ReactDOM from "react-dom"
-import { Provider } from "react-redux"
-import { getKernelStore } from "./modules/store"
-import App from "./components/App"
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
+import App from './components/App'
+import { startKernel } from './kernel-loader'
+import { store } from './state/redux'
 
 let INITIAL_RENDER = true
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={getKernelStore()}>
+    <Provider store={store}>
       <App />
     </Provider>
   </React.StrictMode>,
-  document.getElementById("root"),
+  document.getElementById('root'),
   () => {
     if (INITIAL_RENDER) {
       INITIAL_RENDER = false
-      const initial = document.getElementById("root-loading")
+      startKernel()
+      const initial = document.getElementById('root-loading')
       if (initial) {
-        initial.style.opacity = "0"
+        initial.style.opacity = '0'
         setTimeout(() => {
           initial.remove()
         }, 300)

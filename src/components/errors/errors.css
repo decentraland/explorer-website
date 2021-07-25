@@ -71,8 +71,7 @@
   flex-basis: auto;
   flex-grow: 0;
   flex-shrink: 0;
-  font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, system-ui, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 13px;
   font-stretch: 125%;
   font-weight: 600;
@@ -106,7 +105,7 @@
 #error-comms.error-container .errormessage .error {
   background-color: rgba(255, 255, 255, 0);
   opacity: 0.1;
-  font-family: "SFUIText-Heavy", "-apple-system", Helvetica, Arial, serif;
+  font-family: 'SFUIText-Heavy', '-apple-system', Helvetica, Arial, serif;
   font-weight: 800;
   font-style: normal;
   font-size: 180px;
@@ -118,7 +117,7 @@
 
 #error-comms.error-container .errormessage .communicationslink {
   background-color: rgba(255, 255, 255, 0);
-  font-family: "SFUIText-Heavy", "-apple-system", Helvetica, Arial, serif;
+  font-family: 'SFUIText-Heavy', '-apple-system', Helvetica, Arial, serif;
   font-weight: 600;
   font-style: normal;
   font-size: 18px;
@@ -131,7 +130,7 @@
 
 #error-comms.error-container .errormessage .givesomedetailof {
   background-color: rgba(255, 255, 255, 0);
-  font-family: "SFUIText-Regular", Helvetica, Arial, serif;
+  font-family: 'SFUIText-Regular', Helvetica, Arial, serif;
   font-size: 18px;
   color: rgba(255, 255, 255, 1);
   text-align: right;
@@ -223,8 +222,7 @@
   flex-basis: auto;
   flex-grow: 0;
   flex-shrink: 0;
-  font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, system-ui, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 13px;
   font-stretch: 125%;
   font-weight: 600;
@@ -257,7 +255,7 @@
 
 #error-newlogin.error-container .errormessage .communicationslink {
   background-color: rgba(255, 255, 255, 0);
-  font-family: "-apple-system", Helvetica, Arial, serif;
+  font-family: '-apple-system', Helvetica, Arial, serif;
   font-weight: 600;
   font-style: normal;
   font-size: 28px;
@@ -270,7 +268,7 @@
 
 #error-newlogin.error-container .errormessage .givesomedetailof {
   background-color: rgba(255, 255, 255, 0);
-  font-family: "SFUIText-Regular", Helvetica, Arial, serif;
+  font-family: 'SFUIText-Regular', Helvetica, Arial, serif;
   font-size: 16px;
   color: rgba(255, 255, 255, 1);
   text-align: right;
@@ -334,8 +332,7 @@
   flex-basis: auto;
   flex-grow: 0;
   flex-shrink: 0;
-  font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, system-ui, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 13px;
   font-stretch: 125%;
   font-weight: 600;
@@ -368,7 +365,7 @@
 
 #error-networkmismatch.error-container .errormessage .communicationslink {
   background-color: rgba(255, 255, 255, 0);
-  font-family: "-apple-system", Helvetica, Arial, serif;
+  font-family: '-apple-system', Helvetica, Arial, serif;
   font-weight: 600;
   font-style: normal;
   font-size: 28px;
@@ -381,7 +378,7 @@
 
 #error-networkmismatch.error-container .errormessage .givesomedetailof {
   background-color: rgba(255, 255, 255, 0);
-  font-family: "SFUIText-Regular", Helvetica, Arial, serif;
+  font-family: 'SFUIText-Regular', Helvetica, Arial, serif;
   font-size: 16px;
   color: rgba(255, 255, 255, 1);
   text-align: right;
@@ -445,8 +442,7 @@
   flex-basis: auto;
   flex-grow: 0;
   flex-shrink: 0;
-  font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, system-ui, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 13px;
   font-stretch: 125%;
   font-weight: 600;
@@ -480,7 +476,7 @@
 #error-fatal.error-container .errormessage .error {
   background-color: rgba(255, 255, 255, 0);
   opacity: 0.1;
-  font-family: "SFUIText-Heavy", "-apple-system", Helvetica, Arial, serif;
+  font-family: 'SFUIText-Heavy', '-apple-system', Helvetica, Arial, serif;
   font-weight: 800;
   font-style: normal;
   font-size: 180px;
@@ -492,7 +488,7 @@
 
 #error-fatal.error-container .errormessage .communicationslink {
   background-color: rgba(255, 255, 255, 0);
-  font-family: "-apple-system", Helvetica, Arial, serif;
+  font-family: '-apple-system', Helvetica, Arial, serif;
   font-weight: 600;
   font-style: normal;
   font-size: 28px;
@@ -505,7 +501,7 @@
 
 #error-fatal.error-container .errormessage .givesomedetailof {
   background-color: rgba(255, 255, 255, 0);
-  font-family: "SFUIText-Regular", Helvetica, Arial, serif;
+  font-family: 'SFUIText-Regular', Helvetica, Arial, serif;
   font-size: 18px;
   color: rgba(255, 255, 255, 1);
   text-align: right;
@@ -584,8 +580,7 @@
   flex-basis: auto;
   flex-grow: 0;
   flex-shrink: 0;
-  font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, system-ui, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 13px;
   font-stretch: 125%;
   font-weight: 600;
@@ -619,7 +614,7 @@
 #error-notinvited.error-container .errormessage .error {
   background-color: rgba(255, 255, 255, 0);
   opacity: 0.1;
-  font-family: "SFUIText-Heavy", "-apple-system", Helvetica, Arial, serif;
+  font-family: 'SFUIText-Heavy', '-apple-system', Helvetica, Arial, serif;
   font-weight: 800;
   font-style: normal;
   font-size: 120px;
@@ -631,7 +626,7 @@
 
 #error-notinvited.error-container .errormessage .communicationslink {
   background-color: rgba(255, 255, 255, 0);
-  font-family: "-apple-system", Helvetica, Arial, serif;
+  font-family: '-apple-system', Helvetica, Arial, serif;
   font-weight: 600;
   font-style: normal;
   font-size: 18px;
@@ -644,7 +639,7 @@
 
 #error-notinvited.error-container .errormessage .givesomedetailof {
   background-color: rgba(255, 255, 255, 0);
-  font-family: "SFUIText-Regular", Helvetica, Arial, serif;
+  font-family: 'SFUIText-Regular', Helvetica, Arial, serif;
   font-size: 18px;
   color: rgba(255, 255, 255, 1);
   text-align: right;
@@ -666,7 +661,7 @@
  * Empty body shape
  */
 
- #error-avatarerror.error-container {
+#error-avatarerror.error-container {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -725,8 +720,7 @@
   flex-basis: auto;
   flex-grow: 0;
   flex-shrink: 0;
-  font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, system-ui, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 13px;
   font-stretch: 125%;
   font-weight: 600;
@@ -760,7 +754,7 @@
 #error-avatarerror.error-container .errormessage .error {
   background-color: rgba(255, 255, 255, 0);
   opacity: 0.1;
-  font-family: "SFUIText-Heavy", "-apple-system", Helvetica, Arial, serif;
+  font-family: 'SFUIText-Heavy', '-apple-system', Helvetica, Arial, serif;
   font-weight: 800;
   font-style: normal;
   font-size: 120px;
@@ -772,7 +766,7 @@
 
 #error-avatarerror.error-container .errormessage .communicationslink {
   background-color: rgba(255, 255, 255, 0);
-  font-family: "-apple-system", Helvetica, Arial, serif;
+  font-family: '-apple-system', Helvetica, Arial, serif;
   font-weight: 600;
   font-style: normal;
   font-size: 18px;
@@ -785,7 +779,7 @@
 
 #error-avatarerror.error-container .errormessage .givesomedetailof {
   background-color: rgba(255, 255, 255, 0);
-  font-family: "SFUIText-Regular", Helvetica, Arial, serif;
+  font-family: 'SFUIText-Regular', Helvetica, Arial, serif;
   font-size: 18px;
   color: rgba(255, 255, 255, 1);
   text-align: right;
@@ -866,8 +860,7 @@
   flex-basis: auto;
   flex-grow: 0;
   flex-shrink: 0;
-  font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, system-ui, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 13px;
   font-stretch: 125%;
   font-weight: 600;
@@ -901,7 +894,7 @@
 #error-notsupported.error-container .errormessage .error {
   background-color: rgba(255, 255, 255, 0);
   opacity: 0.1;
-  font-family: "SFUIText-Heavy", "-apple-system", Helvetica, Arial, serif;
+  font-family: 'SFUIText-Heavy', '-apple-system', Helvetica, Arial, serif;
   font-weight: 800;
   font-style: normal;
   font-size: 180px;
@@ -913,7 +906,7 @@
 
 #error-notsupported.error-container .errormessage .communicationslink {
   background-color: rgba(255, 255, 255, 0);
-  font-family: "-apple-system", Helvetica, Arial, serif;
+  font-family: '-apple-system', Helvetica, Arial, serif;
   font-weight: 600;
   font-style: normal;
   font-size: 18px;
@@ -926,7 +919,7 @@
 
 #error-notsupported.error-container .errormessage .givesomedetailof {
   background-color: rgba(255, 255, 255, 0);
-  font-family: "SFUIText-Regular", Helvetica, Arial, serif;
+  font-family: 'SFUIText-Regular', Helvetica, Arial, serif;
   font-size: 18px;
   color: rgba(255, 255, 255, 1);
   text-align: right;
@@ -1012,8 +1005,7 @@
   flex-basis: auto;
   flex-grow: 0;
   flex-shrink: 0;
-  font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, system-ui, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 1em;
   font-stretch: 125%;
   font-weight: 600;
@@ -1047,7 +1039,7 @@
 #error-nomobile-mobile.error-container .errormessage .error {
   background-color: rgba(255, 255, 255, 0);
   opacity: 0.1;
-  font-family: "SFUIText-Heavy", "-apple-system", Helvetica, Arial, serif;
+  font-family: 'SFUIText-Heavy', '-apple-system', Helvetica, Arial, serif;
   font-weight: 800;
   font-style: normal;
   font-size: 180px;
@@ -1059,7 +1051,7 @@
 
 #error-nomobile-mobile.error-container .errormessage .communicationslink {
   background-color: rgba(255, 255, 255, 0);
-  font-family: "-apple-system", Helvetica, Arial, serif;
+  font-family: '-apple-system', Helvetica, Arial, serif;
   font-weight: 600;
   font-style: normal;
   font-size: 18px;
@@ -1072,7 +1064,7 @@
 
 #error-nomobile-mobile.error-container .errormessage .givesomedetailof {
   background-color: rgba(255, 255, 255, 0);
-  font-family: "SFUIText-Regular", Helvetica, Arial, serif;
+  font-family: 'SFUIText-Regular', Helvetica, Arial, serif;
   font-size: 18px;
   color: rgba(255, 255, 255, 1);
   text-align: center;
@@ -1088,10 +1080,7 @@
   font-weight: 800;
 }
 
-#error-nomobile-mobile.error-container
-  .errormessage
-  .givesomedetailof
-  a:visited {
+#error-nomobile-mobile.error-container .errormessage .givesomedetailof a:visited {
   color: rgba(255, 255, 255, 1);
 }
 
@@ -1100,27 +1089,17 @@
   justify-content: space-around;
 }
 
-#error-nomobile-mobile.error-container
-  .errormessage
-  .notavailable-mobile
-  .givesomedetailof {
+#error-nomobile-mobile.error-container .errormessage .notavailable-mobile .givesomedetailof {
   margin-bottom: 32px;
   line-height: 25px;
 }
 
-#error-nomobile-mobile.error-container
-  .errormessage
-  .notavailable-mobile
-  .cta
-  .submitemail {
+#error-nomobile-mobile.error-container .errormessage .notavailable-mobile .cta .submitemail {
   width: 100%;
   margin-top: 10px;
 }
 
-#error-nomobile-mobile.error-container
-  .errormessage
-  .notavailable-mobile
-  input.enteremail {
+#error-nomobile-mobile.error-container .errormessage .notavailable-mobile input.enteremail {
   background-color: rgb(255, 255, 255);
   border-color: rgb(115, 110, 125);
   border-radius: 8px;
@@ -1156,7 +1135,7 @@
   -webkit-appearance: none;
   -webkit-font-smoothing: antialiased;
   -webkit-rtl-ordering: logical;
-  -webkit-border-image: none;
+  border-image: none;
 }
 
 #error-nomobile.error-container .errormessage .cta .submitemail {
@@ -1178,8 +1157,7 @@
   flex-basis: auto;
   flex-grow: 0;
   flex-shrink: 0;
-  font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, system-ui, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 13px;
   font-stretch: 125%;
   font-weight: 600;
@@ -1228,8 +1206,7 @@
   flex-basis: auto;
   flex-grow: 0;
   flex-shrink: 0;
-  font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, system-ui, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 13px;
   font-stretch: 125%;
   font-weight: 600;
@@ -1277,7 +1254,7 @@
   width: 375px;
   height: 100%;
   position: relative;
-  font-family: "SFUIText-Heavy", "-apple-system", Helvetica, Arial, serif;
+  font-family: 'SFUIText-Heavy', '-apple-system', Helvetica, Arial, serif;
   margin: auto;
 
   padding-top: 51px;
@@ -1343,7 +1320,7 @@
 
   text-transform: uppercase;
   font-size: 13px;
-  font-family: sfsemibold, "Helvetica Neue", Arial, sans-serif;
+  font-family: sfsemibold, 'Helvetica Neue', Arial, sans-serif;
 }
 
 .iphone8916 .input button {
@@ -1368,7 +1345,7 @@
   margin: 0;
   left: 30px;
   transform: rotate(0);
-  font-family: "SFUIText-Regular", Helvetica, Arial, serif;
+  font-family: 'SFUIText-Regular', Helvetica, Arial, serif;
   font-size: 14px;
   color: rgba(255, 255, 255, 1);
   text-align: center;
@@ -1394,7 +1371,7 @@
   left: 27px;
   transform: rotate(0);
   opacity: 0.1;
-  font-family: "SFUIText-Heavy", Helvetica, Arial, serif;
+  font-family: 'SFUIText-Heavy', Helvetica, Arial, serif;
   font-weight: 800;
   font-style: normal;
   font-size: 120px;
@@ -1414,7 +1391,7 @@
 
   color: rgba(255, 255, 255, 1);
 
-  font-family: "SFUIText-Regular", Helvetica, Arial, serif;
+  font-family: 'SFUIText-Regular', Helvetica, Arial, serif;
   font-weight: 800;
   font-style: normal;
   font-size: 16px;

@@ -60,7 +60,7 @@
 
       body {
         color: #fff;
-        font-family: "open sans", roboto, "helvetica neue", sans-serif;
+        font-family: 'open sans', roboto, 'helvetica neue', sans-serif;
         font-size: 0.8em;
       }
 
@@ -120,18 +120,20 @@
       }
     </style>
     <script>
-      window.VERSION = "%REACT_APP_WEBSITE_VERSION%"
-      console.log("Versions", {
-        website: "%REACT_APP_WEBSITE_VERSION%",
-        renderer: "%REACT_APP_RENDERER_VERSION%",
-        kernel: "%REACT_APP_KERNEL_VERSION%",
+      var RENDERER_ARTIFACTS_ROOT = '/cdn/packages/unity-renderer/%REACT_APP_KERNEL_VERSION%/'
+      var KERNEL_ROOT = '/cdn/packages/decentraland-kernel/%REACT_APP_RENDERER_VERSION%/'
+      window.VERSION = '%REACT_APP_WEBSITE_VERSION%'
+      console.log('Versions', {
+        website: '%REACT_APP_WEBSITE_VERSION%',
+        renderer: '%REACT_APP_RENDERER_VERSION%',
+        kernel: '%REACT_APP_KERNEL_VERSION%'
       })
     </script>
   </head>
   <body class="dcl-loading">
+    <div id="gameContainer"></div>
     <div id="root"></div>
     <div id="root-loading"><div></div></div>
-    <div id="gameContainer"></div>
     <audio autoplay id="voice-chat-audio"></audio>
     <!-- span.progress is to avoid a error on DCLUnityLoader  -->
     <div class="progress" style="display: none;"></div>
@@ -162,8 +164,8 @@
       function gtag() {
         dataLayer.push(arguments)
       }
-      gtag("js", new Date())
-      gtag("config", "UA-63691338-5")
+      gtag('js', new Date())
+      gtag('config', 'UA-63691338-5')
     </script>
     <script>
       // prettier-ignore
@@ -181,6 +183,7 @@
         captureUnhandledRejections: true,
         payload: {
           environment: document.domain.endsWith(".org") ? "production" : "development",
+          website_version: "%REACT_APP_WEBSITE_VERSION%",
           kernel_version: "%REACT_APP_KERNEL_VERSION%",
           renderer_version: "%REACT_APP_RENDERER_VERSION%"
         },
@@ -192,11 +195,5 @@
       // End Rollbar Snippet
     </script>
 
-    <script>
-      var RENDERER_ARTIFACTS_ROOT = "/cdn/packages/decentraland-kernel/%REACT_APP_KERNEL_VERSION%/unity-renderer/"
-      var KERNEL_ROOT = "/cdn/packages/decentraland-kernel/%REACT_APP_RENDERER_VERSION%/"
-    </script>
-
-    <script src="/cdn/packages/decentraland-kernel/%REACT_APP_RENDERER_VERSION%/dist/website.js"></script>
   </body>
 </html>
