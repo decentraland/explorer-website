@@ -10,9 +10,11 @@ import {
 } from '../state/actions'
 import { store } from '../state/redux'
 import { ProviderType } from 'decentraland-connect'
+import { FeatureFlagsResult, fetchFlags } from '@dcl/feature-flags'
+import { resolveUrlFromUrn } from '@dcl/urn-resolver'
 
 export async function authenticate(providerType: ProviderType | null) {
-  const provider = await getEthereumProvider(providerType, 1)
+  const provider = await getEthereumProvider(providerType, 1 /* mainnet */)
 
   const kernel = store.getState().kernel.kernel
 
@@ -21,19 +23,68 @@ export async function authenticate(providerType: ProviderType | null) {
   kernel.authenticate(provider, providerType == null)
 }
 
-declare var KERNEL_BASE_URL: string
-declare var RENDERER_BASE_URL: string
+declare var globalThis: { KERNEL_BASE_URL?: string; RENDERER_BASE_URL?: string }
+
+async function resolveUrn(urn: string): Promise<string> {
+  if (urn.startsWith('urn:')) {
+    const t = await resolveUrlFromUrn(urn)
+    if (t) {
+      console.log(urn, t)
+      return (t + '/').replace(/(\/)+$/, '/')
+    }
+    throw new Error('Cannot resolve content for URN ' + urn)
+  }
+  return new URL(`${urn}`, global.location.toString()).toString()
+}
+
+async function getVersions(flags: FeatureFlagsResult) {
+  const qs = new URLSearchParams(document.location.search)
+
+  if (qs.has('renderer-urn')) {
+    globalThis.RENDERER_BASE_URL = qs.get('renderer-urn')!
+  }
+
+  if (qs.has('kernel-urn')) {
+    globalThis.KERNEL_BASE_URL = qs.get('kernel-urn')!
+  }
+
+  if (qs.has('renderer-branch')) {
+    globalThis.RENDERER_BASE_URL = `https://renderer-artifacts.decentraland.org/branch/${qs.get('kernel-branch')!}`
+  }
+
+  if (qs.has('kernel-branch')) {
+    globalThis.KERNEL_BASE_URL = `https://explorer-web.decentraland.io/@dcl/kernel/branch/${qs.get('kernel-branch')!}`
+  }
+
+  if (!globalThis.KERNEL_BASE_URL) {
+    if (flags.variants['explorer-rollout-kernel-version']) {
+      const version = flags.variants['explorer-rollout-kernel-version'].name
+      globalThis.KERNEL_BASE_URL = `urn:decentraland:off-chain:kernel-cdn:${version}`
+    }
+  }
+
+  if (!globalThis.RENDERER_BASE_URL) {
+    if (flags.variants['explorer-rollout-unity-renderer-version']) {
+      const version = flags.variants['explorer-rollout-unity-renderer-version'].name
+      globalThis.RENDERER_BASE_URL = `urn:decentraland:off-chain:unity-renderer-cdn:${version}`
+    }
+  }
+}
 
 async function initKernel() {
   const container = document.getElementById('gameContainer') as HTMLDivElement
 
+  const flags = await fetchFlags({ applicationName: 'explorer' })
+  console.log('Feature flags', flags)
+  await getVersions(flags)
+
   const kernel = await injectKernel({
     kernelOptions: {
-      baseUrl: new URL(`${KERNEL_BASE_URL}`, global.location.toString()).toString()
+      baseUrl: await resolveUrn(globalThis.KERNEL_BASE_URL || `urn:decentraland:off-chain:kernel-cdn:latest`)
     },
     rendererOptions: {
       container,
-      baseUrl: new URL(`${RENDERER_BASE_URL}`, global.location.toString()).toString()
+      baseUrl: await resolveUrn(globalThis.RENDERER_BASE_URL || `urn:decentraland:off-chain:unity-renderer-cdn:latest`)
     }
   })
 

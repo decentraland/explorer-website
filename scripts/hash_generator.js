@@ -46,22 +46,22 @@ function getPublicUrls() {
   if (process.env.GITHUB_BASE_REF) {
     // Pull request
     return {
-      PUBLIC_URL: `https://explorer-web.decentraland.io/explorer-website/branch/${process.env.GITHUB_HEAD_REF}`,
-      REACT_APP_RENDERER_BASE_URL: `./@/unity-renderer`,
-      REACT_APP_KERNEL_BASE_URL: `./@/kernel`
+      PUBLIC_URL: `https://explorer-web.decentraland.io/${packageJson.name}/branch/${process.env.GITHUB_HEAD_REF}`,
+      REACT_APP_RENDERER_BASE_URL: ``,
+      REACT_APP_KERNEL_BASE_URL: ``
     }
   } else if (process.env.CI) {
     // master/main branch, also releases
     return {
       PUBLIC_URL: `https://cdn.decentraland.org/${packageJson.name}/${packageJson.version}`,
-      REACT_APP_RENDERER_BASE_URL: `./@/unity-renderer`,
-      REACT_APP_KERNEL_BASE_URL: `./@/kernel`
+      REACT_APP_RENDERER_BASE_URL: ``,
+      REACT_APP_KERNEL_BASE_URL: ``
     }
   }
   // localhost
   return {
     PUBLIC_URL: `http://localhost:3000`,
-    REACT_APP_RENDERER_BASE_URL: `/cdn/packages/unity-renderer/${rendererVersion}`,
-    REACT_APP_KERNEL_BASE_URL: `/cdn/packages/decentraland-kernel/${kernelVersion}`
+    REACT_APP_RENDERER_BASE_URL: `/cdn/packages/unity-renderer/${rendererVersion}/`,
+    REACT_APP_KERNEL_BASE_URL: `/cdn/packages/decentraland-kernel/${kernelVersion}/`
   }
 }
