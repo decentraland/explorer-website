@@ -21,19 +21,19 @@ export async function authenticate(providerType: ProviderType | null) {
   kernel.authenticate(provider, providerType == null)
 }
 
-declare var KERNEL_ROOT: string
-declare var RENDERER_ARTIFACTS_ROOT: string
+declare var KERNEL_BASE_URL: string
+declare var RENDERER_BASE_URL: string
 
 async function initKernel() {
   const container = document.getElementById('gameContainer') as HTMLDivElement
 
   const kernel = await injectKernel({
     kernelOptions: {
-      baseUrl: new URL(`${KERNEL_ROOT}`, global.location.toString()).toString()
+      baseUrl: new URL(`${KERNEL_BASE_URL}`, global.location.toString()).toString()
     },
     rendererOptions: {
       container,
-      baseUrl: new URL(`${RENDERER_ARTIFACTS_ROOT}`, global.location.toString()).toString()
+      baseUrl: new URL(`${RENDERER_BASE_URL}`, global.location.toString()).toString()
     }
   })
 

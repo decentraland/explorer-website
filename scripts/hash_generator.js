@@ -18,7 +18,10 @@ ENV_CONTENT['KERNEL_PATH'] = path.dirname(require.resolve('decentraland-kernel/p
 ENV_CONTENT['REACT_APP_WEBSITE_VERSION'] = packageJson.version
 ENV_CONTENT['REACT_APP_RENDERER_VERSION'] = rendererVersion
 ENV_CONTENT['REACT_APP_KERNEL_VERSION'] = kernelVersion
-ENV_CONTENT['PUBLIC_URL'] = packageJson.homepage = getPublicUrl()
+
+Object.assign(ENV_CONTENT, getPublicUrls())
+
+packageJson.homepage = ENV_CONTENT['PUBLIC_URL']
 
 // github action outputs. Do not touch.
 console.log('::set-output name=public_url::' + packageJson.homepage)
@@ -39,14 +42,26 @@ publicPackageJson.version = packageJson.version
 fs.writeFileSync('./package.json', JSON.stringify(packageJson, null, 2))
 fs.writeFileSync('./public/package.json', JSON.stringify(publicPackageJson, null, 2))
 
-function getPublicUrl() {
+function getPublicUrls() {
   if (process.env.GITHUB_BASE_REF) {
     // Pull request
-    return `https://explorer-web.decentraland.io/explorer-website/branch/${process.env.GITHUB_HEAD_REF}`
+    return {
+      PUBLIC_URL: `https://explorer-web.decentraland.io/explorer-website/branch/${process.env.GITHUB_HEAD_REF}`,
+      REACT_APP_RENDERER_BASE_URL: `./@/unity-renderer`,
+      REACT_APP_KERNEL_BASE_URL: `./@/kernel`
+    }
   } else if (process.env.CI) {
     // master/main branch, also releases
-    return `https://cdn.decentraland.org/${packageJson.name}/${packageJson.version}`
+    return {
+      PUBLIC_URL: `https://cdn.decentraland.org/${packageJson.name}/${packageJson.version}`,
+      REACT_APP_RENDERER_BASE_URL: `./@/unity-renderer`,
+      REACT_APP_KERNEL_BASE_URL: `./@/kernel`
+    }
   }
   // localhost
-  return `http://localhost:3000`
+  return {
+    PUBLIC_URL: `http://localhost:3000`,
+    REACT_APP_RENDERER_BASE_URL: `/cdn/packages/unity-renderer/${rendererVersion}`,
+    REACT_APP_KERNEL_BASE_URL: `/cdn/packages/decentraland-kernel/${kernelVersion}`
+  }
 }

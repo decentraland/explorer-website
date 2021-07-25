@@ -32,7 +32,17 @@ jobs:
           npx @dcl/cdn-uploader@next \
             --bucket $EXPLORER_WEB_BUCKET \
             --local-folder build \
-            --bucket-folder ${{ steps.install.outputs.public_path }}
+            --bucket-folder "${{ steps.install.outputs.public_path }}"
+
+          npx @dcl/cdn-uploader@next \
+            --bucket $EXPLORER_WEB_BUCKET \
+            --local-folder node_modules/@dcl/unity-renderer \
+            --bucket-folder "${{ steps.install.outputs.public_path }}/@/unity-renderer"
+
+          npx @dcl/cdn-uploader@next \
+            --bucket $EXPLORER_WEB_BUCKET \
+            --local-folder node_modules/decentraland-kernel \
+            --bucket-folder "${{ steps.install.outputs.public_path }}/@/kernel"
 
       - name: Comment PR
         uses: thollander/actions-comment-pull-request@master
