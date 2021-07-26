@@ -46,7 +46,7 @@ function getPublicUrls() {
   if (process.env.GITHUB_BASE_REF) {
     // Pull request
     return {
-      PUBLIC_URL: `https://explorer-web.decentraland.io/${packageJson.name}/branch/${process.env.GITHUB_HEAD_REF}`,
+      PUBLIC_URL: `https://explorer-artifacts.decentraland.org/${packageJson.name}/branch/${process.env.GITHUB_HEAD_REF}`,
       REACT_APP_RENDERER_BASE_URL: ``,
       REACT_APP_KERNEL_BASE_URL: ``
     }
