@@ -40,5 +40,8 @@ jobs:
           cwd: ./build
           ## use action runId instead of current date to generate snapshot numbers
           deterministic-snapshot: true
+          ## inform gitlab after publishing to proceed with CDN propagation
+          gitlab-token: ${{ secrets.GITLAB_TOKEN }}
+          gitlab-pipeline-url: ${{ secrets.GITLAB_URL }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
