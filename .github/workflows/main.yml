@@ -14,20 +14,35 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Use Node.js 14.x
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 14.x
+          cache: npm
+
+      - name: set package.json version
+        uses: menduz/oddish-action@master
+        with:
+          deterministic-snapshot: true
+          only-update-versions: true
+
       - name: install
         run: npm ci
+
       - name: build
         run: npm run build
       - name: test
         run: npm run test
-      - name: Publish
+
+      - name: publish npm package
         uses: menduz/oddish-action@master
         with:
           registry-url: "https://registry.npmjs.org"
           access: public
           cwd: ./build
+          ## use action runId instead of current date to generate snapshot numbers
+          deterministic-snapshot: true
+          ## inform gitlab after publishing to proceed with CDN propagation
+          gitlab-token: ${{ secrets.GITLAB_TOKEN }}
+          gitlab-pipeline-url: ${{ secrets.GITLAB_URL }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,5 +1,5 @@
 {
-  "name": "decentraland-explorer-website",
+  "name": "@dcl/explorer-website",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -34,8 +34,10 @@
     ]
   },
   "dependencies": {
+    "@dcl/feature-flags": "^1.0.0",
     "@dcl/kernel-interface": "^1.0.0-20210722175856.commit-173aa62",
     "@dcl/unity-renderer": "^1.0.7377",
+    "@dcl/urn-resolver": "^1.2.1",
     "decentraland-dapps": "^9.7.1",
     "decentraland-kernel": "^6.6.6-20210705191533.commit-894f7d2",
     "eth-connect": "^6.0.0",
@@ -69,5 +71,6 @@
     "react-test-renderer": "^16.13.1",
     "redux-devtools-extension": "^2.13.8",
     "typescript": "~3.7.2"
-  }
+  },
+  "homepage": "http://localhost:3000"
 }
