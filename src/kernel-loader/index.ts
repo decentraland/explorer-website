@@ -43,8 +43,8 @@ async function resolveBaseUrl(urn: string): Promise<string> {
 async function getVersions(flags: FeatureFlagsResult) {
   const qs = new URLSearchParams(document.location.search)
 
-  if (qs.has('renderer-urn')) {
-    globalThis.RENDERER_BASE_URL = qs.get('renderer-urn')!
+  if (qs.has('renderer')) {
+    globalThis.RENDERER_BASE_URL = qs.get('renderer')!
   }
 
   if (qs.has('kernel-urn')) {
