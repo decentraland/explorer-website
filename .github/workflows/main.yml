@@ -22,6 +22,12 @@ jobs:
           node-version: 14.x
           cache: npm
 
+      - name: set package.json version
+        uses: menduz/oddish-action@master
+        with:
+          deterministic-snapshot: true
+          only-update-versions: true
+
       - id: install
         name: install
         run: npm ci
@@ -32,7 +38,7 @@ jobs:
         run: npm run test
 
       - name: publish npm package
-        uses: menduz/oddish-action@master
+        uses: menduz/oddish-action@staging
         with:
           registry-url: "https://registry.npmjs.org"
           access: public
