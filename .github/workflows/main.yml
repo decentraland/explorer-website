@@ -85,5 +85,10 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
             # Test this pull request
-            This branch can be previewed at ${{ needs.build.outputs.public_url }}
+            This branch can be previewed at
+            - [`stable` kernel & `stable` renderer](${{ needs.build.outputs.public_url }}/)
+            - [`development` kernel & `stable` renderer](${{ needs.build.outputs.public_url }}/?kernel-branch=main)
+            - [`stable` kernel & `development` renderer](${{ needs.build.outputs.public_url }}/?renderer-branch=master)
+            - [`development` kernel & `development` renderer](${{ needs.build.outputs.public_url }}/?kernel-branch=main&renderer-branch=master)
+
           edit-mode: replace
