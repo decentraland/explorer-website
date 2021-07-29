@@ -38,7 +38,7 @@ jobs:
         run: npm run test
 
       - name: publish npm package
-        uses: menduz/oddish-action@staging
+        uses: menduz/oddish-action@master
         with:
           registry-url: "https://registry.npmjs.org"
           access: public
