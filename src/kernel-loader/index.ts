@@ -56,7 +56,7 @@ async function getVersions(flags: FeatureFlagsResult) {
   }
 
   if (qs.has('kernel-branch')) {
-    globalThis.KERNEL_BASE_URL = `https://explorer-web.decentraland.io/@dcl/kernel/branch/${qs.get('kernel-branch')!}`
+    globalThis.KERNEL_BASE_URL = `https://sdk-team-cdn.decentraland.org/@dcl/kernel/branch/${qs.get('kernel-branch')!}`
   }
 
   if (!globalThis.KERNEL_BASE_URL) {
