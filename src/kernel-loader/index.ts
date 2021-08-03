@@ -57,30 +57,31 @@ function cdnFromRollout(rollout: RolloutRecord): string {
 async function getVersions(flags: FeatureFlagsResult) {
   const qs = new URLSearchParams(document.location.search)
 
+  // load from URN
   if (qs.has('renderer')) {
     globalThis.RENDERER_BASE_URL = qs.get('renderer')!
   }
-
   if (qs.has('kernel-urn')) {
     globalThis.KERNEL_BASE_URL = qs.get('kernel-urn')!
   }
 
+  // load hot-branch
   if (qs.has('renderer-branch')) {
     globalThis.RENDERER_BASE_URL = `https://renderer-artifacts.decentraland.org/branch/${qs.get('renderer-branch')!}`
   }
-
   if (qs.has('kernel-branch')) {
     globalThis.KERNEL_BASE_URL = `https://sdk-team-cdn.decentraland.org/@dcl/kernel/branch/${qs.get('kernel-branch')!}`
   }
 
-  if (globalThis.ROLLOUTS && globalThis.ROLLOUTS.kernel) {
-    globalThis.KERNEL_BASE_URL = cdnFromRollout(globalThis.ROLLOUTS.kernel)
+  // load from ROLLOUTS + CDN
+  if (globalThis.ROLLOUTS && globalThis.ROLLOUTS['@dcl/kernel']) {
+    globalThis.KERNEL_BASE_URL = cdnFromRollout(globalThis.ROLLOUTS['@dcl/kernel'])
+  }
+  if (globalThis.ROLLOUTS && globalThis.ROLLOUTS['@dcl/unity-renderer']) {
+    globalThis.RENDERER_BASE_URL = cdnFromRollout(globalThis.ROLLOUTS['@dcl/unity-renderer'])
   }
 
-  if (globalThis.ROLLOUTS && globalThis.ROLLOUTS.unityRenderer) {
-    globalThis.RENDERER_BASE_URL = cdnFromRollout(globalThis.ROLLOUTS.unityRenderer)
-  }
-
+  // default fallback
   if (!globalThis.KERNEL_BASE_URL) {
     if (flags.variants['explorer-rollout-kernel-version']) {
       const version = flags.variants['explorer-rollout-kernel-version'].name
