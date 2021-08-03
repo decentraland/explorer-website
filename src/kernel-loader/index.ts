@@ -23,7 +23,17 @@ export async function authenticate(providerType: ProviderType | null) {
   kernel.authenticate(provider, providerType == null)
 }
 
-declare var globalThis: { KERNEL_BASE_URL?: string; RENDERER_BASE_URL?: string }
+type RolloutRecord = {
+  version: string
+  percentage: number
+  prefix: string
+}
+
+declare var globalThis: {
+  KERNEL_BASE_URL?: string
+  RENDERER_BASE_URL?: string
+  ROLLOUTS?: Record<string, RolloutRecord>
+}
 
 globalThis.KERNEL_BASE_URL = process.env.REACT_APP_KERNEL_BASE_URL
 globalThis.RENDERER_BASE_URL = process.env.REACT_APP_RENDERER_BASE_URL
@@ -38,6 +48,10 @@ async function resolveBaseUrl(urn: string): Promise<string> {
     throw new Error('Cannot resolve content for URN ' + urn)
   }
   return (new URL(`${urn}`, global.location.toString()).toString() + '/').replace(/(\/)+$/, '/')
+}
+
+function cdnFromRollout(rollout: RolloutRecord): string {
+  return `https://cdn.decentraland.org/${rollout.prefix}/${rollout.version}`
 }
 
 async function getVersions(flags: FeatureFlagsResult) {
@@ -57,6 +71,14 @@ async function getVersions(flags: FeatureFlagsResult) {
 
   if (qs.has('kernel-branch')) {
     globalThis.KERNEL_BASE_URL = `https://sdk-team-cdn.decentraland.org/@dcl/kernel/branch/${qs.get('kernel-branch')!}`
+  }
+
+  if (globalThis.ROLLOUTS && globalThis.ROLLOUTS.kernel) {
+    globalThis.KERNEL_BASE_URL = cdnFromRollout(globalThis.ROLLOUTS.kernel)
+  }
+
+  if (globalThis.ROLLOUTS && globalThis.ROLLOUTS.unityRenderer) {
+    globalThis.RENDERER_BASE_URL = cdnFromRollout(globalThis.ROLLOUTS.unityRenderer)
   }
 
   if (!globalThis.KERNEL_BASE_URL) {
@@ -87,7 +109,9 @@ async function initKernel() {
     },
     rendererOptions: {
       container,
-      baseUrl: await resolveBaseUrl(globalThis.RENDERER_BASE_URL || `urn:decentraland:off-chain:unity-renderer-cdn:latest`)
+      baseUrl: await resolveBaseUrl(
+        globalThis.RENDERER_BASE_URL || `urn:decentraland:off-chain:unity-renderer-cdn:latest`
+      )
     }
   })
 
