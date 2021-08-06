@@ -14,3 +14,4 @@ You must test that the application works both in http://localhost:3000 and in ht
 
 1. Edit `.env.development` to point the `KERNEL_PATH` env var to your local kernel forlder
 2. Run `npm run start:linked`
+
