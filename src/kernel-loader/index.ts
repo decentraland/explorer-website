@@ -116,39 +116,39 @@ async function initKernel() {
     }
   })
 
-  kernel.trackingEventObservable.add(({ eventName, eventData }) => {
+  kernel.on('trackingEvent', ({ eventName, eventData }) => {
     trackEvent(eventName, eventData)
   })
 
-  kernel.openUrlObservable.add(({ url }) => {
+  kernel.on('openUrl', ({ url }) => {
     const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
     if (newWindow != null) newWindow.opener = null
   })
 
-  kernel.accountStateObservable.add((account) => {
+  kernel.on('accountState', (account) => {
     if (account.identity) {
       identifyUser(account.identity.address)
     }
     store.dispatch(setKernelAccountState(account))
   })
 
-  kernel.signUpObservable.add(({ email }) => {
+  kernel.on('signUp', ({ email }) => {
     identifyUser(email)
   })
 
-  kernel.errorObservable.add((error) => {
+  kernel.on('error', (error) => {
     store.dispatch(setKernelError(error))
     if (error.level === 'fatal') {
       disableAnalytics()
     }
   })
 
-  kernel.rendererVisibleObservable.add((event) => {
+  kernel.on('rendererVisible', (event) => {
     console.log('visible', event)
     store.dispatch(setRendererVisible(event.visible))
   })
 
-  kernel.loadingProgressObservable.add((event) => {
+  kernel.on('loadingProgress', (event) => {
     store.dispatch(setRendererLoading(event))
   })
 

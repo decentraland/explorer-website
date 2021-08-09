@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@dcl/feature-flags": "^1.0.0",
-    "@dcl/kernel-interface": "^1.0.0-20210722175856.commit-173aa62",
+    "@dcl/kernel-interface": "^2.0.0-20210809193148.commit-9a7f965",
     "@dcl/unity-renderer": "^1.0.7377",
     "@dcl/urn-resolver": "^1.2.1",
     "decentraland-dapps": "^9.7.1",
