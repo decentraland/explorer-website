@@ -1,6 +1,6 @@
 name: Delivery pipeline
 
-on: [deployment, deployment_status]
+on: [deployment_status]
 
 jobs:
   deploy:
