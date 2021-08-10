@@ -3,16 +3,13 @@ name: Set delivery rollout
 on: [deployment_status]
 
 jobs:
-  print-debug-info:
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: hmarr/debug-action@v2
-
   set-rollout-zone:
     if: ${{ github.event.deployment.task == 'upload-to-cdn' && github.event.deployment_status.state == 'success' }}
     runs-on: ubuntu-18.04
     steps:
-      - name: set-rollout
+      - uses: hmarr/debug-action@v2
+
+      - name: set-rollout-zone
         uses: decentraland/set-rollout-action@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -26,5 +23,39 @@ jobs:
 
           # Rollout information
           deploymentDomain: "play.decentraland.zone"
+          deploymentName: "_site"
+          percentage: 100
+
+      - name: set-rollout-today
+        uses: decentraland/set-rollout-action@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # Repo deployment info
+          ref: ${{ github.event.deployment.ref }}
+          sha: ${{ github.event.deployment.sha }}
+
+          # CDN information
+          packageName: ${{ github.event.deployment.payload.packageName }}
+          packageVersion: ${{ github.event.deployment.payload.packageVersion }}
+
+          # Rollout information
+          deploymentDomain: "play.decentraland.today"
+          deploymentName: "_site"
+          percentage: 100
+
+      - name: set-rollout-org
+        uses: decentraland/set-rollout-action@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # Repo deployment info
+          ref: ${{ github.event.deployment.ref }}
+          sha: ${{ github.event.deployment.sha }}
+
+          # CDN information
+          packageName: ${{ github.event.deployment.payload.packageName }}
+          packageVersion: ${{ github.event.deployment.payload.packageVersion }}
+
+          # Rollout information
+          deploymentDomain: "play.decentraland.org"
           deploymentName: "_site"
           percentage: 100
