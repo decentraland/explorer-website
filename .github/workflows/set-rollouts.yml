@@ -1,31 +1,30 @@
-name: Delivery pipeline
+name: Set delivery rollout
 
 on: [deployment_status]
 
 jobs:
-  deploy:
+  print-debug-info:
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v1
-
       - uses: hmarr/debug-action@v2
 
-      - id: set_state_in_progress
-        name: Set deployment status to [in_progress]
-        uses: rsotnychenko/deployment-status-update@0.2.0
+  set-rollout-zone:
+    if: ${{ github.event.deployment.task == 'upload-to-cdn' && github.event.deployment_status.state == 'success' }}
+    runs-on: ubuntu-18.04
+    steps:
+      - name: set-rollout
+        uses: decentraland/set-rollout-action@main
         with:
-          run_id: ${{ github.run_id }}
-          status: in_progress
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # Repo deployment info
+          ref: ${{ github.event.deployment.ref }}
+          sha: ${{ github.event.deployment.sha }}
 
-      - id: set_state_final
-        if: always()
-        name: Set deployment status
-        uses: rsotnychenko/deployment-status-update@0.2.0
-        with:
-          status: ${{ job.status }}
-          run_id: ${{ github.run_id }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # TODO: Add rollback operations
+          # CDN information
+          packageName: ${{ github.event.deployment.payload.packageName }}
+          packageVersion: ${{ github.event.deployment.payload.packageVersion }}
+
+          # Rollout information
+          deploymentDomain: "play.decentraland.zone"
+          deploymentName: "_site"
+          percentage: 100
