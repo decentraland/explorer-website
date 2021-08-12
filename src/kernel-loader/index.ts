@@ -24,7 +24,7 @@ export async function authenticate(providerType: ProviderType | null) {
 
     if (NETWORK === 'ropsten') {
       chainId = 3
-    } else if (NETWORK !== 'mainnet') {
+    } else if (NETWORK && NETWORK !== 'mainnet') {
       store.dispatch(
         setKernelError({
           error: new Error(`Invalid NETWORK url param, valid options are 'ropsten' and 'mainnet'`),

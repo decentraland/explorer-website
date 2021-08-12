@@ -22,7 +22,6 @@ export interface ErrorContainerProps {
 export const ErrorContainer: React.FC<ErrorContainerProps> = (props) => {
   if (!props.error) return <React.Fragment></React.Fragment>
 
-  if (props.error.type === ErrorType.FATAL) return <ErrorFatal />
   if (props.error.type === ErrorType.COMMS) return <ErrorComms />
   if (props.error.type === ErrorType.NEW_LOGIN) return <ErrorNewLogin />
   if (props.error.type === ErrorType.NOT_MOBILE) return <ErrorNoMobile />
