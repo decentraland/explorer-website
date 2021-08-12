@@ -18,23 +18,12 @@ enum AnalyticsAccount {
 
 // TODO fill with segment keys and integrate identity server
 export function configureSegment() {
-  const TLD = getTLD()
-  switch (TLD) {
-    case 'org':
-      if (
-        globalThis.location.host === 'play.decentraland.org' ||
-        globalThis.location.host === 'explorer.decentraland.org'
-      ) {
-        return initialize(AnalyticsAccount.PRD)
-      }
-      return initialize(AnalyticsAccount.DEV)
-    case 'today':
-      return initialize(AnalyticsAccount.DEV)
-    case 'zone':
-      return initialize(AnalyticsAccount.DEV)
-    default:
-      return initialize(AnalyticsAccount.DEV)
+  // all decentraland.org domains are considered PRD
+  if (globalThis.location.host.endsWith('.decentraland.org')) {
+    return initialize(AnalyticsAccount.PRD)
   }
+
+  return initialize(AnalyticsAccount.DEV)
 }
 
 // once this function is called, no more errors will be tracked neither reported to rollbar
