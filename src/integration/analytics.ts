@@ -26,7 +26,7 @@ export function disableAnalytics() {
     ;(window as any).Rollbar.configure({ enabled: false })
   }
   if (DEBUG_ANALYTICS) {
-    console.info('exploer-website: DEBUG_ANALYTICS disableAnalytics')
+    console.info('explorer-website: DEBUG_ANALYTICS disableAnalytics')
   }
 }
 
@@ -37,7 +37,7 @@ export function identifyUser(address: string) {
     }
 
     if (DEBUG_ANALYTICS) {
-      console.info('exploer-website: DEBUG_ANALYTICS identifyUser', address, userTraits)
+      console.info('explorer-website: DEBUG_ANALYTICS identifyUser', address, userTraits)
     }
 
     window.analytics.identify(address, userTraits)
@@ -64,7 +64,7 @@ export function internalTrackEvent(eventName: string, eventData: Record<string, 
   const data = { ...eventData, ...getRequiredAnalyticsContext(store.getState()) }
 
   if (DEBUG_ANALYTICS) {
-    console.info('exploer-website: DEBUG_ANALYTICS trackEvent', eventName, data)
+    console.info('explorer-website: DEBUG_ANALYTICS trackEvent', eventName, data)
   }
 
   window.analytics.track(eventName, data)
