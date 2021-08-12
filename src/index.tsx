@@ -2,10 +2,13 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import App from './components/App'
+import { configureSegment } from './integration/analytics'
 import { startKernel } from './kernel-loader'
 import { store } from './state/redux'
 
 let INITIAL_RENDER = true
+
+configureSegment()
 
 ReactDOM.render(
   <React.StrictMode>
