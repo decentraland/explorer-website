@@ -26,15 +26,16 @@ type SegmentIdentificationForDecentraland = {
   sessionId: string
   // commit hash that created this _explorer-website_ build
   explorer_commit_hash: string
-  // address of the user, whether it is a guest or not
-  address?: string
+  // internal decentraland opaque id to calculate and derive feature flags for the session
+  dcl_feature_flags: string
 }
 
+// This function is used for every rollbar and segment events. It adds information about the current
+// session including versions and an opaque sessionId
 export function getAnalyticsContext(state: StoreType): SegmentIdentificationForDecentraland {
   return injectVersions({
     sessionId: state.session.sessionId,
     dcl_feature_flags: (globalThis as any).DCL_FEATURE_FLAGS_HASH,
-    explorer_commit_hash: (globalThis as any).REACT_APP_WEBSITE_VERSION,
-    address: state.session.kernelState?.identity?.address
+    explorer_commit_hash: (globalThis as any).REACT_APP_WEBSITE_VERSION
   })
 }
