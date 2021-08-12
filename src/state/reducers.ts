@@ -7,7 +7,7 @@ import {
   SET_RENDERER_LOADING,
   SET_RENDERER_VISIBLE
 } from './actions'
-import { KernelState, SessionState, RendererState, ErrorState, ErrorType } from './redux'
+import { KernelState, SessionState, RendererState, ErrorState } from './redux'
 import { v4 } from 'uuid'
 
 const defaultSession: SessionState = {
@@ -62,7 +62,7 @@ export function errorReducer(state: ErrorState | undefined, action: AnyAction): 
     return {
       error: {
         details: payload.error.toString(),
-        type: ErrorType.LOADING
+        type: payload.code as any
       }
     }
   }

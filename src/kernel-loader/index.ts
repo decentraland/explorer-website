@@ -1,5 +1,5 @@
-import { getEthereumProvider, restoreConnection } from '../eth/provider'
-import { trackEvent, identifyUser, disableAnalytics } from '../integration/analytics'
+import { disconnect, getEthereumProvider, restoreConnection } from '../eth/provider'
+import { internalTrackEvent, identifyUser, disableAnalytics } from '../integration/analytics'
 import { injectKernel } from './injector'
 import {
   setKernelAccountState,
@@ -8,19 +8,77 @@ import {
   setKernelLoaded,
   setRendererVisible
 } from '../state/actions'
-import { store } from '../state/redux'
+import { ErrorType, store } from '../state/redux'
 import { ProviderType } from 'decentraland-connect'
 import { FeatureFlagsResult, fetchFlags } from '@dcl/feature-flags'
 import { resolveUrlFromUrn } from '@dcl/urn-resolver'
+import { defaultWebsiteErrorTracker, track } from '../utils/tracking'
+import { injectVersions } from '../utils/rolloutVersions'
+import { KernelResult } from '@dcl/kernel-interface'
+import { NETWORK } from '../integration/queryParamsConfig'
+import { RequestManager } from 'eth-connect'
 
 export async function authenticate(providerType: ProviderType | null) {
-  const provider = await getEthereumProvider(providerType, 1 /* mainnet */)
+  try {
+    let chainId = 1 // mainnet
 
-  const kernel = store.getState().kernel.kernel
+    if (NETWORK === 'ropsten') {
+      chainId = 3
+    } else if (NETWORK !== 'mainnet') {
+      store.dispatch(
+        setKernelError({
+          error: new Error(`Invalid NETWORK url param, valid options are 'ropsten' and 'mainnet'`),
+          code: ErrorType.FATAL
+        })
+      )
+      return
+    }
 
-  if (!kernel) throw new Error('Kernel did not load yet')
+    const { provider, chainId: providerChainId } = await getEthereumProvider(providerType, chainId)
 
-  kernel.authenticate(provider, providerType == null)
+    if (providerChainId !== chainId) {
+      store.dispatch(
+        setKernelError({
+          error: new Error(
+            `Network mismatch NETWORK url param is not equal to the provided by Ethereum Provider (${providerChainId})`
+          ),
+          code: ErrorType.NET_MISMATCH
+        })
+      )
+      return
+    }
+
+    const rm = new RequestManager(provider)
+
+    {
+      const providerChainId = parseInt(await rm.net_version(), 10)
+      if (providerChainId !== chainId) {
+        store.dispatch(
+          setKernelError({
+            error: new Error(
+              `Network mismatch NETWORK url param is not equal to the provided by Ethereum Provider (${providerChainId})`
+            ),
+            code: ErrorType.NET_MISMATCH
+          })
+        )
+        return
+      }
+    }
+
+    const kernel = store.getState().kernel.kernel
+
+    if (!kernel) throw new Error('Kernel did not load yet')
+
+    kernel.authenticate(provider, providerType == null)
+  } catch (err) {
+    defaultWebsiteErrorTracker(err)
+
+    store.dispatch(
+      setKernelError({
+        error: err
+      })
+    )
+  }
 }
 
 type RolloutRecord = {
@@ -118,7 +176,7 @@ async function initKernel() {
   })
 
   kernel.on('trackingEvent', ({ eventName, eventData }) => {
-    trackEvent(eventName, eventData)
+    internalTrackEvent(eventName, eventData)
   })
 
   kernel.on('openUrl', ({ url }) => {
@@ -153,27 +211,37 @@ async function initKernel() {
     store.dispatch(setRendererLoading(event))
   })
 
+  kernel.on('logout', () => {
+    disconnect().catch(defaultWebsiteErrorTracker)
+  })
+
   return kernel
 }
 
-async function initLogin() {
+async function initLogin(kernel: KernelResult) {
   const provider = await restoreConnection()
 
-  if (provider) {
-    trackEvent('Automatic initial relogin', { providerType: provider.providerType })
-    authenticate(provider.providerType)
+  if (provider && provider.account) {
+    const storedSession = await kernel.hasStoredSession(provider.account, provider.chainId)
+
+    if (storedSession) {
+      track('automatic_relogin', { provider_type: provider.providerType })
+      authenticate(provider.providerType).catch(defaultWebsiteErrorTracker)
+    }
   }
 }
 
 export function startKernel() {
+  track('initialize_versions', injectVersions({}))
+
   initKernel()
     .then((kernel) => {
       store.dispatch(setKernelLoaded(kernel))
 
-      return initLogin()
+      return initLogin(kernel)
     })
     .catch((error) => {
       store.dispatch(setKernelError({ error }))
-      console.error(error)
+      defaultWebsiteErrorTracker(error)
     })
 }

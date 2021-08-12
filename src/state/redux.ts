@@ -24,7 +24,7 @@ export type SessionState = {
 
 export type ErrorState = {
   error: {
-    type: ErrorType
+    type: string | ErrorType
     details: string
   } | null
 }
@@ -35,7 +35,6 @@ export enum ErrorType {
   COMMS = 'comms',
   NEW_LOGIN = 'newlogin',
   NOT_MOBILE = 'nomobile',
-  NOT_INVITED = 'notinvited',
   NOT_SUPPORTED = 'notsupported',
   NET_MISMATCH = 'networkmismatch',
   AVATAR_ERROR = 'avatarerror'

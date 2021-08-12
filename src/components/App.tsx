@@ -9,7 +9,7 @@ import './App.css'
 function mapStateToProps(state: StoreType): AppProps {
   return {
     rendererVisible: state.renderer.visible,
-    error: !!state.error,
+    error: !!state.error.error,
     sound: true // TODO: sound must be true after the first click
   }
 }
