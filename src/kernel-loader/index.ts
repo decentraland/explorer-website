@@ -101,12 +101,13 @@ async function initKernel() {
   const container = document.getElementById('gameContainer') as HTMLDivElement
 
   const flags = await fetchFlags({ applicationName: 'explorer' })
-  console.log('Feature flags', flags)
+
   await getVersions(flags)
 
   const kernel = await injectKernel({
     kernelOptions: {
-      baseUrl: await resolveBaseUrl(globalThis.KERNEL_BASE_URL || `urn:decentraland:off-chain:kernel-cdn:latest`)
+      baseUrl: await resolveBaseUrl(globalThis.KERNEL_BASE_URL || `urn:decentraland:off-chain:kernel-cdn:latest`),
+      configurations: {}
     },
     rendererOptions: {
       container,
@@ -159,7 +160,8 @@ async function initLogin() {
   const provider = await restoreConnection()
 
   if (provider) {
-    console.log('got previous provider', provider)
+    trackEvent('Automatic initial relogin', { providerType: provider.providerType })
+    authenticate(provider.providerType)
   }
 }
 
