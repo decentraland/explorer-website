@@ -16,13 +16,14 @@ export const ErrorNetworkMismatch: React.FC<ErrorNetworkMismatchProps> = (props:
         <div className="errortext col">
           <div className="communicationslink">A network mismatch was detected</div>
           <div className="givesomedetailof">
-            We detected that you are trying to enter the <strong id="tld">{NETWORK}</strong> network, and your Ethereum
-            wallet is set to other network.
+            We detected that you are trying to enter the <strong id="tld">{NETWORK || 'mainnet'}</strong> network, and
+            your Ethereum wallet is set to other network.
           </div>
           <div className="givesomedetailof">
             To continue, please change the Ethereum network in your wallet to{' '}
-            <strong id="web3NetGoal">{NETWORK}</strong> and click "Reload".
+            <strong id="web3NetGoal">{NETWORK || 'mainnet'}</strong> and click "Reload".
           </div>
+          {props.details && <div className="givesomedetailof">Details: {props.details}</div>}
           <div className="cta">
             <button
               className="retry"

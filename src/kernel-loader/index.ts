@@ -15,32 +15,38 @@ import { resolveUrlFromUrn } from '@dcl/urn-resolver'
 import { defaultWebsiteErrorTracker, track } from '../utils/tracking'
 import { injectVersions } from '../utils/rolloutVersions'
 import { KernelResult } from '@dcl/kernel-interface'
-import { NETWORK } from '../integration/queryParamsConfig'
+import { ENV, NETWORK } from '../integration/queryParamsConfig'
 import { RequestManager } from 'eth-connect'
+
+// this function exists because decentraland-connect seems to return
+// invalid or cached values in chainId, ignoring network changes in the
+// real provider.
+async function getChainIdFromProvider(provider: any) {
+  const rm = new RequestManager(provider)
+  return parseInt(await rm.net_version(), 10)
+}
+
+function getWantedChainId() {
+  let chainId = 1 // mainnet
+
+  if (NETWORK === 'ropsten') {
+    chainId = 3
+  }
+
+  return chainId
+}
 
 export async function authenticate(providerType: ProviderType | null) {
   try {
-    let chainId = 1 // mainnet
+    const wantedChainId = getWantedChainId()
 
-    if (NETWORK === 'ropsten') {
-      chainId = 3
-    } else if (NETWORK && NETWORK !== 'mainnet') {
-      store.dispatch(
-        setKernelError({
-          error: new Error(`Invalid NETWORK url param, valid options are 'ropsten' and 'mainnet'`),
-          code: ErrorType.FATAL
-        })
-      )
-      return
-    }
+    const { provider, chainId: providerChainId } = await getEthereumProvider(providerType, wantedChainId)
 
-    const { provider, chainId: providerChainId } = await getEthereumProvider(providerType, chainId)
-
-    if (providerChainId !== chainId) {
+    if (providerChainId !== wantedChainId) {
       store.dispatch(
         setKernelError({
           error: new Error(
-            `Network mismatch NETWORK url param is not equal to the provided by Ethereum Provider (${providerChainId})`
+            `Network mismatch NETWORK url param is not equal to the provided by Ethereum Provider (wanted: ${wantedChainId} actual: ${providerChainId}, E01)`
           ),
           code: ErrorType.NET_MISMATCH
         })
@@ -48,15 +54,13 @@ export async function authenticate(providerType: ProviderType | null) {
       return
     }
 
-    const rm = new RequestManager(provider)
-
     {
-      const providerChainId = parseInt(await rm.net_version(), 10)
-      if (providerChainId !== chainId) {
+      const providerChainId = await getChainIdFromProvider(provider)
+      if (providerChainId !== wantedChainId) {
         store.dispatch(
           setKernelError({
             error: new Error(
-              `Network mismatch NETWORK url param is not equal to the provided by Ethereum Provider (${providerChainId})`
+              `Network mismatch NETWORK url param is not equal to the provided by Ethereum Provider (wanted: ${wantedChainId} actual: ${providerChainId}, E02)`
             ),
             code: ErrorType.NET_MISMATCH
           })
@@ -100,7 +104,6 @@ async function resolveBaseUrl(urn: string): Promise<string> {
   if (urn.startsWith('urn:')) {
     const t = await resolveUrlFromUrn(urn)
     if (t) {
-      console.log(urn, t)
       return (t + '/').replace(/(\/)+$/, '/')
     }
     throw new Error('Cannot resolve content for URN ' + urn)
@@ -220,9 +223,12 @@ async function initKernel() {
 
 async function initLogin(kernel: KernelResult) {
   const provider = await restoreConnection()
-
   if (provider && provider.account) {
-    const storedSession = await kernel.hasStoredSession(provider.account, provider.chainId)
+    const providerChainId = await getChainIdFromProvider(provider.provider)
+
+    // BUG OF decentraland-connect:
+    // provider.chainId DOES NOT reflect the selected chain in the real provider
+    const storedSession = await kernel.hasStoredSession(provider.account, providerChainId /* provider.chainId */)
 
     if (storedSession) {
       track('automatic_relogin', { provider_type: provider.providerType })
@@ -232,6 +238,28 @@ async function initLogin(kernel: KernelResult) {
 }
 
 export function startKernel() {
+  if (NETWORK && NETWORK !== 'mainnet' && NETWORK !== 'ropsten') {
+    store.dispatch(
+      setKernelError({
+        error: new Error(`Invalid NETWORK url param, valid options are 'ropsten' and 'mainnet'`),
+        code: ErrorType.FATAL
+      })
+    )
+    return
+  }
+
+  if (ENV) {
+    store.dispatch(
+      setKernelError({
+        error: new Error(
+          `The "ENV" URL parameter is no longer supported. Please use NETWORK=ropsten in the cases where ENV=zone was used`
+        ),
+        code: ErrorType.FATAL
+      })
+    )
+    return
+  }
+
   track('initialize_versions', injectVersions({}))
 
   initKernel()
