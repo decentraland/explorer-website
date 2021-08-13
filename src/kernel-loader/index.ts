@@ -14,7 +14,7 @@ import { FeatureFlagsResult, fetchFlags } from '@dcl/feature-flags'
 import { resolveUrlFromUrn } from '@dcl/urn-resolver'
 import { defaultWebsiteErrorTracker, track } from '../utils/tracking'
 import { injectVersions } from '../utils/rolloutVersions'
-import { KernelResult, LoginState } from '@dcl/kernel-interface'
+import { KernelResult } from '@dcl/kernel-interface'
 import { ENV, NETWORK } from '../integration/queryParamsConfig'
 import { RequestManager } from 'eth-connect'
 
