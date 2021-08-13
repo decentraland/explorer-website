@@ -187,18 +187,29 @@ async function initKernel() {
     if (newWindow != null) newWindow.opener = null
   })
 
-  let wasGuest = false
+  let isGuest = true
+  let lastIdentity: string | null = null
+  let email: string | undefined = undefined
+
+  function identify() {
+    if (lastIdentity) {
+      identifyUser(lastIdentity, isGuest, email)
+    }
+  }
 
   kernel.on('accountState', (account) => {
-    wasGuest = !!account.isGuest
-    if (account.identity && account.loginStatus === LoginState.COMPLETED) {
-      identifyUser(account.identity.address, !!account.isGuest)
+    if (account.identity) {
+      isGuest = !!account.isGuest
+      lastIdentity = account.identity.address
+      identify()
     }
+
     store.dispatch(setKernelAccountState(account))
   })
 
-  kernel.on('signUp', ({ email }) => {
-    identifyUser(email, wasGuest)
+  kernel.on('signUp', (data) => {
+    email = data.email
+    identify()
   })
 
   kernel.on('error', (error) => {

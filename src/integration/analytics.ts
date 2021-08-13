@@ -30,11 +30,11 @@ export function disableAnalytics() {
   }
 }
 
-export function identifyUser(address: string, isGuest: boolean) {
+export function identifyUser(address: string, isGuest: boolean, email?: string) {
   if (window.analytics) {
     const userTraits = {
       sessionId: getRequiredAnalyticsContext(store.getState()).sessionId,
-      address
+      email
     }
 
     if (DEBUG_ANALYTICS) {
