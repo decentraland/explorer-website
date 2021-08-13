@@ -191,7 +191,7 @@ async function initKernel() {
 
   kernel.on('accountState', (account) => {
     wasGuest = !!account.isGuest
-    if (account.identity && account.loginStatus == LoginState.COMPLETED) {
+    if (account.identity && account.loginStatus === LoginState.COMPLETED) {
       identifyUser(account.identity.address, !!account.isGuest)
     }
     store.dispatch(setKernelAccountState(account))
