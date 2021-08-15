@@ -8,7 +8,7 @@ const path = require('path')
 module.exports = function (app) {
   if (!process.env.KERNEL_PATH) throw new Error('KERNEL_PATH not present in process.env')
 
-  createStaticRoutes(app, '/cdn/packages/decentraland-kernel/:version/*', path.resolve(process.env.KERNEL_PATH))
+  createStaticRoutes(app, '/cdn/packages/kernel/:version/*', path.resolve(process.env.KERNEL_PATH))
   createStaticRoutes(app, '/cdn/packages/website/:version/*', `./public`)
   createStaticRoutes(app, '/cdn/packages/unity-renderer/:version/*', `./node_modules/@dcl/unity-renderer`)
 }

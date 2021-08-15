@@ -35,11 +35,11 @@
   },
   "dependencies": {
     "@dcl/feature-flags": "^1.0.0",
+    "@dcl/kernel": "^1.0.0-1128593839.commit-d5a53b4",
+    "@dcl/unity-renderer": "^1.0.10463",
     "@dcl/kernel-interface": "^2.0.0-20210813150845.commit-f74b173",
-    "@dcl/unity-renderer": "^1.0.7377",
     "@dcl/urn-resolver": "^1.2.1",
     "decentraland-dapps": "^9.7.1",
-    "decentraland-kernel": "^6.6.6-20210705191533.commit-894f7d2",
     "eth-connect": "^6.0.0",
     "md5-file": "^5.0.0",
     "react": "^16.13.1",

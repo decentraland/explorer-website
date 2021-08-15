@@ -11,10 +11,10 @@ if (fs.existsSync('.env')) {
 const packageJson = JSON.parse(fs.readFileSync('./package.json').toString())
 const publicPackageJson = JSON.parse(fs.readFileSync('./public/package.json').toString())
 
-const kernelVersion = JSON.parse(fs.readFileSync(require.resolve('decentraland-kernel/package.json'))).version
+const kernelVersion = JSON.parse(fs.readFileSync(require.resolve('@dcl/kernel/package.json'))).version
 const rendererVersion = JSON.parse(fs.readFileSync(require.resolve('@dcl/unity-renderer/package.json'))).version
 
-ENV_CONTENT['KERNEL_PATH'] = path.dirname(require.resolve('decentraland-kernel/package.json'))
+ENV_CONTENT['KERNEL_PATH'] = path.dirname(require.resolve('@dcl/kernel/package.json'))
 ENV_CONTENT['REACT_APP_WEBSITE_VERSION'] = packageJson.version
 ENV_CONTENT['REACT_APP_RENDERER_VERSION'] = rendererVersion
 ENV_CONTENT['REACT_APP_KERNEL_VERSION'] = kernelVersion
@@ -62,6 +62,6 @@ function getPublicUrls() {
   return {
     PUBLIC_URL: `http://localhost:3000`,
     REACT_APP_RENDERER_BASE_URL: `/cdn/packages/unity-renderer/${rendererVersion}/`,
-    REACT_APP_KERNEL_BASE_URL: `/cdn/packages/decentraland-kernel/${kernelVersion}/`
+    REACT_APP_KERNEL_BASE_URL: `/cdn/packages/kernel/${kernelVersion}/`
   }
 }
