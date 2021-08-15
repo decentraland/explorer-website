@@ -208,7 +208,6 @@ async function initKernel() {
   })
 
   kernel.on('signUp', (data) => {
-    debugger
     email = data.email
     identify()
   })
