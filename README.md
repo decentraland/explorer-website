@@ -12,5 +12,6 @@ You must test that the application works both in http://localhost:3000 and in ht
 
 ## How to test with local Kernel
 
-1. Edit `.env.development` to point the `KERNEL_PATH` env var to your local kernel forlder
-2. Run `npm run start:linked`
+1. Edit `.env.development` to point the `KERNEL_PATH` env var to your local kernel folder
+2. Run `npm run postinstall` to update the .env files
+3. Run `npm run start:linked`
