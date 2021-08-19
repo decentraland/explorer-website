@@ -179,7 +179,7 @@ async function initKernel() {
   })
 
   kernel.on('trackingEvent', ({ eventName, eventData }) => {
-    internalTrackEvent(eventName, eventData)
+    internalTrackEvent(eventName, { ...eventData, context: eventData.context || 'kernel' })
   })
 
   kernel.on('openUrl', ({ url }) => {
@@ -212,6 +212,7 @@ async function initKernel() {
     identify()
   })
 
+  // all errors are also sent as trackingEvent
   kernel.on('error', (error) => {
     store.dispatch(setKernelError(error))
     if (error.level === 'fatal') {
