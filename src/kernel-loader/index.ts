@@ -1,5 +1,5 @@
 import { disconnect, getEthereumProvider, restoreConnection } from '../eth/provider'
-import { internalTrackEvent, identifyUser, disableAnalytics } from '../integration/analytics'
+import { internalTrackEvent, identifyUser, disableAnalytics, trackCriticalError } from '../integration/analytics'
 import { injectKernel } from './injector'
 import {
   setKernelAccountState,
@@ -73,8 +73,12 @@ export async function authenticate(providerType: ProviderType | null) {
 
     if (!kernel) throw new Error('Kernel did not load yet')
 
-    kernel.authenticate(provider, providerType == null)
+    kernel.authenticate(provider, providerType == null /* isGuest */)
   } catch (err) {
+    if (err && typeof err === 'object' && err.message === 'Fortmatic: User denied account access.') {
+      return
+    }
+
     defaultWebsiteErrorTracker(err)
 
     store.dispatch(
@@ -215,6 +219,7 @@ async function initKernel() {
   // all errors are also sent as trackingEvent
   kernel.on('error', (error) => {
     store.dispatch(setKernelError(error))
+    trackCriticalError(error.error, error.extra)
     if (error.level === 'fatal') {
       disableAnalytics()
     }
