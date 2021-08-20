@@ -64,7 +64,7 @@ export function errorToString(error: any) {
  */
 export function defaultWebsiteErrorTracker(error: any) {
   console.error(error)
-  trackCriticalError(error)
+  trackCriticalError(error, { context: 'explorer-website' })
   track('explorer_website_error', {
     // this string concatenation exists on purpose, it is a safe way to do (error).toString in case (error) is nullish
     error: errorToString(error)

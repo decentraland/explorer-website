@@ -30,17 +30,19 @@ export function disableAnalytics() {
   }
 }
 
-export function trackCriticalError(error: string | Error) {
+export function trackCriticalError(error: string | Error, payload?: Record<string, any>) {
   if (analyticsDisabled) return
   if (DEBUG_ANALYTICS) {
     console.info('explorer-website: DEBUG_ANALYTICS trackCriticalError ', error)
   }
   if (!(window as any).Rollbar) return
 
-  if ((error && error instanceof Error) || typeof error === 'string') {
-    ;(window as any).Rollbar.critical(error.toString())
+  if (typeof error === 'string') {
+    ;(window as any).Rollbar.critical(error.toString(), payload)
+  } else if (error && error instanceof Error) {
+    ;(window as any).Rollbar.critical(error.toString(), Object.assign(error, payload))
   } else {
-    ;(window as any).Rollbar.critical('' + error)
+    ;(window as any).Rollbar.critical('' + error, payload)
   }
 }
 
