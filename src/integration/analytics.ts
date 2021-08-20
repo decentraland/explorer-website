@@ -30,6 +30,20 @@ export function disableAnalytics() {
   }
 }
 
+export function trackCriticalError(error: string | Error) {
+  if (analyticsDisabled) return
+  if (DEBUG_ANALYTICS) {
+    console.info('explorer-website: DEBUG_ANALYTICS trackCriticalError ', error)
+  }
+  if (!(window as any).Rollbar) return
+
+  if ((error && error instanceof Error) || typeof error === 'string') {
+    ;(window as any).Rollbar.critical(error.toString())
+  } else {
+    ;(window as any).Rollbar.critical('' + error)
+  }
+}
+
 export function identifyUser(address: string, isGuest: boolean, email?: string) {
   if (window.analytics) {
     const userTraits = {

@@ -73,8 +73,12 @@ export async function authenticate(providerType: ProviderType | null) {
 
     if (!kernel) throw new Error('Kernel did not load yet')
 
-    kernel.authenticate(provider, providerType == null)
+    kernel.authenticate(provider, providerType == null /* isGuest */)
   } catch (err) {
+    if (err && typeof err === 'object' && err.message === 'Fortmatic: User denied account access.') {
+      return
+    }
+
     defaultWebsiteErrorTracker(err)
 
     store.dispatch(
