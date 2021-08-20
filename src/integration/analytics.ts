@@ -71,22 +71,17 @@ export function disableAnalytics() {
   }
 }
 
-export function trackCriticalError(error: string | Error, payload?: Record<string, any>) {
+export function trackCriticalError(error: string | Error) {
+  if (analyticsDisabled) return
   if (DEBUG_ANALYTICS) {
     console.info('explorer-website: DEBUG_ANALYTICS trackCriticalError ', error)
   }
-
   if (!(window as any).Rollbar) return
 
-  if (typeof error === 'string') {
-    ;(window as any).Rollbar.critical(errorToString(error), payload)
-  } else if (error && error instanceof Error) {
-    ;(window as any).Rollbar.critical(
-      errorToString(error),
-      Object.assign(error, payload, { fullErrorStack: error.toString() })
-    )
+  if ((error && error instanceof Error) || typeof error === 'string') {
+    ;(window as any).Rollbar.critical(error.toString())
   } else {
-    ;(window as any).Rollbar.critical(errorToString(error), payload)
+    ;(window as any).Rollbar.critical('' + error)
   }
 }
 
