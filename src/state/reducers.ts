@@ -9,6 +9,7 @@ import {
 } from './actions'
 import { KernelState, SessionState, RendererState, ErrorState } from './redux'
 import { v4 } from 'uuid'
+import { errorToString } from '../utils/errorToString'
 
 const defaultSession: SessionState = {
   sessionId: v4(),
@@ -57,11 +58,13 @@ export function errorReducer(state: ErrorState | undefined, action: AnyAction): 
   if (action.type === SET_KERNEL_ERROR) {
     const payload: KernelError = action.payload
 
-    // TODO: properly handle errors from kernel and forward to rollbar/segment
+    if (!payload) {
+      return { error: null }
+    }
 
     return {
       error: {
-        details: payload.error.toString(),
+        details: errorToString(payload.error),
         type: payload.code as any
       }
     }

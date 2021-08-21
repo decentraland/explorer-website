@@ -79,6 +79,25 @@ export async function authenticate(providerType: ProviderType | null) {
       return
     }
 
+    if (
+      err &&
+      typeof err === 'object' &&
+      typeof err.message == 'string' &&
+      (err.message.includes('Already processing eth_requestAccounts.') || err.message.includes('Please wait.'))
+    ) {
+      // https://github.com/decentraland/explorer-website/issues/46
+      store.dispatch(
+        setKernelError({
+          error: new Error('Metamask is locked, please open the extension before continuing.'),
+          code: ErrorType.METAMASK_LOCKED
+        })
+      )
+      return
+    }
+
+    // If something went wrong, disconnect to prevent future errors next reload
+    disconnect().catch(defaultWebsiteErrorTracker)
+
     defaultWebsiteErrorTracker(err)
 
     store.dispatch(
@@ -116,7 +135,11 @@ async function resolveBaseUrl(urn: string): Promise<string> {
 }
 
 function cdnFromRollout(rollout: RolloutRecord): string {
-  return `https://cdn.decentraland.org/${rollout.prefix}/${rollout.version}`
+  return cdnFromPrefixVersion(rollout.prefix, rollout.version)
+}
+
+function cdnFromPrefixVersion(prefix: string, version: string): string {
+  return `https://cdn.decentraland.org/${prefix}/${version}`
 }
 
 async function getVersions(flags: FeatureFlagsResult) {
@@ -144,6 +167,14 @@ async function getVersions(flags: FeatureFlagsResult) {
   }
   if (qs.has('kernel-branch')) {
     globalThis.KERNEL_BASE_URL = `https://sdk-team-cdn.decentraland.org/@dcl/kernel/branch/${qs.get('kernel-branch')!}`
+  }
+
+  // 4. specific cdn versions
+  if (qs.has('renderer-version')) {
+    globalThis.RENDERER_BASE_URL = cdnFromPrefixVersion('@dcl/unity-renderer', qs.get('renderer-version')!)
+  }
+  if (qs.has('kernel-version')) {
+    globalThis.KERNEL_BASE_URL = cdnFromPrefixVersion('@dcl/kernel', qs.get('kernel-version')!)
   }
 
   // default fallback
@@ -228,6 +259,11 @@ async function initKernel() {
   kernel.on('rendererVisible', (event) => {
     console.log('visible', event)
     store.dispatch(setRendererVisible(event.visible))
+
+    // if the kernel and renderer decides to load, we cleanup the error window
+    if (event.visible) {
+      store.dispatch(setKernelError(null))
+    }
   })
 
   kernel.on('loadingProgress', (event) => {

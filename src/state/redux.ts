@@ -37,7 +37,8 @@ export enum ErrorType {
   NOT_MOBILE = 'nomobile',
   NOT_SUPPORTED = 'notsupported',
   NET_MISMATCH = 'networkmismatch',
-  AVATAR_ERROR = 'avatarerror'
+  AVATAR_ERROR = 'avatarerror',
+  METAMASK_LOCKED = 'METAMASK_LOCKED'
 }
 
 export type StoreType = {
