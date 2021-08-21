@@ -95,6 +95,9 @@ export async function authenticate(providerType: ProviderType | null) {
       return
     }
 
+    // If something went wrong, disconnect to prevent future errors next reload
+    disconnect().catch(defaultWebsiteErrorTracker)
+
     defaultWebsiteErrorTracker(err)
 
     store.dispatch(
