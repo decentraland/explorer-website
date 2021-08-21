@@ -86,6 +86,12 @@ export async function authenticate(providerType: ProviderType | null) {
       err.message.includes('Already processing eth_requestAccounts.')
     ) {
       // https://github.com/decentraland/explorer-website/issues/46
+      store.dispatch(
+        setKernelError({
+          error: new Error('Metamask is locked, please open the extension before continuing.'),
+          code: ErrorType.METAMASK_LOCKED
+        })
+      )
       return
     }
 
@@ -250,6 +256,11 @@ async function initKernel() {
   kernel.on('rendererVisible', (event) => {
     console.log('visible', event)
     store.dispatch(setRendererVisible(event.visible))
+
+    // if the kernel and renderer decides to load, we cleanup the error window
+    if (event.visible) {
+      store.dispatch(setKernelError(null))
+    }
   })
 
   kernel.on('loadingProgress', (event) => {

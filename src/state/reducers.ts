@@ -58,7 +58,9 @@ export function errorReducer(state: ErrorState | undefined, action: AnyAction): 
   if (action.type === SET_KERNEL_ERROR) {
     const payload: KernelError = action.payload
 
-    // TODO: properly handle errors from kernel and forward to rollbar/segment
+    if (!payload) {
+      return { error: null }
+    }
 
     return {
       error: {
