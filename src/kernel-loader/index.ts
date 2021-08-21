@@ -83,7 +83,7 @@ export async function authenticate(providerType: ProviderType | null) {
       err &&
       typeof err === 'object' &&
       typeof err.message == 'string' &&
-      err.message.includes('Already processing eth_requestAccounts.')
+      (err.message.includes('Already processing eth_requestAccounts.') || err.message.includes('Please wait.'))
     ) {
       // https://github.com/decentraland/explorer-website/issues/46
       store.dispatch(
