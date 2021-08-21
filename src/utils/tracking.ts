@@ -1,5 +1,6 @@
 import { TrackingEvents } from '../trackingEvents'
 import { internalTrackEvent, trackCriticalError } from '../integration/analytics'
+import { errorToString } from './errorToString'
 
 const ethereum = window.ethereum as any
 
@@ -55,9 +56,6 @@ export function track<E extends keyof TrackingEvents>(event: E, properties?: Tra
   internalTrackEvent(event, { wallet, walletProps, ...properties })
 }
 
-export function errorToString(error: any) {
-  return error?.message || '' + error
-}
 
 /**
  * Default "catch" for promises and to print errors in the console.

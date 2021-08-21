@@ -9,6 +9,7 @@ import {
 } from './actions'
 import { KernelState, SessionState, RendererState, ErrorState } from './redux'
 import { v4 } from 'uuid'
+import { errorToString } from '../utils/errorToString'
 
 const defaultSession: SessionState = {
   sessionId: v4(),
@@ -61,7 +62,7 @@ export function errorReducer(state: ErrorState | undefined, action: AnyAction): 
 
     return {
       error: {
-        details: payload.error.toString(),
+        details: errorToString(payload.error),
         type: payload.code as any
       }
     }

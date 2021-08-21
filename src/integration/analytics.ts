@@ -1,5 +1,6 @@
 import { store } from '../state/redux'
 import { getRequiredAnalyticsContext } from '../state/selectors'
+import { errorToString } from '../utils/errorToString'
 import { DEBUG_ANALYTICS } from './queryParamsConfig'
 
 let analyticsDisabled = false
@@ -42,7 +43,7 @@ export function trackCriticalError(error: string | Error, payload?: Record<strin
   } else if (error && error instanceof Error) {
     ;(window as any).Rollbar.critical(error.toString(), Object.assign(error, payload))
   } else {
-    ;(window as any).Rollbar.critical('' + error, payload)
+    ;(window as any).Rollbar.critical(errorToString(error), payload)
   }
 }
 
