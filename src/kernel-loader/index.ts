@@ -79,6 +79,16 @@ export async function authenticate(providerType: ProviderType | null) {
       return
     }
 
+    if (
+      err &&
+      typeof err === 'object' &&
+      typeof err.message == 'string' &&
+      err.message.includes('Already processing eth_requestAccounts.')
+    ) {
+      // https://github.com/decentraland/explorer-website/issues/46
+      return
+    }
+
     defaultWebsiteErrorTracker(err)
 
     store.dispatch(
@@ -116,7 +126,11 @@ async function resolveBaseUrl(urn: string): Promise<string> {
 }
 
 function cdnFromRollout(rollout: RolloutRecord): string {
-  return `https://cdn.decentraland.org/${rollout.prefix}/${rollout.version}`
+  return cdnFromPrefixVersion(rollout.prefix, rollout.version)
+}
+
+function cdnFromPrefixVersion(prefix: string, version: string): string {
+  return `https://cdn.decentraland.org/${prefix}/${version}`
 }
 
 async function getVersions(flags: FeatureFlagsResult) {
@@ -144,6 +158,14 @@ async function getVersions(flags: FeatureFlagsResult) {
   }
   if (qs.has('kernel-branch')) {
     globalThis.KERNEL_BASE_URL = `https://sdk-team-cdn.decentraland.org/@dcl/kernel/branch/${qs.get('kernel-branch')!}`
+  }
+
+  // 4. specific cdn versions
+  if (qs.has('renderer-version')) {
+    globalThis.RENDERER_BASE_URL = cdnFromPrefixVersion('@dcl/unity-renderer', qs.get('renderer-version')!)
+  }
+  if (qs.has('kernel-version')) {
+    globalThis.KERNEL_BASE_URL = cdnFromPrefixVersion('@dcl/kernel', qs.get('kernel-version')!)
   }
 
   // default fallback
