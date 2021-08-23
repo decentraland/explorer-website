@@ -251,9 +251,9 @@ async function initKernel() {
   kernel.on('error', (error) => {
     store.dispatch(setKernelError(error))
     trackCriticalError(error.error, error.extra)
-    if (error.level === 'fatal') {
-      disableAnalytics()
-    }
+    // . if (error.level === 'fatal') {
+    // .   disableAnalytics()
+    // . }
   })
 
   kernel.on('rendererVisible', (event) => {
