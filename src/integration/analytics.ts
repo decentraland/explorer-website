@@ -10,6 +10,11 @@ enum AnalyticsAccount {
   DEV = 'a4h4BC4dL1v7FhIQKKuPHEdZIiNRDVhc'
 }
 
+const authFlags = {
+  isAuthenticated: false,
+  isGuest: false
+}
+
 // TODO fill with segment keys and integrate identity server
 export function configureSegment() {
   // all decentraland.org domains are considered PRD
@@ -18,6 +23,29 @@ export function configureSegment() {
   }
 
   return initialize(AnalyticsAccount.DEV)
+}
+
+export function configureRollbar() {
+  function rollbarTransformer(payload: Record<string, any>): void {
+    const qs = new URLSearchParams(location.search || '')
+
+    // inject realm
+    if (qs.has('realm')) {
+      payload.realm = qs.get('realm')
+    }
+
+    // inject position
+    if (qs.has('position')) {
+      payload.position = qs.get('position')
+    }
+
+    payload.dcl_is_authenticated = authFlags.isAuthenticated
+    payload.dcl_is_guest = authFlags.isGuest
+  }
+
+  if ((window as any).Rollbar) {
+    ;(window as any).Rollbar.configure({ transform: rollbarTransformer })
+  }
 }
 
 // once this function is called, no more errors will be tracked neither reported to rollbar
@@ -32,22 +60,28 @@ export function disableAnalytics() {
 }
 
 export function trackCriticalError(error: string | Error, payload?: Record<string, any>) {
-  if (analyticsDisabled) return
   if (DEBUG_ANALYTICS) {
     console.info('explorer-website: DEBUG_ANALYTICS trackCriticalError ', error)
   }
+
   if (!(window as any).Rollbar) return
 
   if (typeof error === 'string') {
-    ;(window as any).Rollbar.critical(error.toString(), payload)
+    ;(window as any).Rollbar.critical(errorToString(error), payload)
   } else if (error && error instanceof Error) {
-    ;(window as any).Rollbar.critical(error.toString(), Object.assign(error, payload))
+    ;(window as any).Rollbar.critical(
+      errorToString(error),
+      Object.assign(error, payload, { fullErrorStack: error.toString() })
+    )
   } else {
     ;(window as any).Rollbar.critical(errorToString(error), payload)
   }
 }
 
 export function identifyUser(address: string, isGuest: boolean, email?: string) {
+  authFlags.isGuest = isGuest
+  authFlags.isAuthenticated = !!address
+
   if (window.analytics) {
     const userTraits = {
       sessionId: getRequiredAnalyticsContext(store.getState()).sessionId,
