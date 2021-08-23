@@ -26,26 +26,32 @@ export function configureSegment() {
   return initialize(AnalyticsAccount.DEV)
 }
 
+function injectTrackingMetadata(payload: Record<string, any>): Record<string, any> {
+  const qs = new URLSearchParams(globalThis.location.search || '')
+
+  // inject realm
+  if (qs.has('realm')) {
+    payload.realm = qs.get('realm')
+  }
+
+  // inject position
+  if (qs.has('position')) {
+    payload.position = qs.get('position')
+  }
+
+  payload.dcl_is_authenticated = authFlags.isAuthenticated
+  payload.dcl_is_guest = authFlags.isGuest
+
+  if (analyticsDisabled) {
+    payload.dcl_disabled_analytics = true
+  }
+
+  return payload
+}
+
 export function configureRollbar() {
   function rollbarTransformer(payload: Record<string, any>): void {
-    const qs = new URLSearchParams(globalThis.location.search || '')
-
-    // inject realm
-    if (qs.has('realm')) {
-      payload.realm = qs.get('realm')
-    }
-
-    // inject position
-    if (qs.has('position')) {
-      payload.position = qs.get('position')
-    }
-
-    payload.dcl_is_authenticated = authFlags.isAuthenticated
-    payload.dcl_is_guest = authFlags.isGuest
-
-    if (analyticsDisabled) {
-      payload.dcl_disabled_analytics = true
-    }
+    injectTrackingMetadata(payload)
   }
 
   if ((window as any).Rollbar) {
@@ -126,7 +132,7 @@ export function internalTrackEvent(eventName: string, eventData: Record<string, 
     return
   }
 
-  const data = { ...eventData, ...getRequiredAnalyticsContext(store.getState()) }
+  const data = { ...eventData, ...getRequiredAnalyticsContext(store.getState()), ...injectTrackingMetadata({}) }
 
   if (DEBUG_ANALYTICS) {
     console.info('explorer-website: DEBUG_ANALYTICS trackEvent', eventName, data)
