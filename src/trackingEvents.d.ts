@@ -28,6 +28,10 @@ export type TrackingEvents = {
   automatic_relogin: {
     provider_type: string
   }
+  /** disable analytics due to a fatal error */
+  disable_analytics: {}
+  /** enable renderer */
+  enable_renderer: {}
   /** Send kernel, website and renderer versions */
   initialize_versions: Record<string, string>
 }

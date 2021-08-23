@@ -1,5 +1,5 @@
 import { disconnect, getEthereumProvider, restoreConnection } from '../eth/provider'
-import { internalTrackEvent, identifyUser, disableAnalytics, trackCriticalError } from '../integration/analytics'
+import { internalTrackEvent, identifyUser, trackCriticalError, disableAnalytics } from '../integration/analytics'
 import { injectKernel } from './injector'
 import {
   setKernelAccountState,
@@ -250,6 +250,8 @@ async function initKernel() {
   // all errors are also sent as trackingEvent
   kernel.on('error', (error) => {
     store.dispatch(setKernelError(error))
+
+    // TODO: move this into a saga for setKernelError
     trackCriticalError(error.error, error.extra)
     if (error.level === 'fatal') {
       disableAnalytics()
@@ -257,11 +259,12 @@ async function initKernel() {
   })
 
   kernel.on('rendererVisible', (event) => {
-    console.log('visible', event)
     store.dispatch(setRendererVisible(event.visible))
 
+    // TODO: move this into a saga for setRendererVisible
     // if the kernel and renderer decides to load, we cleanup the error window
     if (event.visible) {
+      track('enable_renderer', {})
       store.dispatch(setKernelError(null))
     }
   })
