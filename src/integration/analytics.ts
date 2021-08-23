@@ -1,6 +1,7 @@
 import { store } from '../state/redux'
 import { getRequiredAnalyticsContext } from '../state/selectors'
 import { errorToString } from '../utils/errorToString'
+import { track } from '../utils/tracking'
 import { DEBUG_ANALYTICS } from './queryParamsConfig'
 
 let analyticsDisabled = false
@@ -27,7 +28,7 @@ export function configureSegment() {
 
 export function configureRollbar() {
   function rollbarTransformer(payload: Record<string, any>): void {
-    const qs = new URLSearchParams(location.search || '')
+    const qs = new URLSearchParams(globalThis.location.search || '')
 
     // inject realm
     if (qs.has('realm')) {
@@ -41,6 +42,10 @@ export function configureRollbar() {
 
     payload.dcl_is_authenticated = authFlags.isAuthenticated
     payload.dcl_is_guest = authFlags.isGuest
+
+    if (analyticsDisabled) {
+      payload.dcl_disabled_analytics = true
+    }
   }
 
   if ((window as any).Rollbar) {
@@ -50,10 +55,14 @@ export function configureRollbar() {
 
 // once this function is called, no more errors will be tracked neither reported to rollbar
 export function disableAnalytics() {
-  analyticsDisabled = true
-  if ((window as any).Rollbar) {
-    ;(window as any).Rollbar.configure({ enabled: false })
-  }
+  track('disable_analytics', {})
+
+  // TODO(menduz): Temporarily disable disabling analytics to get more visibility
+  //               on hidden errors
+  // . analyticsDisabled = true
+  // . if ((window as any).Rollbar) {
+  // .  ;(window as any).Rollbar.configure({ enabled: false })
+  // . }
   if (DEBUG_ANALYTICS) {
     console.info('explorer-website: DEBUG_ANALYTICS disableAnalytics')
   }
