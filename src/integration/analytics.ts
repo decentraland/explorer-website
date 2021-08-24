@@ -13,7 +13,8 @@ enum AnalyticsAccount {
 
 const authFlags = {
   isAuthenticated: false,
-  isGuest: false
+  isGuest: false,
+  afterFatalError: false
 }
 
 // TODO fill with segment keys and integrate identity server
@@ -26,7 +27,7 @@ export function configureSegment() {
   return initialize(AnalyticsAccount.DEV)
 }
 
-function injectTrackingMetadata(payload: Record<string, any>): Record<string, any> {
+function injectTrackingMetadata(payload: Record<string, any>): void {
   const qs = new URLSearchParams(globalThis.location.search || '')
 
   // inject realm
@@ -41,12 +42,7 @@ function injectTrackingMetadata(payload: Record<string, any>): Record<string, an
 
   payload.dcl_is_authenticated = authFlags.isAuthenticated
   payload.dcl_is_guest = authFlags.isGuest
-
-  if (analyticsDisabled) {
-    payload.dcl_disabled_analytics = true
-  }
-
-  return payload
+  payload.dcl_disabled_analytics = authFlags.afterFatalError
 }
 
 export function configureRollbar() {
@@ -63,6 +59,7 @@ export function configureRollbar() {
 export function disableAnalytics() {
   track('disable_analytics', {})
 
+  authFlags.afterFatalError = true
   // TODO(menduz): Temporarily disable disabling analytics to get more visibility
   //               on hidden errors
   // . analyticsDisabled = true
@@ -132,7 +129,9 @@ export function internalTrackEvent(eventName: string, eventData: Record<string, 
     return
   }
 
-  const data = { ...eventData, ...getRequiredAnalyticsContext(store.getState()), ...injectTrackingMetadata({}) }
+  const data = { ...eventData, ...getRequiredAnalyticsContext(store.getState()) }
+
+  injectTrackingMetadata(data)
 
   if (DEBUG_ANALYTICS) {
     console.info('explorer-website: DEBUG_ANALYTICS trackEvent', eventName, data)
