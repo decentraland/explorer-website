@@ -65,8 +65,27 @@ jobs:
             --local-folder build \
             --bucket-folder "${{ steps.install.outputs.public_path }}"
 
+  build-static:
+    runs-on: ubuntu-latest
+    outputs:
+      public_url: ${{ steps.install.outputs.public_url }}
+      public_path: ${{ steps.install.outputs.public_path }}
+    steps:
+      - uses: actions/checkout@master
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+          cache: npm
+
+      - id: install
+        name: install
+        run: npm ci
+
       - name: build for deployment
         run: npm run build:full
+        env:
+          GEN_STATIC_LOCAL: true
 
       - uses: actions/upload-artifact@v2
         with:

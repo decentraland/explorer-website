@@ -46,19 +46,21 @@ fs.writeFileSync('./package.json', JSON.stringify(packageJson, null, 2))
 fs.writeFileSync('./public/package.json', JSON.stringify(publicPackageJson, null, 2))
 
 function getPublicUrls() {
-  if (process.env.GITHUB_BASE_REF) {
-    // Pull request
-    return {
-      PUBLIC_URL: `https://explorer-artifacts.decentraland.org/${packageJson.name}/branch/${process.env.GITHUB_HEAD_REF}`,
-      REACT_APP_RENDERER_BASE_URL: ``,
-      REACT_APP_KERNEL_BASE_URL: ``
-    }
-  } else if (process.env.CI) {
-    // master/main branch, also releases
-    return {
-      PUBLIC_URL: `https://cdn.decentraland.org/${packageJson.name}/${packageJson.version}`,
-      REACT_APP_RENDERER_BASE_URL: ``,
-      REACT_APP_KERNEL_BASE_URL: ``
+  if (!process.env.GEN_STATIC_LOCAL) {
+    if (process.env.GITHUB_BASE_REF) {
+      // Pull request
+      return {
+        PUBLIC_URL: `https://explorer-artifacts.decentraland.org/${packageJson.name}/branch/${process.env.GITHUB_HEAD_REF}`,
+        REACT_APP_RENDERER_BASE_URL: ``,
+        REACT_APP_KERNEL_BASE_URL: ``
+      }
+    } else if (process.env.CI) {
+      // master/main branch, also releases
+      return {
+        PUBLIC_URL: `https://cdn.decentraland.org/${packageJson.name}/${packageJson.version}`,
+        REACT_APP_RENDERER_BASE_URL: ``,
+        REACT_APP_KERNEL_BASE_URL: ``
+      }
     }
   }
   // localhost
