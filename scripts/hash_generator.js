@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const dotenv = require('dotenv')
+const { cdnFolder } = require('./utils')
 
 let ENV_CONTENT = {}
 
@@ -63,7 +64,7 @@ function getPublicUrls() {
   // localhost
   return {
     PUBLIC_URL: ``,
-    REACT_APP_RENDERER_BASE_URL: `/cdn/packages/unity-renderer/${rendererVersion}/`,
-    REACT_APP_KERNEL_BASE_URL: `/cdn/packages/kernel/${kernelVersion}/`
+    REACT_APP_RENDERER_BASE_URL: cdnFolder('@dcl/unity-renderer', rendererVersion) + `/`,
+    REACT_APP_KERNEL_BASE_URL: cdnFolder('@dcl/kernel', kernelVersion) + `/`
   }
 }

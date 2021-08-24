@@ -4,12 +4,9 @@ const path = require('path')
 const fs = require('fs')
 const fse = require('fs-extra')
 const dotenv = require('dotenv')
+const { cdnFolder } = require('./utils')
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') })
-
-function cdnFolder(packageName, version) {
-  return `/cdn/packages/${packageName.replace(/^@[^/]+\//, '')}/${version}`
-}
 
 function distFolderRelative(folder) {
   return path.resolve(__dirname, '../build' + folder)
