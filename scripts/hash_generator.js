@@ -23,9 +23,11 @@ Object.assign(ENV_CONTENT, getPublicUrls())
 
 packageJson.homepage = ENV_CONTENT['PUBLIC_URL']
 
-// github action outputs. Do not touch.
-console.log('::set-output name=public_url::' + packageJson.homepage)
-console.log('::set-output name=public_path::' + new URL(packageJson.homepage).pathname)
+if (packageJson.homepage) {
+  // github action outputs. Do not touch.
+  console.log('::set-output name=public_url::' + packageJson.homepage)
+  console.log('::set-output name=public_path::' + new URL(packageJson.homepage).pathname)
+}
 
 console.log('VERSIONS: ', Object.entries(ENV_CONTENT), '\n')
 
@@ -60,7 +62,7 @@ function getPublicUrls() {
   }
   // localhost
   return {
-    PUBLIC_URL: `http://localhost:3000`,
+    PUBLIC_URL: ``,
     REACT_APP_RENDERER_BASE_URL: `/cdn/packages/unity-renderer/${rendererVersion}/`,
     REACT_APP_KERNEL_BASE_URL: `/cdn/packages/kernel/${kernelVersion}/`
   }

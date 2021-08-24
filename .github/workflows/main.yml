@@ -34,6 +34,7 @@ jobs:
 
       - name: build
         run: npm run build
+
       - name: test
         run: npm run test
 
@@ -63,6 +64,15 @@ jobs:
             --bucket $EXPLORER_WEB_BUCKET \
             --local-folder build \
             --bucket-folder "${{ steps.install.outputs.public_path }}"
+
+      - name: build for deployment
+        run: npm run build:full
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: static-site-build
+          path: build
+          if-no-files-found: error
 
   notify_deployment:
     needs: [build]
