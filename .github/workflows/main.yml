@@ -81,6 +81,8 @@ jobs:
       - id: install
         name: install
         run: npm ci
+        env:
+          GEN_STATIC_LOCAL: true
 
       - name: build for deployment
         run: npm run build:full
