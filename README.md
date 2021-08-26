@@ -9,7 +9,7 @@ Keep in mind that the interaction with the Wallet the user's using is partly bei
 ## How to test
 
 ```bash
-npm install
+npm ci
 npm run start
 ```
 
@@ -33,4 +33,4 @@ Another choice is to:
 
 1. Clone the [kernel](https://github.com/decentraland/kernel) project
 2. Make sure the folder is located where the linking error is trying to find it, usually `../kernel`
-3. Build it locally (check the kernel README)
+3. Build it locally (check the [kernel README](https://github.com/decentraland/kernel#running-the-explorer))
