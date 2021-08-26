@@ -2,7 +2,9 @@
 
 This repository holds the application shell that launches the web version of Decentraland Explorer.
 
-The responsibility of this repository is to generate the React UI to configure the ethereum providers, handle analytics and ultimately load and start the Kernel and Renderer.
+The responsibility of this repository is to generate the React UI to configure the ethereum providers, handle analytics and ultimately load and start the [kernel](https://github.com/decentraland/kernel) and Renderer.
+
+Keep in mind that the interaction with the Wallet the user's using is partly being handled by the [kernel](https://github.com/decentraland/kernel) and it's dependencies (like [eth-connect](https://github.com/decentraland/eth-connect)). This repository is reponsible for creating a provider using [decentraland-connect](https://github.com/decentraland/decentraland-connect) and handing that down to the kernel.
 
 ## How to test
 
