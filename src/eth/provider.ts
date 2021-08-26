@@ -23,6 +23,8 @@ export async function getEthereumProvider(
   }
 
   const result = await connection.connect(type, chainId)
+  // console.log('11111111111 PERSONAL SIGGGGGGGGGN 11111111111')
+  // console.log('PERSONAL SIGGGGGGGGGN 11111111111')
 
   return { provider: result.provider, chainId: result.chainId }
 }
