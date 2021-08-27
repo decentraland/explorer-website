@@ -20,7 +20,7 @@ export const Footer: React.FC = () => (
       <a href="https://twitter.com/decentraland" target="about:blank">
         <img alt="" src={twitter} />
       </a>
-      <span className="footer-text">© 2020 Decentraland</span>
+      <span className="footer-text">© 2021 Decentraland</span>
     </div>
   </footer>
 )
