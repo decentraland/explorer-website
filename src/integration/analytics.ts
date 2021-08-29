@@ -60,12 +60,12 @@ export function disableAnalytics() {
   track('disable_analytics', {})
 
   authFlags.afterFatalError = true
-  // TODO(menduz): Temporarily disable disabling analytics to get more visibility
-  //               on hidden errors
-  // . analyticsDisabled = true
-  // . if ((window as any).Rollbar) {
-  // .  ;(window as any).Rollbar.configure({ enabled: false })
-  // . }
+  analyticsDisabled = true
+
+  if ((window as any).Rollbar) {
+    ;(window as any).Rollbar.configure({ enabled: false })
+  }
+
   if (DEBUG_ANALYTICS) {
     console.info('explorer-website: DEBUG_ANALYTICS disableAnalytics')
   }
