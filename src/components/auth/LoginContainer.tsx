@@ -11,6 +11,8 @@ import './LoginContainer.css'
 import { StoreType } from '../../state/redux'
 import { LoginState } from '@dcl/kernel-interface'
 import { authenticate } from '../../kernel-loader'
+import { Message } from 'decentraland-ui'
+import { isRecommendedBrowser } from '../../utils/browser'
 
 const mapStateToProps = (state: StoreType): LoginContainerProps => {
   // test all connectors
@@ -59,6 +61,17 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
   return (
     <React.Fragment>
       <div className={'LoginContainer  FullPage'}>
+        {
+          isRecommendedBrowser() ? 
+            '' :
+            <div>
+              <Message 
+                warning
+                visible 
+                content={"Unfortunately, your browser is not among the recommended choices for an optimal experience in Decentraland. We suggest you use one based on Chromium or Firefox."} 
+                header={'Unrecommended Browser'}/>
+            </div>
+        }
         {/* Nabvar */}
         <Navbar full={true} />
         <main>
