@@ -1,52 +1,114 @@
-import { store } from "../state/redux"
-import { getAnalyticsContext } from "../state/selectors"
-
-export function getTLD() {
-  if (globalThis.location.search && globalThis.location.search.includes("ENV=")) {
-    return globalThis.location.search.match(/ENV=(\w+)/)![1]
-  }
-  return globalThis.location.hostname.match(/(\w+)$/)![0]
-}
+import { store } from '../state/redux'
+import { getRequiredAnalyticsContext } from '../state/selectors'
+import { errorToString } from '../utils/errorToString'
+import { track } from '../utils/tracking'
+import { DEBUG_ANALYTICS } from './queryParamsConfig'
 
 let analyticsDisabled = false
 
 enum AnalyticsAccount {
-  PRD = "1plAT9a2wOOgbPCrTaU8rgGUMzgUTJtU",
-  DEV = "a4h4BC4dL1v7FhIQKKuPHEdZIiNRDVhc",
+  PRD = '1plAT9a2wOOgbPCrTaU8rgGUMzgUTJtU',
+  DEV = 'a4h4BC4dL1v7FhIQKKuPHEdZIiNRDVhc'
+}
+
+const authFlags = {
+  isAuthenticated: false,
+  isGuest: false,
+  afterFatalError: false
 }
 
 // TODO fill with segment keys and integrate identity server
 export function configureSegment() {
-  const TLD = getTLD()
-  switch (TLD) {
-    case "org":
-      if (
-        globalThis.location.host === "play.decentraland.org" ||
-        globalThis.location.host === "explorer.decentraland.org"
-      ) {
-        return initialize(AnalyticsAccount.PRD)
-      }
-      return initialize(AnalyticsAccount.DEV)
-    case "today":
-      return initialize(AnalyticsAccount.DEV)
-    case "zone":
-      return initialize(AnalyticsAccount.DEV)
-    default:
-      return initialize(AnalyticsAccount.DEV)
+  // all decentraland.org domains are considered PRD
+  if (globalThis.location.host.endsWith('.decentraland.org')) {
+    return initialize(AnalyticsAccount.PRD)
+  }
+
+  return initialize(AnalyticsAccount.DEV)
+}
+
+function injectTrackingMetadata(payload: Record<string, any>): void {
+  const qs = new URLSearchParams(globalThis.location.search || '')
+
+  // inject realm
+  if (qs.has('realm')) {
+    payload.realm = qs.get('realm')
+  }
+
+  // inject position
+  if (qs.has('position')) {
+    payload.position = qs.get('position')
+  }
+
+  payload.dcl_is_authenticated = authFlags.isAuthenticated
+  payload.dcl_is_guest = authFlags.isGuest
+  payload.dcl_disabled_analytics = authFlags.afterFatalError
+}
+
+export function configureRollbar() {
+  function rollbarTransformer(payload: Record<string, any>): void {
+    injectTrackingMetadata(payload)
+  }
+
+  if ((window as any).Rollbar) {
+    ;(window as any).Rollbar.configure({ transform: rollbarTransformer })
   }
 }
 
 // once this function is called, no more errors will be tracked neither reported to rollbar
-export function disableAnalytics(){
+export function disableAnalytics() {
+  track('disable_analytics', {})
+
+  authFlags.afterFatalError = true
   analyticsDisabled = true
+
   if ((window as any).Rollbar) {
-    (window as any).Rollbar.configure({ enabled: false })
+    ;(window as any).Rollbar.configure({ enabled: false })
+  }
+
+  if (DEBUG_ANALYTICS) {
+    console.info('explorer-website: DEBUG_ANALYTICS disableAnalytics')
   }
 }
 
-export function identifyUser(userId: string) {
+export function trackCriticalError(error: string | Error, payload?: Record<string, any>) {
+  if (DEBUG_ANALYTICS) {
+    console.info('explorer-website: DEBUG_ANALYTICS trackCriticalError ', error)
+  }
+
+  if (!(window as any).Rollbar) return
+
+  if (typeof error === 'string') {
+    ;(window as any).Rollbar.critical(errorToString(error), payload)
+  } else if (error && error instanceof Error) {
+    ;(window as any).Rollbar.critical(
+      errorToString(error),
+      Object.assign(error, payload, { fullErrorStack: error.toString() })
+    )
+  } else {
+    ;(window as any).Rollbar.critical(errorToString(error), payload)
+  }
+}
+
+export function identifyUser(address: string, isGuest: boolean, email?: string) {
+  authFlags.isGuest = isGuest
+  authFlags.isAuthenticated = !!address
+
   if (window.analytics) {
-    window.analytics.identify(userId, getAnalyticsContext(store.getState()))
+    const userTraits = {
+      sessionId: getRequiredAnalyticsContext(store.getState()).sessionId,
+      email
+    }
+
+    if (DEBUG_ANALYTICS) {
+      console.info('explorer-website: DEBUG_ANALYTICS identifyUser', address, userTraits)
+    }
+
+    if (isGuest) {
+      window.analytics.identify(userTraits)
+    } else {
+      window.analytics.identify(address, userTraits)
+    }
   }
 }
 
@@ -61,12 +123,19 @@ async function initialize(segmentKey: string): Promise<void> {
   }
 }
 
-export function trackEvent(eventName: string, eventData: Record<string, any>) {
+// please use src/utils "track" function.
+export function internalTrackEvent(eventName: string, eventData: Record<string, any>) {
   if (!window.analytics || analyticsDisabled) {
     return
   }
 
-  const data = { ...eventData, ...getAnalyticsContext(store.getState()) }
+  const data = { ...eventData, ...getRequiredAnalyticsContext(store.getState()) }
+
+  injectTrackingMetadata(data)
+
+  if (DEBUG_ANALYTICS) {
+    console.info('explorer-website: DEBUG_ANALYTICS trackEvent', eventName, data)
+  }
 
   window.analytics.track(eventName, data)
 }

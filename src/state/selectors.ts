@@ -1,11 +1,9 @@
-import { StoreType } from "./redux"
+import { SessionTraits } from '../trackingEvents'
+import { StoreType } from './redux'
 
-export function getAnalyticsContext(state: StoreType) {
+// This function is used for every rollbar and segment events.
+export function getRequiredAnalyticsContext(state: StoreType): SessionTraits {
   return {
-    sessionId: state.featureFlags.sessionId,
-    version: (globalThis as any)["VERSION"],
-    rendererVersion: state.renderer.version,
-    kernelVersion: state.kernel.kernel?.version,
-    userId: state.session.kernelState?.identity?.address,
+    sessionId: state.session.sessionId
   }
 }

@@ -6,6 +6,8 @@ export async function injectKernel(options: KernelOptions): Promise<KernelResult
 
   await injectScript(kernelUrl)
 
+  console.log('Kernel: ', kernelUrl)
+
   const DecentralandKernel: IDecentralandKernel = (globalThis as any).DecentralandKernel
 
   if (!DecentralandKernel) throw new Error('DecentralandKernel could not be loaded')

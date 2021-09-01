@@ -4,7 +4,7 @@ import { WalletSelector } from './wallet/WalletSelector'
 import { LoginHeader } from './LoginHeader'
 import { Spinner } from '../common/Spinner'
 import { Avatars } from '../common/Avatars'
-import { track } from '../../utils'
+import { track } from '../../utils/tracking'
 import './EthLogin.css'
 
 export interface EthLoginProps {

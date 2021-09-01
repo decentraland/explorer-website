@@ -6,9 +6,11 @@
     "start": "react-scripts start",
     "start:linked": "NODE_ENV=development react-scripts start",
     "build": "GENERATE_SOURCEMAP=true react-scripts build",
+    "build:full": "npm run build && npm run copy-cdn",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postinstall": "./scripts/post-install.sh",
+    "postinstall": "node ./scripts/hash_generator.js",
+    "copy-cdn": "node ./scripts/copy_cdn.js",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
   },
@@ -35,11 +37,11 @@
   },
   "dependencies": {
     "@dcl/feature-flags": "^1.0.0",
-    "@dcl/kernel-interface": "^1.0.0-20210722175856.commit-173aa62",
-    "@dcl/unity-renderer": "^1.0.7377",
+    "@dcl/kernel": "^1.0.0-1159325949.commit-97e028d",
+    "@dcl/kernel-interface": "^2.0.0-20210823094935.commit-f7cb26b",
+    "@dcl/unity-renderer": "^1.0.11513-20210824110223.commit-c8ba20b",
     "@dcl/urn-resolver": "^1.2.1",
     "decentraland-dapps": "^9.7.1",
-    "decentraland-kernel": "^6.6.6-20210705191533.commit-894f7d2",
     "eth-connect": "^6.0.0",
     "md5-file": "^5.0.0",
     "react": "^16.13.1",
@@ -66,11 +68,12 @@
     "@types/react-redux": "^7.1.9",
     "@typescript-eslint/eslint-plugin": "^4.4.0",
     "babel-loader": "^8.1.0",
+    "fs-extra": "^10.0.0",
     "git-rev-sync": "^1.12.0",
     "react-is": "^16.13.1",
     "react-test-renderer": "^16.13.1",
     "redux-devtools-extension": "^2.13.8",
     "typescript": "~3.7.2"
   },
-  "homepage": "http://localhost:3000"
+  "homepage": ""
 }

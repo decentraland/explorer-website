@@ -16,7 +16,7 @@ export const SET_RENDERER_VISIBLE = 'Set renderer visible'
 
 export const setKernelAccountState = (accountState: KernelAccountState) =>
   action(SET_KERNEL_ACCOUNT_STATE, accountState)
-export const setKernelError = (error: KernelError) => action(SET_KERNEL_ERROR, error)
+export const setKernelError = (error: KernelError | null) => action(SET_KERNEL_ERROR, error)
 export const setKernelLoaded = (kernel: KernelResult) => action(SET_KERNEL_LOADED, kernel)
 export const setRendererLoading = (progressEvent: KernelLoadingProgress) => action(SET_RENDERER_LOADING, progressEvent)
 export const setRendererVisible = (visible: boolean) => action(SET_RENDERER_VISIBLE, { visible })
