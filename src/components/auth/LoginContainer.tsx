@@ -64,7 +64,7 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
           isRecommendedBrowser() ? 
             '' :
             <div className="eth-login-warning-uncompatible-browser">
-              <a>Your browser is not among the recommended choices for an optimal experience in Decentraland. We suggest you use one based on Chromium or Firefox.</a>
+              Your browser is not among the recommended choices for an optimal experience in Decentraland. We suggest you use one based on Chromium or Firefox.
             </div>
         }
         {/* Nabvar */}
