@@ -11,7 +11,6 @@ import './LoginContainer.css'
 import { StoreType } from '../../state/redux'
 import { LoginState } from '@dcl/kernel-interface'
 import { authenticate } from '../../kernel-loader'
-import { Message } from 'decentraland-ui'
 import { isRecommendedBrowser } from '../../utils/browser'
 
 const mapStateToProps = (state: StoreType): LoginContainerProps => {
