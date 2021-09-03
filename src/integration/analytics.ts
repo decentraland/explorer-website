@@ -1,6 +1,5 @@
 import { store } from '../state/redux'
 import { getRequiredAnalyticsContext } from '../state/selectors'
-import { errorToString } from '../utils/errorToString'
 import { track } from '../utils/tracking'
 import { DEBUG_ANALYTICS } from './queryParamsConfig'
 
