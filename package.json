@@ -41,7 +41,7 @@
     "@dcl/kernel-interface": "^2.0.0-20210823094935.commit-f7cb26b",
     "@dcl/unity-renderer": "^1.0.11513-20210824110223.commit-c8ba20b",
     "@dcl/urn-resolver": "^1.2.1",
-    "decentraland-connect": "^2.19.0",
+    "decentraland-connect": "^2.19.1-20210902202146.commit-e02cfe6",
     "decentraland-dapps": "^9.7.1",
     "eth-connect": "^6.0.0",
     "md5-file": "^5.0.0",
