@@ -2,7 +2,7 @@ import future from 'fp-future'
 import { KernelOptions, KernelResult, IDecentralandKernel } from '@dcl/kernel-interface'
 
 export async function injectKernel(options: KernelOptions): Promise<KernelResult> {
-  const kernelUrl = new URL(`index.js`, options.kernelOptions.baseUrl).toString()
+  const kernelUrl = new URL(`index.js?cors`, options.kernelOptions.baseUrl).toString()
 
   await injectScript(kernelUrl)
 
