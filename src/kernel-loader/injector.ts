@@ -27,7 +27,7 @@ async function injectScript(url: string) {
     theFuture.reject(
       e.error ||
         new Error(
-          `The script ${url} failed to load. Please try emptying the cache of your browser and reloading this page.`
+          `The script ${url} failed to load. If this error persists, please try emptying the cache of your browser and reloading this page.`
         )
     )
   )
