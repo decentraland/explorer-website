@@ -75,7 +75,11 @@ export async function authenticate(providerType: ProviderType | null) {
 
     kernel.authenticate(provider, providerType == null /* isGuest */)
   } catch (err) {
-    if (err && typeof err === 'object' && err.message === 'Fortmatic: User denied account access.') {
+    if (
+      err &&
+      typeof err === 'object' &&
+      ['Fortmatic: User denied account access.', 'The user rejected the request.'].includes(err.message)
+    ) {
       return
     }
 

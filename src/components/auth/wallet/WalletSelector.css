@@ -29,6 +29,16 @@ h2.walletSelectorTitle {
   min-height: 170px;
 }
 
+.supportedWallets {
+  margin-top: 20px;
+  max-width: 520px;
+  text-align: center;
+}
+
+.supportedWallets a {
+  padding-left: 3px;
+}
+
 a.guestSelector {
   cursor: pointer;
   margin-top: 62px;

@@ -15,11 +15,7 @@ import { isRecommendedBrowser } from '../../utils/browser'
 
 const mapStateToProps = (state: StoreType): LoginContainerProps => {
   // test all connectors
-  const enableProviders = new Set([
-    ProviderType.INJECTED, // Ready
-    ProviderType.FORTMATIC // Ready
-    // ProviderType.WALLET_CONNECT, // Missing configuration
-  ])
+  const enableProviders = new Set([ProviderType.INJECTED, ProviderType.FORTMATIC, ProviderType.WALLET_CONNECT])
   const availableProviders = connection.getAvailableProviders().filter((provider) => enableProviders.has(provider))
   return {
     stage: state.session.kernelState?.loginStatus,
