@@ -30,7 +30,13 @@ h2.walletSelectorTitle {
 }
 
 .supportedWallets {
-  margin-top: 25px;
+  margin-top: 20px;
+  max-width: 520px;
+  text-align: center;
+}
+
+.supportedWallets a {
+  padding-left: 3px;
 }
 
 a.guestSelector {
