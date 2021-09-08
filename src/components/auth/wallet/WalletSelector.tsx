@@ -89,6 +89,14 @@ export const WalletSelector: React.FC<WalletSelectorProps> = ({
             ))}
           </div>
         )}
+        <p className="supportedWallets">Trezor and smart contract wallets like Dapper, Argent or Gnosis safe, do not work with Polygon. Read more about the Trezor support status
+        <a
+          href="https://github.com/trezor/trezor-firmware/pull/1568"
+          target="_blank"
+          rel="noopener noreferrer">
+          here
+        </a>
+      </p>
       </div>
       {!loading && (
         <a className="guestSelector" href="#guest" onClick={handleGuestLogin}>
