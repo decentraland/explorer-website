@@ -1,6 +1,6 @@
 import { combineReducers, createStore } from 'redux'
 import { KernelAccountState, KernelResult, KernelLoadingProgress } from '@dcl/kernel-interface'
-import { kernelReducer, sessionReducer, rendererReducer, errorReducer } from './reducers'
+import { kernelReducer, sessionReducer, rendererReducer, errorReducer, bannerReducer } from './reducers'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
 export type KernelState = {
@@ -41,18 +41,28 @@ export enum ErrorType {
   METAMASK_LOCKED = 'METAMASK_LOCKED'
 }
 
+export type BannerState = {
+  banner: BannerType | null
+}
+
+export enum BannerType {
+  NOT_RECOMMENDED = 'notrecommended',
+}
+
 export type StoreType = {
   kernel: KernelState
   renderer: RendererState
   session: SessionState
   error: ErrorState
+  banner: BannerState
 }
 
 const reducers = combineReducers<StoreType>({
   kernel: kernelReducer,
   session: sessionReducer,
   renderer: rendererReducer,
-  error: errorReducer
+  error: errorReducer,
+  banner: bannerReducer,
 })
 
 const middleware: typeof composeWithDevTools =

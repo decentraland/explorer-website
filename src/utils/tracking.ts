@@ -1,19 +1,10 @@
 import { TrackingEvents } from '../trackingEvents'
 import { internalTrackEvent, trackCriticalError } from '../integration/analytics'
 import { errorToString } from './errorToString'
+import { callOnce } from './callOnce'
+import { isRecommendedBrowser } from '../integration/browser'
 
 const ethereum = window.ethereum as any
-
-function callOnce<T>(fun: () => T): () => T {
-  let result: { value: T } | null = null
-  return () => {
-    if (!result) {
-      result = { value: fun() }
-    }
-
-    return result.value
-  }
-}
 
 const getWalletName = callOnce(() => {
   if (!ethereum) {
@@ -53,7 +44,8 @@ const getWalletProps = callOnce(() => {
 export function track<E extends keyof TrackingEvents>(event: E, properties?: TrackingEvents[E]) {
   const wallet = getWalletName()
   const walletProps = getWalletProps()
-  internalTrackEvent(event, { wallet, walletProps, ...properties })
+  const recommendedBrowser = isRecommendedBrowser()
+  internalTrackEvent(event, { wallet, walletProps, recommendedBrowser, ...properties })
 }
 
 

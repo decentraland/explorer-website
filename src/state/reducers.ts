@@ -1,13 +1,14 @@
 import { AnyAction } from 'redux'
 import { KernelAccountState, KernelResult, KernelError } from '@dcl/kernel-interface'
 import {
+  SET_BANNER,
   SET_KERNEL_ACCOUNT_STATE,
   SET_KERNEL_ERROR,
   SET_KERNEL_LOADED,
   SET_RENDERER_LOADING,
   SET_RENDERER_VISIBLE
 } from './actions'
-import { KernelState, SessionState, RendererState, ErrorState } from './redux'
+import { KernelState, SessionState, RendererState, ErrorState, BannerState } from './redux'
 import { v4 } from 'uuid'
 import { errorToString } from '../utils/errorToString'
 
@@ -71,4 +72,12 @@ export function errorReducer(state: ErrorState | undefined, action: AnyAction): 
   }
 
   return state || { error: null }
+}
+
+export function bannerReducer(state: BannerState | undefined, action: AnyAction): BannerState {
+  if (action.type === SET_BANNER) {
+    return { banner: action.payload.banner }
+  }
+
+  return state || { banner: null }
 }
