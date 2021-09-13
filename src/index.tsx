@@ -1,12 +1,11 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import App from './components/App'
 import { configureRollbar, configureSegment } from './integration/analytics'
-import { startKernel } from './kernel-loader'
 import { store } from './state/redux'
-
-let INITIAL_RENDER = true
+import { initializeKernel } from './integration/kernel'
+import { initializeBrowserRecommendation } from './integration/browser'
+import App from './components/App'
 
 configureSegment()
 configureRollbar()
@@ -19,16 +18,7 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root'),
   () => {
-    if (INITIAL_RENDER) {
-      INITIAL_RENDER = false
-      startKernel()
-      const initial = document.getElementById('root-loading')
-      if (initial) {
-        initial.style.opacity = '0'
-        setTimeout(() => {
-          initial.remove()
-        }, 300)
-      }
-    }
+    initializeKernel()
+    initializeBrowserRecommendation()
   }
 )
