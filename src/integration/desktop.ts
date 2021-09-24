@@ -24,7 +24,5 @@ export const initializeDesktopApp = callOnce(() => {
         const { ipcRenderer } = window.require('electron')
         ipcRenderer.send('checkVersion')
         console.log("Electron found")
-    } else {
-        console.error("Electron not found")
     }
 })
