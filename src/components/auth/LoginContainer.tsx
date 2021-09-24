@@ -13,7 +13,6 @@ import { LoginState } from '@dcl/kernel-interface'
 import { authenticate } from '../../kernel-loader'
 import BannerContainer from '../banners/BannerContainer'
 import DownloadProgress from '../desktop/DownloadProgress'
-import { disconnect } from '../../eth/provider'
 import { isElectron } from '../../integration/desktop'
 
 const mapStateToProps = (state: StoreType): LoginContainerProps => {
