@@ -259,11 +259,14 @@ async function initKernel() {
     // TODO: move this into a saga for setKernelError
     trackError(error.error, { context: 'kernel', ...(error.extra || {}) })
 
+    // trackError only sends information to rollbar, we must get statistical information of errors in segment
+    // via this track() function
     track('explorer_kernel_error', {
       // this string concatenation exists on purpose, it is a safe way to do (error).toString in case (error) is nullish
       error: errorToString(error)
     })
 
+    // since setKernelError(error) produces an unrecoverable black screen of death, we disable analytics
     disableAnalytics()
   })
 
