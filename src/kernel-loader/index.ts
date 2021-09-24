@@ -1,5 +1,5 @@
 import { disconnect, getEthereumProvider, restoreConnection } from '../eth/provider'
-import { internalTrackEvent, identifyUser, trackCriticalError, disableAnalytics } from '../integration/analytics'
+import { internalTrackEvent, identifyUser, trackError, disableAnalytics } from '../integration/analytics'
 import { injectKernel } from './injector'
 import {
   setKernelAccountState,
@@ -17,6 +17,7 @@ import { injectVersions } from '../utils/rolloutVersions'
 import { KernelResult } from '@dcl/kernel-interface'
 import { ENV, NETWORK } from '../integration/queryParamsConfig'
 import { RequestManager } from 'eth-connect'
+import { errorToString } from '../utils/errorToString'
 
 // this function exists because decentraland-connect seems to return
 // invalid or cached values in chainId, ignoring network changes in the
@@ -256,10 +257,17 @@ async function initKernel() {
     store.dispatch(setKernelError(error))
 
     // TODO: move this into a saga for setKernelError
-    trackCriticalError(error.error, error.extra)
-    if (error.level === 'fatal') {
-      disableAnalytics()
-    }
+    trackError(error.error, { context: 'kernel', ...(error.extra || {}) })
+
+    // trackError only sends information to rollbar, we must get statistical information of errors in segment
+    // via this track() function
+    track('explorer_kernel_error', {
+      // this string concatenation exists on purpose, it is a safe way to do (error).toString in case (error) is nullish
+      error: errorToString(error)
+    })
+
+    // since setKernelError(error) produces an unrecoverable black screen of death, we disable analytics
+    disableAnalytics()
   })
 
   kernel.on('rendererVisible', (event) => {

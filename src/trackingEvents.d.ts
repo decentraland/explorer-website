@@ -24,6 +24,10 @@ export type TrackingEvents = {
   explorer_website_error: {
     error: string
   }
+  /** explorer-kernel errors (react, sagas or loading components) */
+  explorer_kernel_error: {
+    error: string
+  }
   /** when the app loads and connects the user automatically due to a stored session */
   automatic_relogin: {
     provider_type: string
