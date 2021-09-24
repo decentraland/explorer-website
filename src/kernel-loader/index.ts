@@ -17,6 +17,7 @@ import { injectVersions } from '../utils/rolloutVersions'
 import { KernelResult } from '@dcl/kernel-interface'
 import { ENV, NETWORK } from '../integration/queryParamsConfig'
 import { RequestManager } from 'eth-connect'
+import { errorToString } from '../utils/errorToString'
 
 // this function exists because decentraland-connect seems to return
 // invalid or cached values in chainId, ignoring network changes in the
@@ -257,6 +258,12 @@ async function initKernel() {
 
     // TODO: move this into a saga for setKernelError
     trackError(error.error, { context: 'kernel', ...(error.extra || {}) })
+
+    track('explorer_kernel_error', {
+      // this string concatenation exists on purpose, it is a safe way to do (error).toString in case (error) is nullish
+      error: errorToString(error)
+    })
+
     disableAnalytics()
   })
 
