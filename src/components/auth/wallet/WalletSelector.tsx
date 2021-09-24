@@ -5,6 +5,7 @@ import { Modal } from '../../common/Modal'
 import { WalletButton, WalletButtonLogo } from './WalletButton'
 import { Spinner } from '../../common/Spinner'
 import './WalletSelector.css'
+import { isElectron } from '../../../integration/desktop'
 
 export interface WalletSelectorProps {
   open: boolean
@@ -47,11 +48,11 @@ export const WalletSelector: React.FC<WalletSelectorProps> = ({
       }
     }
 
-    if (result.length === 0) {
+    if (result.length === 0 && !isElectron()) {
       result.push(WalletButtonLogo.METAMASK)
     }
 
-    if ((availableProviders || []).includes(ProviderType.FORTMATIC)) {
+    if ((availableProviders || []).includes(ProviderType.FORTMATIC) && !isElectron()) {
       result.push(WalletButtonLogo.FORTMATIC)
     }
 

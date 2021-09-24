@@ -1,16 +1,20 @@
 import { AnyAction } from 'redux'
-import { KernelAccountState, KernelResult, KernelError } from '@dcl/kernel-interface'
+import { KernelResult, KernelError, LoginState, KernelAccountState } from '@dcl/kernel-interface'
 import {
   SET_BANNER,
+  SET_DOWNLOAD_PROGRESS,
+  SET_DOWNLOAD_NEW_VERSION,
+  SET_DOWNLOAD_READY,
   SET_KERNEL_ACCOUNT_STATE,
   SET_KERNEL_ERROR,
   SET_KERNEL_LOADED,
   SET_RENDERER_LOADING,
   SET_RENDERER_VISIBLE
 } from './actions'
-import { KernelState, SessionState, RendererState, ErrorState, BannerState } from './redux'
+import { KernelState, SessionState, RendererState, ErrorState, BannerState, DownloadState, DownloadCurrentState } from './redux'
 import { v4 } from 'uuid'
 import { errorToString } from '../utils/errorToString'
+import { isElectron } from '../integration/desktop'
 
 const defaultSession: SessionState = {
   sessionId: v4(),
@@ -80,4 +84,40 @@ export function bannerReducer(state: BannerState | undefined, action: AnyAction)
   }
 
   return state || { banner: null }
+}
+
+export function downloadReducer(state: DownloadState | undefined, action: AnyAction): DownloadState {
+  const defaultDownload: DownloadState = {
+    progress: 0,
+    currentState: DownloadCurrentState.NONE,
+    authCompleted: false
+  }
+
+  if (!isElectron()) {
+    return state || defaultDownload
+  }
+
+  state = state || defaultDownload
+
+  if (action.type === SET_DOWNLOAD_PROGRESS) {
+    state = { ...state, progress: action.payload.progress, currentState: DownloadCurrentState.DOWNLOADING }
+  } else if (action.type === SET_DOWNLOAD_READY) {
+    state = { ...state, progress: action.payload.progress, currentState: DownloadCurrentState.READY }
+  } else if (action.type === SET_DOWNLOAD_NEW_VERSION) {
+    state = { ...state, progress: action.payload.progress, currentState: DownloadCurrentState.NEW_VERSION }
+  }
+
+  if (action.type === SET_KERNEL_ACCOUNT_STATE) {
+    if (action.payload.loginStatus === LoginState.WAITING_RENDERER) {
+      state = { ...state, authCompleted: true }
+    }
+  }
+
+  if (state.authCompleted && state.currentState === DownloadCurrentState.READY) {
+    const { ipcRenderer } = window.require('electron')
+    ipcRenderer.send('executeProcess')
+    state = { ...state, currentState: DownloadCurrentState.EXECUTED }
+  }
+
+  return state
 }

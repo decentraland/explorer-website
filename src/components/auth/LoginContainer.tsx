@@ -12,6 +12,9 @@ import { StoreType } from '../../state/redux'
 import { LoginState } from '@dcl/kernel-interface'
 import { authenticate } from '../../kernel-loader'
 import BannerContainer from '../banners/BannerContainer'
+import DownloadProgress from '../desktop/DownloadProgress'
+import { disconnect } from '../../eth/provider'
+import { isElectron } from '../../integration/desktop'
 
 const mapStateToProps = (state: StoreType): LoginContainerProps => {
   // test all connectors
@@ -62,12 +65,13 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
         <main>
           <Container className="eth-login-popup">
             <EthLogin availableProviders={props.availableProviders} onLogin={props.onLogin} signing={loading} />
+            {isElectron() && <DownloadProgress/> }
             {/* {props.stage === LoginState.CONNECT_ADVICE && <EthConnectAdvice onLogin={props.onLogin} />} */}
             {/* {props.stage === LoginState.SIGN_ADVICE && <EthSignAdvice />} */}
           </Container>
         </main>
-        <BeginnersGuide />
-        <BigFooter />
+        {!isElectron() && <BeginnersGuide /> }
+        {!isElectron() && <BigFooter /> }
       </div>
     </React.Fragment>
   )
