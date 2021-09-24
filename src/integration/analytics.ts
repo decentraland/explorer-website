@@ -2,7 +2,7 @@ import { store } from '../state/redux'
 import { getRequiredAnalyticsContext } from '../state/selectors'
 import { errorToString } from '../utils/errorToString'
 import { track } from '../utils/tracking'
-import { DEBUG_ANALYTICS } from './queryParamsConfig'
+import { DEBUG_ANALYTICS, RENDERER_TYPE } from './queryParamsConfig'
 
 let analyticsDisabled = false
 
@@ -43,6 +43,7 @@ function injectTrackingMetadata(payload: Record<string, any>): void {
   payload.dcl_is_authenticated = authFlags.isAuthenticated
   payload.dcl_is_guest = authFlags.isGuest
   payload.dcl_disabled_analytics = authFlags.afterFatalError
+  payload.dcl_renderer_type = RENDERER_TYPE
 }
 
 export function configureRollbar() {
@@ -71,8 +72,9 @@ export function disableAnalytics() {
   }
 }
 
-export function trackCriticalError(error: string | Error, payload?: Record<string, any>) {
+export function trackError(error: string | Error, payload?: Record<string, any>) {
   if (analyticsDisabled) return
+
   if (DEBUG_ANALYTICS) {
     console.info('explorer-website: DEBUG_ANALYTICS trackCriticalError ', error)
   }

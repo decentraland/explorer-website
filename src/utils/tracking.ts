@@ -1,8 +1,9 @@
 import { TrackingEvents } from '../trackingEvents'
-import { internalTrackEvent, trackCriticalError } from '../integration/analytics'
+import { internalTrackEvent, trackError } from '../integration/analytics'
 import { errorToString } from './errorToString'
 import { callOnce } from './callOnce'
 import { isRecommendedBrowser } from '../integration/browser'
+import { RENDERER_TYPE } from '../integration/queryParamsConfig'
 
 const ethereum = window.ethereum as any
 
@@ -36,6 +37,8 @@ const getWalletProps = callOnce(() => {
     .join(',')
 })
 
+const environmentType = { rendererType: RENDERER_TYPE }
+
 /**
  * The only function used by this react app to track its own events.
  * Please do not use internalTrackEvent directly, it is meant to be used by kernel
@@ -45,7 +48,7 @@ export function track<E extends keyof TrackingEvents>(event: E, properties?: Tra
   const wallet = getWalletName()
   const walletProps = getWalletProps()
   const recommendedBrowser = isRecommendedBrowser()
-  internalTrackEvent(event, { wallet, walletProps, recommendedBrowser, ...properties })
+  internalTrackEvent(event, { wallet, walletProps, recommendedBrowser, ...properties, ...environmentType })
 }
 
 
@@ -54,7 +57,7 @@ export function track<E extends keyof TrackingEvents>(event: E, properties?: Tra
  */
 export function defaultWebsiteErrorTracker(error: any) {
   console.error(error)
-  trackCriticalError(error, { context: 'explorer-website' })
+  trackError(error, { context: 'explorer-website' })
   track('explorer_website_error', {
     // this string concatenation exists on purpose, it is a safe way to do (error).toString in case (error) is nullish
     error: errorToString(error)
