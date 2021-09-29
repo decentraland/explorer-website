@@ -6,8 +6,7 @@ import {
   KernelLoadingProgress,
   KernelResult
 } from '@dcl/kernel-interface'
-import { BannerType, store } from './redux'
-import { isElectron } from '../integration/desktop'
+import { BannerType } from './redux'
 
 export const KERNEL_AUTHENTICATE = '[Authenticate]'
 export const SET_KERNEL_ACCOUNT_STATE = 'Set kernel account state'
@@ -35,37 +34,3 @@ export const setDownloadNewVersion = () => action(SET_DOWNLOAD_NEW_VERSION, { })
 
 export const authenticate = (provider: IEthereumProvider, isGuest: boolean) =>
   action(KERNEL_AUTHENTICATE, { provider, isGuest })
-
-if (isElectron()) {
-  const { ipcRenderer } = window.require('electron')
-  ipcRenderer.on('downloadState', (event: any, payload: any) => {
-    console.log('downloadState', payload)
-    switch(payload.type) {
-      case 'ERROR':
-        store.dispatch(
-          setKernelError({
-            error: new Error(
-              `Invalid remote version`
-            )
-          })
-        )
-        break;
-      case 'NEW_VERSION':
-        store.dispatch(
-          setDownloadNewVersion()
-        )
-        event.sender.send('download')
-        break;
-      case 'READY':
-        store.dispatch(
-          setDownloadReady()
-        )
-        break;
-      case 'PROGRESS':
-        store.dispatch(
-          setDownloadProgress(payload.progress)
-        )
-        break;
-    }
-  })
-}

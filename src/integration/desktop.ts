@@ -1,3 +1,5 @@
+import { setDownloadNewVersion, setDownloadProgress, setDownloadReady, setKernelError } from "../state/actions";
+import { store } from "../state/redux";
 import { callOnce } from "../utils/callOnce"
 
 export const isElectron = (): boolean => {
@@ -22,6 +24,38 @@ export const isElectron = (): boolean => {
 export const initializeDesktopApp = callOnce(() => {
     if (isElectron()) {
         const { ipcRenderer } = window.require('electron')
+
+        ipcRenderer.on('downloadState', (event: any, payload: any) => {
+          console.log('downloadState', payload)
+          switch(payload.type) {
+            case 'ERROR':
+              store.dispatch(
+                setKernelError({
+                  error: new Error(
+                    `Invalid remote version`
+                  )
+                })
+              )
+              break;
+            case 'NEW_VERSION':
+              store.dispatch(
+                setDownloadNewVersion()
+              )
+              event.sender.send('download')
+              break;
+            case 'READY':
+              store.dispatch(
+                setDownloadReady()
+              )
+              break;
+            case 'PROGRESS':
+              store.dispatch(
+                setDownloadProgress(payload.progress)
+              )
+              break;
+          }
+        })
+
         ipcRenderer.send('checkVersion')
         console.log("Electron found")
     }
