@@ -14,6 +14,7 @@ import {
 import { KernelState, SessionState, RendererState, ErrorState, BannerState, DownloadState, DownloadCurrentState } from './redux'
 import { v4 } from 'uuid'
 import { errorToString } from '../utils/errorToString'
+import { isElectron } from '../integration/desktop'
 
 const defaultSession: SessionState = {
   sessionId: v4(),
@@ -90,6 +91,10 @@ export function downloadReducer(state: DownloadState | undefined, action: AnyAct
     progress: 0,
     currentState: DownloadCurrentState.NONE,
     authCompleted: false
+  }
+
+  if (!isElectron()) {
+    return state || defaultDownload
   }
 
   state = state || defaultDownload
