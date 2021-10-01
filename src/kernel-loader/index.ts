@@ -18,6 +18,7 @@ import { KernelResult } from '@dcl/kernel-interface'
 import { ENV, NETWORK } from '../integration/queryParamsConfig'
 import { RequestManager } from 'eth-connect'
 import { errorToString } from '../utils/errorToString'
+import { isElectron } from '../integration/desktop'
 
 // this function exists because decentraland-connect seems to return
 // invalid or cached values in chainId, ignoring network changes in the
@@ -293,17 +294,19 @@ async function initKernel() {
 }
 
 async function initLogin(kernel: KernelResult) {
-  const provider = await restoreConnection()
-  if (provider && provider.account) {
-    const providerChainId = await getChainIdFromProvider(provider.provider)
+  if (!isElectron()) {
+    const provider = await restoreConnection()
+    if (provider && provider.account) {
+      const providerChainId = await getChainIdFromProvider(provider.provider)
 
-    // BUG OF decentraland-connect:
-    // provider.chainId DOES NOT reflect the selected chain in the real provider
-    const storedSession = await kernel.hasStoredSession(provider.account, providerChainId /* provider.chainId */)
+      // BUG OF decentraland-connect:
+      // provider.chainId DOES NOT reflect the selected chain in the real provider
+      const storedSession = await kernel.hasStoredSession(provider.account, providerChainId /* provider.chainId */)
 
-    if (storedSession) {
-      track('automatic_relogin', { provider_type: provider.providerType })
-      authenticate(provider.providerType).catch(defaultWebsiteErrorTracker)
+      if (storedSession) {
+        track('automatic_relogin', { provider_type: provider.providerType })
+        authenticate(provider.providerType).catch(defaultWebsiteErrorTracker)
+      }
     }
   }
 }

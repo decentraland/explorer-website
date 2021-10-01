@@ -1,6 +1,6 @@
 import { combineReducers, createStore } from 'redux'
 import { KernelAccountState, KernelResult, KernelLoadingProgress } from '@dcl/kernel-interface'
-import { kernelReducer, sessionReducer, rendererReducer, errorReducer, bannerReducer } from './reducers'
+import { kernelReducer, sessionReducer, rendererReducer, errorReducer, bannerReducer, downloadReducer } from './reducers'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
 export type KernelState = {
@@ -49,12 +49,27 @@ export enum BannerType {
   NOT_RECOMMENDED = 'notrecommended',
 }
 
+export enum DownloadCurrentState {
+  NONE = 'none',
+  NEW_VERSION = 'new_version',
+  DOWNLOADING = 'downloading',
+  READY = 'ready',
+  EXECUTED = 'executed'
+}
+
+export type DownloadState = {
+  currentState: DownloadCurrentState,
+  progress: number
+  authCompleted: boolean
+}
+
 export type StoreType = {
   kernel: KernelState
   renderer: RendererState
   session: SessionState
   error: ErrorState
   banner: BannerState
+  download: DownloadState
 }
 
 const reducers = combineReducers<StoreType>({
@@ -63,6 +78,7 @@ const reducers = combineReducers<StoreType>({
   renderer: rendererReducer,
   error: errorReducer,
   banner: bannerReducer,
+  download: downloadReducer
 })
 
 const middleware: typeof composeWithDevTools =

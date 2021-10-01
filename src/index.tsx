@@ -6,6 +6,7 @@ import { store } from './state/redux'
 import { initializeKernel } from './integration/kernel'
 import { initializeBrowserRecommendation } from './integration/browser'
 import App from './components/App'
+import { initializeDesktopApp } from './integration/desktop'
 
 configureSegment()
 configureRollbar()
@@ -20,5 +21,6 @@ ReactDOM.render(
   () => {
     initializeKernel()
     initializeBrowserRecommendation()
+    initializeDesktopApp()
   }
 )

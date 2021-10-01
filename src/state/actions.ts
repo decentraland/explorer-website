@@ -16,6 +16,10 @@ export const SET_RENDERER_LOADING = 'Set renderer loading'
 export const SET_RENDERER_VISIBLE = 'Set renderer visible'
 export const SET_BANNER = 'Set banenr'
 
+export const SET_DOWNLOAD_PROGRESS = '[DownloadProgress]'
+export const SET_DOWNLOAD_READY = '[DownloadReady]'
+export const SET_DOWNLOAD_NEW_VERSION = '[DownloadNewVersion]'
+
 export const setKernelAccountState = (accountState: KernelAccountState) =>
   action(SET_KERNEL_ACCOUNT_STATE, accountState)
 export const setKernelError = (error: KernelError | null) => action(SET_KERNEL_ERROR, error)
@@ -23,6 +27,10 @@ export const setKernelLoaded = (kernel: KernelResult) => action(SET_KERNEL_LOADE
 export const setRendererLoading = (progressEvent: KernelLoadingProgress) => action(SET_RENDERER_LOADING, progressEvent)
 export const setRendererVisible = (visible: boolean) => action(SET_RENDERER_VISIBLE, { visible })
 export const setBanner = (banner: BannerType | null) => action(SET_BANNER, { banner })
+
+export const setDownloadProgress = (progress: number) => action(SET_DOWNLOAD_PROGRESS, { progress })
+export const setDownloadReady = () => action(SET_DOWNLOAD_READY, { })
+export const setDownloadNewVersion = () => action(SET_DOWNLOAD_NEW_VERSION, { })
 
 export const authenticate = (provider: IEthereumProvider, isGuest: boolean) =>
   action(KERNEL_AUTHENTICATE, { provider, isGuest })

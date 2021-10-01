@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@dcl/feature-flags": "^1.0.0",
-    "@dcl/kernel": "^1.0.0-1159325949.commit-97e028d",
+    "@dcl/kernel": "^1.0.0-1266950721.commit-cbaf05b",
     "@dcl/kernel-interface": "^2.0.0-20210922153939.commit-017905d",
     "@dcl/schemas": "^1.6.1",
     "@dcl/unity-renderer": "^1.0.11513-20210824110223.commit-c8ba20b",
