@@ -48,6 +48,7 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
   const loading =
     props.stage === LoginState.SIGNATURE_PENDING ||
     props.stage === LoginState.WAITING_PROFILE ||
+    props.stage === LoginState.WAITING_RENDERER ||
     props.stage === LoginState.LOADING ||
     !props.kernelReady
 
