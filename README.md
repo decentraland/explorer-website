@@ -6,6 +6,12 @@ The responsibility of this repository is to generate the React UI to configure t
 
 Keep in mind that the interaction with the Wallet the user's using is partly being handled by the [kernel](https://github.com/decentraland/kernel) and it's dependencies (like [eth-connect](https://github.com/decentraland/eth-connect)). This repository is reponsible for creating a provider using [decentraland-connect](https://github.com/decentraland/decentraland-connect) and handing that down to the kernel.
 
+## Consistent versions
+
+To enable consistent versioning, this repository embeds `decentraland-ecs` which is used locally by the scene, wearables and other content developers to create and debug Decentraland scenes.
+
+To get a working Decentraland Explorer that is fully compliant with a specific version of the SDK (`decentraland-ecs`) please do install stable versions of the library via `npm install decentraland-ecs@latest`.
+
 ## How to test
 
 ```bash
