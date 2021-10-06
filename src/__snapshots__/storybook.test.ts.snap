@@ -612,7 +612,7 @@ exports[`Storyshots Explorer/base/BigFooter Template 1`] = `
       <div>
         <a
           className="big-footer-button"
-          href="https://discord.gg/k5ydeZp"
+          href="https://decentraland.org/discord"
           target="about:blank"
         >
           <svg
@@ -714,7 +714,7 @@ exports[`Storyshots Explorer/base/Footer Template 1`] = `
     className="footer-bar-content"
   >
     <a
-      href="https://discord.gg/k5ydeZp"
+      href="https://decentraland.org/discord"
       target="about:blank"
     >
       <img
