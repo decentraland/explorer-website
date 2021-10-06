@@ -21,7 +21,7 @@ export const BigFooter = () => {
             <h4>NEED SUPPORT?</h4>
           </div>
           <div>
-            <a className="big-footer-button" href="https://discord.gg/k5ydeZp" target="about:blank">
+            <a className="big-footer-button" href="https://decentraland.org/discord" target="about:blank">
               <Discord /> Join our Discord
             </a>
           </div>

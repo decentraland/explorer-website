@@ -20,7 +20,7 @@ export const Navbar = (props: NavbarProps) => (
           <div className="nav-text">
             <span>Need support?</span>
           </div>
-          <a className="nav-discord" href="https://discord.gg/k5ydeZp" target="about:blank">
+          <a className="nav-discord" href="https://decentraland.org/discord" target="about:blank">
             <Discord />
             <div>Join our discord</div>
           </a>
