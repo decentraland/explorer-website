@@ -1,11 +1,9 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { ProviderType } from 'decentraland-connect'
 import { isCucumberProvider, isDapperProvider } from 'decentraland-dapps/dist/lib/eth'
-import { Modal } from '../../common/Modal'
-import { WalletButton, WalletButtonLogo } from './WalletButton'
-import { Spinner } from '../../common/Spinner'
-import './WalletSelector.css'
+import { LoginModal, LoginModalOptionType } from 'decentraland-ui/dist/components/LoginModal/LoginModal'
 import { isElectron } from '../../../integration/desktop'
+import './WalletSelector.css'
 
 export interface WalletSelectorProps {
   open: boolean
@@ -15,95 +13,42 @@ export interface WalletSelectorProps {
   onCancel: () => void
 }
 
-export const WalletSelector: React.FC<WalletSelectorProps> = ({
+export const WalletSelector: React.FC<WalletSelectorProps> = React.memo(({
   open,
   loading,
   availableProviders,
   onLogin,
   onCancel
 }) => {
-  const hasWallet = (availableProviders || []).includes(ProviderType.INJECTED)
-  function handleLogin(provider: ProviderType | null) {
-    if (provider === ProviderType.INJECTED && !hasWallet) {
-      return
-    }
-
-    if (onLogin) {
-      onLogin(provider)
-    }
-  }
-
-  function handleGuestLogin(e: React.MouseEvent<any>) {
-    e.preventDefault()
-    handleLogin(null)
-  }
-
-  const wallets = useMemo(() => {
-    const result: WalletButtonLogo[] = []
-    if (hasWallet) {
-      if (isCucumberProvider()) {
-        result.push(WalletButtonLogo.SAMSUNG_BLOCKCHAIN_WALLET)
-      } else if (isDapperProvider()) {
-        result.push(WalletButtonLogo.DAPPER)
+  const browserWallet = useMemo<LoginModalOptionType | null>(() => {
+    if (!isElectron() && availableProviders.length > 0) {
+      const hasWallet = availableProviders.includes(ProviderType.INJECTED)
+      if (hasWallet) {
+        return isCucumberProvider() ? LoginModalOptionType.SAMSUNG :
+          isDapperProvider() ? LoginModalOptionType.DAPPER :
+          LoginModalOptionType.METAMASK
       }
     }
 
-    if (result.length === 0 && !isElectron()) {
-      result.push(WalletButtonLogo.METAMASK)
-    }
+    return null
+  }, [ availableProviders ])
 
-    if ((availableProviders || []).includes(ProviderType.FORTMATIC) && !isElectron()) {
-      result.push(WalletButtonLogo.FORTMATIC)
-    }
+  const handleLoginInjected = useCallback(() => onLogin(ProviderType.INJECTED), [ onLogin ])
+  const handleLoginFortmatic = useCallback(() => onLogin(ProviderType.FORTMATIC), [ onLogin ])
+  const handleLoginWalletConnect = useCallback(() => onLogin(ProviderType.WALLET_CONNECT), [ onLogin ])
 
-    if ((availableProviders || []).includes(ProviderType.WALLET_CONNECT)) {
-      result.push(WalletButtonLogo.WALLET_CONNECT)
-    }
 
-    return result
-  }, [availableProviders, hasWallet])
-
-  function isActive(wallet: WalletButtonLogo) {
-    switch (wallet) {
-      case WalletButtonLogo.METAMASK:
-      case WalletButtonLogo.DAPPER:
-      case WalletButtonLogo.SAMSUNG_BLOCKCHAIN_WALLET:
-        return hasWallet
-      default:
-        return true
-    }
-  }
-
-  return open ? (
-    <Modal className="walletSelectorPopup" onClose={onCancel} withFlatBackground withOverlay>
-      <div className="walletSelector">
-        <h2 className="walletSelectorTitle">Sign In or Create an Account</h2>
-        {loading && (
-          <div className="walletButtonContainer">
-            <Spinner />
-          </div>
-        )}
-        {!loading && (
-          <div className="walletButtonContainer">
-            {wallets.map((wallet) => (
-              <WalletButton key={wallet} type={wallet} active={isActive(wallet)} onClick={handleLogin} />
-            ))}
-          </div>
-        )}
-        <p className="supportedWallets">Trezor and smart contract wallets like Dapper, Argent or Gnosis safe, do not work with Polygon. Read more about the Trezor support status
+  return <LoginModal open={open} loading={loading} onClose={onCancel}>
+      {browserWallet && <LoginModal.Option type={browserWallet} onClick={handleLoginInjected} />}
+      <LoginModal.Option type={LoginModalOptionType.FORTMATIC} onClick={handleLoginFortmatic} />
+      <LoginModal.Option type={LoginModalOptionType.WALLET_CONNECT} onClick={handleLoginWalletConnect}  />
+      <small className="message">Trezor and smart contract wallets like Dapper, Argent or Gnosis safe, do not work with Polygon. Read more about the Trezor support status
         <a
           href="https://github.com/trezor/trezor-firmware/pull/1568"
           target="_blank"
           rel="noopener noreferrer">
-          here
+          {' here'}
         </a>
-      </p>
-      </div>
-      {!loading && (
-        <a className="guestSelector" href="#guest" onClick={handleGuestLogin}>
-          Play as Guest
-        </a>
-      )}
-    </Modal>
-  ) : null
-}
+      </small>
+    </LoginModal>
+})

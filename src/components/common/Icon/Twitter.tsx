@@ -1,6 +1,6 @@
 import React from 'react'
 
-export function Twitter(props: React.SVGAttributes<SVGElement>) {
+export const Twitter = React.memo(function (props: React.SVGAttributes<SVGElement>) {
   return (
     <svg {...props} width="22" height="22" viewBox="0 0 22 22">
       <path
@@ -10,4 +10,4 @@ export function Twitter(props: React.SVGAttributes<SVGElement>) {
       />
     </svg>
   )
-}
+})

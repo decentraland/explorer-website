@@ -7,3 +7,47 @@
   font-family: sfsemibold;
   src: url('../fonts/SF-UI-Text-Regular.otf');
 }
+
+#root {
+  position: absolute;
+  width: 100%;
+  min-height: 100vh;
+  top: 0;
+  left: 0;
+  overflow: auto;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+#root::-webkit-scrollbar {
+  display: none;
+}
+
+.dcl.navbar.fullscreen {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.dcl.navbar.fullscreen .ui.container {
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.dcl.navbar.fullscreen .ui.secondary.stackable.menu .item {
+  color: white;
+  opacity: .7;
+  font-weight: 400;
+}
+
+.dcl.navbar.fullscreen .ui.secondary.stackable.menu .item:hover {
+  opacity: 1;
+}
+
+.WebsiteApp {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}

@@ -9,6 +9,7 @@ import {
 import { BannerType } from './redux'
 
 export const KERNEL_AUTHENTICATE = '[Authenticate]'
+export const KERNEL_LOGOUT_REQUEST = '[Logout]'
 export const SET_KERNEL_ACCOUNT_STATE = 'Set kernel account state'
 export const SET_KERNEL_ERROR = 'Set kernel error'
 export const SET_KERNEL_LOADED = 'Set kernel loaded'
@@ -34,3 +35,5 @@ export const setDownloadNewVersion = () => action(SET_DOWNLOAD_NEW_VERSION, { })
 
 export const authenticate = (provider: IEthereumProvider, isGuest: boolean) =>
   action(KERNEL_AUTHENTICATE, { provider, isGuest })
+
+export const logout = (options: Partial<{reload: boolean }> = {}) => action(KERNEL_LOGOUT_REQUEST, options)

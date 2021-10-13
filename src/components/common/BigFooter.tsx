@@ -1,9 +1,9 @@
 import React from 'react'
 import { Container } from './Container'
-import { Reddit } from './Icon.tsx/Reddit'
-import { Github } from './Icon.tsx/Github'
-import { Twitter } from './Icon.tsx/Twitter'
-import { Discord } from './Icon.tsx/Discord'
+import { Reddit } from './Icon/Reddit'
+import { Github } from './Icon/Github'
+import { Twitter } from './Icon/Twitter'
+import { Discord } from './Icon/Discord'
 
 import './BigFooter.css'
 import { injectVersions } from '../../utils/rolloutVersions'

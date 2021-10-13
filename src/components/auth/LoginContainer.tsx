@@ -1,18 +1,15 @@
-import React from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
+import { LoginState } from '@dcl/kernel-interface'
 import { connect } from 'react-redux'
 import { connection } from 'decentraland-connect/dist/index'
 import { ProviderType } from 'decentraland-connect/dist/types'
-import { Navbar } from '../common/Navbar'
-import { EthLogin } from './EthLogin'
 import { Container } from '../common/Container'
-import { BeginnersGuide } from './BeginnersGuide'
-import { BigFooter } from '../common/BigFooter'
-import './LoginContainer.css'
 import { StoreType } from '../../state/redux'
-import { LoginState } from '@dcl/kernel-interface'
 import { authenticate } from '../../kernel-loader'
-import BannerContainer from '../banners/BannerContainer'
-import DownloadProgress from '../desktop/DownloadProgress'
+import { WalletSelector } from './wallet/WalletSelector'
+import { LoginWalletItem, LoginGuestItem, LoginWalletConnectItem } from '../common/LoginItemContainer'
+import logo from '../../images/logo.png'
+import './LoginContainer.css'
 import { isElectron } from '../../integration/desktop'
 
 const mapStateToProps = (state: StoreType): LoginContainerProps => {
@@ -40,40 +37,52 @@ export interface LoginContainerProps {
   rendererReady: boolean
 }
 
-export interface LoginContainerDispathc {
+export interface LoginContainerDispatch {
   onLogin: (provider: ProviderType | null) => void
 }
 
-export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispathc> = (props) => {
-  const loading =
-    props.stage === LoginState.SIGNATURE_PENDING ||
+export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispatch> = (props) => {
+  const [ showWalletSelector, setShowWalletSelector ] = useState(false)
+  const onSelect = useCallback(() => isElectron() ? props.onLogin(ProviderType.WALLET_CONNECT) : setShowWalletSelector(true), [ showWalletSelector ])
+  const onCancel = useCallback(() => setShowWalletSelector(false), [ showWalletSelector ])
+  const onGuest = useCallback(() => props.onLogin && props.onLogin(null), [ props.onLogin ])
+  const loading = useMemo(() => {
+    return  props.stage === LoginState.SIGNATURE_PENDING ||
     props.stage === LoginState.WAITING_PROFILE ||
     props.stage === LoginState.WAITING_RENDERER ||
     props.stage === LoginState.LOADING ||
     !props.kernelReady
+  }, [ props.stage, props.kernelReady ])
 
   if (props.stage === LoginState.COMPLETED) {
     return <React.Fragment />
   }
 
   return (
-    <React.Fragment>
-      <div className={'LoginContainer  FullPage'}>
-        <BannerContainer />
-        {/* Nabvar */}
-        <Navbar full={true} />
-        <main>
-          <Container className="eth-login-popup">
-            <EthLogin availableProviders={props.availableProviders} onLogin={props.onLogin} signing={loading} />
-            {isElectron() && <DownloadProgress/> }
-            {/* {props.stage === LoginState.CONNECT_ADVICE && <EthConnectAdvice onLogin={props.onLogin} />} */}
-            {/* {props.stage === LoginState.SIGN_ADVICE && <EthSignAdvice />} */}
-          </Container>
-        </main>
-        {!isElectron() && <BeginnersGuide /> }
-        {!isElectron() && <BigFooter /> }
-      </div>
-    </React.Fragment>
+    <main className="LoginContainer">
+      <Container>
+        {/* <EthLogin availableProviders={props.availableProviders} onLogin={props.onLogin} signing={loading} /> */}
+        {/* {isElectron() && <DownloadProgress/> } */}
+        {/* {props.stage === LoginState.CONNECT_ADVICE && <EthConnectAdvice onLogin={props.onLogin} />} */}
+        {/* {props.stage === LoginState.SIGN_ADVICE && <EthSignAdvice />} */}
+        <div className="LogoContainer">
+          <img src={logo} height="40" width="212" />
+          <p>Sign In or Create an Account</p>
+        </div>
+        <div>
+          <LoginWalletConnectItem loading={loading} onClick={onSelect} />
+          <LoginGuestItem loading={loading} onClick={onGuest} />
+        </div>
+      </Container>
+
+      <WalletSelector
+        open={showWalletSelector}
+        loading={loading}
+        onLogin={props.onLogin}
+        availableProviders={props.availableProviders}
+        onCancel={onCancel}
+      />
+    </main>
   )
 }
 export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer)

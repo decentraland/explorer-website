@@ -1,7 +1,7 @@
 import React from 'react'
 import { Logo } from './Logo'
 import { Isologotipo } from './Isologotipo'
-import { Discord } from './Icon.tsx/Discord'
+import { Discord } from './Icon/Discord'
 import './Navbar.css'
 
 export type NavbarProps = {

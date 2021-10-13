@@ -29,8 +29,13 @@ h2.walletSelectorTitle {
   min-height: 170px;
 }
 
+.walletButtonContainer .loader {
+  margin-top: 40px;
+}
+
 .supportedWallets {
   margin-top: 20px;
+  margin-bottom: 62px;
   max-width: 520px;
   text-align: center;
 }
@@ -41,7 +46,7 @@ h2.walletSelectorTitle {
 
 a.guestSelector {
   cursor: pointer;
-  margin-top: 62px;
+  margin-top: 0;
   background-color: rgba(236, 236, 236, 1);
   color: black;
   text-decoration: underline;

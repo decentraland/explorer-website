@@ -1,6 +1,6 @@
 import React from 'react'
 
-export function Github(props: React.SVGAttributes<SVGElement>) {
+export const Github = React.memo(function (props: React.SVGAttributes<SVGElement>) {
   return (
     <svg {...props} width="22" height="22" viewBox="0 0 22 22">
       <path
@@ -10,4 +10,4 @@ export function Github(props: React.SVGAttributes<SVGElement>) {
       />
     </svg>
   )
-}
+})
