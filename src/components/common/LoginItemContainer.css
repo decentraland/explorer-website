@@ -113,7 +113,8 @@
   transform: translate(30px, 35px);
 }
 
-.LoginItemContainer .LoginItemContainer__Content .ui.button {
+.LoginItemContainer .LoginItemContainer__Content .ui.button,
+.LoginItemContainer .LoginItemContainer__Content .ui.button.loading.loading.loading.loading.loading.loading {
   position: absolute;
   bottom: 30px;
   opacity: 0;
@@ -128,7 +129,6 @@
 }
 
 .LoginItemContainer.hover .LoginItemContainer__Content .ui.button,
-.LoginItemContainer:hover .LoginItemContainer__Content .ui.button {
+.LoginItemContainer:hover .LoginItemContainer__Content .ui.button.loading.loading.loading.loading.loading.loading {
   opacity: 1;
-
 }
