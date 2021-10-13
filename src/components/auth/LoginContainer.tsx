@@ -43,7 +43,7 @@ export interface LoginContainerDispatch {
 
 export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispatch> = (props) => {
   const [ showWalletSelector, setShowWalletSelector ] = useState(false)
-  const onSelect = useCallback(() => isElectron() ? props.onLogin(ProviderType.WALLET_CONNECT) : setShowWalletSelector(true), [ showWalletSelector ])
+  const onSelect = useCallback(() => isElectron() ? props.onLogin && props.onLogin(ProviderType.WALLET_CONNECT) : setShowWalletSelector(true), [ props.onLogin, showWalletSelector ])
   const onCancel = useCallback(() => setShowWalletSelector(false), [ showWalletSelector ])
   const onGuest = useCallback(() => props.onLogin && props.onLogin(null), [ props.onLogin ])
   const loading = useMemo(() => {
