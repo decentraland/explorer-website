@@ -7,7 +7,7 @@ import { Container } from '../common/Container'
 import { StoreType } from '../../state/redux'
 import { authenticate } from '../../kernel-loader'
 import { WalletSelector } from './wallet/WalletSelector'
-import { LoginWalletItem, LoginGuestItem, LoginWalletConnectItem } from '../common/LoginItemContainer'
+import { LoginGuestItem, LoginWalletItem } from '../common/LoginItemContainer'
 import logo from '../../images/logo.png'
 import './LoginContainer.css'
 import { isElectron } from '../../integration/desktop'
@@ -70,7 +70,7 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
           <p>Sign In or Create an Account</p>
         </div>
         <div>
-          <LoginWalletConnectItem loading={loading} onClick={onSelect} />
+          <LoginWalletItem loading={loading} onClick={onSelect} />
           <LoginGuestItem loading={loading} onClick={onGuest} />
         </div>
       </Container>
