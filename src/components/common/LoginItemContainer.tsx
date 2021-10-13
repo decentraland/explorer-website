@@ -33,7 +33,7 @@ export const LoginItemContainer = React.memo(function ({ children, className, on
 
 export const LoginWalletConnectItem = React.memo(function (props: LoginItemContainerProps) {
   return <LoginItemContainer {...props} className={`LoginWalletConnectItem ${props.className}`}>
-      <img src={wallets} width="318" height="318" />
+      <img alt="wallet connect" src={wallets} width="318" height="318" />
       <h2>Play with your wallet</h2>
       <p>Connect your account to fully enjoy Decentraland!</p>
       <Button primary size="huge" loading={props.loading} disabled={props.loading}>Continue with wallet</Button>
@@ -42,7 +42,7 @@ export const LoginWalletConnectItem = React.memo(function (props: LoginItemConta
 
 export const LoginWalletItem = React.memo(function (props: LoginItemContainerProps) {
   return <LoginItemContainer {...props} className={`LoginWalletItem ${props.className}`}>
-      <img src={wallets} width="318" height="318" />
+      <img alt="wallets" src={wallets} width="318" height="318" />
       <h2>Play with your wallet</h2>
       <p>Connect your account to fully enjoy Decentraland!</p>
       <Button primary size="huge" loading={props.loading} disabled={props.loading}>Continue with wallet</Button>
@@ -51,7 +51,7 @@ export const LoginWalletItem = React.memo(function (props: LoginItemContainerPro
 
 export const LoginGuestItem = React.memo(function (props: LoginItemContainerProps) {
   return <LoginItemContainer {...props} className={`LoginGuestItem ${props.className}`}>
-    <img src={guest} width="318" height="318" />
+    <img alt="guest" src={guest} width="318" height="318" />
     <h2>Play as guest</h2>
     <p>Your information will be locally stored and your experience limited.</p>
     <Button primary size="huge" loading={props.loading} disabled={props.loading}>Continue as guest</Button>
