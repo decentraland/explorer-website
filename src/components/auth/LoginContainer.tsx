@@ -41,33 +41,33 @@ export interface LoginContainerDispatch {
   onLogin: (provider: ProviderType | null) => void
 }
 
-export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispatch> = (props) => {
+export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispatch> = ({ onLogin, stage, kernelReady, availableProviders }) => {
   const [ showWalletSelector, setShowWalletSelector ] = useState(false)
   const onSelect = useCallback(
-    () => isElectron() ? props.onLogin && props.onLogin(ProviderType.WALLET_CONNECT) : setShowWalletSelector(true),
-    [ props.onLogin, showWalletSelector ]
+    () => isElectron() ? onLogin && onLogin(ProviderType.WALLET_CONNECT) : setShowWalletSelector(true),
+    [ onLogin, showWalletSelector ]
   )
   const onCancel = useCallback(() => setShowWalletSelector(false), [ showWalletSelector ])
-  const onGuest = useCallback(() => props.onLogin && props.onLogin(null), [ props.onLogin ])
+  const onGuest = useCallback(() => onLogin && onLogin(null), [ onLogin ])
   const loading = useMemo(() => {
-    return  props.stage === LoginState.SIGNATURE_PENDING ||
-    props.stage === LoginState.WAITING_PROFILE ||
-    props.stage === LoginState.WAITING_RENDERER ||
-    props.stage === LoginState.LOADING ||
-    !props.kernelReady
-  }, [ props.stage, props.kernelReady ])
+    return  stage === LoginState.SIGNATURE_PENDING ||
+    stage === LoginState.WAITING_PROFILE ||
+    stage === LoginState.WAITING_RENDERER ||
+    stage === LoginState.LOADING ||
+    !kernelReady
+  }, [ stage, kernelReady ])
 
-  if (props.stage === LoginState.COMPLETED) {
+  if (stage === LoginState.COMPLETED) {
     return <React.Fragment />
   }
 
   return (
     <main className="LoginContainer">
       <Container>
-        {/* <EthLogin availableProviders={props.availableProviders} onLogin={props.onLogin} signing={loading} /> */}
+        {/* <EthLogin availableProviders={props.availableProviders} onLogin={onLogin} signing={loading} /> */}
         {/* {isElectron() && <DownloadProgress/> } */}
-        {/* {props.stage === LoginState.CONNECT_ADVICE && <EthConnectAdvice onLogin={props.onLogin} />} */}
-        {/* {props.stage === LoginState.SIGN_ADVICE && <EthSignAdvice />} */}
+        {/* {stage === LoginState.CONNECT_ADVICE && <EthConnectAdvice onLogin={onLogin} />} */}
+        {/* {stage === LoginState.SIGN_ADVICE && <EthSignAdvice />} */}
         <div className="LogoContainer">
           <img src={logo} height="40" width="212" />
           <p>Sign In or Create an Account</p>
@@ -81,8 +81,8 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
       <WalletSelector
         open={showWalletSelector}
         loading={loading}
-        onLogin={props.onLogin}
-        availableProviders={props.availableProviders}
+        onLogin={onLogin}
+        availableProviders={availableProviders}
         onCancel={onCancel}
       />
     </main>
