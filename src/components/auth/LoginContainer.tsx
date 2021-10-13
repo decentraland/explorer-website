@@ -45,9 +45,9 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
   const [ showWalletSelector, setShowWalletSelector ] = useState(false)
   const onSelect = useCallback(
     () => isElectron() ? onLogin && onLogin(ProviderType.WALLET_CONNECT) : setShowWalletSelector(true),
-    [ onLogin, showWalletSelector ]
+    [ onLogin ]
   )
-  const onCancel = useCallback(() => setShowWalletSelector(false), [ showWalletSelector ])
+  const onCancel = useCallback(() => setShowWalletSelector(false), [])
   const onGuest = useCallback(() => onLogin && onLogin(null), [ onLogin ])
   const loading = useMemo(() => {
     return  stage === LoginState.SIGNATURE_PENDING ||
@@ -63,13 +63,13 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
 
   return (
     <main className="LoginContainer">
-      <Container>
+    <Container>
         {/* <EthLogin availableProviders={props.availableProviders} onLogin={onLogin} signing={loading} /> */}
         {/* {isElectron() && <DownloadProgress/> } */}
         {/* {stage === LoginState.CONNECT_ADVICE && <EthConnectAdvice onLogin={onLogin} />} */}
         {/* {stage === LoginState.SIGN_ADVICE && <EthSignAdvice />} */}
         <div className="LogoContainer">
-          <img src={logo} height="40" width="212" />
+          <img alt="decentraland" src={logo} height="40" width="212" />
           <p>Sign In or Create an Account</p>
         </div>
         <div>
