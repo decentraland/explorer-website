@@ -48,6 +48,11 @@
   opacity: 1;
 }
 
+.dcl.navbar.fullscreen .ui.secondary.stackable.menu .item.active {
+  font-weight: bold;
+  opacity: 1;
+}
+
 .WebsiteApp {
   position: absolute;
   top: 0;

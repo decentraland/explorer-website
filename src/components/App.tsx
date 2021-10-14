@@ -4,7 +4,6 @@ import 'balloon-css/balloon.min.css'
 import 'decentraland-ui/dist/themes/base-theme.css'
 import 'decentraland-ui/dist/themes/alternative/light-theme.css'
 import './App.css'
-import { Navbar } from'decentraland-ui/dist/components/Navbar/Navbar'
 import { connect } from 'react-redux'
 import ErrorContainer from './errors/ErrorContainer'
 import LoginContainer from './auth/LoginContainer'
@@ -14,8 +13,8 @@ import { isElectron } from '../integration/desktop'
 import { BeginnersGuide } from './auth/BeginnersGuide'
 import { BigFooter } from './common/Layout/BigFooter'
 import BannerContainer from './banners/BannerContainer'
-import { JoinDiscord } from './common/Button/JoinDiscord'
 import { LoadingRender } from './common/Loading/LoadingRender'
+import { Navbar } from './common/Layout/Navbar'
 
 function mapStateToProps(state: StoreType): AppProps {
   return {
@@ -42,9 +41,9 @@ const App: React.FC<AppProps> = (props) => {
 
   return (
     <div className="WebsiteApp">
-      {props.sound && <Audio track="/tone4.mp3" play />}
+      {props.sound && <Audio track={`${process.env.PUBLIC_URL}/tone4.mp3`} play />}
       <BannerContainer />
-      <Navbar isFullscreen  rightMenu={<JoinDiscord />}/>
+      <Navbar />
       <LoginContainer />
       {!isElectron() && <BeginnersGuide /> }
       {!isElectron() && <BigFooter /> }
