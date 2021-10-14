@@ -39,7 +39,13 @@ export function sessionReducer(state: SessionState | undefined, action: AnyActio
 
   if (action.type === SET_KERNEL_ACCOUNT_STATE) {
     const kernelState = action.payload as KernelAccountState
-    const ready = state.ready || kernelState.loginStatus === LoginState.SIGN_UP
+    const ready = (
+      state.ready ||
+      kernelState.loginStatus === LoginState.SIGN_UP ||
+      kernelState.loginStatus === LoginState.WAITING_PROFILE ||
+      kernelState.loginStatus === LoginState.COMPLETED
+    )
+
     return { ...state, kernelState, ready }
   }
 

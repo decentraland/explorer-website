@@ -12,11 +12,14 @@
   position: absolute;
   width: 100%;
   min-height: 100vh;
+  min-width: 990px;
   top: 0;
   left: 0;
   overflow: auto;
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
+  opacity: 1;
+  transition: opacity ease .3s;
 }
 
 #root::-webkit-scrollbar {

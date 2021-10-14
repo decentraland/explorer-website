@@ -8,7 +8,7 @@ main.LoginContainer {
   align-items: center;
   height: 100vh;
   min-height: 790px;
-  background-size: 100%;
+  background-size: cover;
   background-color: transparent;
   background-position: bottom center;
   background-repeat: no-repeat;
@@ -61,10 +61,4 @@ main.LoginContainer {
 
 .LoginContainer .LoginItemContainer {
   margin: 0 30px
-}
-
-@media only screen and (max-width: 991px) {
-  main.LoginContainer {
-    background-size: cover;
-  }
 }

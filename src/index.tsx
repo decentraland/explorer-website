@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { configureRollbar, configureSegment } from './integration/analytics'
 import { store } from './state/redux'
-import { initializeKernel } from './integration/kernel'
+import { initializeKernel, initializeRender } from './integration/kernel'
 import { initializeBrowserRecommendation } from './integration/browser'
 import App from './components/App'
 import { initializeDesktopApp } from './integration/desktop'
@@ -22,5 +22,8 @@ ReactDOM.render(
     initializeKernel()
     initializeBrowserRecommendation()
     initializeDesktopApp()
+    store.subscribe(() => {
+      initializeRender(store.getState())
+    })
   }
 )
