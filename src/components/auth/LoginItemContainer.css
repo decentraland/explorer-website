@@ -114,10 +114,10 @@
 }
 
 .LoginItemContainer .LoginItemContainer__Content .ui.button,
-.LoginItemContainer .LoginItemContainer__Content .ui.button.loading.loading.loading.loading.loading.loading {
-  position: absolute;
+.LoginItemContainer .LoginItemContainer__Content .ui.button {
+  position: absolute !important;
+  opacity: 0 !important;
   bottom: 30px;
-  opacity: 0;
   transition: opacity ease .3s;
   width: 318px;
   box-sizing: border-box;
@@ -129,6 +129,6 @@
 }
 
 .LoginItemContainer.hover .LoginItemContainer__Content .ui.button,
-.LoginItemContainer:hover .LoginItemContainer__Content .ui.button.loading.loading.loading.loading.loading.loading {
-  opacity: 1;
+.LoginItemContainer:hover .LoginItemContainer__Content .ui.button {
+  opacity: 1 !important;
 }

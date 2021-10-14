@@ -1,6 +1,6 @@
 import React from 'react'
-import { Accordion } from '../common/Accordion'
-import { Container, Content } from '../common/Container'
+import { Accordion } from '../common/Layout/Accordion'
+import { Container, Content } from '../common/Layout/Container'
 import './BeginnersGuide.css'
 
 export const BeginnersGuide: React.FC<React.HTMLAttributes<HTMLDivElement>> = (props) => (

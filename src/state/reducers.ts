@@ -16,11 +16,6 @@ import { v4 } from 'uuid'
 import { errorToString } from '../utils/errorToString'
 import { isElectron } from '../integration/desktop'
 
-const defaultSession: SessionState = {
-  sessionId: v4(),
-  kernelState: null
-}
-
 export function kernelReducer(state: KernelState | undefined, action: AnyAction): KernelState {
   if (action.type === SET_KERNEL_LOADED) {
     return { ...state, ready: true, kernel: action.payload as KernelResult }
@@ -33,11 +28,19 @@ export function kernelReducer(state: KernelState | undefined, action: AnyAction)
   )
 }
 
+const defaultSession: SessionState = {
+  sessionId: v4(),
+  kernelState: null,
+  ready: false
+}
+
 export function sessionReducer(state: SessionState | undefined, action: AnyAction): SessionState {
   if (!state) return defaultSession
 
   if (action.type === SET_KERNEL_ACCOUNT_STATE) {
-    return { ...state, kernelState: action.payload as KernelAccountState }
+    const kernelState = action.payload as KernelAccountState
+    const ready = state.ready || kernelState.loginStatus === LoginState.SIGN_UP
+    return { ...state, kernelState, ready }
   }
 
   return state
@@ -90,7 +93,8 @@ export function downloadReducer(state: DownloadState | undefined, action: AnyAct
   const defaultDownload: DownloadState = {
     progress: 0,
     currentState: DownloadCurrentState.NONE,
-    authCompleted: false
+    authCompleted: false,
+    ready: false,
   }
 
   if (!isElectron()) {
@@ -116,7 +120,7 @@ export function downloadReducer(state: DownloadState | undefined, action: AnyAct
   if (state.authCompleted && state.currentState === DownloadCurrentState.READY) {
     const { ipcRenderer } = window.require('electron')
     ipcRenderer.send('executeProcess')
-    state = { ...state, currentState: DownloadCurrentState.EXECUTED }
+    state = { ...state, currentState: DownloadCurrentState.EXECUTED, ready: true }
   }
 
   return state

@@ -12,12 +12,17 @@ import { Audio } from './common/Audio'
 import { StoreType } from '../state/redux'
 import { isElectron } from '../integration/desktop'
 import { BeginnersGuide } from './auth/BeginnersGuide'
-import { BigFooter } from './common/BigFooter'
+import { BigFooter } from './common/Layout/BigFooter'
 import BannerContainer from './banners/BannerContainer'
 import { JoinDiscord } from './common/Button/JoinDiscord'
+import { LoadingRender } from './common/Loading/LoadingRender'
 
 function mapStateToProps(state: StoreType): AppProps {
   return {
+    kernelReady: !!state.kernel?.ready,
+    rendererReady: !!state.renderer?.ready,
+    downloadReady: !!state.download?.ready,
+    sessionReady: !!state.session?.ready,
     rendererVisible: state.renderer.visible,
     error: !!state.error.error,
     sound: true // TODO: sound must be true after the first click
@@ -25,6 +30,10 @@ function mapStateToProps(state: StoreType): AppProps {
 }
 
 export interface AppProps {
+  kernelReady: boolean
+  rendererReady: boolean
+  downloadReady: boolean
+  sessionReady: boolean
   rendererVisible: boolean
   error: boolean
   sound: boolean
@@ -37,6 +46,15 @@ const App: React.FC<AppProps> = (props) => {
 
   if (props.rendererVisible) {
     return <React.Fragment />
+  }
+
+  if (
+    props.sessionReady &&
+    !props.kernelReady &&
+    !props.downloadReady &&
+    !props.rendererReady
+  ) {
+    return <LoadingRender />
   }
 
   return (

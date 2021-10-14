@@ -1,12 +1,12 @@
 import React from 'react'
 import { Container } from './Container'
-import { Reddit } from './Icon/Reddit'
-import { Github } from './Icon/Github'
-import { Twitter } from './Icon/Twitter'
-import { Discord } from './Icon/Discord'
+import { Reddit } from '../Icon/Reddit'
+import { Github } from '../Icon/Github'
+import { Twitter } from '../Icon/Twitter'
+import { Discord } from '../Icon/Discord'
 
 import './BigFooter.css'
-import { injectVersions } from '../../utils/rolloutVersions'
+import { injectVersions } from '../../../utils/rolloutVersions'
 
 const year = Math.max(new Date().getFullYear(), 2020)
 

@@ -2,8 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 import { ProviderType } from 'decentraland-connect'
 import { isCucumberProvider, isDapperProvider } from 'decentraland-dapps/dist/lib/eth'
 import { LoginModal, LoginModalOptionType } from 'decentraland-ui/dist/components/LoginModal/LoginModal'
-import { isElectron } from '../../../integration/desktop'
-import './WalletSelector.css'
+import { isElectron } from '../../integration/desktop'
 
 export interface WalletSelectorProps {
   open: boolean
@@ -13,7 +12,7 @@ export interface WalletSelectorProps {
   onCancel: () => void
 }
 
-export const WalletSelector: React.FC<WalletSelectorProps> = React.memo(({
+export const EthWalletSelector: React.FC<WalletSelectorProps> = React.memo(({
   open,
   loading,
   availableProviders,
