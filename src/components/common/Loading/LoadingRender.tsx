@@ -4,6 +4,6 @@ import './LoadingRender.css'
 export const LoadingRender = React.memo(function () {
   return <div className="LoadingRender">
     <img alt="loading" src="./images/loading.gif" width="150" height="150" />
-    <p>We are downloading the client. We will be ready in a second :P</p>
+    <p>We are downloading the latest version of Decentraland. You'll be up and running in a few seconds!</p>
   </div>
 })
