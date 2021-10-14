@@ -9,7 +9,7 @@ import {
   SET_KERNEL_ERROR,
   SET_KERNEL_LOADED,
   SET_RENDERER_LOADING,
-  SET_RENDERER_VISIBLE
+  SET_RENDERER_COMPLETE
 } from './actions'
 import { KernelState, SessionState, RendererState, ErrorState, BannerState, DownloadState, DownloadCurrentState } from './redux'
 import { v4 } from 'uuid'
@@ -53,7 +53,9 @@ export function sessionReducer(state: SessionState | undefined, action: AnyActio
 }
 
 export function rendererReducer(state: RendererState | undefined, action: AnyAction): RendererState {
-  if (state && action.type === SET_RENDERER_VISIBLE) {
+  if (state && action.type === SET_RENDERER_COMPLETE) {
+    return { ...state, complete: action.payload.complete }
+  } if (state && action.type === SET_RENDERER_COMPLETE) {
     return { ...state, visible: action.payload.visible }
   } else if (state && action.type === SET_RENDERER_LOADING) {
     return { ...state, loading: action.payload }
@@ -62,6 +64,7 @@ export function rendererReducer(state: RendererState | undefined, action: AnyAct
     state || {
       ready: false,
       version: 'latest',
+      complete: false,
       visible: false,
       loading: null
     }

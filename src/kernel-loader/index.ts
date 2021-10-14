@@ -6,7 +6,7 @@ import {
   setKernelError,
   setRendererLoading,
   setKernelLoaded,
-  setRendererVisible
+  setRendererComplete
 } from '../state/actions'
 import { ErrorType, store } from '../state/redux'
 import { ProviderType } from 'decentraland-connect'
@@ -272,7 +272,7 @@ async function initKernel() {
   })
 
   kernel.on('rendererVisible', (event) => {
-    store.dispatch(setRendererVisible(event.visible))
+    store.dispatch(setRendererComplete(event.visible))
 
     // TODO: move this into a saga for setRendererVisible
     // if the kernel and renderer decides to load, we cleanup the error window

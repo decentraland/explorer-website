@@ -19,6 +19,7 @@ import { Navbar } from './common/Layout/Navbar'
 function mapStateToProps(state: StoreType): AppProps {
   return {
     sessionReady: !!state.session?.ready,
+    rendererVisible: !!state.renderer?.visible,
     error: !!state.error.error,
     sound: true // TODO: sound must be true after the first click
   }
@@ -26,6 +27,7 @@ function mapStateToProps(state: StoreType): AppProps {
 
 export interface AppProps {
   sessionReady: boolean
+  rendererVisible: boolean
   error: boolean
   sound: boolean
 }
@@ -33,6 +35,10 @@ export interface AppProps {
 const App: React.FC<AppProps> = (props) => {
   if (props.error) {
     return <ErrorContainer />
+  }
+
+  if (props.rendererVisible) {
+    return <React.Fragment />
   }
 
   if (props.sessionReady) {

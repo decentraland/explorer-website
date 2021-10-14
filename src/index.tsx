@@ -22,8 +22,6 @@ ReactDOM.render(
     initializeKernel()
     initializeBrowserRecommendation()
     initializeDesktopApp()
-    store.subscribe(() => {
-      initializeRender(store.getState())
-    })
+    store.subscribe(() => initializeRender(store))
   }
 )
