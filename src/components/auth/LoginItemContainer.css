@@ -1,6 +1,6 @@
 .LoginItemContainer {
-  width: 410px;
-  height: 530px;
+  width: 368px;
+  height: 474px;
   position: relative;
   cursor: pointer;
   display: flex;
@@ -55,8 +55,8 @@
 .LoginItemContainer .LoginItemContainer__Content {
   background-color: rgba(236, 235, 237, 1);
   border-radius: 24px;
-  width: 380px;
-  height: 500px;
+  width: 340px;
+  height: 448px;
   position: absolute;
   box-sizing: border-box;
   padding: 30px;
@@ -67,7 +67,7 @@
   font-weight: 600;
   font-size: 26px;
   text-align: center;
-  transform: translate(-3px, 60px);
+  transform: translate(-3px, 50px);
   position: absolute;
   margin: 0 auto;
   top: 0;
@@ -90,36 +90,37 @@
   position: absolute;
   left: 0;
   top: 0;
-  margin: 0 60px;
-  transform: translate(0, 390px);
+  margin: 0 30px;
+  transform: translate(0, 360px);
   transition: transform ease .3s;
 }
 
 .LoginItemContainer.hover .LoginItemContainer__Content p,
 .LoginItemContainer:hover .LoginItemContainer__Content p {
-  transform: translate(0, 320px);
+  transform: translate(0, 290px);
 }
 
 .LoginItemContainer .LoginItemContainer__Content img {
   position: absolute;
   left: 0;
   top: 0;
-  transform: translate(30px, 80px);
+  transform: translate(11px, 60px);
   transition: transform ease .3s;
 }
 
 .LoginItemContainer.hover .LoginItemContainer__Content img,
 .LoginItemContainer:hover .LoginItemContainer__Content img {
-  transform: translate(30px, 35px);
+  transform: translate(11px, 25px);
 }
 
 .LoginItemContainer .LoginItemContainer__Content .ui.button,
 .LoginItemContainer .LoginItemContainer__Content .ui.button {
   position: absolute !important;
   opacity: 0 !important;
+  border-radius: 12px;
   bottom: 30px;
   transition: opacity ease .3s;
-  width: 318px;
+  width: 280px;
   box-sizing: border-box;
   font-weight: bold;
   font-size: 20px;

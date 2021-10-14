@@ -38,7 +38,14 @@ main.LoginContainer {
     'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 
-.LoginContainer .eth-container > div {
+.LoginContainer > .eth-container {display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: calc(100% - 128px);
+  margin: 64px auto;
+}
+
+.LoginContainer > .eth-container > div {
   display: flex;
   justify-content: center;
   align-items: center;
