@@ -65,7 +65,7 @@
 
 .LoginItemContainer .LoginItemContainer__Content h2 {
   font-weight: 600;
-  font-size: 26px;
+  font-size: 20px;
   text-align: center;
   transform: translate(-3px, 50px);
   position: absolute;
@@ -83,14 +83,14 @@
 
 .LoginItemContainer .LoginItemContainer__Content p {
   font-weight: 300;
-  font-size: 16px;
-  line-height: 19px;
+  font-size: 14px;
+  line-height: 17px;
   text-align: center;
   color: rgba(22, 21, 24, 1);
   position: absolute;
   left: 0;
   top: 0;
-  margin: 0 30px;
+  margin: 0 40px;
   transform: translate(0, 360px);
   transition: transform ease .3s;
 }
@@ -123,10 +123,10 @@
   width: 280px;
   box-sizing: border-box;
   font-weight: bold;
-  font-size: 20px;
-  line-height: 24px;
+  font-size: 18px;
+  line-height: 22px;
   text-transform: none;
-  height: 64px;
+  height: 56px;
 }
 
 .LoginItemContainer.hover .LoginItemContainer__Content .ui.button,

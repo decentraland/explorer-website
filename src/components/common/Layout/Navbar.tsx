@@ -11,7 +11,7 @@ export const Navbar = React.memo(function () {
         <Menu.Item href="https://decentraland.org">
           HOME
         </Menu.Item>
-        <Menu.Item active href="https://play.decentraland.org">
+        <Menu.Item active href="https://play.decentraland.org" onClick={(e) => e.preventDefault()}>
           PLAY
         </Menu.Item>
        <Menu.Item href="https://market.decentraland.org">
