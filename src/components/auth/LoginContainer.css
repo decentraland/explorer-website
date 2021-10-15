@@ -59,7 +59,6 @@ main.LoginContainer {
   font-size: 24px;
   line-height: 29px;
   color: white;
-  padding: 50px 0;
 }
 
 .LoginContainer .LogoContainer p {
@@ -89,8 +88,8 @@ main.LoginContainer {
     /* margin: 64px auto; */
   }
 
-  .LoginContainer > .eth-container > div {
-    margin-top: 152px;
-    margin-bottom: 96px;
+  .LoginContainer > .eth-container > div.LogoContainer {
+    margin-top: 14vh;
+    margin-bottom: 6vh;
   }
 }
