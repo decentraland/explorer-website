@@ -38,7 +38,8 @@ main.LoginContainer {
     'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 
-.LoginContainer > .eth-container {display: flex;
+.LoginContainer > .eth-container {
+  display: flex;
   flex-direction: column;
   justify-content: space-around;
   height: calc(100% - 128px);
@@ -72,4 +73,24 @@ main.LoginContainer {
 
 .LoginContainer .LoginItemContainer {
   margin: 0 30px
+}
+
+@media screen and (min-height: 900px) {
+  main.LoginContainer {
+    align-items: flex-start;
+  }
+
+  main.LoginContainer > .eth-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: 0 auto;
+    /* height: calc(100% - 128px); */
+    /* margin: 64px auto; */
+  }
+
+  .LoginContainer > .eth-container > div {
+    margin-top: 152px;
+    margin-bottom: 96px;
+  }
 }
