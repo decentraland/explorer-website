@@ -55,7 +55,7 @@ export function sessionReducer(state: SessionState | undefined, action: AnyActio
 export function rendererReducer(state: RendererState | undefined, action: AnyAction): RendererState {
   if (state && action.type === SET_RENDERER_COMPLETE) {
     return { ...state, complete: action.payload.complete }
-  } if (state && action.type === SET_RENDERER_COMPLETE) {
+  } if (state && action.type === SET_RENDERER_VISIBLE) {
     return { ...state, visible: action.payload.visible }
   } else if (state && action.type === SET_RENDERER_LOADING) {
     return { ...state, loading: action.payload }
