@@ -1,3 +1,4 @@
+import { StringifyOptions } from "querystring"
 import { track } from "../utils/tracking"
 
 export const EXPERIMENT_STORAGE_KEY = `decentraland_ab_experiments`
@@ -8,14 +9,14 @@ export type Experiment<V extends string = string> = {
 }
 
 export const experiments = {
-  newLanding: {
-    experimentId: 'landing-metaversefestival-2021-10',
-    variants: [
-      { criteria: .5, value: 'hidden_animated_buttons' } as const,
-      { criteria: 1, value: 'visible_buttons' } as const,
-    ]
-  }
-}
+  // newLanding: {
+  //   experimentId: 'landing-metaversefestival-2021-10',
+  //   variants: [
+  //     { criteria: .5, value: 'hidden_animated_buttons' } as const,
+  //     { criteria: 1, value: 'visible_buttons' } as const,
+  //   ]
+  // }
+} as Record<string, Experiment>
 
 let cache: Map<string, string> | null = null
 

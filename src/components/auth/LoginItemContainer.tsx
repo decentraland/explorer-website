@@ -2,7 +2,6 @@ import React, { useMemo } from 'react'
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import guest from '../../images/guest.jpg'
 import wallets from '../../images/wallets.jpg'
-import { experiments, getVariant } from '../../integration/experiments'
 import './LoginItemContainer.css'
 
 export type LoginItemContainerProps = {
@@ -13,17 +12,7 @@ export type LoginItemContainerProps = {
 }
 
 export const LoginItemContainer = React.memo(function ({ children, className, onClick }: LoginItemContainerProps) {
-  const isHover = useMemo(() => {
-    const value = getVariant(experiments.newLanding)
-    switch (value) {
-      case "visible_buttons":
-        return true
-      default:
-        return false
-    }
-  }, [])
-
-  return <div className={`LoginItemContainer ${isHover ? 'hover' : ''} ${className}`} onClick={onClick}>
+  return <div className={`LoginItemContainer ${className}`} onClick={onClick}>
     <div className="LoginItemContainer__BackgroundLayer" />
     <div className="LoginItemContainer__Content">
       {children}
