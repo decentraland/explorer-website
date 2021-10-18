@@ -10,9 +10,8 @@ export type KernelState = {
 
 export type RendererState = {
   ready: boolean
-  version: string
-  complete: boolean
   visible: boolean
+  version: string
   loading: KernelLoadingProgress | null
 }
 

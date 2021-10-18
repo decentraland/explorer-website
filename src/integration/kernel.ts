@@ -2,14 +2,22 @@ import { startKernel } from "../kernel-loader"
 import { callOnce } from "../utils/callOnce"
 import { StoreType } from "../state/redux"
 import { Store } from "redux"
-import { setRendererVisible } from "../state/actions"
+import { setKernelError, setRendererVisible } from "../state/actions"
+
+function fadeinElement(id: string)  {
+  const element = document.getElementById(id)
+  if (element) {
+    element.style.display = ''
+    element.style.opacity = '1'
+  }
+}
 
 function fadeoutElement(id: string, callback?: () => void) {
-  const initial = document.getElementById(id)
-  if (initial) {
-    initial.style.opacity = '0'
+  const element = document.getElementById(id)
+  if (element) {
+    element.style.opacity = '0'
     setTimeout(() => {
-      initial.style.display = 'none'
+      element.style.display = 'none'
       if (callback) {
         callback()
       }
@@ -22,18 +30,23 @@ export const initializeKernel = callOnce(() => {
   fadeoutElement('root-loading')
 })
 
+let RENDER_ERROR = false
 let RENDER_INITIALIZED = false
 export function initializeRender(store: Store<StoreType>) {
-  if (RENDER_INITIALIZED) {
-    return true
-  }
-
   const state = store.getState()
-  if (!!state?.renderer?.complete) {
+
+  if (!RENDER_INITIALIZED && !!state?.renderer?.ready) {
     RENDER_INITIALIZED = true
     fadeoutElement('root', () => {
       store.dispatch(setRendererVisible(true))
+
+      setTimeout(() => store.dispatch(setKernelError({ error: new Error('test error') })), 3000)
     })
+  }
+
+  if (!RENDER_ERROR && !!state.error.error) {
+    RENDER_ERROR = true
+    fadeinElement('root')
   }
 
   return false

@@ -13,10 +13,11 @@ export const KERNEL_LOGOUT_REQUEST = '[Logout]'
 export const SET_KERNEL_ACCOUNT_STATE = 'Set kernel account state'
 export const SET_KERNEL_ERROR = 'Set kernel error'
 export const SET_KERNEL_LOADED = 'Set kernel loaded'
-export const SET_RENDERER_LOADING = 'Set renderer loading'
-export const SET_RENDERER_COMPLETE = 'Set renderer complete'
-export const SET_RENDERER_VISIBLE = 'Set renderer visible'
 export const SET_BANNER = 'Set banenr'
+
+export const SET_RENDERER_LOADING = 'Set renderer loading'
+export const SET_RENDERER_READY = 'Set renderer ready'
+export const SET_RENDERER_VISIBLE = 'Set renderer visible'
 
 export const SET_DOWNLOAD_PROGRESS = '[DownloadProgress]'
 export const SET_DOWNLOAD_READY = '[DownloadReady]'
@@ -27,8 +28,8 @@ export const setKernelAccountState = (accountState: KernelAccountState) =>
 export const setKernelError = (error: KernelError | null) => action(SET_KERNEL_ERROR, error)
 export const setKernelLoaded = (kernel: KernelResult) => action(SET_KERNEL_LOADED, kernel)
 export const setRendererLoading = (progressEvent: KernelLoadingProgress) => action(SET_RENDERER_LOADING, progressEvent)
-export const setRendererComplete = (complete: boolean) => action(SET_RENDERER_COMPLETE, { complete })
-export const setRendererVisible = (visible: boolean) => action(SET_RENDERER_COMPLETE, { complete: visible })
+export const setRendererReady = (ready: boolean) => action(SET_RENDERER_READY, { ready })
+export const setRendererVisible = (visible: boolean) => action(SET_RENDERER_VISIBLE, { visible })
 export const setBanner = (banner: BannerType | null) => action(SET_BANNER, { banner })
 
 export const setDownloadProgress = (progress: number) => action(SET_DOWNLOAD_PROGRESS, { progress })
