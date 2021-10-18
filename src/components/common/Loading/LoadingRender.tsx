@@ -1,5 +1,4 @@
 import React from 'react'
-import loading from '../../../images/loading.gif'
 import './LoadingRender.css'
 
 export const LoadingRender = React.memo(function () {
