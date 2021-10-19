@@ -1,5 +1,4 @@
 import React from 'react'
-
 import './EthLogin.css'
 
 export const EthSignAdvice: React.FC = () => (

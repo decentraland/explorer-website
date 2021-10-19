@@ -37,7 +37,12 @@ export type TrackingEvents = {
   /** enable renderer */
   enable_renderer: {}
   /** Send kernel, website and renderer versions */
-  initialize_versions: Record<string, string>
+  initialize_versions: Record<string, string>,
+
+  ab_test: {
+    experimentId: string,
+    variant: string
+  }
 }
 
 export type SessionTraits = {

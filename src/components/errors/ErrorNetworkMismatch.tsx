@@ -6,7 +6,7 @@ import { NETWORK } from '../../integration/queryParamsConfig'
 
 export interface ErrorNetworkMismatchProps {
   details: string | null
-  onLogout: () => Promise<void>
+  onLogout: () => void
 }
 
 export const ErrorNetworkMismatch: React.FC<ErrorNetworkMismatchProps> = (props: ErrorNetworkMismatchProps) => {
@@ -35,7 +35,7 @@ export const ErrorNetworkMismatch: React.FC<ErrorNetworkMismatchProps> = (props:
               Reload
             </button>
             <br />
-            <button className="retry" onClick={() => props.onLogout().finally(() => window.location.reload())}>
+            <button className="retry" onClick={() => props.onLogout({ reload: true })}>
               Log out
             </button>
           </div>

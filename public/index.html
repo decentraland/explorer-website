@@ -4,7 +4,9 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1,minimal-ui" />
     <link rel="shortcut icon" type="image/x-icon" href="https://decentraland.org/images/icons/favicon-32x32.png" />
-    <link rel="preload" href="https://decentraland.org/images/background@blur.jpg" as="image" />
+    <link rel="preload" href="%PUBLIC_URL%/images/background-v2@blur.jpg" as="image" />
+    <link rel="preload" href="%PUBLIC_URL%/images/background-v2@2x.jpg" as="image" />
+    <link rel="preload" href="%PUBLIC_URL%/images/loading.gif" as="image" />
     <title>Decentraland</title>
     <style type="text/css">
       html,
@@ -37,12 +39,14 @@
         background: #090909 no-repeat 50% 5% !important;
         background-size: 170px 32px !important;
       }
+
       @media screen and (min-height: 500px) {
         body {
           background: #090909 no-repeat 50% 5% !important;
           background-size: 170px 32px !important;
         }
       }
+
       @media screen and (min-height: 800px) {
         #gameContainer.loaded,
         body {
@@ -88,17 +92,17 @@
       }
 
       #root-loading > div {
-        background-size: 100%;
-        background-position: top center;
+        background-size: cover;
+        background-position: bottom center;
         background-repeat: no-repeat;
-        background-color: #f1f1f1;
-        background-image: url(https://decentraland.org/images/background@blur.jpg);
+        background-color: #230B61;
+        background-image: url("%PUBLIC_URL%/images/background-v2@blur.jpg");
         position: absolute;
         top: 0;
         left: 0;
-        width: 100%;
-        height: auto;
-        min-height: 648px;
+        width: 100vw;
+        height: 100vh;
+        min-height: 790px;
       }
 
       @media only screen and (max-width: 991px) {

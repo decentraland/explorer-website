@@ -1,0 +1,30 @@
+.LoadingRender {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background-color: #000000;
+}
+
+.LoadingRender img {
+  display: block;
+  position: relative;
+  padding-bottom: 60px;
+  box-sizing: content-box;
+}
+
+.LoadingRender p {
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  left: 0;
+  bottom: 34px;
+  font-size: 15px;
+  line-height: 23px;
+  color: #716B7C;
+  font-weight: bold;
+}

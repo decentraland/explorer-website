@@ -7,3 +7,171 @@
   font-family: sfsemibold;
   src: url('../fonts/SF-UI-Text-Regular.otf');
 }
+
+#root {
+  position: absolute;
+  width: 100%;
+  min-height: 100vh;
+  min-width: 990px;
+  top: 0;
+  left: 0;
+  overflow: auto;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  display: block;
+}
+
+#root.hide {
+  display: none;
+}
+
+#root::-webkit-scrollbar {
+  display: none;
+}
+
+.dcl.navbar.fullscreen {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.dcl.navbar.fullscreen .ui.container {
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.dcl.navbar.fullscreen .ui.secondary.stackable.menu .item {
+  color: white;
+  opacity: .7;
+  font-weight: 400;
+}
+
+.dcl.navbar.fullscreen .ui.secondary.stackable.menu .item:hover {
+  opacity: 1;
+}
+
+.dcl.navbar.fullscreen .ui.secondary.stackable.menu .item.active {
+  font-weight: bold;
+  opacity: 1;
+}
+
+.ui.modal.dcl.login-modal {
+  background-color: #E5E5E5;
+  width: 630px;
+  border-radius: 24px;
+  border: 0;
+}
+
+.ui.modal.dcl.login-modal .dcl.modal-navigation-button.modal-navigation-close {
+  width: 36px;
+  height: 36px;
+  background-color: rgba(22,21,24,0.05);
+  border-radius: 36px;
+}
+
+.ui.modal.dcl.login-modal .dcl.modal-navigation-button.modal-navigation-close::before,
+.ui.modal.dcl.login-modal .dcl.modal-navigation-button.modal-navigation-close::after {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 0px;
+  border: 2px solid #161518;
+  background-color: #161518;
+  position: absolute;
+  left: 8px;
+  top: 16px;
+  border-radius: 2px;
+}
+
+.ui.modal.dcl.login-modal .dcl.modal-navigation-button.modal-navigation-close::before {
+  transform: rotate(-45deg);
+}
+
+.ui.modal.dcl.login-modal .dcl.modal-navigation-button.modal-navigation-close::after {
+  transform: rotate(45deg);
+}
+
+.ui.modal.dcl.login-modal .dcl.modal-navigation {
+  padding-top: 70px;
+  border-radius: 24px 24px 0 0;
+}
+
+.ui.modal.dcl.login-modal .dcl.modal-navigation-title {
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 31px;
+}
+
+.ui.modal.dcl.login-modal .content {
+  background-color: #E5E5E5;
+  width: 538px;
+  margin: 52px auto 56px;
+}
+
+.ui.modal.dcl.login-modal .content small.message {
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: 400;
+  color: #161518;
+  margin-top: 43px;
+}
+
+.ui.modal.dcl.login-modal .content small.message a {
+  text-decoration: underline;
+}
+
+.ui.modal.dcl.login-modal .content .dcl.option {
+  width: 412px;
+  box-shadow: 0 0 0;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.4);
+  padding: 16px;
+}
+
+.ui.modal.dcl.login-modal .content .dcl.option:hover {
+  box-shadow: 0 0 0;
+  background-color: white;
+}
+
+.ui.modal.dcl.login-modal .content .dcl.option .info .title {
+  color: #161518;
+  font-weight: 600;
+  font-size: 23px;
+  line-height: 28px;
+  font-weight: 500;
+}
+
+.ui.modal.dcl.login-modal .content .dcl.option .info .subtitle {
+  color: #A09BA8;
+  font-size: 19px;
+  line-height: 23px;
+  font-weight: 300;
+  margin-top: 0;
+  letter-spacing: 1px;
+}
+
+.ui.modal.dcl.login-modal .loader-background {
+  border-radius: 24px;
+  background-color: rgba(0,0,0,.85);
+}
+
+.ui.modal.dcl.login-modal .ui.big.loader {
+  width: 2.28571429rem;
+  height: 2.28571429rem;
+  font-size: 1em
+}
+
+.ui.modal.dcl.login-modal .ui.big.loader::after,
+.ui.modal.dcl.login-modal .ui.big.loader::before {
+  width: 2.28571429rem;
+  height: 2.28571429rem;
+  margin: 0 0 0 -1.14285714rem
+}
+
+.WebsiteApp {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}

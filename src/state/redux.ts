@@ -10,8 +10,8 @@ export type KernelState = {
 
 export type RendererState = {
   ready: boolean
-  version: string
   visible: boolean
+  version: string
   loading: KernelLoadingProgress | null
 }
 
@@ -20,6 +20,7 @@ export type SessionState = {
   // and it _never_ changes during the session
   sessionId: string
   kernelState: KernelAccountState | null
+  ready: boolean
 }
 
 export type ErrorState = {
@@ -58,9 +59,10 @@ export enum DownloadCurrentState {
 }
 
 export type DownloadState = {
-  currentState: DownloadCurrentState,
+  currentState: DownloadCurrentState
   progress: number
   authCompleted: boolean
+  ready: boolean
 }
 
 export type StoreType = {

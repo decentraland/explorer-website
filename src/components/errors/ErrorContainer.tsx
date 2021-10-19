@@ -18,7 +18,7 @@ const mapStateToProps = (state: StoreType): Pick<ErrorContainerProps, 'error'> =
   }
 }
 
-const mapDispatchToProps = (dispatch: (a: any) => void, state: StoreType): Pick<ErrorContainerProps, 'closeError'> => {
+const mapDispatchToProps = (dispatch: (a: any) => void, state: StoreType): Pick<ErrorContainerProps, 'closeError' | 'onLogout'> => {
   return {
     closeError: () => dispatch(setKernelError(null)),
     onLogout: () => disconnect()

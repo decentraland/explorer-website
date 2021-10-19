@@ -9,12 +9,15 @@ import {
 import { BannerType } from './redux'
 
 export const KERNEL_AUTHENTICATE = '[Authenticate]'
+export const KERNEL_LOGOUT_REQUEST = '[Logout]'
 export const SET_KERNEL_ACCOUNT_STATE = 'Set kernel account state'
 export const SET_KERNEL_ERROR = 'Set kernel error'
 export const SET_KERNEL_LOADED = 'Set kernel loaded'
-export const SET_RENDERER_LOADING = 'Set renderer loading'
-export const SET_RENDERER_VISIBLE = 'Set renderer visible'
 export const SET_BANNER = 'Set banenr'
+
+export const SET_RENDERER_LOADING = 'Set renderer loading'
+export const SET_RENDERER_READY = 'Set renderer ready'
+export const SET_RENDERER_VISIBLE = 'Set renderer visible'
 
 export const SET_DOWNLOAD_PROGRESS = '[DownloadProgress]'
 export const SET_DOWNLOAD_READY = '[DownloadReady]'
@@ -25,6 +28,7 @@ export const setKernelAccountState = (accountState: KernelAccountState) =>
 export const setKernelError = (error: KernelError | null) => action(SET_KERNEL_ERROR, error)
 export const setKernelLoaded = (kernel: KernelResult) => action(SET_KERNEL_LOADED, kernel)
 export const setRendererLoading = (progressEvent: KernelLoadingProgress) => action(SET_RENDERER_LOADING, progressEvent)
+export const setRendererReady = (ready: boolean) => action(SET_RENDERER_READY, { ready })
 export const setRendererVisible = (visible: boolean) => action(SET_RENDERER_VISIBLE, { visible })
 export const setBanner = (banner: BannerType | null) => action(SET_BANNER, { banner })
 
@@ -34,3 +38,5 @@ export const setDownloadNewVersion = () => action(SET_DOWNLOAD_NEW_VERSION, { })
 
 export const authenticate = (provider: IEthereumProvider, isGuest: boolean) =>
   action(KERNEL_AUTHENTICATE, { provider, isGuest })
+
+export const logout = (options: Partial<{reload: boolean }> = {}) => action(KERNEL_LOGOUT_REQUEST, options)

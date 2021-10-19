@@ -1,0 +1,135 @@
+.LoginItemContainer {
+  width: 368px;
+  height: 474px;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgba(22, 21, 24, 1);
+}
+
+.LoginItemContainer .LoginItemContainer__BackgroundLayer,
+.LoginItemContainer .LoginItemContainer__Content {
+  width: 100%;
+  height: 100%;
+  border-radius: 26px;
+}
+
+.LoginItemContainer .LoginItemContainer__BackgroundLayer {
+  position: absolute;
+  background: linear-gradient(116.34deg, #FFBC5B 0%, #FF2D55 50.52%, #C640CD 100%);
+  padding: 4px;
+  box-sizing: border-box;
+  box-shadow: 0 5px 5px rgba(0,0,0,.4);
+  transition: transform ease .3s, box-shadow ease .3s;
+  transform: scale(.92, .94);
+}
+
+.LoginItemContainer:hover .LoginItemContainer__BackgroundLayer {
+  transform: scale(1, 1);
+  box-shadow: 0 12px 20px rgba(0,0,0,.5);
+}
+
+.LoginItemContainer .LoginItemContainer__BackgroundLayer::before {
+  content: "";
+  display: block;
+  /* position: absolute; */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(236, 235, 237, 1);
+  border-radius: 24px;
+  border: 4px solid white;
+}
+
+/* .LoginItemContainer .LoginItemContainer__BackgroundLayer::after {
+  background-color: white;
+}
+
+.LoginItemContainer .LoginItemContainer__BackgroundLayer::before {
+  background-color: rgba(236, 235, 237, 1);
+} */
+
+.LoginItemContainer .LoginItemContainer__Content {
+  background-color: rgba(236, 235, 237, 1);
+  border-radius: 24px;
+  width: 340px;
+  height: 448px;
+  position: absolute;
+  box-sizing: border-box;
+  padding: 30px;
+  overflow: hidden;
+}
+
+.LoginItemContainer .LoginItemContainer__Content h2 {
+  font-weight: 600;
+  font-size: 20px;
+  text-align: center;
+  transform: translate(-3px, 50px);
+  position: absolute;
+  margin: 0 auto;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transition: transform ease .3s;
+}
+
+.LoginItemContainer.hover .LoginItemContainer__Content h2,
+.LoginItemContainer:hover .LoginItemContainer__Content h2 {
+  transform: translate(-3px, 40px);
+}
+
+.LoginItemContainer .LoginItemContainer__Content p {
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: rgba(22, 21, 24, 1);
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 0 40px;
+  transform: translate(0, 360px);
+  transition: transform ease .3s;
+}
+
+.LoginItemContainer.hover .LoginItemContainer__Content p,
+.LoginItemContainer:hover .LoginItemContainer__Content p {
+  transform: translate(0, 290px);
+}
+
+.LoginItemContainer .LoginItemContainer__Content img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(11px, 60px);
+  transition: transform ease .3s;
+}
+
+.LoginItemContainer.hover .LoginItemContainer__Content img,
+.LoginItemContainer:hover .LoginItemContainer__Content img {
+  transform: translate(11px, 25px);
+}
+
+.LoginItemContainer .LoginItemContainer__Content .ui.button,
+.LoginItemContainer .LoginItemContainer__Content .ui.button {
+  position: absolute !important;
+  opacity: 0 !important;
+  border-radius: 12px;
+  bottom: 30px;
+  transition: opacity ease .3s;
+  width: 280px;
+  box-sizing: border-box;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 22px;
+  text-transform: none;
+  height: 56px;
+}
+
+.LoginItemContainer.hover .LoginItemContainer__Content .ui.button,
+.LoginItemContainer:hover .LoginItemContainer__Content .ui.button {
+  opacity: 1 !important;
+}
