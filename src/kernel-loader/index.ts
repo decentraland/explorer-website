@@ -274,7 +274,7 @@ async function initKernel() {
   kernel.on('rendererVisible', (event) => {
     store.dispatch(setRendererReady(event.visible))
 
-    // TODO: move this into a saga for setRendererVisible
+    // TODO: move this into a saga for setRendererReady
     // if the kernel and renderer decides to load, we cleanup the error window
     if (event.visible) {
       track('enable_renderer', {})

@@ -18,8 +18,11 @@
   overflow: auto;
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
-  opacity: 1;
-  transition: opacity ease .3s;
+  display: block;
+}
+
+#root.hide {
+  display: none;
 }
 
 #root::-webkit-scrollbar {

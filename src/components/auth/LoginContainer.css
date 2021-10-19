@@ -84,8 +84,6 @@ main.LoginContainer {
     flex-direction: column;
     justify-content: flex-start;
     margin: 0 auto;
-    /* height: calc(100% - 128px); */
-    /* margin: 64px auto; */
   }
 
   .LoginContainer > .eth-container > div.LogoContainer {

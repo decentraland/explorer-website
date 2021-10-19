@@ -33,6 +33,7 @@ export interface AppProps {
 }
 
 const App: React.FC<AppProps> = (props) => {
+
   if (props.error) {
     return <ErrorContainer />
   }

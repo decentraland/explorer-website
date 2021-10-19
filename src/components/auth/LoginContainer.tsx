@@ -68,7 +68,6 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
     {/* {stage === LoginState.CONNECT_ADVICE && <EthConnectAdvice onLogin={onLogin} />} */}
     {/* {stage === LoginState.SIGN_ADVICE && <EthSignAdvice />} */}
     <Container>
-        {/* {isElectron() && <DownloadProgress/> } */}
         <div className="LogoContainer">
           <img alt="decentraland" src={logo} height="40" width="212" />
           <p>Sign In or Create an Account</p>

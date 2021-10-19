@@ -41,7 +41,6 @@ export function sessionReducer(state: SessionState | undefined, action: AnyActio
   if (action.type === SET_KERNEL_ACCOUNT_STATE) {
     const kernelState = action.payload as KernelAccountState
     const ready = (
-      state.ready ||
       kernelState.loginStatus === LoginState.SIGN_UP ||
       kernelState.loginStatus === LoginState.WAITING_PROFILE ||
       kernelState.loginStatus === LoginState.COMPLETED
@@ -54,7 +53,6 @@ export function sessionReducer(state: SessionState | undefined, action: AnyActio
 }
 
 export function rendererReducer(state: RendererState | undefined, action: AnyAction): RendererState {
-  console.log(action.type, action.payload)
   if (state && action.type === SET_RENDERER_READY) {
     return { ...state, ready: action.payload.ready }
   } if (state && action.type === SET_RENDERER_VISIBLE) {
