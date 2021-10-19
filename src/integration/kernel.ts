@@ -2,7 +2,7 @@ import { startKernel } from "../kernel-loader"
 import { callOnce } from "../utils/callOnce"
 import { StoreType } from "../state/redux"
 import { Store } from "redux"
-import { setKernelError, setRendererVisible } from "../state/actions"
+import { setRendererVisible } from "../state/actions"
 
 function fadeinElement(id: string)  {
   const element = document.getElementById(id)
