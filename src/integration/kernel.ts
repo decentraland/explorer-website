@@ -39,8 +39,6 @@ export function initializeRender(store: Store<StoreType>) {
     RENDER_INITIALIZED = true
     fadeoutElement('root', () => {
       store.dispatch(setRendererVisible(true))
-
-      setTimeout(() => store.dispatch(setKernelError({ error: new Error('test error') })), 3000)
     })
   }
 
