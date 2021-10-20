@@ -32,8 +32,3 @@ export function getFeatureVariant(state: StoreType, key: string, defaultValue: s
 
   return defaultValue
 }
-
-export function isMobile(state: StoreType) {
-  const width = state.browser?.width || defaultBrowserState.width
-  return width < 768
-}

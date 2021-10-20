@@ -156,14 +156,3 @@ export function featureFlagsReducer(state: FeatureFlagsState = defaultFeatureFla
 
   return state
 }
-
-export function browserReducer(state: BrowserState = defaultBrowserState, action: AnyAction): BrowserState {
-  if (action.type === SET_BROWSER_PROPS) {
-    return {
-      ...state,
-      ...action.payload
-    }
-  }
-
-  return state
-}

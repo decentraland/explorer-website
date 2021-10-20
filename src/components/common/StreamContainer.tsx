@@ -1,30 +1,40 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { StoreType } from '../../state/redux'
-import { FeatureFlags, getFeatureVariant, isMobile } from '../../state/selectors'
+import { FeatureFlags, getFeatureVariant } from '../../state/selectors'
 
 function mapStateToProps(state: StoreType): StreamContainerProps {
   return {
     src: getFeatureVariant(state, FeatureFlags.Stream),
-    isMobile: isMobile(state),
-    height: state.browser.height,
-    width: state.browser.width,
   }
 }
 
 export interface StreamContainerProps {
-  isMobile: boolean
   src?: string
-  height: number
-  width: number
 }
 
-const StreamContainer: React.FC<StreamContainerProps> = ({ isMobile, ...props}) => {
-  if (!isMobile || !props.src) {
+
+function windowSize() {
+  return {
+    height: window.innerHeight,
+    width: window.innerWidth,
+  }
+}
+
+const StreamContainer: React.FC<StreamContainerProps> = (props: StreamContainerProps) => {
+  const [ size, setSize ] = useState(() => ({ height: 0, width: 0 }))
+
+  useEffect(() => {
+    const resize = () => setSize(windowSize())
+    window.addEventListener('resize', resize)
+    return () => window.removeEventListener('resize', resize)
+  }, [])
+
+  if (!props.src || size.height === 0 || size.width === 0) {
     return null
   }
 
-  return <iframe title="Decentraland Stream" className="StreamContainer" {...props} allowFullScreen />
+  return <iframe title="Decentraland Stream" className="StreamContainer" {...props} width={size.width} height={size.height} allowFullScreen />
 }
 
 export default connect(mapStateToProps)(StreamContainer)

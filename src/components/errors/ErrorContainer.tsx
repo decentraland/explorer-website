@@ -11,9 +11,12 @@ import { ErrorNetworkMismatch } from './ErrorNetworkMismatch'
 import { ErrorNewLogin } from './ErrorNewLogin'
 import { ErrorNoMobile } from './ErrorNoMobile'
 import { ErrorNotSupported } from './ErrorNotSupported'
+import { FeatureFlags, getFeatureVariant } from '../../state/selectors'
+import StreamContainer from '../common/StreamContainer'
 
-const mapStateToProps = (state: StoreType): Pick<ErrorContainerProps, 'error'> => {
+const mapStateToProps = (state: StoreType): Pick<ErrorContainerProps, 'error' | 'stream'> => {
   return {
+    stream: getFeatureVariant(state, FeatureFlags.Stream),
     error: state.error.error || null
   }
 }
@@ -26,6 +29,7 @@ const mapDispatchToProps = (dispatch: (a: any) => void, state: StoreType): Pick<
 }
 
 export interface ErrorContainerProps {
+  stream?: string,
   error: ErrorState['error']
   onLogout(): void
   closeError(): void
@@ -38,7 +42,12 @@ export const ErrorContainer: React.FC<ErrorContainerProps> = (props) => {
   if (props.error.type === ErrorType.METAMASK_LOCKED)
     return <ErrorMetamaskLocked details={props.error.details} closeError={props.closeError} />
   if (props.error.type === ErrorType.NEW_LOGIN) return <ErrorNewLogin />
-  if (props.error.type === ErrorType.NOT_MOBILE) return <ErrorNoMobile />
+  if (props.error.type === ErrorType.NOT_MOBILE) {
+    if (!props.stream) {
+      return <StreamContainer />
+    }
+    return <ErrorNoMobile />
+  }
   if (props.error.type === ErrorType.NOT_SUPPORTED) return <ErrorNotSupported />
   if (props.error.type === ErrorType.NET_MISMATCH)
     return <ErrorNetworkMismatch details={props.error.details} onLogout={props.onLogout} />

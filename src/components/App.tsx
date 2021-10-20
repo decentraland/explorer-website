@@ -15,13 +15,9 @@ import { BigFooter } from './common/Layout/BigFooter'
 import BannerContainer from './banners/BannerContainer'
 import { LoadingRender } from './common/Loading/LoadingRender'
 import { Navbar } from './common/Layout/Navbar'
-import { FeatureFlags, getFeatureVariant, isMobile } from '../state/selectors'
-import StreamContainer from './common/StreamContainer'
 
 function mapStateToProps(state: StoreType): AppProps {
   return {
-    hasStream: !!getFeatureVariant(state, FeatureFlags.Stream),
-    isMobile: isMobile(state),
     sessionReady: !!state.session?.ready,
     rendererReady: !!state.renderer?.ready,
     error: !!state.error.error,
@@ -30,8 +26,6 @@ function mapStateToProps(state: StoreType): AppProps {
 }
 
 export interface AppProps {
-  hasStream?: boolean
-  isMobile: boolean
   sessionReady: boolean
   rendererReady: boolean
   error: boolean
@@ -42,10 +36,6 @@ const App: React.FC<AppProps> = (props) => {
 
   if (props.error) {
     return <ErrorContainer />
-  }
-
-  if (props.isMobile && props.hasStream) {
-    return <StreamContainer />
   }
 
   if (props.rendererReady) {
