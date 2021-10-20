@@ -9,10 +9,9 @@ import { authenticate } from '../../kernel-loader'
 import { EthWalletSelector } from './EthWalletSelector'
 import { LoginGuestItem, LoginWalletItem } from './LoginItemContainer'
 import { isElectron } from '../../integration/desktop'
+import { track } from '../../utils/tracking'
 import logo from '../../images/logo.png'
 import './LoginContainer.css'
-// import { EthSignAdvice } from './EthSignAdvice'
-// import { EthConnectAdvice } from './EthConnectAdvice'
 
 const mapStateToProps = (state: StoreType): LoginContainerProps => {
   // test all connectors
@@ -28,6 +27,7 @@ const mapStateToProps = (state: StoreType): LoginContainerProps => {
 
 const mapDispatchToProps = (dispatch: any) => ({
   onLogin: (providerType: ProviderType | null) => {
+    track('click_login_button', { provider_type: providerType || 'guest' })
     authenticate(providerType)
   }
 })
@@ -46,7 +46,14 @@ export interface LoginContainerDispatch {
 export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispatch> = ({ onLogin, stage, kernelReady, availableProviders }) => {
   const [ showWalletSelector, setShowWalletSelector ] = useState(false)
   const onSelect = useCallback(
-    () => isElectron() ? onLogin && onLogin(ProviderType.WALLET_CONNECT) : setShowWalletSelector(true),
+    () => {
+      if (isElectron() && onLogin) {
+        onLogin(ProviderType.WALLET_CONNECT)
+      } else {
+        track('open_login_popup')
+        setShowWalletSelector(true)
+      }
+    },
     [ onLogin ]
   )
   const onCancel = useCallback(() => setShowWalletSelector(false), [])
