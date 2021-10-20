@@ -16,7 +16,6 @@ export enum FeatureFlags {
 export function isFeatureEnabled(state: StoreType, key: string): boolean {
   const name = `${FF_APPLICATION_NAME}-${key}`
   const ff = state.featureFlags || defaultFeatureFlagsState
-  console.log(ff.flags, name)
   return !!ff.flags[name]
 }
 
@@ -24,7 +23,6 @@ export function getFeatureVariant(state: StoreType, key: string, defaultValue: s
   if (isFeatureEnabled(state, key)) {
     const name = `${FF_APPLICATION_NAME}-${key}`
     const variant = state.featureFlags.variants[name]
-    console.log(state.featureFlags.variants, name)
     if (variant?.payload?.value) {
       return variant?.payload?.value
     }
