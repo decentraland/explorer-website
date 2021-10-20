@@ -26,8 +26,6 @@ export const hideRoot = (state: StoreType) => {
   const rendererReady = !!state.renderer?.ready
   const error = !!state.error?.error
 
-  console.log('should hide: ', !ROOT_HIDDEN && !error && !!rendererReady && !!sessionReady)
-  console.log('should show: ', ROOT_HIDDEN && (!!error || !rendererReady || !sessionReady))
   if (!ROOT_HIDDEN && !error && !!rendererReady && !!sessionReady) {
     ROOT_HIDDEN = true
     document.getElementById('root')!.style.display = 'none'
