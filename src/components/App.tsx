@@ -18,6 +18,7 @@ import { Navbar } from './common/Layout/Navbar'
 
 function mapStateToProps(state: StoreType): AppProps {
   return {
+    hasBanner: !!state.banner.banner,
     sessionReady: !!state.session?.ready,
     rendererReady: !!state.renderer?.ready,
     error: !!state.error.error,
@@ -26,6 +27,7 @@ function mapStateToProps(state: StoreType): AppProps {
 }
 
 export interface AppProps {
+  hasBanner: boolean
   sessionReady: boolean
   rendererReady: boolean
   error: boolean
@@ -47,7 +49,7 @@ const App: React.FC<AppProps> = (props) => {
   }
 
   return (
-    <div className="WebsiteApp">
+    <div className={`WebsiteApp ${props.hasBanner ? 'withBanner' : ''}`}>
       {props.sound && <Audio track={`${process.env.PUBLIC_URL}/tone4.mp3`} play />}
       <BannerContainer />
       <Navbar />
