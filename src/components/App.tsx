@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import 'semantic-ui-css/semantic.min.css'
 import 'balloon-css/balloon.min.css'
 import 'decentraland-ui/dist/themes/base-theme.css'
@@ -18,6 +18,7 @@ import { LoadingRender } from './common/Loading/LoadingRender'
 import { Navbar } from './common/Layout/Navbar'
 import { FeatureFlags, getFeatureVariant } from '../state/selectors'
 import StreamContainer from './common/StreamContainer'
+import { isMobile } from '../integration/browser'
 
 function mapStateToProps(state: StoreType): AppProps {
   return {
@@ -40,8 +41,12 @@ export interface AppProps {
 }
 
 const App: React.FC<AppProps> = (props) => {
+  const mobile = useMemo(() => isMobile(), [])
+  const small = useMobileMediaQuery()
 
-  const isMobile = useMobileMediaQuery()
+  if (props.hasStream && (small || mobile)) {
+    return <StreamContainer />
+  }
 
   if (props.error) {
     return <ErrorContainer />
@@ -53,10 +58,6 @@ const App: React.FC<AppProps> = (props) => {
 
   if (props.sessionReady) {
     return <LoadingRender />
-  }
-
-  if (props.hasStream && isMobile) {
-    return <StreamContainer />
   }
 
   return (
