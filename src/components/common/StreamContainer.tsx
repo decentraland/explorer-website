@@ -17,7 +17,7 @@ export interface StreamContainerProps {
 
 function windowSize() {
   return {
-    height: document.documentElement?.clientHeight || window.innerHeight,
+    height: window.innerHeight,
     width: window.innerWidth,
   }
 }
@@ -25,18 +25,31 @@ function windowSize() {
 const StreamContainer: React.FC<StreamContainerProps> = (props: StreamContainerProps) => {
   const [ size, setSize ] = useState(() => ({ height: 0, width: 0 }))
   useEffect(() => {
+    const root = document.getElementById('root')
+    if (root) {
+      root.className += ' full'
+    }
+
     const resize = () => setSize(windowSize())
     resize()
 
     window.addEventListener('resize', resize)
-    return () => window.removeEventListener('resize', resize)
+
+    return () => {
+      window.removeEventListener('resize', resize)
+      if (root) {
+        root.className = root.className.replace(' full', '')
+      }
+    }
   }, [])
 
   if (!props.src || size.height === 0 || size.width === 0) {
     return null
   }
 
-  return <iframe title="Decentraland Stream" className="StreamContainer" {...props} width={size.width} height={size.height} allowFullScreen />
+  return <div className="StreamContainer">
+    <iframe title="Decentraland Stream" {...props} width={size.width} height={size.height} allowFullScreen />
+  </div>
 }
 
 export default connect(mapStateToProps)(StreamContainer)
