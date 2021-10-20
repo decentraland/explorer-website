@@ -20,19 +20,10 @@ export const LoginItemContainer = React.memo(function ({ children, className, on
   </div>
 })
 
-export const LoginWalletConnectItem = React.memo(function (props: LoginItemContainerProps) {
-  return <LoginItemContainer {...props} className={`LoginWalletConnectItem ${props.className}`}>
-      <img alt="wallet connect" src={wallets} width="318" height="318" />
-      <h2>Play with your wallet</h2>
-      <p>Connect your account to fully enjoy Decentraland!</p>
-      <Button primary size="huge" loading={props.loading} disabled={props.loading}>Continue with wallet</Button>
-  </LoginItemContainer>
-})
-
 export const LoginWalletItem = React.memo(function (props: LoginItemContainerProps) {
   return <LoginItemContainer {...props} className={`LoginWalletItem ${props.className}`}>
       <img alt="wallets" src={wallets} width="318" height="318" />
-      <h2>Play with your wallet</h2>
+      <h2>Play using your wallet</h2>
       <p>Connect your account to fully enjoy Decentraland!</p>
       <Button primary size="huge" loading={props.loading} disabled={props.loading}>Continue with wallet</Button>
   </LoginItemContainer>

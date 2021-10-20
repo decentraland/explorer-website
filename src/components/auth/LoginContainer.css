@@ -13,19 +13,19 @@ main.LoginContainer {
   background-position: bottom center;
   background-repeat: no-repeat;
   background-origin: border-box;
-  background-image: url('../../images/background-v2@1x.jpg');
-  background-image: url('../../images/background-v2@1x.jpg');
+  background-image: url('../../images/background-v3@1x.jpg');
+  background-image: url('../../images/background-v3@1x.jpg');
   background-image: -webkit-image-set(
-      url('../../images/background-v2@1x.jpg') 1x,
-      url('../../images/background-v2@2x.jpg') 2x,
-      url('../../images/background-v2@3x.jpg') 3x,
-      url('../../images/background-v2@4x.jpg') 3x
+      url('../../images/background-v3@1x.jpg') 1x,
+      url('../../images/background-v3@2x.jpg') 2x,
+      url('../../images/background-v3@3x.jpg') 3x,
+      url('../../images/background-v3@4x.jpg') 3x
     );
   background-image: image-set(
-      url('../../images/background-v2@1x.jpg') 1x,
-      url('../../images/background-v2@2x.jpg') 2x,
-      url('../../images/background-v2@3x.jpg') 3x,
-      url('../../images/background-v2@4x.jpg') 4x
+      url('../../images/background-v3@1x.jpg') 1x,
+      url('../../images/background-v3@2x.jpg') 2x,
+      url('../../images/background-v3@3x.jpg') 3x,
+      url('../../images/background-v3@4x.jpg') 4x
     );
 }
 
