@@ -1,0 +1,10 @@
+#root.full,
+.StreamContainer {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+}
+
+.StreamContainer iframe {
+  border: 0;
+}

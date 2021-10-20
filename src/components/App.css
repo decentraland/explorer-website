@@ -35,6 +35,10 @@
   left: 0;
 }
 
+.WebsiteApp.withBanner .dcl.navbar.fullscreen {
+  top: 54px
+}
+
 .dcl.navbar.fullscreen .ui.container {
   width: 100%;
   padding: 0 20px;

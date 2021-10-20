@@ -7,6 +7,7 @@ import { hideRoot, initializeKernel } from './integration/kernel'
 import { initializeBrowserRecommendation } from './integration/browser'
 import App from './components/App'
 import { initializeDesktopApp } from './integration/desktop'
+import { initializeFeatureFlags } from './integration/featureFlags'
 
 configureSegment()
 configureRollbar()
@@ -21,6 +22,7 @@ ReactDOM.render(
   () => {
     initializeKernel()
     initializeBrowserRecommendation()
+    initializeFeatureFlags()
     initializeDesktopApp()
     store.subscribe(() => hideRoot(store.getState()))
   }

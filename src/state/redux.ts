@@ -1,6 +1,7 @@
 import { combineReducers, createStore } from 'redux'
 import { KernelAccountState, KernelResult, KernelLoadingProgress } from '@dcl/kernel-interface'
-import { kernelReducer, sessionReducer, rendererReducer, errorReducer, bannerReducer, downloadReducer } from './reducers'
+import { FeatureFlagsResult } from '@dcl/feature-flags'
+import { kernelReducer, sessionReducer, rendererReducer, errorReducer, bannerReducer, downloadReducer, featureFlagsReducer } from './reducers'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
 export type KernelState = {
@@ -65,6 +66,8 @@ export type DownloadState = {
   ready: boolean
 }
 
+export type FeatureFlagsState = FeatureFlagsResult
+
 export type StoreType = {
   kernel: KernelState
   renderer: RendererState
@@ -72,6 +75,7 @@ export type StoreType = {
   error: ErrorState
   banner: BannerState
   download: DownloadState
+  featureFlags: FeatureFlagsState
 }
 
 const reducers = combineReducers<StoreType>({
@@ -80,7 +84,8 @@ const reducers = combineReducers<StoreType>({
   renderer: rendererReducer,
   error: errorReducer,
   banner: bannerReducer,
-  download: downloadReducer
+  download: downloadReducer,
+  featureFlags: featureFlagsReducer,
 })
 
 const middleware: typeof composeWithDevTools =
