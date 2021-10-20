@@ -5,6 +5,7 @@ import 'decentraland-ui/dist/themes/base-theme.css'
 import 'decentraland-ui/dist/themes/alternative/light-theme.css'
 import './App.css'
 import { connect } from 'react-redux'
+import { useMobileMediaQuery } from 'decentraland-ui/dist/components/Media'
 import ErrorContainer from './errors/ErrorContainer'
 import LoginContainer from './auth/LoginContainer'
 import { Audio } from './common/Audio'
@@ -15,9 +16,12 @@ import { BigFooter } from './common/Layout/BigFooter'
 import BannerContainer from './banners/BannerContainer'
 import { LoadingRender } from './common/Loading/LoadingRender'
 import { Navbar } from './common/Layout/Navbar'
+import { FeatureFlags, getFeatureVariant } from '../state/selectors'
+import StreamContainer from './common/StreamContainer'
 
 function mapStateToProps(state: StoreType): AppProps {
   return {
+    hasStream: !!getFeatureVariant(state, FeatureFlags.Stream),
     hasBanner: !!state.banner.banner,
     sessionReady: !!state.session?.ready,
     rendererReady: !!state.renderer?.ready,
@@ -27,6 +31,7 @@ function mapStateToProps(state: StoreType): AppProps {
 }
 
 export interface AppProps {
+  hasStream: boolean
   hasBanner: boolean
   sessionReady: boolean
   rendererReady: boolean
@@ -35,6 +40,8 @@ export interface AppProps {
 }
 
 const App: React.FC<AppProps> = (props) => {
+
+  const isMobile = useMobileMediaQuery()
 
   if (props.error) {
     return <ErrorContainer />
@@ -46,6 +53,10 @@ const App: React.FC<AppProps> = (props) => {
 
   if (props.sessionReady) {
     return <LoadingRender />
+  }
+
+  if (props.hasStream && isMobile) {
+    return <StreamContainer />
   }
 
   return (

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { StoreType } from '../../state/redux'
 import { FeatureFlags, getFeatureVariant } from '../../state/selectors'
+import './StreamContainer.css'
 
 function mapStateToProps(state: StoreType): StreamContainerProps {
   return {
@@ -26,6 +27,7 @@ const StreamContainer: React.FC<StreamContainerProps> = (props: StreamContainerP
 
   useEffect(() => {
     const resize = () => setSize(windowSize())
+    resize()
     window.addEventListener('resize', resize)
     return () => window.removeEventListener('resize', resize)
   }, [])
