@@ -43,7 +43,7 @@ export const ErrorContainer: React.FC<ErrorContainerProps> = (props) => {
     return <ErrorMetamaskLocked details={props.error.details} closeError={props.closeError} />
   if (props.error.type === ErrorType.NEW_LOGIN) return <ErrorNewLogin />
   if (props.error.type === ErrorType.NOT_MOBILE) {
-    if (!props.stream) {
+    if (!!props.stream) {
       return <StreamContainer />
     }
     return <ErrorNoMobile />
