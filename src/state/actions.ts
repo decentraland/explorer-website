@@ -6,7 +6,7 @@ import {
   KernelLoadingProgress,
   KernelResult
 } from '@dcl/kernel-interface'
-import { BannerType, BrowserState } from './redux'
+import { BannerType } from './redux'
 import { FeatureFlagsResult } from '@dcl/feature-flags'
 
 export const KERNEL_AUTHENTICATE = '[Authenticate]'

@@ -11,14 +11,13 @@ import {
   SET_RENDERER_LOADING,
   SET_RENDERER_READY,
   SET_RENDERER_VISIBLE,
-  SET_FEATURE_FLAGS,
-  SET_BROWSER_PROPS
+  SET_FEATURE_FLAGS
 } from './actions'
-import { KernelState, SessionState, RendererState, ErrorState, BannerState, DownloadState, DownloadCurrentState, BrowserState, FeatureFlagsState } from './redux'
+import { KernelState, SessionState, RendererState, ErrorState, BannerState, DownloadState, DownloadCurrentState, FeatureFlagsState } from './redux'
 import { v4 } from 'uuid'
 import { errorToString } from '../utils/errorToString'
 import { isElectron } from '../integration/desktop'
-import { defaultFeatureFlagsState, defaultBrowserState } from './types'
+import { defaultFeatureFlagsState } from './types'
 
 export function kernelReducer(state: KernelState | undefined, action: AnyAction): KernelState {
   if (action.type === SET_KERNEL_LOADED) {

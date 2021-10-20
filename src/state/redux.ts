@@ -68,10 +68,6 @@ export type DownloadState = {
 
 export type FeatureFlagsState = FeatureFlagsResult
 
-export type BrowserState = {
-  height: number,
-  width: number,
-}
 
 export type StoreType = {
   kernel: KernelState

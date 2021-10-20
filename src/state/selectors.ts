@@ -1,6 +1,6 @@
 import { SessionTraits } from '../trackingEvents'
 import { StoreType } from './redux'
-import { defaultBrowserState, defaultFeatureFlagsState, FF_APPLICATION_NAME } from './types'
+import { defaultFeatureFlagsState, FF_APPLICATION_NAME } from './types'
 
 // This function is used for every rollbar and segment events.
 export function getRequiredAnalyticsContext(state: StoreType): SessionTraits {
