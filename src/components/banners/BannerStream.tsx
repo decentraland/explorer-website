@@ -7,8 +7,8 @@ export const BannerStream: React.FC<Pick<BannerContainerProps, 'onClose'>> = (pr
   <div id="banner-stream" className="banner-container">
     <div className="banner-close-button" onClick={props.onClose} />
     <div className="banner-text">
-      The client is only available on desktop right now.
-        {' '}
+      You are seeing a stream because the client is only available on desktop right now.
+        <br />
         <a href="https://decentraland.org" rel="noreferrer noopener" target="_blank">Learn more about decentraland</a>
     </div>
   </div>
