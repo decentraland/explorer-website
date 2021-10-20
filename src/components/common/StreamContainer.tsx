@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { StoreType } from '../../state/redux'
 import { FeatureFlags, getFeatureVariant } from '../../state/selectors'
@@ -17,13 +17,21 @@ export interface StreamContainerProps {
 
 function windowSize() {
   return {
-    height: window.innerHeight,
+    height: document.documentElement?.clientHeight || window.innerHeight,
     width: window.innerWidth,
   }
 }
 
 const StreamContainer: React.FC<StreamContainerProps> = (props: StreamContainerProps) => {
-  const size = useMemo(() => windowSize(), [])
+  const [ size, setSize ] = useState(() => ({ height: 0, width: 0 }))
+  useEffect(() => {
+    const resize = () => setSize(windowSize())
+    resize()
+
+    window.addEventListener('resize', resize)
+    return () => window.removeEventListener('resize', resize)
+  }, [])
+
   if (!props.src || size.height === 0 || size.width === 0) {
     return null
   }
