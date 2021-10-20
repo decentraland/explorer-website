@@ -24,6 +24,7 @@
 
 .banner-container .banner-text a {
   color: white;
+  text-decoration: underline;
 }
 
 .banner-container .banner-close-button {
