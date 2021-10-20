@@ -68,7 +68,6 @@ export type DownloadState = {
 
 export type FeatureFlagsState = FeatureFlagsResult
 
-
 export type StoreType = {
   kernel: KernelState
   renderer: RendererState
