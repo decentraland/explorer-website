@@ -10,12 +10,15 @@ import {
   SET_KERNEL_LOADED,
   SET_RENDERER_LOADING,
   SET_RENDERER_READY,
-  SET_RENDERER_VISIBLE
+  SET_RENDERER_VISIBLE,
+  SET_FEATURE_FLAGS,
+  SET_BROWSER_PROPS
 } from './actions'
-import { KernelState, SessionState, RendererState, ErrorState, BannerState, DownloadState, DownloadCurrentState } from './redux'
+import { KernelState, SessionState, RendererState, ErrorState, BannerState, DownloadState, DownloadCurrentState, BrowserState, FeatureFlagsState } from './redux'
 import { v4 } from 'uuid'
 import { errorToString } from '../utils/errorToString'
 import { isElectron } from '../integration/desktop'
+import { defaultFeatureFlagsState, defaultBrowserState } from './types'
 
 export function kernelReducer(state: KernelState | undefined, action: AnyAction): KernelState {
   if (action.type === SET_KERNEL_LOADED) {
@@ -129,6 +132,37 @@ export function downloadReducer(state: DownloadState | undefined, action: AnyAct
     const { ipcRenderer } = window.require('electron')
     ipcRenderer.send('executeProcess')
     state = { ...state, currentState: DownloadCurrentState.EXECUTED, ready: true }
+  }
+
+  return state
+}
+
+
+export function featureFlagsReducer(state: FeatureFlagsState = defaultFeatureFlagsState, action: AnyAction): FeatureFlagsState {
+  if (action.type === SET_FEATURE_FLAGS) {
+    const result: FeatureFlagsState = action.payload
+    return {
+      ...state,
+      flags: {
+        ...state.flags,
+        ...result.flags,
+      },
+      variants: {
+        ...state.variants,
+        ...result.variants
+      }
+    }
+  }
+
+  return state
+}
+
+export function browserReducer(state: BrowserState = defaultBrowserState, action: AnyAction): BrowserState {
+  if (action.type === SET_BROWSER_PROPS) {
+    return {
+      ...state,
+      ...action.payload
+    }
   }
 
   return state

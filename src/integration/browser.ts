@@ -1,7 +1,21 @@
 import { detect } from "detect-browser"
-import { setBanner } from "../state/actions"
-import { BannerType, store } from "../state/redux"
+import { setBanner, setBrowserProps } from "../state/actions"
+import { BannerType, BrowserState, store } from "../state/redux"
 import { callOnce } from "../utils/callOnce"
+
+export const initializeBrowserProps = callOnce(() => {
+  function windowSizing() {
+    const props: BrowserState = {
+      height: window.innerHeight,
+      width: window.innerWidth,
+    }
+
+    store.dispatch(setBrowserProps(props))
+  }
+
+  windowSizing()
+  window.addEventListener('resize', windowSizing)
+})
 
 export const initializeBrowserRecommendation = callOnce(() => {
   if (!isRecommendedBrowser()) {

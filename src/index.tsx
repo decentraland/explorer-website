@@ -4,9 +4,10 @@ import { Provider } from 'react-redux'
 import { configureRollbar, configureSegment } from './integration/analytics'
 import { store } from './state/redux'
 import { hideRoot, initializeKernel } from './integration/kernel'
-import { initializeBrowserRecommendation } from './integration/browser'
+import { initializeBrowserProps, initializeBrowserRecommendation } from './integration/browser'
 import App from './components/App'
 import { initializeDesktopApp } from './integration/desktop'
+import { initializeFeatureFlags } from './integration/featureFlags'
 
 configureSegment()
 configureRollbar()
@@ -20,7 +21,9 @@ ReactDOM.render(
   document.getElementById('root')!,
   () => {
     initializeKernel()
+    initializeBrowserProps()
     initializeBrowserRecommendation()
+    initializeFeatureFlags()
     initializeDesktopApp()
     store.subscribe(() => hideRoot(store.getState()))
   }
