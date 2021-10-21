@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { StoreType } from '../../state/redux'
 import { FeatureFlags, getFeatureVariant } from '../../state/selectors'
+import { BannerStream } from '../banners/BannerStream'
 import './StreamContainer.css'
 
 function mapStateToProps(state: StoreType): StreamContainerProps {
@@ -23,6 +24,7 @@ function windowSize() {
 }
 
 const StreamContainer: React.FC<StreamContainerProps> = (props: StreamContainerProps) => {
+  const [ banner, setBanner ] = useState(true)
   const [ size, setSize ] = useState(() => ({ height: 0, width: 0 }))
   useEffect(() => {
     const root = document.getElementById('root')
@@ -48,7 +50,8 @@ const StreamContainer: React.FC<StreamContainerProps> = (props: StreamContainerP
   }
 
   return <div className="StreamContainer">
-    <iframe title="Decentraland Stream" {...props} width={size.width} height={size.height} allowFullScreen />
+    {banner && <BannerStream onClose={() => setBanner(false)} />}
+    <iframe title="Decentraland Stream" src={props.src} width={size.width} height={size.height} allowFullScreen />
   </div>
 }
 
