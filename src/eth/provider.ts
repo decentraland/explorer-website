@@ -23,14 +23,16 @@ export async function getEthereumProvider(
   }
 
   const result = await connection.connect(type, chainId)
-  // console.log('11111111111 PERSONAL SIGGGGGGGGGN 11111111111')
-  // console.log('PERSONAL SIGGGGGGGGGN 11111111111')
-
   return { provider: result.provider, chainId: result.chainId }
 }
 
 export async function restoreConnection(): Promise<ConnectionResponse | null> {
   try {
+    const connectionData = connection.getConnectionData()
+    // WalletConnect tends to hang on reconnections, so we just disable this feature and prompt the user again
+    if (connectionData && connectionData.providerType === ProviderType.WALLET_CONNECT) {
+      throw new Error('Wallet Connect does not support restoring the connection')
+    }
     return await connection.tryPreviousConnection()
   } catch (err) {
     return null
