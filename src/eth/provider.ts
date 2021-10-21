@@ -30,7 +30,7 @@ export async function restoreConnection(): Promise<ConnectionResponse | null> {
   try {
     return await Promise.race<ConnectionResponse | null>([
       connection.tryPreviousConnection(),
-      new Promise((_, reject) => setTimeout(() => reject('Connection timeout'), 10 * 60 * 1000)) as any
+      new Promise((_, reject) => setTimeout(() => reject('Connection timeout'), 10 * 1000)) as any
     ])
   } catch (err) {
     return null
