@@ -9,6 +9,10 @@
   color: rgba(22, 21, 24, 1);
 }
 
+.LoginItemContainer.loading {
+  cursor: default;
+}
+
 .LoginItemContainer .LoginItemContainer__BackgroundLayer,
 .LoginItemContainer .LoginItemContainer__Content {
   width: 100%;
@@ -132,4 +136,9 @@
 .LoginItemContainer.hover .LoginItemContainer__Content .ui.button,
 .LoginItemContainer:hover .LoginItemContainer__Content .ui.button {
   opacity: 1 !important;
+}
+
+.LoginItemContainer.hover .LoginItemContainer__Content .ui.button:disabled,
+.LoginItemContainer:hover .LoginItemContainer__Content .ui.button:disabled {
+  opacity: 0.5 !important;
 }

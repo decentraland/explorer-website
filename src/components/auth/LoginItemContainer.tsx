@@ -11,8 +11,11 @@ export type LoginItemContainerProps = {
   children?: React.ReactNode
 }
 
-export const LoginItemContainer = React.memo(function ({ children, className, onClick }: LoginItemContainerProps) {
-  return <div className={`LoginItemContainer ${className}`} onClick={onClick}>
+export const LoginItemContainer = React.memo(function ({ children, className, loading, onClick }: LoginItemContainerProps) {
+  return <div
+      className={`LoginItemContainer ${className} ${loading ? 'loading' : ''}`}
+      onClick={loading ? undefined : onClick}
+    >
     <div className="LoginItemContainer__BackgroundLayer" />
     <div className="LoginItemContainer__Content">
       {children}

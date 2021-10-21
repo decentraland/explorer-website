@@ -28,12 +28,10 @@ export async function getEthereumProvider(
 
 export async function restoreConnection(): Promise<ConnectionResponse | null> {
   try {
-    const connectionData = connection.getConnectionData()
-    // WalletConnect tends to hang on reconnections, so we just disable this feature and prompt the user again
-    if (connectionData && connectionData.providerType === ProviderType.WALLET_CONNECT) {
-      throw new Error('Wallet Connect does not support restoring the connection')
-    }
-    return await connection.tryPreviousConnection()
+    return await Promise.race<ConnectionResponse | null>([
+      connection.tryPreviousConnection(),
+      new Promise((_, reject) => setTimeout(() => reject('Connection timeout'), 10 * 60 * 1000)) as any
+    ])
   } catch (err) {
     return null
   }
