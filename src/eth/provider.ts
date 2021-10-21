@@ -23,15 +23,15 @@ export async function getEthereumProvider(
   }
 
   const result = await connection.connect(type, chainId)
-  // console.log('11111111111 PERSONAL SIGGGGGGGGGN 11111111111')
-  // console.log('PERSONAL SIGGGGGGGGGN 11111111111')
-
   return { provider: result.provider, chainId: result.chainId }
 }
 
 export async function restoreConnection(): Promise<ConnectionResponse | null> {
   try {
-    return await connection.tryPreviousConnection()
+    return await Promise.race<ConnectionResponse | null>([
+      connection.tryPreviousConnection(),
+      new Promise((_, reject) => setTimeout(() => reject('Connection timeout'), 10 * 1000)) as any
+    ])
   } catch (err) {
     return null
   }
