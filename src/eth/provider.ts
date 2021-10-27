@@ -5,8 +5,8 @@ import { IEthereumProvider } from '@dcl/kernel-interface'
 import { defaultWebsiteErrorTracker } from '../utils/tracking'
 
 export const chainIdRpc = new Map<number, string>([
-  [1, 'wss://mainnet.infura.io/ws/v3/074a68d50a7c4e6cb46aec204a50cbf0'],
-  [3, 'wss://ropsten.infura.io/ws/v3/074a68d50a7c4e6cb46aec204a50cbf0']
+  [1, 'wss://mainnet.infura.io/ws/v3/f54f2e10b59647778de06d884121f8fa'],
+  [3, 'wss://ropsten.infura.io/ws/v3/f54f2e10b59647778de06d884121f8fa']
 ])
 
 export async function getEthereumProvider(
