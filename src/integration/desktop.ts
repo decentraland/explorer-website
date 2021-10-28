@@ -38,7 +38,7 @@ export const initializeDesktopApp = callOnce(() => {
         case 'ERROR':
           store.dispatch(
             setKernelError({
-              error: new Error(`Invalid remote version`)
+              error: new Error(payload.message ? payload.message : 'Unknown launcher error')
             })
           )
           break

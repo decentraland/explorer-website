@@ -62,9 +62,9 @@ const App: React.FC<AppProps> = (props) => {
 
   return (
     <div className={`WebsiteApp ${props.hasBanner ? 'withBanner' : ''}`}>
-      {props.sound && <Audio track={`${process.env.PUBLIC_URL}/tone4.mp3`} play />}
+      {!isElectron() && props.sound && <Audio track={`${process.env.PUBLIC_URL}/tone4.mp3`} play />}
       <BannerContainer />
-      <Navbar />
+      {!isElectron() && <Navbar /> }
       <LoginContainer />
       {!isElectron() && <BeginnersGuide /> }
       {!isElectron() && <BigFooter /> }
