@@ -27,7 +27,7 @@ const mapStateToProps = (state: StoreType): LoginContainerProps => {
     kernelReady: state.kernel.ready,
     rendererReady: state.renderer.ready,
     isGuest: state.session.kernelState ? state.session.kernelState.isGuest : undefined,
-    isWallet: state.session.kernelState ? !state.session.kernelState.isGuest : undefined,
+    isWallet: state.session.kernelState ? !state.session.kernelState.isGuest && !!state.session.connection : undefined,
   }
 }
 

@@ -29,7 +29,7 @@ export const LoginItemContainer = React.memo(function ({ children, className, lo
 })
 
 export const LoginWalletItem = React.memo(function (props: LoginItemContainerProps) {
-  return <LoginItemContainer {...props} className={`LoginWalletItem ${props.className}`}>
+  return <LoginItemContainer {...props} className={`LoginWalletItem ${props.className || ''}`}>
       <img alt="wallets" src={wallets} width="318" height="318" />
       <h2>Play using your wallet</h2>
       <p>Connect your account to fully enjoy Decentraland!</p>
@@ -38,7 +38,7 @@ export const LoginWalletItem = React.memo(function (props: LoginItemContainerPro
 })
 
 export const LoginGuestItem = React.memo(function (props: LoginItemContainerProps) {
-  return <LoginItemContainer {...props} className={`LoginGuestItem ${props.className}`}>
+  return <LoginItemContainer {...props} className={`LoginGuestItem ${props.className || ''}`}>
     <img alt="guest" src={guest} width="318" height="318" />
     <h2>Play as guest</h2>
     <p>Your information will be locally stored and your experience limited.</p>
