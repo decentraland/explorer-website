@@ -20,10 +20,11 @@ export const LoginItemContainer = React.memo(function ({ children, className, lo
       className={`LoginItemContainer ${className || ''} ${loading ? 'loading' : ''} ${active ? 'active' : ''}`}
       onClick={loading ? undefined : onClick}
     >
-    <div className="LoginItemContainer__BackgroundLayer" />
+    <div className="LoginItemContainer__BackLayer" />
     <div className="LoginItemContainer__Content">
       {children}
     </div>
+    {loading && active && <div className="loader-background" />}
     <Loader active={active && loading} provider={provider} size="massive" />
   </div>
 })

@@ -16,18 +16,29 @@
 .LoginItemContainer .ui.loader.massive {
   box-sizing: border-box;
   border-radius: 100%;
-  background-color: rgba(0,0,0, 0.5);
-  box-shadow: 0 0 25px, 0 0 50px, 0 0 100px;
+  background-color: rgba(0,0,0, 0.2);
+  /* box-shadow: 0 0 25px, 0 0 50px, 0 0 100px; */
 }
 
-.LoginItemContainer .LoginItemContainer__BackgroundLayer,
+.LoginItemContainer .loader-background {
+  top: 4px;
+  left: 4px;
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
+  border-radius: 24px;
+  background-color: rgba(0,0,0,0.5);
+  border: 4px solid rgba(0,0,0,0.1);
+  position: absolute;
+}
+
+.LoginItemContainer .LoginItemContainer__BackLayer,
 .LoginItemContainer .LoginItemContainer__Content {
   width: 100%;
   height: 100%;
   border-radius: 26px;
 }
 
-.LoginItemContainer .LoginItemContainer__BackgroundLayer {
+.LoginItemContainer .LoginItemContainer__BackLayer {
   position: absolute;
   background: linear-gradient(116.34deg, #FFBC5B 0%, #FF2D55 50.52%, #C640CD 100%);
   padding: 4px;
@@ -37,13 +48,13 @@
   transform: scale(.92, .94);
 }
 
-.LoginItemContainer:hover .LoginItemContainer__BackgroundLayer,
-.LoginItemContainer.active .LoginItemContainer__BackgroundLayer {
+.LoginItemContainer:hover .LoginItemContainer__BackLayer,
+.LoginItemContainer.active .LoginItemContainer__BackLayer {
   transform: scale(1, 1);
   box-shadow: 0 12px 20px rgba(0,0,0,.5);
 }
 
-.LoginItemContainer .LoginItemContainer__BackgroundLayer::before {
+.LoginItemContainer .LoginItemContainer__BackLayer::before {
   content: "";
   display: block;
   /* position: absolute; */
@@ -56,11 +67,11 @@
   border: 4px solid white;
 }
 
-/* .LoginItemContainer .LoginItemContainer__BackgroundLayer::after {
+/* .LoginItemContainer .LoginItemContainer__BackLayer::after {
   background-color: white;
 }
 
-.LoginItemContainer .LoginItemContainer__BackgroundLayer::before {
+.LoginItemContainer .LoginItemContainer__BackLayer::before {
   background-color: rgba(236, 235, 237, 1);
 } */
 

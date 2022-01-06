@@ -75,6 +75,14 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
     !kernelReady
   }, [ stage, kernelReady ])
 
+  const providerInUse = useMemo(() => {
+    if (stage === LoginState.AUTHENTICATING || stage === LoginState.SIGNATURE_PENDING) {
+      return provider
+    }
+
+    return undefined
+  }, [ stage, provider ])
+
   if (stage === LoginState.COMPLETED) {
     return <React.Fragment />
   }
@@ -89,7 +97,7 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
           <p>Sign In or Create an Account</p>
         </div>
         <div>
-          <LoginWalletItem loading={loading} active={isWallet} onClick={onSelect} provider={provider} />
+          <LoginWalletItem loading={loading} active={isWallet} onClick={onSelect} provider={providerInUse} />
           <LoginGuestItem loading={loading} active={isGuest} onClick={onGuest} />
         </div>
       </Container>
@@ -98,7 +106,7 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
         open={showWalletSelector}
         loading={loading}
         availableProviders={availableProviders || defaultAvailableProviders}
-        provider={provider}
+        provider={providerInUse}
         onLogin={onLogin}
         onCancel={onCancel}
       />
