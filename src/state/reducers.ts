@@ -1,4 +1,5 @@
 import { AnyAction } from 'redux'
+import { connection } from 'decentraland-connect'
 import { KernelResult, KernelError, LoginState, KernelAccountState } from '@dcl/kernel-interface'
 import {
   SET_BANNER,
@@ -33,6 +34,7 @@ export function kernelReducer(state: KernelState | undefined, action: AnyAction)
 
 const defaultSession: SessionState = {
   sessionId: v4(),
+  connection: null,
   kernelState: null,
   ready: false
 }
@@ -41,14 +43,20 @@ export function sessionReducer(state: SessionState | undefined, action: AnyActio
   if (!state) return defaultSession
 
   if (action.type === SET_KERNEL_ACCOUNT_STATE) {
+    console.info('SET_KERNEL_ACCOUNT_STATE', action.payload)
     const kernelState = action.payload as KernelAccountState
     const ready = (
       kernelState.loginStatus === LoginState.SIGN_UP ||
       kernelState.loginStatus === LoginState.WAITING_PROFILE ||
       kernelState.loginStatus === LoginState.COMPLETED
-    )
+      )
 
-    return { ...state, kernelState, ready }
+    return {
+      ...state,
+      connection: connection.getConnectionData() || null,
+      kernelState,
+      ready
+    }
   }
 
   return state

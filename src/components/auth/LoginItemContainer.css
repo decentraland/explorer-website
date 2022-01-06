@@ -13,6 +13,10 @@
   cursor: default;
 }
 
+.LoginItemContainer .ui.loader {
+  box-sizing: border-box  ;
+}
+
 .LoginItemContainer .LoginItemContainer__BackgroundLayer,
 .LoginItemContainer .LoginItemContainer__Content {
   width: 100%;
@@ -30,7 +34,8 @@
   transform: scale(.92, .94);
 }
 
-.LoginItemContainer:hover .LoginItemContainer__BackgroundLayer {
+.LoginItemContainer:hover .LoginItemContainer__BackgroundLayer,
+.LoginItemContainer.active .LoginItemContainer__BackgroundLayer {
   transform: scale(1, 1);
   box-shadow: 0 12px 20px rgba(0,0,0,.5);
 }
@@ -67,6 +72,11 @@
   overflow: hidden;
 }
 
+.LoginItemContainer.active.loading .LoginItemContainer__Content {
+  opacity: .5;
+  /* filter: grayscale(1); */
+}
+
 .LoginItemContainer .LoginItemContainer__Content h2 {
   font-weight: 600;
   font-size: 20px;
@@ -80,7 +90,7 @@
   transition: transform ease .3s;
 }
 
-.LoginItemContainer.hover .LoginItemContainer__Content h2,
+.LoginItemContainer.active .LoginItemContainer__Content h2,
 .LoginItemContainer:hover .LoginItemContainer__Content h2 {
   transform: translate(-3px, 40px);
 }
@@ -99,7 +109,7 @@
   transition: transform ease .3s;
 }
 
-.LoginItemContainer.hover .LoginItemContainer__Content p,
+.LoginItemContainer.active .LoginItemContainer__Content p,
 .LoginItemContainer:hover .LoginItemContainer__Content p {
   transform: translate(0, 290px);
 }
@@ -112,7 +122,7 @@
   transition: transform ease .3s;
 }
 
-.LoginItemContainer.hover .LoginItemContainer__Content img,
+.LoginItemContainer.active .LoginItemContainer__Content img,
 .LoginItemContainer:hover .LoginItemContainer__Content img {
   transform: translate(11px, 25px);
 }
@@ -133,12 +143,12 @@
   height: 56px;
 }
 
-.LoginItemContainer.hover .LoginItemContainer__Content .ui.button,
+.LoginItemContainer.active .LoginItemContainer__Content .ui.button,
 .LoginItemContainer:hover .LoginItemContainer__Content .ui.button {
   opacity: 1 !important;
 }
 
-.LoginItemContainer.hover .LoginItemContainer__Content .ui.button:disabled,
+.LoginItemContainer.active .LoginItemContainer__Content .ui.button:disabled,
 .LoginItemContainer:hover .LoginItemContainer__Content .ui.button:disabled {
   opacity: 0.5 !important;
 }
