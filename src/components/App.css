@@ -157,7 +157,12 @@
 
 .ui.modal.dcl.login-modal .loader-background {
   border-radius: 24px;
-  background-color: rgba(0,0,0,.85);
+  background-color: rgba(0,0,0,1);
+}
+
+.ui.modal.dcl.login-modal .loader {
+  background-color: rgba(0,0,0,.2);
+  border-radius: 100%;
 }
 
 .ui.modal.dcl.login-modal .ui.big.loader {

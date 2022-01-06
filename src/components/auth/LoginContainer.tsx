@@ -97,8 +97,9 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
       <EthWalletSelector
         open={showWalletSelector}
         loading={loading}
-        onLogin={onLogin}
         availableProviders={availableProviders || defaultAvailableProviders}
+        provider={provider}
+        onLogin={onLogin}
         onCancel={onCancel}
       />
     </main>

@@ -1,20 +1,23 @@
 import React, { useCallback, useMemo } from 'react'
 import { ProviderType } from '@dcl/schemas/dist/dapps/provider-type'
 import { isCucumberProvider, isDapperProvider } from 'decentraland-dapps/dist/lib/eth'
+import { Loader } from 'decentraland-ui/dist/components/Loader/Loader'
 import { LoginModal, LoginModalOptionType } from 'decentraland-ui/dist/components/LoginModal/LoginModal'
 import { isElectron } from '../../integration/desktop'
 
 export interface WalletSelectorProps {
   open: boolean
   loading: boolean
-  availableProviders: ProviderType[]
-  onLogin: (provider: ProviderType | null) => void
-  onCancel: () => void
+  provider?: ProviderType
+  availableProviders?: ProviderType[]
+  onLogin?: (provider: ProviderType | null) => void
+  onCancel?: () => void
 }
 
 export const EthWalletSelector: React.FC<WalletSelectorProps> = React.memo(({
   open,
   loading,
+  provider,
   availableProviders,
   onLogin,
   onCancel
@@ -28,7 +31,7 @@ export const EthWalletSelector: React.FC<WalletSelectorProps> = React.memo(({
   }, [])
 
   const browserWallet = useMemo<LoginModalOptionType | null>(() => {
-    if (availableProviders.length > 0) {
+    if (availableProviders && availableProviders.length > 0) {
       const hasWallet = availableProviders.includes(ProviderType.INJECTED)
       if (hasWallet) {
         return isCucumberProvider() ? LoginModalOptionType.SAMSUNG :
@@ -40,8 +43,8 @@ export const EthWalletSelector: React.FC<WalletSelectorProps> = React.memo(({
     return null
   }, [ availableProviders ])
 
-  const handleLoginWalletConnect = useCallback(() => onLogin(ProviderType.WALLET_CONNECT), [ onLogin ])
-  const handleLoginFortmatic = useCallback(() => onLogin(ProviderType.FORTMATIC), [ onLogin ])
+  const handleLoginWalletConnect = useCallback(() => onLogin && onLogin(ProviderType.WALLET_CONNECT), [ onLogin ])
+  const handleLoginFortmatic = useCallback(() => onLogin && onLogin(ProviderType.FORTMATIC), [ onLogin ])
   const handleLoginInjected = useCallback(() => {
     if (browserWallet && onLogin) {
       onLogin(ProviderType.INJECTED)
@@ -52,7 +55,6 @@ export const EthWalletSelector: React.FC<WalletSelectorProps> = React.memo(({
 
   return <LoginModal
     open={open}
-    loading={loading}
     onClose={onCancel}
     i18n={{
       title: 'Connect your wallet',
@@ -60,6 +62,8 @@ export const EthWalletSelector: React.FC<WalletSelectorProps> = React.memo(({
       subtitle: ''
     }}
   >
+      {loading && <div className="loader-background" />}
+      {loading && <Loader active={loading} provider={provider} size="massive" />}
       {!isElectron() && <LoginModal.Option type={browserWallet || LoginModalOptionType.METAMASK} onClick={handleLoginInjected} />}
       <LoginModal.Option type={LoginModalOptionType.FORTMATIC} onClick={handleLoginFortmatic} />
       <LoginModal.Option type={LoginModalOptionType.WALLET_CONNECT} onClick={handleLoginWalletConnect}  />
