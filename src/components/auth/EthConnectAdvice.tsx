@@ -11,14 +11,17 @@ export const EthConnectAdvice = React.memo((props: EthWalletSelectorAdviceProps)
       return <span className="EthConnectAdvice">
         Please, follow the instructions of your fortmatic provider to continue.
       </span>
+
     case ProviderType.INJECTED:
       return <span className="EthConnectAdvice">
         Please, follow the instructions of your browser wallet provider to continue.
       </span>
+
     case ProviderType.WALLET_CONNECT:
       return <span className="EthConnectAdvice">
         Please, follow the instructions of your mobile wallet provider to continue.
       </span>
+
     default:
       return null
   }
