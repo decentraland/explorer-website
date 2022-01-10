@@ -25,7 +25,9 @@ export const LoginItemContainer = React.memo(function ({ children, className, lo
     <div className="LoginItemContainer__Content">
       {children}
     </div>
-    {loading && active && <div className="loader-background"><EthConnectAdvice provider={provider} /></div>}
+    {loading && active && <div className="loader-background">
+      <EthConnectAdvice provider={provider} />
+    </div>}
     <Loader active={active && loading} provider={provider} size="massive" />
   </div>
 })

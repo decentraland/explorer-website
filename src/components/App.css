@@ -155,7 +155,8 @@
   letter-spacing: 1px;
 }
 
-.loader-background {
+.loader-background,
+.ui.modal.dcl.login-modal .loader-background {
   background-color: rgba(0,0,0,.7);
   opacity: 1;
   display: flex;
@@ -163,7 +164,8 @@
   align-items: center;
 }
 
-.loader-background .EthConnectAdvice {
+.loader-background .EthConnectAdvice,
+.ui.modal.dcl.login-modal .loader-background .EthConnectAdvice {
   max-width: 340px;
   text-align: center;
   color: white;
