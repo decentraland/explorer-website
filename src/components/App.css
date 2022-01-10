@@ -155,9 +155,30 @@
   letter-spacing: 1px;
 }
 
+.loader-background {
+  background-color: rgba(0,0,0,.7);
+  opacity: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader-background .EthConnectAdvice {
+  max-width: 340px;
+  text-align: center;
+  color: white;
+  font-weight: 500;
+  text-shadow: 0 0 .2em #000;
+  margin-top: 128px;
+}
+
 .ui.modal.dcl.login-modal .loader-background {
   border-radius: 24px;
-  background-color: rgba(0,0,0,1);
+}
+
+.ui.modal.dcl.login-modal .loader-background .EthConnectAdvice {
+  max-width: 380px;
+  margin-top: 152px;
 }
 
 .ui.modal.dcl.login-modal .loader {

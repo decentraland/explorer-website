@@ -13,6 +13,10 @@
   cursor: default;
 }
 
+.LoginItemContainer.loading.active .EthConnectAdvice {
+  color: white;
+}
+
 .LoginItemContainer .ui.loader.massive {
   box-sizing: border-box;
   border-radius: 100%;

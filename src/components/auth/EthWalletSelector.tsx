@@ -4,6 +4,7 @@ import { isCucumberProvider, isDapperProvider } from 'decentraland-dapps/dist/li
 import { Loader } from 'decentraland-ui/dist/components/Loader/Loader'
 import { LoginModal, LoginModalOptionType } from 'decentraland-ui/dist/components/LoginModal/LoginModal'
 import { isElectron } from '../../integration/desktop'
+import { EthConnectAdvice } from './EthConnectAdvice'
 
 export interface WalletSelectorProps {
   open: boolean
@@ -62,7 +63,9 @@ export const EthWalletSelector: React.FC<WalletSelectorProps> = React.memo(({
       subtitle: ''
     }}
   >
-      {loading && <div className="loader-background" />}
+      {loading && <div className="loader-background">
+        <EthConnectAdvice provider={provider} />
+      </div>}
       {loading && <Loader active={loading} provider={provider} size="massive" />}
       {!isElectron() && <LoginModal.Option type={browserWallet || LoginModalOptionType.METAMASK} onClick={handleLoginInjected} />}
       <LoginModal.Option type={LoginModalOptionType.FORTMATIC} onClick={handleLoginFortmatic} />

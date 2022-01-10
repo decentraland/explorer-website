@@ -5,6 +5,7 @@ import { Loader } from 'decentraland-ui/dist/components/Loader/Loader'
 import guest from '../../images/guest.jpg'
 import wallets from '../../images/wallets.jpg'
 import './LoginItemContainer.css'
+import { EthConnectAdvice } from './EthConnectAdvice'
 
 export type LoginItemContainerProps = {
   onClick?: () => void,
@@ -24,7 +25,7 @@ export const LoginItemContainer = React.memo(function ({ children, className, lo
     <div className="LoginItemContainer__Content">
       {children}
     </div>
-    {loading && active && <div className="loader-background" />}
+    {loading && active && <div className="loader-background"><EthConnectAdvice provider={provider} /></div>}
     <Loader active={active && loading} provider={provider} size="massive" />
   </div>
 })
