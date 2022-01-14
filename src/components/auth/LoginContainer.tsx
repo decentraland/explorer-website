@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { LoginState } from '@dcl/kernel-interface'
+import { ProviderType } from '@dcl/schemas/dist/dapps/provider-type'
 import { connect } from 'react-redux'
 import { connection } from 'decentraland-connect/dist/index'
-import { ProviderType } from 'decentraland-connect/dist/types'
 import { Container } from '../common/Layout/Container'
 import { StoreType } from '../../state/redux'
 import { authenticate } from '../../kernel-loader'
@@ -13,6 +13,9 @@ import { track } from '../../utils/tracking'
 import logo from '../../images/logo.png'
 import './LoginContainer.css'
 
+
+export const defaultAvailableProviders = []
+
 const mapStateToProps = (state: StoreType): LoginContainerProps => {
   // test all connectors
   const enableProviders = new Set([ProviderType.INJECTED, ProviderType.FORTMATIC, ProviderType.WALLET_CONNECT])
@@ -20,8 +23,11 @@ const mapStateToProps = (state: StoreType): LoginContainerProps => {
   return {
     availableProviders,
     stage: state.session.kernelState?.loginStatus,
+    provider: state.session.connection?.providerType,
     kernelReady: state.kernel.ready,
-    rendererReady: state.renderer.ready
+    rendererReady: state.renderer.ready,
+    isGuest: state.session.kernelState ? state.session.kernelState.isGuest : undefined,
+    isWallet: state.session.kernelState ? !state.session.kernelState.isGuest && !!state.session.connection : undefined,
   }
 }
 
@@ -34,16 +40,19 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 export interface LoginContainerProps {
   stage?: LoginState
-  availableProviders: ProviderType[]
+  provider?: ProviderType
+  availableProviders?: ProviderType[]
   kernelReady: boolean
   rendererReady: boolean
+  isGuest?: boolean
+  isWallet?: boolean
 }
 
 export interface LoginContainerDispatch {
   onLogin: (provider: ProviderType | null) => void
 }
 
-export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispatch> = ({ onLogin, stage, kernelReady, availableProviders }) => {
+export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispatch> = ({ onLogin, stage, isWallet, isGuest, provider, kernelReady, availableProviders }) => {
   const [ showWalletSelector, setShowWalletSelector ] = useState(false)
   const onSelect = useCallback(
     () => {
@@ -66,6 +75,14 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
     !kernelReady
   }, [ stage, kernelReady ])
 
+  const providerInUse = useMemo(() => {
+    if (stage === LoginState.AUTHENTICATING || stage === LoginState.SIGNATURE_PENDING) {
+      return provider
+    }
+
+    return undefined
+  }, [ stage, provider ])
+
   if (stage === LoginState.COMPLETED) {
     return <React.Fragment />
   }
@@ -80,16 +97,17 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
           <p>Sign In or Create an Account</p>
         </div>
         <div>
-          <LoginWalletItem loading={loading} onClick={onSelect} />
-          <LoginGuestItem loading={loading} onClick={onGuest} />
+          <LoginWalletItem loading={loading} active={isWallet} onClick={onSelect} provider={providerInUse} />
+          <LoginGuestItem loading={loading} active={isGuest} onClick={onGuest} />
         </div>
       </Container>
 
       <EthWalletSelector
         open={showWalletSelector}
         loading={loading}
+        availableProviders={availableProviders || defaultAvailableProviders}
+        provider={providerInUse}
         onLogin={onLogin}
-        availableProviders={availableProviders}
         onCancel={onCancel}
       />
     </main>

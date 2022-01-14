@@ -1,6 +1,7 @@
-import { connection, ProviderType, ConnectionResponse } from 'decentraland-connect'
+import { connection, ConnectionResponse } from 'decentraland-connect'
 import { WebSocketProvider } from 'eth-connect'
-import { ChainId } from '@dcl/schemas'
+import { ChainId } from '@dcl/schemas/dist/dapps/chain-id'
+import { ProviderType } from '@dcl/schemas/dist/dapps/provider-type'
 import { IEthereumProvider } from '@dcl/kernel-interface'
 import { defaultWebsiteErrorTracker } from '../utils/tracking'
 

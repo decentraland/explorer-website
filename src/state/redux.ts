@@ -3,6 +3,7 @@ import { KernelAccountState, KernelResult, KernelLoadingProgress } from '@dcl/ke
 import { FeatureFlagsResult } from '@dcl/feature-flags'
 import { kernelReducer, sessionReducer, rendererReducer, errorReducer, bannerReducer, downloadReducer, featureFlagsReducer } from './reducers'
 import { composeWithDevTools } from 'redux-devtools-extension'
+import { ConnectionData } from 'decentraland-connect/dist/types'
 
 export type KernelState = {
   ready: boolean
@@ -21,6 +22,7 @@ export type SessionState = {
   // and it _never_ changes during the session
   sessionId: string
   kernelState: KernelAccountState | null
+  connection: ConnectionData | null
   ready: boolean
 }
 
