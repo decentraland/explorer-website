@@ -17,8 +17,11 @@ import './LoginContainer.css'
 export const defaultAvailableProviders = []
 
 const mapStateToProps = (state: StoreType): LoginContainerProps => {
+  console.log('state: ', state);
   // test all connectors
-  const enableProviders = new Set([ProviderType.INJECTED, ProviderType.FORTMATIC, ProviderType.WALLET_CONNECT])
+  const enableProviders = new Set([ProviderType.INJECTED, ProviderType.FORTMATIC, ProviderType.WALLET_CONNECT, ProviderType.WALLET_LINK])
+  console.log('ProviderType: ', ProviderType);
+  console.log('enableProviders: ', enableProviders);
   const availableProviders = connection.getAvailableProviders().filter((provider) => enableProviders.has(provider))
   return {
     availableProviders,
@@ -53,11 +56,13 @@ export interface LoginContainerDispatch {
 }
 
 export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispatch> = ({ onLogin, stage, isWallet, isGuest, provider, kernelReady, availableProviders }) => {
+  console.log('availableProviders: ', availableProviders);
+  console.log('provider: ', provider);
   const [ showWalletSelector, setShowWalletSelector ] = useState(false)
   const onSelect = useCallback(
     () => {
       if (isElectron() && onLogin) {
-        onLogin(ProviderType.WALLET_CONNECT)
+        setShowWalletSelector(true)
       } else {
         track('open_login_popup')
         setShowWalletSelector(true)
@@ -79,9 +84,10 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
     if (stage === LoginState.AUTHENTICATING || stage === LoginState.SIGNATURE_PENDING) {
       return provider
     }
-
+    
     return undefined
   }, [ stage, provider ])
+  console.log('providerInUse: ', providerInUse);
 
   if (stage === LoginState.COMPLETED) {
     return <React.Fragment />
