@@ -62,6 +62,11 @@
         }
       }
 
+      /* Without this, some of wallet link modal component backgrounds are being overwriten by other body styles */
+      .-walletlink-css-reset body {
+        background-color: unset !important;
+      }
+
       * {
         box-sizing: border-box;
       }
