@@ -8,7 +8,6 @@ import { StoreType } from '../../state/redux'
 import { authenticate } from '../../kernel-loader'
 import { EthWalletSelector } from './EthWalletSelector'
 import { LoginGuestItem, LoginWalletItem } from './LoginItemContainer'
-import { isElectron } from '../../integration/desktop'
 import { track } from '../../utils/tracking'
 import logo from '../../images/logo.png'
 import './LoginContainer.css'
@@ -17,11 +16,13 @@ import './LoginContainer.css'
 export const defaultAvailableProviders = []
 
 const mapStateToProps = (state: StoreType): LoginContainerProps => {
-  console.log('state: ', state);
   // test all connectors
-  const enableProviders = new Set([ProviderType.INJECTED, ProviderType.FORTMATIC, ProviderType.WALLET_CONNECT, ProviderType.WALLET_LINK])
-  console.log('ProviderType: ', ProviderType);
-  console.log('enableProviders: ', enableProviders);
+  const enableProviders = new Set([
+    ProviderType.INJECTED, 
+    ProviderType.FORTMATIC, 
+    ProviderType.WALLET_CONNECT, 
+    ProviderType.WALLET_LINK
+  ])
   const availableProviders = connection.getAvailableProviders().filter((provider) => enableProviders.has(provider))
   return {
     availableProviders,
@@ -34,7 +35,7 @@ const mapStateToProps = (state: StoreType): LoginContainerProps => {
   }
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (_dispatch: any) => ({
   onLogin: (providerType: ProviderType | null) => {
     track('click_login_button', { provider_type: providerType || 'guest' })
     authenticate(providerType)
@@ -56,19 +57,13 @@ export interface LoginContainerDispatch {
 }
 
 export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispatch> = ({ onLogin, stage, isWallet, isGuest, provider, kernelReady, availableProviders }) => {
-  console.log('availableProviders: ', availableProviders);
-  console.log('provider: ', provider);
   const [ showWalletSelector, setShowWalletSelector ] = useState(false)
   const onSelect = useCallback(
     () => {
-      if (isElectron() && onLogin) {
-        setShowWalletSelector(true)
-      } else {
-        track('open_login_popup')
-        setShowWalletSelector(true)
-      }
+      track('open_login_popup')
+      setShowWalletSelector(true)
     },
-    [ onLogin ]
+    []
   )
   const onCancel = useCallback(() => setShowWalletSelector(false), [])
   const onGuest = useCallback(() => onLogin && onLogin(null), [ onLogin ])
@@ -87,7 +82,6 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
     
     return undefined
   }, [ stage, provider ])
-  console.log('providerInUse: ', providerInUse);
 
   if (stage === LoginState.COMPLETED) {
     return <React.Fragment />
