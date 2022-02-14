@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { configureRollbar, configureSegment } from './integration/analytics'
 import { store } from './state/redux'
-import { hideRoot, initializeKernel } from './integration/kernel'
+import { configureKernel, initializeKernel } from './integration/kernel'
 import { initializeBrowserRecommendation } from './integration/browser'
 import App from './components/App'
 import { initializeDesktopApp } from './integration/desktop'
@@ -11,6 +11,7 @@ import { initializeFeatureFlags } from './integration/featureFlags'
 
 configureSegment()
 configureRollbar()
+configureKernel(store)
 
 ReactDOM.render(
   <React.StrictMode>
@@ -24,6 +25,5 @@ ReactDOM.render(
     initializeBrowserRecommendation()
     initializeFeatureFlags()
     initializeDesktopApp()
-    store.subscribe(() => hideRoot(store.getState()))
   }
 )

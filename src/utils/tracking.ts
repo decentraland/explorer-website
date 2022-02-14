@@ -5,7 +5,9 @@ import { callOnce } from './callOnce'
 import { isRecommendedBrowser } from '../integration/browser'
 import { RENDERER_TYPE } from '../integration/queryParamsConfig'
 
-const ethereum = window.ethereum as any
+// declare var ethereum: Record<string, boolean>
+const ethereum = (window as any).ethereum
+const rollouts = (window as any).ROLLOUTS
 
 const getWalletName = callOnce(() => {
   if (!ethereum) {
@@ -32,12 +34,33 @@ const getWalletName = callOnce(() => {
 })
 
 const getWalletProps = callOnce(() => {
-  return Object.keys(ethereum || {})
-    .filter((prop) => prop.startsWith('is') && typeof ethereum[prop] === 'boolean')
+  if (!ethereum) {
+    return ''
+  }
+
+  return Object.keys(ethereum)
+    .filter((prop) => prop.startsWith('is') && typeof ethereum![prop] === 'boolean')
     .join(',')
 })
 
-const environmentType = { rendererType: RENDERER_TYPE }
+const getEnvironmentProperties = callOnce(() => {
+  const properties: Record<string, string> = {
+    rendererType: RENDERER_TYPE
+  }
+
+  if (rollouts) {
+    for (const rollout of Object.keys(rollouts)) {
+      const lib = rollouts[rollout]
+      if (lib && lib.prefix && lib.version) {
+        properties[lib.prefix || rollout] = lib.version
+      }
+    }
+  }
+
+  return properties
+})
+
+
 
 /**
  * The only function used by this react app to track its own events.
@@ -48,7 +71,8 @@ export function track<E extends keyof TrackingEvents>(event: E, properties?: Tra
   const wallet = getWalletName()
   const walletProps = getWalletProps()
   const recommendedBrowser = isRecommendedBrowser()
-  internalTrackEvent(event, { wallet, walletProps, recommendedBrowser, ...properties, ...environmentType })
+  const environmentProperties = getEnvironmentProperties()
+  internalTrackEvent(event, { wallet, walletProps, recommendedBrowser, ...properties, ...environmentProperties })
 }
 
 

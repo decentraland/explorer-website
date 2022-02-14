@@ -2,6 +2,7 @@ import { store } from '../state/redux'
 import { getRequiredAnalyticsContext } from '../state/selectors'
 import { errorToString } from '../utils/errorToString'
 import { track } from '../utils/tracking'
+import { isElectron } from './desktop'
 import { DEBUG_ANALYTICS, RENDERER_TYPE } from './queryParamsConfig'
 
 let analyticsDisabled = false
@@ -20,6 +21,17 @@ const authFlags = {
 // TODO fill with segment keys and integrate identity server
 export function configureSegment() {
   // all decentraland.org domains are considered PRD
+  if (isElectron()) {
+    if (
+      typeof window !== 'undefined' &&
+      typeof window.process === 'object' &&
+      (window.process as any).ELECTRON_MODE === 'production'
+    ) {
+      return initialize(AnalyticsAccount.PRD)
+    }
+    return initialize(AnalyticsAccount.DEV)
+  }
+
   if (globalThis.location.host.endsWith('.decentraland.org')) {
     return initialize(AnalyticsAccount.PRD)
   }
@@ -52,7 +64,7 @@ export function configureRollbar() {
   }
 
   if ((window as any).Rollbar) {
-    ;(window as any).Rollbar.configure({ transform: rollbarTransformer })
+    ; (window as any).Rollbar.configure({ transform: rollbarTransformer })
   }
 }
 
@@ -64,7 +76,7 @@ export function disableAnalytics() {
   analyticsDisabled = true
 
   if ((window as any).Rollbar) {
-    ;(window as any).Rollbar.configure({ enabled: false })
+    ; (window as any).Rollbar.configure({ enabled: false })
   }
 
   if (DEBUG_ANALYTICS) {
@@ -81,21 +93,20 @@ export function trackError(error: string | Error, payload?: Record<string, any>)
   if (!(window as any).Rollbar) return
 
   if (typeof error === 'string') {
-    ;(window as any).Rollbar.critical(errorToString(error), payload)
+    ; (window as any).Rollbar.critical(errorToString(error), payload)
   } else if (error && error instanceof Error) {
-    ;(window as any).Rollbar.critical(
+    ; (window as any).Rollbar.critical(
       errorToString(error),
       Object.assign(error, payload, { fullErrorStack: error.toString() })
     )
   } else {
-    ;(window as any).Rollbar.critical(errorToString(error), payload)
+    ; (window as any).Rollbar.critical(errorToString(error), payload)
   }
 }
 
 export function identifyUser(address: string, isGuest: boolean, email?: string) {
   authFlags.isGuest = isGuest
   authFlags.isAuthenticated = !!address
-
   if (window.analytics) {
     const userTraits = {
       sessionId: getRequiredAnalyticsContext(store.getState()).sessionId,
