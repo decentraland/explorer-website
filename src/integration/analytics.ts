@@ -2,7 +2,6 @@ import { store } from '../state/redux'
 import { getRequiredAnalyticsContext } from '../state/selectors'
 import { errorToString } from '../utils/errorToString'
 import { track } from '../utils/tracking'
-import { isElectron } from './desktop'
 import { DEBUG_ANALYTICS, RENDERER_TYPE } from './queryParamsConfig'
 
 let analyticsDisabled = false
@@ -21,17 +20,6 @@ const authFlags = {
 // TODO fill with segment keys and integrate identity server
 export function configureSegment() {
   // all decentraland.org domains are considered PRD
-  if (isElectron()) {
-    if (
-      typeof window !== 'undefined' &&
-      typeof window.process === 'object' &&
-      (window.process as any).ELECTRON_MODE === 'production'
-    ) {
-      return initialize(AnalyticsAccount.PRD)
-    }
-    return initialize(AnalyticsAccount.DEV)
-  }
-
   if (globalThis.location.host.endsWith('.decentraland.org')) {
     return initialize(AnalyticsAccount.PRD)
   }
