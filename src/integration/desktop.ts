@@ -2,7 +2,7 @@ import { setDownloadNewVersion, setDownloadProgress, setDownloadReady, setKernel
 import { store } from '../state/redux'
 import { callOnce } from '../utils/callOnce'
 
-export const isElectron = (): boolean => {
+export const isElectron = callOnce((): boolean => {
   // Renderer process
   if (
     typeof window !== 'undefined' &&
@@ -27,7 +27,7 @@ export const isElectron = (): boolean => {
   }
 
   return false
-}
+})
 
 export const initializeDesktopApp = callOnce(() => {
   if (isElectron()) {

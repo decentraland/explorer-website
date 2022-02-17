@@ -1,3 +1,4 @@
+import { Store } from "redux"
 import { StoreType } from "../state/redux"
 import { startKernel } from "../kernel-loader"
 import { callOnce } from "../utils/callOnce"
@@ -20,8 +21,12 @@ export const initializeKernel = callOnce(() => {
   fadeoutElement('root-loading')
 })
 
+export function configureKernel(store: Store<StoreType>) {
+  store.subscribe(() => hideRoot(store.getState()))
+}
+
 let ROOT_HIDDEN = false
-export const hideRoot = (state: StoreType) => {
+function hideRoot (state: StoreType) {
   const sessionReady = !!state.session?.ready
   const rendererReady = !!state.renderer?.ready
   const error = !!state.error?.error
@@ -33,6 +38,4 @@ export const hideRoot = (state: StoreType) => {
     ROOT_HIDDEN = false
     document.getElementById('root')!.style.display = 'block'
   }
-
-
 }
