@@ -12,15 +12,14 @@ import { track } from '../../utils/tracking'
 import logo from '../../images/logo.png'
 import './LoginContainer.css'
 
-
 export const defaultAvailableProviders = []
 
 const mapStateToProps = (state: StoreType): LoginContainerProps => {
   // test all connectors
   const enableProviders = new Set([
-    ProviderType.INJECTED, 
-    ProviderType.FORTMATIC, 
-    ProviderType.WALLET_CONNECT, 
+    ProviderType.INJECTED,
+    ProviderType.FORTMATIC,
+    ProviderType.WALLET_CONNECT,
     ProviderType.WALLET_LINK
   ])
   const availableProviders = connection.getAvailableProviders().filter((provider) => enableProviders.has(provider))
@@ -31,7 +30,7 @@ const mapStateToProps = (state: StoreType): LoginContainerProps => {
     kernelReady: state.kernel.ready,
     rendererReady: state.renderer.ready,
     isGuest: state.session.kernelState ? state.session.kernelState.isGuest : undefined,
-    isWallet: state.session.kernelState ? !state.session.kernelState.isGuest && !!state.session.connection : undefined,
+    isWallet: state.session.kernelState ? !state.session.kernelState.isGuest && !!state.session.connection : undefined
   }
 }
 
@@ -56,32 +55,39 @@ export interface LoginContainerDispatch {
   onLogin: (provider: ProviderType | null) => void
 }
 
-export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispatch> = ({ onLogin, stage, isWallet, isGuest, provider, kernelReady, availableProviders }) => {
-  const [ showWalletSelector, setShowWalletSelector ] = useState(false)
-  const onSelect = useCallback(
-    () => {
-      track('open_login_popup')
-      setShowWalletSelector(true)
-    },
-    []
-  )
+export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispatch> = ({
+  onLogin,
+  stage,
+  isWallet,
+  isGuest,
+  provider,
+  kernelReady,
+  availableProviders
+}) => {
+  const [showWalletSelector, setShowWalletSelector] = useState(false)
+  const onSelect = useCallback(() => {
+    track('open_login_popup')
+    setShowWalletSelector(true)
+  }, [])
   const onCancel = useCallback(() => setShowWalletSelector(false), [])
-  const onGuest = useCallback(() => onLogin && onLogin(null), [ onLogin ])
+  const onGuest = useCallback(() => onLogin && onLogin(null), [onLogin])
   const loading = useMemo(() => {
-    return  stage === LoginState.SIGNATURE_PENDING ||
-    stage === LoginState.WAITING_PROFILE ||
-    stage === LoginState.WAITING_RENDERER ||
-    stage === LoginState.LOADING ||
-    !kernelReady
-  }, [ stage, kernelReady ])
+    return (
+      stage === LoginState.SIGNATURE_PENDING ||
+      stage === LoginState.WAITING_PROFILE ||
+      stage === LoginState.WAITING_RENDERER ||
+      stage === LoginState.LOADING ||
+      !kernelReady
+    )
+  }, [stage, kernelReady])
 
   const providerInUse = useMemo(() => {
     if (stage === LoginState.AUTHENTICATING || stage === LoginState.SIGNATURE_PENDING) {
       return provider
     }
-    
+
     return undefined
-  }, [ stage, provider ])
+  }, [stage, provider])
 
   if (stage === LoginState.COMPLETED) {
     return <React.Fragment />
@@ -89,9 +95,9 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
 
   return (
     <main className="LoginContainer">
-    {/* {stage === LoginState.CONNECT_ADVICE && <EthConnectAdvice onLogin={onLogin} />} */}
-    {/* {stage === LoginState.SIGN_ADVICE && <EthSignAdvice />} */}
-    <Container>
+      {/* {stage === LoginState.CONNECT_ADVICE && <EthConnectAdvice onLogin={onLogin} />} */}
+      {/* {stage === LoginState.SIGN_ADVICE && <EthSignAdvice />} */}
+      <Container>
         <div className="LogoContainer">
           <img alt="decentraland" src={logo} height="40" width="212" />
           <p>Sign In or Create an Account</p>
