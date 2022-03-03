@@ -2,6 +2,7 @@ import { store } from '../state/redux'
 import { getRequiredAnalyticsContext } from '../state/selectors'
 import { errorToString } from '../utils/errorToString'
 import { track } from '../utils/tracking'
+import { isElectron } from './desktop'
 import { DEBUG_ANALYTICS, RENDERER_TYPE } from './queryParamsConfig'
 
 let analyticsDisabled = false
@@ -9,6 +10,11 @@ let analyticsDisabled = false
 enum AnalyticsAccount {
   PRD = '1plAT9a2wOOgbPCrTaU8rgGUMzgUTJtU',
   DEV = 'a4h4BC4dL1v7FhIQKKuPHEdZIiNRDVhc'
+}
+
+enum RollbarAccount {
+  Web = '44963d3f89db4e5cbf552faba06c6ec0',
+  Desktop = '73e7ead7a15d4de3b26cecdda99b63c2'
 }
 
 const authFlags = {
@@ -51,8 +57,14 @@ export function configureRollbar() {
     injectTrackingMetadata(payload)
   }
 
-  if ((window as any).Rollbar) {
-    ; (window as any).Rollbar.configure({ transform: rollbarTransformer })
+  const Rollbar = (window as any).Rollbar
+  const accessToken  = isElectron() ? RollbarAccount.Desktop : RollbarAccount.Web
+
+  if (Rollbar) {
+    Rollbar.configure({
+      accessToken,
+      transform: rollbarTransformer
+    })
   }
 }
 
