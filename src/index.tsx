@@ -26,6 +26,6 @@ ReactDOM.render(
     initializeBrowserRecommendation()
     initializeFeatureFlags()
     initializeDesktopApp()
-    clearWalletConnect()
+    clearWalletConnect() // Remove WC data stored in local storage to prevent auto connect
   }
 )
