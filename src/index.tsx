@@ -8,6 +8,7 @@ import { initializeBrowserRecommendation } from './integration/browser'
 import App from './components/App'
 import { initializeDesktopApp } from './integration/desktop'
 import { initializeFeatureFlags } from './integration/featureFlags'
+import { clearWalletConnect } from './utils/clearWalletConnect'
 
 configureSegment()
 configureRollbar()
@@ -25,5 +26,6 @@ ReactDOM.render(
     initializeBrowserRecommendation()
     initializeFeatureFlags()
     initializeDesktopApp()
+    clearWalletConnect()
   }
 )
