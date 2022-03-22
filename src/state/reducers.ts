@@ -14,7 +14,16 @@ import {
   SET_RENDERER_VISIBLE,
   SET_FEATURE_FLAGS
 } from './actions'
-import { KernelState, SessionState, RendererState, ErrorState, BannerState, DownloadState, DownloadCurrentState, FeatureFlagsState } from './redux'
+import {
+  KernelState,
+  SessionState,
+  RendererState,
+  ErrorState,
+  BannerState,
+  DownloadState,
+  DownloadCurrentState,
+  FeatureFlagsState
+} from './redux'
 import { v4 } from 'uuid'
 import { errorToString } from '../utils/errorToString'
 import { isElectron } from '../integration/desktop'
@@ -43,13 +52,11 @@ export function sessionReducer(state: SessionState | undefined, action: AnyActio
   if (!state) return defaultSession
 
   if (action.type === SET_KERNEL_ACCOUNT_STATE) {
-    console.info('SET_KERNEL_ACCOUNT_STATE', action.payload)
     const kernelState = action.payload as KernelAccountState
-    const ready = (
+    const ready =
       kernelState.loginStatus === LoginState.SIGN_UP ||
       kernelState.loginStatus === LoginState.WAITING_PROFILE ||
       kernelState.loginStatus === LoginState.COMPLETED
-      )
 
     return {
       ...state,
@@ -65,7 +72,8 @@ export function sessionReducer(state: SessionState | undefined, action: AnyActio
 export function rendererReducer(state: RendererState | undefined, action: AnyAction): RendererState {
   if (state && action.type === SET_RENDERER_READY) {
     return { ...state, ready: action.payload.ready }
-  } if (state && action.type === SET_RENDERER_VISIBLE) {
+  }
+  if (state && action.type === SET_RENDERER_VISIBLE) {
     return { ...state, visible: action.payload.visible }
   } else if (state && action.type === SET_RENDERER_LOADING) {
     return { ...state, loading: action.payload }
@@ -112,7 +120,7 @@ export function downloadReducer(state: DownloadState | undefined, action: AnyAct
     progress: 0,
     currentState: DownloadCurrentState.NONE,
     authCompleted: false,
-    ready: false,
+    ready: false
   }
 
   if (!isElectron()) {
@@ -144,15 +152,17 @@ export function downloadReducer(state: DownloadState | undefined, action: AnyAct
   return state
 }
 
-
-export function featureFlagsReducer(state: FeatureFlagsState = defaultFeatureFlagsState, action: AnyAction): FeatureFlagsState {
+export function featureFlagsReducer(
+  state: FeatureFlagsState = defaultFeatureFlagsState,
+  action: AnyAction
+): FeatureFlagsState {
   if (action.type === SET_FEATURE_FLAGS) {
     const result: FeatureFlagsState = action.payload
     return {
       ...state,
       flags: {
         ...state.flags,
-        ...result.flags,
+        ...result.flags
       },
       variants: {
         ...state.variants,
