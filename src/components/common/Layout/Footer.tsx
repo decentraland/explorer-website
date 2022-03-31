@@ -1,9 +1,9 @@
 import React from 'react'
 import './Footer.css'
-import discord from '../../images/footer/Discord.png'
-import reddit from '../../images/footer/Reddit.png'
-import github from '../../images/footer/Git.png'
-import twitter from '../../images/footer/Twitter.png'
+import discord from '../../../images/footer/Discord.png'
+import reddit from '../../../images/footer/Reddit.png'
+import github from '../../../images/footer/Git.png'
+import twitter from '../../../images/footer/Twitter.png'
 
 export const Footer: React.FC = () => (
   <footer className="footer-bar">

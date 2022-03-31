@@ -1,5 +1,97 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Storyshots Explorer/Errors Fatal Error 1`] = `
+<div
+  className="error-container"
+  id="error-fatal"
+>
+  <div
+    className="error-background"
+  />
+  <div
+    className="errormessage"
+  >
+    <div
+      className="errortext col"
+    >
+      <div
+        className="error"
+      >
+        Oops!
+      </div>
+      <div
+        className="communicationslink"
+      >
+        Something went wrong
+      </div>
+      <div
+        className="givesomedetailof"
+      >
+        <div>
+          An error happened while loading Decentraland.
+        </div>
+      </div>
+      <div
+        className="cta"
+      >
+        <button
+          className="retry"
+          onClick={[Function]}
+        >
+          Reload
+        </button>
+      </div>
+    </div>
+    <div
+      className="errorimage col"
+    >
+      <div
+        className="imagewrapper"
+      >
+        <img
+          alt=""
+          className="error-image"
+          src="error-robotdown.png"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Explorer/Warnings Network Warning 1`] = `
+<div
+  className="network-warning-bar"
+  id="network-warning"
+>
+  <div
+    className="network-warning-title"
+  >
+    <strong>
+      Warning:
+    </strong>
+     you’re running on the Ethereum Mainnet.
+  </div>
+  <div
+    className="network-warning-description"
+  >
+    Blockchain transactions in this network have a cost and real consequences. We recommend you use the
+     
+    <strong>
+      Ropsten
+    </strong>
+     test network instead.
+  </div>
+  <button
+    className="network-warning-button"
+  >
+    ⨯
+  </button>
+</div>
+`;
+
+exports[`Storyshots Explorer/Warnings None 1`] = `null`;
+
 exports[`Storyshots Explorer/base/Audio Template 1`] = `
 <audio
   autoPlay={true}
@@ -118,6 +210,58 @@ exports[`Storyshots Explorer/base/BigFooter Template 1`] = `
       2022
        Decentraland
     </p>
+  </div>
+</footer>
+`;
+
+exports[`Storyshots Explorer/base/Footer Template 1`] = `
+<footer
+  className="footer-bar"
+>
+  <div
+    className="footer-bar-content"
+  >
+    <a
+      href="https://decentraland.org/discord"
+      target="about:blank"
+    >
+      <img
+        alt=""
+        src="Discord.png"
+      />
+    </a>
+    <a
+      href="https://www.reddit.com/r/decentraland/"
+      target="about:blank"
+    >
+      <img
+        alt=""
+        src="Reddit.png"
+      />
+    </a>
+    <a
+      href="http://github.com/decentraland"
+      target="about:blank"
+    >
+      <img
+        alt=""
+        src="Git.png"
+      />
+    </a>
+    <a
+      href="https://twitter.com/decentraland"
+      target="about:blank"
+    >
+      <img
+        alt=""
+        src="Twitter.png"
+      />
+    </a>
+    <span
+      className="footer-text"
+    >
+      © 2021 Decentraland
+    </span>
   </div>
 </footer>
 `;
