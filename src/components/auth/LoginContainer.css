@@ -41,9 +41,9 @@ main.LoginContainer {
 .LoginContainer > .eth-container {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
   height: calc(100% - 128px);
-  margin: 64px auto;
+  margin: 128px auto 64px;
+  justify-content: space-between;
 }
 
 .LoginContainer > .eth-container > div {
@@ -72,6 +72,21 @@ main.LoginContainer {
 
 .LoginContainer .LoginItemContainer {
   margin: 0 30px
+}
+
+.LoginContainer .DownloadDesktopApp {
+  display: block;
+  background: rgba(0, 0, 0, 0.48);
+  border-radius: 24px;
+  color: white;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 24px;
+  padding: 12px 24px 12px 46px;
+  background-image: url('../../images/warning.svg');
+  background-repeat: no-repeat;
+  background-position: 14px 14px;
+  cursor: pointer;
 }
 
 @media screen and (min-height: 900px) {

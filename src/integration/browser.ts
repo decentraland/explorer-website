@@ -45,6 +45,22 @@ export const isRecommendedBrowser = callOnce(() => {
   }
 })
 
+export function isWindows() {
+  if ((navigator as any).userAgentData?.platform === 'Windows') {
+    return true
+  }
+
+  if (/Windows/gi.test(navigator.userAgent)) {
+    return true
+  }
+
+  if (navigator.platform === 'Win32' || navigator.platform === 'Win64') {
+    return true
+  }
+
+  return false
+}
+
 export type UserPosition = Partial<{
   realm: string,
   position: string,
