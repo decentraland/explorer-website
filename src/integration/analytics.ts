@@ -150,5 +150,5 @@ export function internalTrackEvent(eventName: string, eventData: Record<string, 
     console.info('explorer-website: DEBUG_ANALYTICS trackEvent', eventName, data)
   }
 
-  return window.analytics.track(eventName, data)
+  window.analytics.track(eventName, data)
 }
