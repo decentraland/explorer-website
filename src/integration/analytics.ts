@@ -137,7 +137,7 @@ async function initialize(segmentKey: string): Promise<void> {
 }
 
 // please use src/utils "track" function.
-export function internalTrackEvent(eventName: string, eventData: Record<string, any>) {
+export async function internalTrackEvent(eventName: string, eventData: Record<string, any>) {
   if (!window.analytics || analyticsDisabled) {
     return
   }
@@ -150,5 +150,5 @@ export function internalTrackEvent(eventName: string, eventData: Record<string, 
     console.info('explorer-website: DEBUG_ANALYTICS trackEvent', eventName, data)
   }
 
-  window.analytics.track(eventName, data)
+  return window.analytics.track(eventName, data)
 }

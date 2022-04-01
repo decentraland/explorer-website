@@ -9,6 +9,7 @@ import { authenticate } from '../../kernel-loader'
 import { EthWalletSelector } from './EthWalletSelector'
 import { LoginGuestItem, LoginWalletItem } from './LoginItemContainer'
 import { isElectron } from '../../integration/desktop'
+import { disconnect } from '../../eth/provider'
 import { track } from '../../utils/tracking'
 import logo from '../../images/logo.png'
 import './LoginContainer.css'
@@ -35,6 +36,11 @@ const mapDispatchToProps = (dispatch: any) => ({
   onLogin: (providerType: ProviderType | null) => {
     track('click_login_button', { provider_type: providerType || 'guest' })
     authenticate(providerType)
+  },
+  onCancelLogin: () => {
+    track('click_login_button')
+      .then(() => disconnect())
+      .then(() => window.location.reload())
   }
 })
 
@@ -50,9 +56,10 @@ export interface LoginContainerProps {
 
 export interface LoginContainerDispatch {
   onLogin: (provider: ProviderType | null) => void
+  onCancelLogin: () => void
 }
 
-export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispatch> = ({ onLogin, stage, isWallet, isGuest, provider, kernelReady, availableProviders }) => {
+export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispatch> = ({ onLogin, onCancelLogin, stage, isWallet, isGuest, provider, kernelReady, availableProviders }) => {
   const [ showWalletSelector, setShowWalletSelector ] = useState(false)
   const onSelect = useCallback(
     () => {
@@ -97,7 +104,7 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
           <p>Sign In or Create an Account</p>
         </div>
         <div>
-          <LoginWalletItem loading={loading} active={isWallet} onClick={onSelect} provider={providerInUse} />
+          <LoginWalletItem loading={loading} active={isWallet} onClick={onSelect} provider={providerInUse} onCancel={onCancelLogin} />
           <LoginGuestItem loading={loading} active={isGuest} onClick={onGuest} />
         </div>
       </Container>

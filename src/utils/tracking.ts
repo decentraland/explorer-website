@@ -72,7 +72,7 @@ export function track<E extends keyof TrackingEvents>(event: E, properties?: Tra
   const walletProps = getWalletProps()
   const recommendedBrowser = isRecommendedBrowser()
   const environmentProperties = getEnvironmentProperties()
-  internalTrackEvent(event, { wallet, walletProps, recommendedBrowser, ...properties, ...environmentProperties })
+  return internalTrackEvent(event, { wallet, walletProps, recommendedBrowser, ...properties, ...environmentProperties })
 }
 
 

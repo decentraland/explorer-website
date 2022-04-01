@@ -170,8 +170,6 @@
   text-align: center;
   color: white;
   font-weight: 500;
-  text-shadow: 0 0 .2em #000;
-  margin-top: 128px;
 }
 
 .ui.modal.dcl.login-modal .loader-background {
@@ -180,7 +178,7 @@
 
 .ui.modal.dcl.login-modal .loader-background .EthConnectAdvice {
   max-width: 380px;
-  margin-top: 152px;
+  margin-top: 128px;
 }
 
 .ui.modal.dcl.login-modal .loader {

@@ -9,6 +9,7 @@ import { EthConnectAdvice } from './EthConnectAdvice'
 
 export type LoginItemContainerProps = {
   onClick?: () => void,
+  onCancel?: () => void,
   className?: string
   loading?: boolean
   active?: boolean
@@ -16,7 +17,7 @@ export type LoginItemContainerProps = {
   children?: React.ReactNode
 }
 
-export const LoginItemContainer = React.memo(function ({ children, className, loading, active, provider, onClick }: LoginItemContainerProps) {
+export const LoginItemContainer = React.memo(function ({ children, className, loading, active, provider, onClick, onCancel }: LoginItemContainerProps) {
   return <div
       className={`LoginItemContainer ${className || ''} ${loading ? 'loading' : ''} ${active ? 'active' : ''}`}
       onClick={loading ? undefined : onClick}
@@ -26,9 +27,11 @@ export const LoginItemContainer = React.memo(function ({ children, className, lo
       {children}
     </div>
     {loading && active && <div className="loader-background">
-      <EthConnectAdvice provider={provider} />
+      <Loader active={active && loading} provider={provider} size="massive" />
+      {provider && <EthConnectAdvice provider={provider} style={{ marginTop: '27px'}} />}
+      {onCancel && provider && <div style={{ marginTop: '22px'}}>- or -</div>}
+      {onCancel && provider && <Button onClick={onCancel} style={{ marginTop: '28px'}}>cancel</Button>}
     </div>}
-    <Loader active={active && loading} provider={provider} size="massive" />
   </div>
 })
 
