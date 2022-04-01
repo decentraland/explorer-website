@@ -39,7 +39,7 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
   onCancelLogin: () => {
     track('click_login_button')
-      .then(() => disconnect())
+    disconnect()
       .then(() => window.location.reload())
   }
 })
