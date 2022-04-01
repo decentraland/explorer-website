@@ -18,7 +18,7 @@ import { KernelResult } from '@dcl/kernel-interface'
 import { ENV, NETWORK } from '../integration/queryParamsConfig'
 import { RequestManager } from 'eth-connect'
 import { errorToString } from '../utils/errorToString'
-import { isElectron } from '../integration/desktop'
+import { isElectron, launchDesktopApp } from '../integration/desktop'
 
 // this function exists because decentraland-connect seems to return
 // invalid or cached values in chainId, ignoring network changes in the
@@ -336,14 +336,18 @@ export function startKernel() {
 
   track('initialize_versions', injectVersions({}))
 
-  initKernel()
-    .then((kernel) => {
-      store.dispatch(setKernelLoaded(kernel))
-
-      return initLogin(kernel)
-    })
-    .catch((error) => {
-      store.dispatch(setKernelError({ error }))
-      defaultWebsiteErrorTracker(error)
+  launchDesktopApp()
+    .then((launched) => {
+      return initKernel()
+        .then((kernel) => {
+          store.dispatch(setKernelLoaded(kernel))
+          if (!launched) {
+            return initLogin(kernel)
+          }
+        })
+        .catch((error) => {
+          store.dispatch(setKernelError({ error }))
+          defaultWebsiteErrorTracker(error)
+        })
     })
 }

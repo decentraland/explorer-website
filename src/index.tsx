@@ -5,9 +5,9 @@ import { configureRollbar, configureSegment } from './integration/analytics'
 import { store } from './state/redux'
 import { configureKernel, initializeKernel } from './integration/kernel'
 import { initializeBrowserRecommendation } from './integration/browser'
-import App from './components/App'
 import { initializeDesktopApp } from './integration/desktop'
 import { initializeFeatureFlags } from './integration/featureFlags'
+import App from './components/App'
 
 configureSegment()
 configureRollbar()

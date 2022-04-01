@@ -1,6 +1,8 @@
 import { setDownloadNewVersion, setDownloadProgress, setDownloadReady, setKernelError } from '../state/actions'
 import { store } from '../state/redux'
 import { callOnce } from '../utils/callOnce'
+import { parsePosition } from '../utils/parsePosition'
+import { getCurrentPosition, isMobile } from './browser'
 
 export const isElectron = callOnce((): boolean => {
   // Renderer process
@@ -59,3 +61,37 @@ export const initializeDesktopApp = callOnce(() => {
     console.log('Electron found')
   }
 })
+
+export async function launchDesktopApp() {
+  if (isElectron() || isMobile()) {
+    return false
+  }
+
+  const data = getCurrentPosition()
+  if (!data.position) {
+    return false
+  }
+
+  const position = parsePosition(data.position)
+  if (!position) {
+    return false
+  }
+
+  let installed = true
+  const isInstalled = () => { installed = false }
+  const [x, y] = position
+
+  window.addEventListener('blur', isInstalled);
+  const iframe = document.createElement('iframe')
+  iframe.setAttribute('style', 'display: none')
+  iframe.src = `dcl://position=${x},${y}`
+
+  document.body.appendChild(iframe)
+  return new Promise<boolean>((resolve) => {
+    setTimeout(() => {
+      window.removeEventListener('blur', isInstalled)
+      document.body.removeChild(iframe)
+      resolve(installed)
+    }, 500);
+  })
+}

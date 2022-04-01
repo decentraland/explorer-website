@@ -2,6 +2,7 @@ import { store } from '../state/redux'
 import { getRequiredAnalyticsContext } from '../state/selectors'
 import { errorToString } from '../utils/errorToString'
 import { track } from '../utils/tracking'
+import { getCurrentPosition } from './browser'
 import { isElectron } from './desktop'
 import { DEBUG_ANALYTICS, RENDERER_TYPE } from './queryParamsConfig'
 
@@ -34,18 +35,7 @@ export function configureSegment() {
 }
 
 function injectTrackingMetadata(payload: Record<string, any>): void {
-  const qs = new URLSearchParams(globalThis.location.search || '')
-
-  // inject realm
-  if (qs.has('realm')) {
-    payload.realm = qs.get('realm')
-  }
-
-  // inject position
-  if (qs.has('position')) {
-    payload.position = qs.get('position')
-  }
-
+  Object.assign(payload, getCurrentPosition())
   payload.dcl_is_authenticated = authFlags.isAuthenticated
   payload.dcl_is_guest = authFlags.isGuest
   payload.dcl_disabled_analytics = authFlags.afterFatalError

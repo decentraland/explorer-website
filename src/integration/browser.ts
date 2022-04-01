@@ -44,3 +44,25 @@ export const isRecommendedBrowser = callOnce(() => {
       return false
   }
 })
+
+export type UserPosition = Partial<{
+  realm: string,
+  position: string,
+}>
+
+export function getCurrentPosition() {
+  const data: UserPosition = {}
+  const qs = new URLSearchParams(globalThis.location.search || '')
+
+  // inject realm
+  if (qs.has('realm')) {
+    data.realm = qs.get('realm')!
+  }
+
+  // inject position
+  if (qs.has('position')) {
+    data.position = qs.get('position')!
+  }
+
+  return data
+}
