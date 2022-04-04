@@ -17,7 +17,9 @@ export type TrackingEvents = {
   /** when a provider is selected to play */
   click_login_button: {
     provider_type: string
-  }
+  },
+  /** when user cancel the current login */
+  click_cancel_login_button: {},
   /** when the user disconnects */
   disconnection: {}
   /** explorer-website errors (react, sagas or loading components) */

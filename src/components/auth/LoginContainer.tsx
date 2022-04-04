@@ -38,7 +38,7 @@ const mapDispatchToProps = (dispatch: any) => ({
     authenticate(providerType)
   },
   onCancelLogin: () => {
-    track('click_login_button')
+    track('click_cancel_login_button')
     disconnect()
       .then(() => window.location.reload())
   }
