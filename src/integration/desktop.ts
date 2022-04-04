@@ -1,7 +1,6 @@
 import { setDownloadNewVersion, setDownloadProgress, setDownloadReady, setKernelError } from '../state/actions'
 import { store } from '../state/redux'
 import { callOnce } from '../utils/callOnce'
-import { parsePosition } from '../utils/parsePosition'
 import { getCurrentPosition, isMobile } from './browser'
 
 export const isElectron = callOnce((): boolean => {
@@ -74,14 +73,17 @@ export async function launchDesktopApp() {
   }
 
   // build custom protocal target usign current url `position` and `realm`
-  // if the is no position `0,0` should be open
   const data = getCurrentPosition()
-  const position = parsePosition(data.position || '0,0')
-  const [x, y] = position || [0, 0]
-  let customProtocolTarget = `dcl://position=${x},${y}`
-  if (data.realm) {
-    customProtocolTarget += `&realm=${data.realm}`
+  let customProtocolParams: string [] = []
+  if (data.position) {
+    customProtocolParams.push(`position=${data.position}`)
   }
+
+  if (data.realm) {
+    customProtocolParams.push(`realm=${data.realm}`)
+  }
+
+  const customProtocolTarget = `dcl://${customProtocolParams.join('&')}`
 
   // assume that the desktop version is installed only if
   // we detect a loss of focus on window
