@@ -338,6 +338,10 @@ export function startKernel() {
 
   launchDesktopApp()
     .then((launched) => {
+      if (launched) {
+        track('desktop_launched')
+      }
+
       return initKernel()
         .then((kernel) => {
           store.dispatch(setKernelLoaded(kernel))
