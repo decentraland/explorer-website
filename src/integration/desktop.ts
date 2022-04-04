@@ -72,7 +72,7 @@ export async function launchDesktopApp() {
     return false
   }
 
-  // build custom protocal target usign current url `position` and `realm`
+  // build custom protocol target using current url `position` and `realm`
   const data = getCurrentPosition()
   let customProtocolParams: string [] = []
   if (data.position) {
