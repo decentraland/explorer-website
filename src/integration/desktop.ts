@@ -73,20 +73,11 @@ export async function launchDesktopApp() {
     return false
   }
 
-  // get current position and reaml data
+  // build custom protocal target usign current url `position` and `realm`
+  // if the is no position `0,0` should be open
   const data = getCurrentPosition()
-  if (!data.position) {
-    return false
-  }
-
-  const position = parsePosition(data.position)
-  if (!position) {
-    // prevent launchif there is no position defined
-    return false
-  }
-
-  // build custom protocal target
-  const [x, y] = position
+  const position = parsePosition(data.position || '0,0')
+  const [x, y] = position || [0, 0]
   let customProtocolTarget = `dcl://position=${x},${y}`
   if (data.realm) {
     customProtocolTarget += `&realm=${data.realm}`
