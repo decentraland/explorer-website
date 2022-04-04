@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import { ProviderType } from '@dcl/schemas/dist/dapps/provider-type'
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import { Loader } from 'decentraland-ui/dist/components/Loader/Loader'
@@ -18,6 +18,14 @@ export type LoginItemContainerProps = {
 }
 
 export const LoginItemContainer = React.memo(function ({ children, className, loading, active, provider, onClick, onCancel }: LoginItemContainerProps) {
+  const [ cancel, setCancel ] = useState(false)
+  const handleCancel = useCallback(() => {
+    setCancel(true)
+    if (onCancel) {
+      onCancel()
+    }
+  }, [ cancel, onCancel ])
+
   return <div
       className={`LoginItemContainer ${className || ''} ${loading ? 'loading' : ''} ${active ? 'active' : ''}`}
       onClick={loading ? undefined : onClick}
@@ -30,7 +38,7 @@ export const LoginItemContainer = React.memo(function ({ children, className, lo
       <Loader active={active && loading} provider={provider} size="massive" />
       {provider && <EthConnectAdvice provider={provider} style={{ marginTop: '27px'}} />}
       {onCancel && provider && <div style={{ marginTop: '22px'}}>- or -</div>}
-      {onCancel && provider && <Button onClick={onCancel} style={{ marginTop: '28px'}}>cancel</Button>}
+      {onCancel && provider && <Button onClick={handleCancel} loading={cancel} style={{ marginTop: '28px'}}>cancel</Button>}
     </div>}
   </div>
 })
