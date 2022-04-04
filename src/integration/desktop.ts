@@ -92,7 +92,7 @@ export async function launchDesktopApp() {
   window.addEventListener('blur', isInstalled);
 
   // inject an iframe that open the desktop version
-  // NOTE: this can be also achive with
+  // NOTE: this can be also achieved with
   // ```js
   //   window.location.href = customProtocolTarget
   // ```
