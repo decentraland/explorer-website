@@ -24,7 +24,7 @@ export const LoginItemContainer = React.memo(function ({ children, className, lo
     if (onCancel) {
       onCancel()
     }
-  }, [ cancel, onCancel ])
+  }, [ onCancel, setCancel ])
 
   return <div
       className={`LoginItemContainer ${className || ''} ${loading ? 'loading' : ''} ${active ? 'active' : ''}`}
