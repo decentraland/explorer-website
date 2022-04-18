@@ -144,7 +144,7 @@ export function downloadReducer(state: DownloadState | undefined, action: AnyAct
   }
 
   if (state.authCompleted && state.currentState === DownloadCurrentState.READY) {
-    const { ipcRenderer } = window.require('electron')
+    const ipcRenderer = (window as any).electron.ipcRenderer
     ipcRenderer.send('executeProcess')
     state = { ...state, currentState: DownloadCurrentState.EXECUTED, ready: true }
   }
