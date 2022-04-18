@@ -34,7 +34,8 @@ export const getIpcRenderer = () => {
   if ((window as any).electron)
     return (window as any).electron.ipcRenderer
   else {
-    const { ipcRenderer } = (window as any).require('electron') // DEPRECATED
+    /** @deprecated `window.require` is deprecated in explorer-desktop-launcher v0.1.35. */
+    const { ipcRenderer } = (window as any).require('electron')
     return ipcRenderer
   }  
 }
