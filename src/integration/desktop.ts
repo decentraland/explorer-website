@@ -30,9 +30,18 @@ export const isElectron = callOnce((): boolean => {
   return false
 })
 
+export const getIpcRenderer = () => {
+  if ((window as any).electron)
+    return (window as any).electron.ipcRenderer
+  else {
+    const { ipcRenderer } = (window as any).require('electron') // DEPRECATED
+    return ipcRenderer
+  }  
+}
+
 export const initializeDesktopApp = callOnce(() => {
   if (isElectron()) {
-    const ipcRenderer = (window as any).electron.ipcRenderer
+    const ipcRenderer = getIpcRenderer()
 
     ipcRenderer.on('downloadState', (event: any, payload: any): any => {
       switch (payload.type) {
