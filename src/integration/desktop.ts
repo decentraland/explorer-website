@@ -30,15 +30,18 @@ export const isElectron = callOnce((): boolean => {
   return false
 })
 
+export const getIpcRenderer = () => {
+  if ((window as any).electron)
+    return (window as any).electron.ipcRenderer
+  else {
+    /** @deprecated `window.require` is deprecated in explorer-desktop-launcher v0.1.35. */
+    const { ipcRenderer } = (window as any).require('electron')
+    return ipcRenderer
+  }  
+}
+
 export const initializeDesktopApp = callOnce(() => {
   if (isElectron()) {
-    if ((window as any).require) {
-      const error = new Error("You're using an old version of Decentraland Desktop. Please update it from https://github.com/decentraland/explorer-desktop-launcher/releases")
-      store.dispatch(setKernelError({ error }))
-      throw error;
-    }
-
-
     const ipcRenderer = getIpcRenderer()
 
     ipcRenderer.on('downloadState', (event: any, payload: any): any => {
