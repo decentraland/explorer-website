@@ -1,5 +1,5 @@
 import { setDownloadNewVersion, setDownloadProgress, setDownloadReady, setKernelError } from '../state/actions'
-import { ErrorType, store } from '../state/redux'
+import { store } from '../state/redux'
 import { callOnce } from '../utils/callOnce'
 import { getCurrentPosition, isMobile } from './browser'
 
@@ -31,18 +31,7 @@ export const isElectron = callOnce((): boolean => {
 })
 
 export const initializeDesktopApp = callOnce(() => {
-  if (isElectron()) {
-    if ((window as any).require) {
-      const error = new Error("You're using an old version of Decentraland Desktop. Please update it from https://github.com/decentraland/explorer-desktop-launcher/releases")
-      store.dispatch(
-        setKernelError({
-          error,
-          code: ErrorType.FATAL
-        })
-      )
-      throw error;
-    }
-
+  if (isElectron() && (window as any).electron) {
     const ipcRenderer = (window as any).electron.ipcRenderer
 
     ipcRenderer.on('downloadState', (event: any, payload: any): any => {
