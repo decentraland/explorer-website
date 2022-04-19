@@ -334,6 +334,20 @@ export function startKernel() {
     return
   }
 
+  if (isElectron()) {
+    if ((window as any).require) {
+      store.dispatch(
+        setKernelError({
+          error: new Error(
+            `You're using an old version of Decentraland Desktop. Please update it from https://github.com/decentraland/explorer-desktop-launcher/releases`
+          ),
+          code: ErrorType.FATAL
+        })
+      )
+      return
+    }
+  }
+
   track('initialize_versions', injectVersions({}))
 
   launchDesktopApp()
