@@ -10,6 +10,7 @@ import { EthWalletSelector } from './EthWalletSelector'
 import { LoginGuestItem, LoginWalletItem } from './LoginItemContainer'
 import { isElectron } from '../../integration/desktop'
 import { disconnect } from '../../eth/provider'
+import { isWindows } from '../../integration/browser'
 import { track } from '../../utils/tracking'
 import logo from '../../images/logo.png'
 import './LoginContainer.css'
@@ -70,17 +71,17 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
         setShowWalletSelector(true)
       }
     },
-    [ onLogin ]
+    [onLogin]
   )
   const onCancel = useCallback(() => setShowWalletSelector(false), [])
-  const onGuest = useCallback(() => onLogin && onLogin(null), [ onLogin ])
+  const onGuest = useCallback(() => onLogin && onLogin(null), [onLogin])
   const loading = useMemo(() => {
-    return  stage === LoginState.SIGNATURE_PENDING ||
-    stage === LoginState.WAITING_PROFILE ||
-    stage === LoginState.WAITING_RENDERER ||
-    stage === LoginState.LOADING ||
-    !kernelReady
-  }, [ stage, kernelReady ])
+    return stage === LoginState.SIGNATURE_PENDING ||
+      stage === LoginState.WAITING_PROFILE ||
+      stage === LoginState.WAITING_RENDERER ||
+      stage === LoginState.LOADING ||
+      !kernelReady
+  }, [stage, kernelReady])
 
   const providerInUse = useMemo(() => {
     if (stage === LoginState.AUTHENTICATING || stage === LoginState.SIGNATURE_PENDING) {
@@ -88,7 +89,9 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
     }
 
     return undefined
-  }, [ stage, provider ])
+  }, [stage, provider])
+
+  const desktopAvailable = useMemo(() => !isElectron() && isWindows(), [])
 
   if (stage === LoginState.COMPLETED) {
     return <React.Fragment />
@@ -96,9 +99,9 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
 
   return (
     <main className="LoginContainer">
-    {/* {stage === LoginState.CONNECT_ADVICE && <EthConnectAdvice onLogin={onLogin} />} */}
-    {/* {stage === LoginState.SIGN_ADVICE && <EthSignAdvice />} */}
-    <Container>
+      {/* {stage === LoginState.CONNECT_ADVICE && <EthConnectAdvice onLogin={onLogin} />} */}
+      {/* {stage === LoginState.SIGN_ADVICE && <EthSignAdvice />} */}
+      <Container>
         <div className="LogoContainer">
           <img alt="decentraland" src={logo} height="40" width="212" />
           <p>Sign In or Create an Account</p>
@@ -106,6 +109,11 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
         <div>
           <LoginWalletItem loading={loading} active={isWallet} onClick={onSelect} provider={providerInUse} onCancel={onCancelLogin} />
           <LoginGuestItem loading={loading} active={isGuest} onClick={onGuest} />
+        </div>
+        <div style={{ visibility: desktopAvailable ? 'visible' : 'hidden' }}>
+          <a className="DownloadDesktopApp" href="https://decentraland.org/download/" target="_blank" rel="noreferrer noopener">
+            Want to play on windows? <span style={{ textDecoration: 'underline' }}>Download the desktop client</span>
+          </a>
         </div>
       </Container>
 

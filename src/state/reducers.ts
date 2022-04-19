@@ -26,7 +26,7 @@ import {
 } from './redux'
 import { v4 } from 'uuid'
 import { errorToString } from '../utils/errorToString'
-import { isElectron } from '../integration/desktop'
+import { getIpcRenderer, isElectron } from '../integration/desktop'
 import { defaultFeatureFlagsState } from './types'
 
 export function kernelReducer(state: KernelState | undefined, action: AnyAction): KernelState {
@@ -144,7 +144,7 @@ export function downloadReducer(state: DownloadState | undefined, action: AnyAct
   }
 
   if (state.authCompleted && state.currentState === DownloadCurrentState.READY) {
-    const { ipcRenderer } = window.require('electron')
+    const ipcRenderer = getIpcRenderer()
     ipcRenderer.send('executeProcess')
     state = { ...state, currentState: DownloadCurrentState.EXECUTED, ready: true }
   }

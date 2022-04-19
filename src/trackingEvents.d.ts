@@ -40,6 +40,8 @@ export type TrackingEvents = {
   enable_renderer: {}
   /** Send kernel, website and renderer versions */
   initialize_versions: Record<string, string>,
+  /** when desktop client was detected */
+  desktop_launched: {}
 
   ab_test: {
     experimentId: string,
