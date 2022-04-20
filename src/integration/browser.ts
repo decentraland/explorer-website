@@ -45,6 +45,22 @@ export const isRecommendedBrowser = callOnce(() => {
   }
 })
 
+const BROWSER_LAST_SESSION_KEY = 'dcl-last-session-at'
+export const BROWSER_LAST_SESSION_EXPIRATION = 1000 * 60 * 60 * 24 * 7 /* one week */
+
+export const hasRecentlyLoggedIn = callOnce(() => {
+  const lastLoginAt = Number(localStorage.getItem(BROWSER_LAST_SESSION_KEY))
+  if (Number.isNaN(lastLoginAt)) {
+    return false
+  }
+
+  return lastLoginAt + BROWSER_LAST_SESSION_EXPIRATION > Date.now()
+})
+
+export function setAsRecentlyLoggedIn() {
+  localStorage.setItem(BROWSER_LAST_SESSION_KEY, String(Date.now()))
+}
+
 export function isWindows() {
   if ((navigator as any).userAgentData?.platform === 'Windows') {
     return true
