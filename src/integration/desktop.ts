@@ -72,7 +72,7 @@ export async function launchDesktopApp() {
     return false
   }
 
-  // prevent launh if the user logged in into the web version recently
+  // prevent launch if the user logged in into the web version recently
   if (hasRecentlyLoggedIn()) {
     return false
   }
