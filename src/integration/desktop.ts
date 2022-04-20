@@ -1,7 +1,7 @@
 import { setDownloadNewVersion, setDownloadProgress, setDownloadReady, setKernelError } from '../state/actions'
 import { store } from '../state/redux'
 import { callOnce } from '../utils/callOnce'
-import { getCurrentPosition, isMobile } from './browser'
+import { getCurrentPosition, hasRecentlyLoggedIn, isMobile } from './browser'
 
 export const isElectron = callOnce((): boolean => {
   // Renderer process
@@ -69,6 +69,11 @@ export const initializeDesktopApp = callOnce(() => {
 export async function launchDesktopApp() {
   // prevent launch for desktop and mobile
   if (isElectron() || isMobile()) {
+    return false
+  }
+
+  // prevent launh if the user logged in into the web version recently
+  if (hasRecentlyLoggedIn()) {
     return false
   }
 

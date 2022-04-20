@@ -19,6 +19,7 @@ import { ENV, NETWORK } from '../integration/queryParamsConfig'
 import { RequestManager } from 'eth-connect'
 import { errorToString } from '../utils/errorToString'
 import { isElectron, launchDesktopApp } from '../integration/desktop'
+import { setAsRecentlyLoggedIn } from '../integration/browser'
 
 // this function exists because decentraland-connect seems to return
 // invalid or cached values in chainId, ignoring network changes in the
@@ -74,6 +75,8 @@ export async function authenticate(providerType: ProviderType | null) {
     const kernel = store.getState().kernel.kernel
 
     if (!kernel) throw new Error('Kernel did not load yet')
+
+    setAsRecentlyLoggedIn()
 
     kernel.authenticate(provider, providerType == null /* isGuest */)
   } catch (err) {
