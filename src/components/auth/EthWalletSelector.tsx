@@ -68,12 +68,6 @@ export const EthWalletSelector: React.FC<WalletSelectorProps> = React.memo(({
       subtitle: ''
     }}
   >
-      {loading && <div className="loader-background">
-        <Loader active={loading} provider={provider} size="massive" />
-        <EthConnectAdvice provider={provider} style={{ marginTop: '27px'}} />
-        <div style={{ marginTop: '22px'}}>- or -</div>
-        <Button onClick={onCancelLogin} loading={canceling} style={{ marginTop: '28px'}}>cancel</Button>
-      </div>}
       {!isElectron() && <LoginModal.Option type={browserWallet || LoginModalOptionType.METAMASK} onClick={handleLoginInjected} />}
       <LoginModal.Option type={LoginModalOptionType.FORTMATIC} onClick={handleLoginFortmatic} />
       <LoginModal.Option type={LoginModalOptionType.WALLET_CONNECT} onClick={handleLoginWalletConnect}  />
@@ -86,5 +80,11 @@ export const EthWalletSelector: React.FC<WalletSelectorProps> = React.memo(({
           {'here'}
         </a>.
       </small>
+      {loading && <div className="loader-background">
+        <Loader active={loading} provider={provider} size="massive" />
+        <EthConnectAdvice provider={provider} style={{ marginTop: '27px'}} />
+        <div style={{ marginTop: '22px'}}>- or -</div>
+        <Button onClick={onCancelLogin} loading={canceling} style={{ marginTop: '28px'}}>cancel login</Button>
+      </div>}
     </LoginModal>
 })
