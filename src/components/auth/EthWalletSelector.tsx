@@ -1,7 +1,8 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { ProviderType } from '@dcl/schemas/dist/dapps/provider-type'
 import { isCucumberProvider, isDapperProvider } from 'decentraland-dapps/dist/lib/eth'
 import { Loader } from 'decentraland-ui/dist/components/Loader/Loader'
+import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import { LoginModal, LoginModalOptionType } from 'decentraland-ui/dist/components/LoginModal/LoginModal'
 import { isElectron } from '../../integration/desktop'
 import { EthConnectAdvice } from './EthConnectAdvice'
@@ -9,19 +10,23 @@ import { EthConnectAdvice } from './EthConnectAdvice'
 export interface WalletSelectorProps {
   open: boolean
   loading: boolean
+  canceling?: boolean
   provider?: ProviderType
   availableProviders?: ProviderType[]
   onLogin?: (provider: ProviderType | null) => void
-  onCancel?: () => void
+  onCancelLogin?: () => void
+  onClose?: () => void
 }
 
 export const EthWalletSelector: React.FC<WalletSelectorProps> = React.memo(({
   open,
   loading,
+  canceling,
   provider,
   availableProviders,
   onLogin,
-  onCancel
+  onCancelLogin,
+  onClose,
 }) => {
   const anchor = useMemo(() => {
     const a = document.createElement('a')
@@ -56,7 +61,7 @@ export const EthWalletSelector: React.FC<WalletSelectorProps> = React.memo(({
 
   return <LoginModal
     open={open}
-    onClose={onCancel}
+    onClose={onClose}
     i18n={{
       title: 'Connect your wallet',
       error: '',
@@ -64,9 +69,11 @@ export const EthWalletSelector: React.FC<WalletSelectorProps> = React.memo(({
     }}
   >
       {loading && <div className="loader-background">
-        <EthConnectAdvice provider={provider} />
+        <Loader active={loading} provider={provider} size="massive" />
+        <EthConnectAdvice provider={provider} style={{ marginTop: '27px'}} />
+        <div style={{ marginTop: '22px'}}>- or -</div>
+        <Button onClick={onCancelLogin} loading={canceling} style={{ marginTop: '28px'}}>cancel</Button>
       </div>}
-      {loading && <Loader active={loading} provider={provider} size="massive" />}
       {!isElectron() && <LoginModal.Option type={browserWallet || LoginModalOptionType.METAMASK} onClick={handleLoginInjected} />}
       <LoginModal.Option type={LoginModalOptionType.FORTMATIC} onClick={handleLoginFortmatic} />
       <LoginModal.Option type={LoginModalOptionType.WALLET_CONNECT} onClick={handleLoginWalletConnect}  />

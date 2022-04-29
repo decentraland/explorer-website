@@ -62,7 +62,7 @@ export interface LoginContainerDispatch {
 
 export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispatch> = ({ onLogin, onCancelLogin, stage, isWallet, isGuest, provider, kernelReady, availableProviders }) => {
   const [ showWalletSelector, setShowWalletSelector ] = useState(false)
-  const onSelect = useCallback(
+  const handleOpenSelector = useCallback(
     () => {
       if (isElectron() && onLogin) {
         onLogin(ProviderType.WALLET_CONNECT)
@@ -73,8 +73,17 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
     },
     [onLogin]
   )
-  const onCancel = useCallback(() => setShowWalletSelector(false), [])
-  const onGuest = useCallback(() => onLogin && onLogin(null), [onLogin])
+  const handleCloseSelector = useCallback(() => setShowWalletSelector(false), [])
+
+  const [ canceling, setCanceling ] = useState(false)
+  const handleCancelLogin = useCallback(() => {
+    if (onCancelLogin) {
+      setCanceling(true)
+      onCancelLogin()
+    }
+  }, [ onCancelLogin, setCanceling ])
+
+  const handleGuestLogin = useCallback(() => onLogin && onLogin(null), [onLogin])
   const loading = useMemo(() => {
     return stage === LoginState.SIGNATURE_PENDING ||
       stage === LoginState.WAITING_PROFILE ||
@@ -107,8 +116,8 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
           <p>Sign In or Create an Account</p>
         </div>
         <div>
-          <LoginWalletItem loading={loading} active={isWallet} onClick={onSelect} provider={providerInUse} onCancel={onCancelLogin} />
-          <LoginGuestItem loading={loading} active={isGuest} onClick={onGuest} />
+          <LoginWalletItem loading={loading} active={isWallet} onClick={handleOpenSelector} provider={providerInUse} onCancelLogin={handleCancelLogin} canceling={canceling} />
+          <LoginGuestItem loading={loading} active={isGuest} onClick={handleGuestLogin} />
         </div>
         <div style={{ visibility: desktopAvailable ? 'visible' : 'hidden' }}>
           <a className="DownloadDesktopApp" href="https://decentraland.org/download/" target="_blank" rel="noreferrer noopener">
@@ -123,7 +132,9 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
         availableProviders={availableProviders || defaultAvailableProviders}
         provider={providerInUse}
         onLogin={onLogin}
-        onCancel={onCancel}
+        canceling={canceling}
+        onCancelLogin={handleCancelLogin}
+        onClose={handleCloseSelector}
       />
     </main>
   )
