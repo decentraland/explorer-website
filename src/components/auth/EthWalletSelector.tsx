@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { ProviderType } from '@dcl/schemas/dist/dapps/provider-type'
 import { isCucumberProvider, isDapperProvider } from 'decentraland-dapps/dist/lib/eth'
 import { Loader } from 'decentraland-ui/dist/components/Loader/Loader'
