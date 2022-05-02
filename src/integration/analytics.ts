@@ -24,6 +24,15 @@ const authFlags = {
   afterFatalError: false
 }
 
+export type AnalyticsOptions = { integrations?: Record<string, boolean> }
+
+export const defaultAnalyticsOptions: AnalyticsOptions = {
+  integrations: {
+    'All': true,
+    'Google AdWords New': false
+  }
+}
+
 // TODO fill with segment keys and integrate identity server
 export function configureSegment() {
   // all decentraland.org domains are considered PRD
@@ -127,7 +136,11 @@ async function initialize(segmentKey: string): Promise<void> {
 }
 
 // please use src/utils "track" function.
-export function internalTrackEvent(eventName: string, eventData: Record<string, any>) {
+export function internalTrackEvent(
+  eventName: string,
+  eventData: Record<string, any>,
+  options?: { integrations?: Record<string, boolean> }
+) {
   if (!window.analytics || analyticsDisabled) {
     return
   }
@@ -137,8 +150,8 @@ export function internalTrackEvent(eventName: string, eventData: Record<string, 
   injectTrackingMetadata(data)
 
   if (DEBUG_ANALYTICS) {
-    console.info('explorer-website: DEBUG_ANALYTICS trackEvent', eventName, data)
+    console.info('explorer-website: DEBUG_ANALYTICS trackEvent', eventName, data, options)
   }
 
-  window.analytics.track(eventName, data)
+  window.analytics.track(eventName, data, options ?? defaultAnalyticsOptions)
 }
