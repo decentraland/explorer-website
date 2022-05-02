@@ -160,6 +160,7 @@
   background-color: rgba(0,0,0,.7);
   opacity: 1;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -174,16 +175,38 @@
 
 .ui.modal.dcl.login-modal .loader-background {
   border-radius: 24px;
+  color: white;
 }
 
 .ui.modal.dcl.login-modal .loader-background .EthConnectAdvice {
   max-width: 380px;
-  margin-top: 128px;
+}
+
+.ui.modal.dcl.login-modal  .loader-background .ui.button {
+  color: var(--primary);
+  font-size: 14px;
+  line-height: 17px;
+  border-radius: 12px;
+  padding: 14px 46px;
+  min-width: auto;
 }
 
 .ui.modal.dcl.login-modal .loader {
   background-color: rgba(0,0,0,.2);
   border-radius: 100%;
+}
+
+.ui.modal.dcl.login-modal .ui.loader {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: unset;
+}
+
+.ui.modal.dcl.login-modal .ui.big.loader {
+  width: 2.28571429rem;
+  height: 2.28571429rem;
+  font-size: 1em
 }
 
 .ui.modal.dcl.login-modal .ui.big.loader {

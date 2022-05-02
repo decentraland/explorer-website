@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React from 'react'
 import { ProviderType } from '@dcl/schemas/dist/dapps/provider-type'
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import { Loader } from 'decentraland-ui/dist/components/Loader/Loader'
@@ -9,22 +9,16 @@ import { EthConnectAdvice } from './EthConnectAdvice'
 
 export type LoginItemContainerProps = {
   onClick?: () => void,
-  onCancel?: () => void,
+  onCancelLogin?: () => void,
   className?: string
   loading?: boolean
+  canceling?: boolean
   active?: boolean
   provider?: ProviderType
   children?: React.ReactNode
 }
 
-export const LoginItemContainer = React.memo(function ({ children, className, loading, active, provider, onClick, onCancel }: LoginItemContainerProps) {
-  const [ cancel, setCancel ] = useState(false)
-  const handleCancel = useCallback(() => {
-    setCancel(true)
-    if (onCancel) {
-      onCancel()
-    }
-  }, [ onCancel, setCancel ])
+export const LoginItemContainer = React.memo(function ({ children, className, loading, canceling, active, provider, onClick, onCancelLogin }: LoginItemContainerProps) {
 
   return <div
       className={`LoginItemContainer ${className || ''} ${loading ? 'loading' : ''} ${active ? 'active' : ''}`}
@@ -37,8 +31,8 @@ export const LoginItemContainer = React.memo(function ({ children, className, lo
     {loading && active && <div className="loader-background">
       <Loader active={active && loading} provider={provider} size="massive" />
       {provider && <EthConnectAdvice provider={provider} style={{ marginTop: '27px'}} />}
-      {onCancel && provider && <div style={{ marginTop: '22px'}}>- or -</div>}
-      {onCancel && provider && <Button onClick={handleCancel} loading={cancel} style={{ marginTop: '28px'}}>cancel</Button>}
+      {onCancelLogin && provider && <div style={{ marginTop: '22px'}}>- or -</div>}
+      {onCancelLogin && provider && <Button onClick={onCancelLogin} loading={canceling} style={{ marginTop: '28px'}}>cancel</Button>}
     </div>}
   </div>
 })
