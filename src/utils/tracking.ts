@@ -1,5 +1,5 @@
 import { TrackingEvents } from '../trackingEvents'
-import { internalTrackEvent, trackError } from '../integration/analytics'
+import { AnalyticsOptions, internalTrackEvent, trackError } from '../integration/analytics'
 import { errorToString } from './errorToString'
 import { callOnce } from './callOnce'
 import { isRecommendedBrowser } from '../integration/browser'
@@ -8,6 +8,15 @@ import { RENDERER_TYPE } from '../integration/queryParamsConfig'
 // declare var ethereum: Record<string, boolean>
 const ethereum = (window as any).ethereum
 const rollouts = (window as any).ROLLOUTS
+
+const overriddenEventOptions: Partial<Record<keyof TrackingEvents, AnalyticsOptions>> = {
+  click_login_button: {
+    integrations: {
+      'All': true,
+      'Google AdWords New': true
+    }
+  }
+}
 
 const getWalletName = callOnce(() => {
   if (!ethereum) {
@@ -60,8 +69,6 @@ const getEnvironmentProperties = callOnce(() => {
   return properties
 })
 
-
-
 /**
  * The only function used by this react app to track its own events.
  * Please do not use internalTrackEvent directly, it is meant to be used by kernel
@@ -72,7 +79,11 @@ export function track<E extends keyof TrackingEvents>(event: E, properties?: Tra
   const walletProps = getWalletProps()
   const recommendedBrowser = isRecommendedBrowser()
   const environmentProperties = getEnvironmentProperties()
-  internalTrackEvent(event, { wallet, walletProps, recommendedBrowser, ...properties, ...environmentProperties })
+  internalTrackEvent(
+    event,
+    { wallet, walletProps, recommendedBrowser, ...properties, ...environmentProperties },
+    overriddenEventOptions[event]
+  )
 }
 
 
