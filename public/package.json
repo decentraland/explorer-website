@@ -1,6 +1,6 @@
 {
   "name": "@dcl/explorer-website",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "The website for decentraland's explorer ",
   "main": "website.js",
   "scripts": {
