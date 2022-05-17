@@ -1,3 +1,4 @@
+import { trackConnectWallet } from 'decentraland-dapps/dist/modules/analytics/utils'
 import { disconnect, getEthereumProvider, restoreConnection } from '../eth/provider'
 import { internalTrackEvent, identifyUser, trackError, disableAnalytics } from '../integration/analytics'
 import { injectKernel } from './injector'
@@ -79,6 +80,12 @@ export async function authenticate(providerType: ProviderType | null) {
     setAsRecentlyLoggedIn()
 
     kernel.authenticate(provider, providerType == null /* isGuest */)
+
+    // Use dapps lib helper to track wallet connection.
+    // Only when the user connects with a wallet and not as guest.
+    if (providerType) {
+      trackConnectWallet({ providerType })
+    }
   } catch (err) {
     if (
       err &&
@@ -353,22 +360,21 @@ export function startKernel() {
 
   track('initialize_versions', injectVersions({}))
 
-  launchDesktopApp()
-    .then((launched) => {
-      if (launched) {
-        track('desktop_launched')
-      }
+  launchDesktopApp().then((launched) => {
+    if (launched) {
+      track('desktop_launched')
+    }
 
-      return initKernel()
-        .then((kernel) => {
-          store.dispatch(setKernelLoaded(kernel))
-          if (!launched) {
-            return initLogin(kernel)
-          }
-        })
-        .catch((error) => {
-          store.dispatch(setKernelError({ error }))
-          defaultWebsiteErrorTracker(error)
-        })
-    })
+    return initKernel()
+      .then((kernel) => {
+        store.dispatch(setKernelLoaded(kernel))
+        if (!launched) {
+          return initLogin(kernel)
+        }
+      })
+      .catch((error) => {
+        store.dispatch(setKernelError({ error }))
+        defaultWebsiteErrorTracker(error)
+      })
+  })
 }
