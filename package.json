@@ -41,7 +41,7 @@
     "@dcl/schemas": "^4.7.0",
     "@dcl/urn-resolver": "^1.2.1",
     "decentraland-connect": "^3.0.0",
-    "decentraland-dapps": "^12.34.0",
+    "decentraland-dapps": "^12.49.0",
     "decentraland-ecs": "^6.10.0",
     "detect-browser": "^5.2.0",
     "eth-connect": "^6.0.2",
