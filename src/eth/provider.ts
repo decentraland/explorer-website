@@ -13,18 +13,27 @@ export const chainIdRpc = new Map<number, string>([
 export async function getEthereumProvider(
   type: ProviderType | null,
   chainId: ChainId
-): Promise<{ provider: IEthereumProvider; chainId: number }> {
+): Promise<{
+  provider: IEthereumProvider
+  chainId: number
+  account: string | null
+}> {
   if (type === null) {
     const rpc = chainIdRpc.get(chainId)
     if (!rpc) throw new Error("Can't get RPC for chainId " + chainId)
     return {
       provider: new WebSocketProvider(rpc),
-      chainId
+      chainId,
+      account: null
     }
   }
 
   const result = await connection.connect(type, chainId)
-  return { provider: result.provider, chainId: result.chainId }
+  return {
+    provider: result.provider,
+    chainId: result.chainId,
+    account: result.account
+  }
 }
 
 export async function restoreConnection(): Promise<ConnectionResponse | null> {
