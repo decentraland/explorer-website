@@ -40,7 +40,7 @@
     "@dcl/kernel-interface": "^2.0.0-20210922153939.commit-017905d",
     "@dcl/schemas": "^4.7.0",
     "@dcl/urn-resolver": "^1.2.1",
-    "decentraland-connect": "^3.0.0",
+    "decentraland-connect": "^3.3.1",
     "decentraland-dapps": "^12.50.0",
     "decentraland-ecs": "^6.10.0",
     "detect-browser": "^5.2.0",
