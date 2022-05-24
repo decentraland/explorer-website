@@ -1,49 +1,31 @@
 import React from 'react'
+import { Container, Details, Image, reload } from './Error'
+import { Button } from 'decentraland-ui/dist/components/Button/Button'
 
-import './errors.css'
 import errorImage from '../../images/errors/error-robotdown.png'
+import './errors.css'
 
-const defaultDetails: (string | JSX.Element)[] = [
-  'If you have any ad blocking extensions,',
-  'try turning them off for this site.',
-  '',
-  'Loading should not take any longer than 2-3 minutes.',
-  'If you seem to be stuck, make sure hardware acceleration is on.',
+const defaultDetails: React.ReactNode = <>
+  <div>If you have any ad blocking extensions,</div>
+  <div>try turning them off for this site.</div>
+  <div />
+  <div>Loading should not take any longer than 2-3 minutes.</div>
+  <div>If you seem to be stuck, make sure hardware acceleration is on.</div>
   <a href="https://docs.decentraland.org/decentraland/hardware-acceleration/">LEARN MORE</a>
-]
+</>
 
-export const ErrorFatal = (props: { details?: typeof defaultDetails }) => {
-  const details = props.details && props.details.length ? props.details : defaultDetails
-
-  return (
-    <div id="error-fatal" className="error-container">
-      <div className="error-background" />
-      <div className="errormessage">
-        <div className="errortext col">
-          <div className="error">Oops!</div>
-          <div className="communicationslink">Something went wrong</div>
-          <div className="givesomedetailof">
-            {details.map(($, ix) => (
-              <div key={ix}>{$}</div>
-            ))}
-          </div>
-          <div className="cta">
-            <button
-              className="retry"
-              onClick={() => {
-                window.location.reload()
-              }}
-            >
-              Reload
-            </button>
-          </div>
-        </div>
-        <div className="errorimage col">
-          <div className="imagewrapper">
-            <img alt="" className="error-image" src={errorImage} />
-          </div>
-        </div>
-      </div>
-    </div>
-  )
+export type ErrorFatalProps = {
+  details?: React.ReactNode
 }
+
+export const ErrorFatal = React.memo(function (props: ErrorFatalProps) {
+  return <Container id="error-fatal">
+    <Details
+      backgroundHeader="Oops!"
+      header="Something went wrong"
+      description={props.details || defaultDetails}>
+        <Button primary onClick={reload}>Reload</Button>
+      </Details>
+    <Image src={errorImage} />
+  </Container>
+})

@@ -11,6 +11,7 @@ import { ErrorNetworkMismatch } from './ErrorNetworkMismatch'
 import { ErrorNewLogin } from './ErrorNewLogin'
 import { ErrorNoMobile } from './ErrorNoMobile'
 import { ErrorNotSupported } from './ErrorNotSupported'
+import { useMobileResize } from '../../integration/mobile'
 
 const mapStateToProps = (state: StoreType): Pick<ErrorContainerProps, 'error'> => {
   return {
@@ -31,7 +32,9 @@ export interface ErrorContainerProps {
   closeError(): void
 }
 
-export const ErrorContainer: React.FC<ErrorContainerProps> = (props) => {
+export const ErrorContainer = React.memo(function (props: ErrorContainerProps) {
+  useMobileResize(!!props.error)
+
   if (!props.error) return <React.Fragment></React.Fragment>
 
   if (props.error.type === ErrorType.COMMS) return <ErrorComms />
@@ -46,9 +49,9 @@ export const ErrorContainer: React.FC<ErrorContainerProps> = (props) => {
 
   return (
     <React.Fragment>
-      <ErrorFatal details={[props.error.details || 'An error happened while loading Decentraland.']} />
+      <ErrorFatal details={props.error.details || 'An error happened while loading Decentraland.'} />
     </React.Fragment>
   )
-}
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(ErrorContainer)

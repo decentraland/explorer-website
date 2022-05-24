@@ -5,15 +5,7 @@ import errorImage from '../../images/errors/error-robotmobile.png'
 
 export const ErrorNoMobile: React.FC = () => (
   <div id="error-nomobile" className="hidden-error">
-    <div
-      className="error-background"
-      style={{
-        zIndex: 10,
-        width: '100%',
-        height: '100%',
-        backgroundColor: '#0d0c0f'
-      }}
-    />
+    <div className="error-background" />
     <div className="iphone8916" style={{ zIndex: 11 }}>
       <div
         className="div1"
