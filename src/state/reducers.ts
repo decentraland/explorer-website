@@ -89,7 +89,7 @@ export function rendererReducer(state: RendererState | undefined, action: AnyAct
 }
 
 export function errorReducer(state: ErrorState | undefined, action: AnyAction): ErrorState {
-  if (action.type === SET_KERNEL_ERROR) {
+  if (action.type === SET_KERNEL_ERROR && !state?.error) {
     const payload: KernelError = action.payload
 
     if (!payload) {
