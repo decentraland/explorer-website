@@ -26,6 +26,6 @@ export const ErrorFatal = React.memo(function (props: ErrorFatalProps) {
       description={props.details || defaultDetails}>
         <Button primary onClick={reload}>Reload</Button>
       </Details>
-    <Image src={errorImage} />
+    <Image alt="error-down-robot" src={errorImage} />
   </Container>
 })

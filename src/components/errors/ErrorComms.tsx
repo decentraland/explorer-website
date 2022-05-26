@@ -18,6 +18,6 @@ export const ErrorComms = React.memo(function () {
       </>}>
       <Button primary onClick={reload}>Reload</Button>
     </Details>
-    <Image src={errorImage} />
+    <Image alt="error-down-robot" src={errorImage} />
   </Container>
 })

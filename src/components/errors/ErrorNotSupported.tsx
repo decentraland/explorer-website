@@ -10,6 +10,6 @@ export const ErrorNotSupported = React.memo(function () {
       header="Your browser or device is not supported"
       description="The Explorer only works on Chrome or Firefox for Windows, Linux and macOS."
       />
-    <Image src={errorImage} />
+    <Image alt="error-mobile-robot" src={errorImage} />
   </Container>
 })

@@ -12,6 +12,6 @@ export const ErrorAvatarLoading = React.memo(function () {
         <a href="mailto:hello@decentraland.org">hello@decentraland.org</a>
       </>}
     />
-    <Image src={errorImage} />
+    <Image alt="error-mobile-robot" src={errorImage} />
   </Container>
 })

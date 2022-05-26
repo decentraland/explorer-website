@@ -17,6 +17,6 @@ export const ErrorMetamaskLocked = React.memo(function (props: ErrorNetworkMisma
       description={props.details}>
         <Button primary onClick={props.closeError}>Retry</Button>
       </Details>
-    <Image src={errorImage} />
+    <Image alt="error-smiling-robot" src={errorImage} />
   </Container>
 })

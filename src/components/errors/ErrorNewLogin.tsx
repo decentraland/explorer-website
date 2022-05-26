@@ -16,6 +16,6 @@ export const ErrorNewLogin = React.memo(function () {
         Please, close the prior session and click "Reload" to explore the world in this window.</>}>
       <Button primary onClick={reload}>Reload</Button>
     </Details>
-    <Image src={errorImage} />
+    <Image alt="error-smiling-robot" src={errorImage} />
   </Container>
 })

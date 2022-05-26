@@ -27,6 +27,6 @@ export const ErrorNetworkMismatch = React.memo(function (props: ErrorNetworkMism
       <Button primary onClick={reload}>Retry</Button>
       <Button primary onClick={props.onLogout}>Log out</Button>
     </Details>
-    <Image src={errorImage} />
+    <Image alt="error-smiling-robot" src={errorImage} />
   </Container>
 })

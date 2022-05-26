@@ -26,7 +26,7 @@ export const Details = React.memo(function ({ className, header, description, ba
 
 export const Image = React.memo(function ({ className, ...props }: React.ImgHTMLAttributes<HTMLImageElement>) {
   return <div className={classJoin(['error-image', className])}>
-    <img {...props} />
+    <img alt="error" {...props} />
   </div>
 })
 
