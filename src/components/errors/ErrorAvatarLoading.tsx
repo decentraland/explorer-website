@@ -1,10 +1,10 @@
 import React from 'react'
-import { Container, Details, Image } from './Error'
+import { ErrorContainer, ErrorDetails, ErrorImage } from './Error'
 import errorImage from '../../images/errors/error-robotmobile.png'
 
 export const ErrorAvatarLoading = React.memo(function () {
-  return <Container id="error-avatarerror">
-    <Details
+  return <ErrorContainer id="error-avatarerror">
+    <ErrorDetails
       backgroundHeader="Oops!"
       header="There was a technical issue and we were unable to retrieve your avatar information"
       description={<>
@@ -12,6 +12,6 @@ export const ErrorAvatarLoading = React.memo(function () {
         <a href="mailto:hello@decentraland.org">hello@decentraland.org</a>
       </>}
     />
-    <Image alt="error-mobile-robot" src={errorImage} />
-  </Container>
+    <ErrorImage alt="error-mobile-robot" src={errorImage} />
+  </ErrorContainer>
 })

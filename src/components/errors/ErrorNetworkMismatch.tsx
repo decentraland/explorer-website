@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
-import { Container, Details, Image, reload } from './Error'
+import { ErrorContainer, ErrorDetails, ErrorImage } from './Error'
+import { reload } from "./utils"
 import { NETWORK } from '../../integration/queryParamsConfig'
 
 import errorImage from '../../images/errors/robotsmiling.png'
@@ -12,8 +13,8 @@ export interface ErrorNetworkMismatchProps {
 }
 
 export const ErrorNetworkMismatch = React.memo(function (props: ErrorNetworkMismatchProps)  {
-  return <Container id="error-network-mismatch">
-    <Details
+  return <ErrorContainer id="error-network-mismatch">
+    <ErrorDetails
       backgroundHeader="Oops!"
       header="A network mismatch was detected"
       description={<>
@@ -26,7 +27,7 @@ export const ErrorNetworkMismatch = React.memo(function (props: ErrorNetworkMism
       </>}>
       <Button primary onClick={reload}>Retry</Button>
       <Button primary onClick={props.onLogout}>Log out</Button>
-    </Details>
-    <Image alt="error-smiling-robot" src={errorImage} />
-  </Container>
+    </ErrorDetails>
+    <ErrorImage alt="error-smiling-robot" src={errorImage} />
+  </ErrorContainer>
 })

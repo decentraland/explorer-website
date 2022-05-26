@@ -1,12 +1,13 @@
 import React from 'react'
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import errorImage from '../../images/errors/error-robotdown.png'
-import { Container, Details, Image, reload } from './Error'
+import { ErrorContainer, ErrorDetails, ErrorImage } from './Error'
+import { reload } from "./utils"
 import './errors.css'
 
 export const ErrorComms = React.memo(function () {
-  return <Container id="error-comms">
-    <Details
+  return <ErrorContainer id="error-comms">
+    <ErrorDetails
       backgroundHeader="Oops!"
       header={<> A communication link could not be <br /> established with other peers</>}
       description={<>
@@ -17,7 +18,7 @@ export const ErrorComms = React.memo(function () {
         You can also try a different realm.
       </>}>
       <Button primary onClick={reload}>Reload</Button>
-    </Details>
-    <Image alt="error-down-robot" src={errorImage} />
-  </Container>
+    </ErrorDetails>
+    <ErrorImage alt="error-down-robot" src={errorImage} />
+  </ErrorContainer>
 })

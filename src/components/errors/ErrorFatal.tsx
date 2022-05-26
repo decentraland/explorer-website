@@ -1,5 +1,6 @@
 import React from 'react'
-import { Container, Details, Image, reload } from './Error'
+import { ErrorContainer, ErrorDetails, ErrorImage } from './Error'
+import { reload } from "./utils"
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
 
 import errorImage from '../../images/errors/error-robotdown.png'
@@ -19,13 +20,13 @@ export type ErrorFatalProps = {
 }
 
 export const ErrorFatal = React.memo(function (props: ErrorFatalProps) {
-  return <Container id="error-fatal">
-    <Details
+  return <ErrorContainer id="error-fatal">
+    <ErrorDetails
       backgroundHeader="Oops!"
       header="Something went wrong"
       description={props.details || defaultDetails}>
         <Button primary onClick={reload}>Reload</Button>
-      </Details>
-    <Image alt="error-down-robot" src={errorImage} />
-  </Container>
+      </ErrorDetails>
+    <ErrorImage alt="error-down-robot" src={errorImage} />
+  </ErrorContainer>
 })
