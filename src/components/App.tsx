@@ -1,9 +1,4 @@
 import React, { useMemo } from 'react'
-import 'semantic-ui-css/semantic.min.css'
-import 'balloon-css/balloon.min.css'
-import 'decentraland-ui/dist/themes/base-theme.css'
-import 'decentraland-ui/dist/themes/alternative/light-theme.css'
-import './App.css'
 import { connect } from 'react-redux'
 import { useMobileMediaQuery } from 'decentraland-ui/dist/components/Media'
 import ErrorContainer from './errors/ErrorContainer'
@@ -19,6 +14,7 @@ import { Navbar } from './common/Layout/Navbar'
 import { FeatureFlags, getFeatureVariant } from '../state/selectors'
 import StreamContainer from './common/StreamContainer'
 import { isMobile } from '../integration/browser'
+import './App.css'
 
 function mapStateToProps(state: StoreType): AppProps {
   return {
