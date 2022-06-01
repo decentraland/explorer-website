@@ -4,8 +4,8 @@ import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import { Loader } from 'decentraland-ui/dist/components/Loader/Loader'
 import guest from '../../images/guest.jpg'
 import wallets from '../../images/wallets.jpg'
-import './LoginItemContainer.css'
 import { EthConnectAdvice } from './EthConnectAdvice'
+import './LoginItemContainer.css'
 
 export type LoginItemContainerProps = {
   onClick?: () => void,
