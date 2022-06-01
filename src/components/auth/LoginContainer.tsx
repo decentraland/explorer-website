@@ -64,14 +64,10 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
   const [ showWalletSelector, setShowWalletSelector ] = useState(false)
   const handleOpenSelector = useCallback(
     () => {
-      if (isElectron() && onLogin) {
-        onLogin(ProviderType.WALLET_CONNECT)
-      } else {
-        track('open_login_popup')
-        setShowWalletSelector(true)
-      }
+      track('open_login_popup')
+      setShowWalletSelector(true)
     },
-    [onLogin]
+    []
   )
   const handleCloseSelector = useCallback(() => setShowWalletSelector(false), [])
 
