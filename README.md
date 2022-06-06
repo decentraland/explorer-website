@@ -57,7 +57,7 @@ Then run `npm install` again.
 If you get this error when running `npm run start:linked`:
 
 ```
-Module not found: Can't resolve 'ethereumjs-abi' in '/Users/nolan/Documents/hayden5/decentraland/explorer-website/node_modules/eth-sig-util'
+Module not found: Can't resolve 'ethereumjs-abi' in './decentraland/explorer-website/node_modules/eth-sig-util'
 ```
 
 Run `npm install ethereumjs-abi` and try `npm run start:linked` again.
