@@ -149,6 +149,10 @@
   transition: transform ease .3s;
 }
 
+.LoginItemContainer .LoginItemContainer__Content .wallet-img {
+  top: 35px;
+}
+
 .LoginItemContainer.active .LoginItemContainer__Content img,
 .LoginItemContainer:hover .LoginItemContainer__Content img {
   transform: translate(11px, 25px);

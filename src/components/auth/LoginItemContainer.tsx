@@ -3,7 +3,7 @@ import { ProviderType } from '@dcl/schemas/dist/dapps/provider-type'
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import { Loader } from 'decentraland-ui/dist/components/Loader/Loader'
 import guest from '../../images/guest.jpg'
-import wallets from '../../images/wallets.jpg'
+import wallets from '../../images/wallet-img.png'
 import { EthConnectAdvice } from './EthConnectAdvice'
 import './LoginItemContainer.css'
 
@@ -39,7 +39,7 @@ export const LoginItemContainer = React.memo(function ({ children, className, lo
 
 export const LoginWalletItem = React.memo(function (props: LoginItemContainerProps) {
   return <LoginItemContainer {...props} className={`LoginWalletItem ${props.className || ''}`}>
-      <img alt="wallets" src={wallets} width="318" height="318" />
+      <img alt="wallets" src={wallets} width="318" className='wallet-img'/>
       <h2>Play using your wallet</h2>
       <p>Connect your account to fully enjoy Decentraland!</p>
       <Button primary size="huge" loading={props.loading && !props.active} disabled={props.loading}>Continue with wallet</Button>
