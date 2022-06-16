@@ -69,6 +69,7 @@ export const EthWalletSelector: React.FC<WalletSelectorProps> = React.memo(({
       subtitle: ''
     }}
   >
+      {/* METAMASK */}
       {!isElectron() ? (
         <LoginModal.Option type={browserWallet || LoginModalOptionType.METAMASK} onClick={handleLoginInjected} />
       ) : (
@@ -80,13 +81,35 @@ export const EthWalletSelector: React.FC<WalletSelectorProps> = React.memo(({
             // Decentraland ui picks the label depending on the type, METAMASK displays the browser_extension label.
             browser_extension: 'Using your mobile wallet',
             email: '',
-            mobile: ''
+            mobile: '',
+            mobile_and_browser: ''
           }}
         />
       )}
+
+      {/* FORTMATIC */}
       {!isElectron() && <LoginModal.Option type={LoginModalOptionType.FORTMATIC} onClick={handleLoginFortmatic} />}
+
+      {/* WALLET_CONNECT */}
       <LoginModal.Option type={LoginModalOptionType.WALLET_CONNECT} onClick={handleLoginWalletConnect}  />
-      <LoginModal.Option type={LoginModalOptionType.WALLET_LINK} onClick={handleLoginWalletLink}  />
+
+      {/* WALLET_LINK */}
+      {!isElectron() ? (
+        <LoginModal.Option type={LoginModalOptionType.WALLET_LINK} onClick={handleLoginWalletLink}  />
+      ) : (
+        <LoginModal.Option 
+          type={LoginModalOptionType.WALLET_LINK} 
+          onClick={handleLoginWalletLink} 
+          i18n={{
+            // Decentraland ui picks the label depending on the type, WALLET_LINK displays the mobile_and_browser label.
+            browser_extension: '',
+            email: '',
+            mobile: '',
+            mobile_and_browser: 'Using your mobile wallet'
+          }} 
+        />
+      )}
+      
       <small className="message">Trezor and smart contract wallets like Dapper, Argent or Gnosis safe, do not work with Polygon. Read more about the Trezor support status
         {' '}
         <a
