@@ -16,6 +16,7 @@ export function useMobileResize(active: boolean = true) {
       height: window.innerHeight,
       width: window.innerWidth,
     })
+
     resize()
 
     window.addEventListener('resize', resize)

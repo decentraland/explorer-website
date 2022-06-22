@@ -3,8 +3,11 @@ import { Navbar as Base } from'decentraland-ui/dist/components/Navbar/Navbar'
 import { JoinDiscord } from '../Button/JoinDiscord'
 import Menu from 'semantic-ui-react/dist/commonjs/collections/Menu'
 
+export type NavbarProps = {
+  rightMenu?: React.ReactNode
+}
 
-export const Navbar = React.memo(function () {
+export const Navbar = React.memo(function (props: NavbarProps) {
   return <Base
     isFullscreen
     leftMenu={<>
@@ -33,6 +36,6 @@ export const Navbar = React.memo(function () {
           {Base.defaultProps.i18n?.menu?.blog}
         </Menu.Item>
     </>}
-    rightMenu={<JoinDiscord />}
+    rightMenu={props.rightMenu ?? <JoinDiscord />}
   />
 })

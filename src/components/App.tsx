@@ -14,6 +14,7 @@ import { Navbar } from './common/Layout/Navbar'
 import { FeatureFlags, getFeatureVariant } from '../state/selectors'
 import StreamContainer from './common/StreamContainer'
 import { isMobile } from '../integration/browser'
+import MobileContainer from './common/MobileContainer'
 import './App.css'
 
 function mapStateToProps(state: StoreType): AppProps {
@@ -42,6 +43,10 @@ const App: React.FC<AppProps> = (props) => {
 
   if (props.hasStream && (small || mobile)) {
     return <StreamContainer />
+  }
+
+  if (small || mobile) {
+    return <MobileContainer />
   }
 
   if (props.error) {
