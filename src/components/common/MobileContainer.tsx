@@ -27,7 +27,7 @@ export default React.memo(() => {
       <div>
         <h1>Play Decentraland on Desktop</h1>
         <p>Decentraland is not available on mobile.</p>
-        <p>Visit <a href="https://dcl.gg/play">dcl.gg/play</a> in your desktop browser to access Decentraland.</p>
+        <p>Visit <strong>dcl.gg/play</strong> in your desktop browser to access Decentraland.</p>
       </div>
     </main>
 
