@@ -7,7 +7,7 @@ import './MobileContainer.css'
 
 export default React.memo(() => {
   useMobileResize()
-  const [state, setState] = useState({ sending: false, sent: false, error: false as false | Error })
+  const [state, setState] = useState({ sending: false, sent: false, error: null | Error })
   const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const data = new FormData(e.currentTarget)
