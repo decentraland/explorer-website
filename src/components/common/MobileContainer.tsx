@@ -7,22 +7,24 @@ import './MobileContainer.css'
 
 export default React.memo(() => {
   useMobileResize()
-  const [ state, setState ] = useState({ sending: false, sent: false, error: false as false | Error })
-  const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+  const [state, setState] = useState({ sending: false, sent: false, error: false as false | Error })
+  const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const data = new FormData(e.currentTarget)
     const email = data.get('email') as string
     if (isEmail(email)) {
-      Promise.resolve()
-        .then(async () => setState({ sending: true, sent: false, error: false }))
-        .then(async () => subscribe(email))
-        .then(async () => setState({ sending: false, sent: true, error: false }))
-        .catch(error => setState({ sending: false, sent: false, error }))
+      setState({ sending: true, sent: false, error: false })
+      try {
+        await subscribe(email)
+        setState({ sending: false, sent: true, error: false })
+      } catch (error) {
+        setState({ sending: false, sent: false, error: error as Error })
+      }
     }
   }, [])
 
   return <div className="MobileContainer">
-    <Navbar rightMenu={false}/>
+    <Navbar rightMenu={false} />
     <main className="MobileHero">
       <div>
         <h1>Play Decentraland on Desktop</h1>
