@@ -16,7 +16,7 @@ export default React.memo(() => {
       setState({ sending: true, sent: false, error: null })
       try {
         await subscribe(email)
-        setState({ sending: false, sent: true, error: false })
+        setState({ sending: false, sent: true, error: null })
       } catch (error) {
         setState({ sending: false, sent: false, error: error as Error })
       }
