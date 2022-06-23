@@ -13,7 +13,7 @@ export default React.memo(() => {
     const data = new FormData(e.currentTarget)
     const email = data.get('email') as string
     if (isEmail(email)) {
-      setState({ sending: true, sent: false, error: false })
+      setState({ sending: true, sent: false, error: null })
       try {
         await subscribe(email)
         setState({ sending: false, sent: true, error: false })
