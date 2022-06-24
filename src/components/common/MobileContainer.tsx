@@ -60,26 +60,46 @@ export default React.memo(() => {
     <section>
       <h2>Take Part</h2>
       <div className="grid padded">
-        <a className="item" href="https://market.decentraland.org" target="_blank" rel="noreferrer">
-          <svg width="328" height="200" style={{ backgroundImage: `url('https://decentraland.org/images/jacket.jpg')` }} />
-          <h3>Buy and sell on the Marketplace</h3>
-          <p>Decentraland is the first ever virtual world owned by its users.</p>
-        </a>
-        <a className="item" href="https://events.decentraland.org" target="_blank" rel="noreferrer">
-          <svg width="328" height="200" style={{ backgroundImage: `url('https://decentraland.org/blog/images/static/images/2020-recap-banner-500487ea620de46b53e5cb0783f231a0.png')` }} />
-          <h3>Find an event</h3>
-          <p>Decentraland is the first ever virtual world owned by its users.</p>
-        </a>
-        <a className="item" href="https://governance.decentraland.org" target="_blank" rel="noreferrer">
-          <svg width="328" height="200" style={{ backgroundImage: `url('https://decentraland.org/blog/images/static/images/governance-517ddb1597c85fa0efd1f5cfe765fe45.jpg')` }} />
-          <h3>Contribute to Decentraland</h3>
-          <p>Decentraland is the first ever virtual world owned by its users.</p>
-        </a>
-        <a className="item" href="https://dcl.gg/discord" target="_blank" rel="noreferrer">
-          <svg width="328" height="200" className="discord" />
-          <h3>Join us on Discord</h3>
-          <p>Decentraland is the first ever virtual world owned by its users.</p>
-        </a>
+        <div className="item">
+          <a className="card" href="https://market.decentraland.org" target="_blank" rel="noreferrer">
+            <svg width="328" height="200" style={{ backgroundImage: `url('https://decentraland.org/images/jacket.jpg')` }} />
+            <span className='card-content'>
+              <h3>Buy and sell on the Marketplace</h3>
+              <p>Decentraland is the first ever virtual world owned by its users.</p>
+              <Button as="span" primary>Marketplace</Button>
+            </span>
+          </a>
+        </div>
+        <div className="item">
+          <a className="card" href="https://events.decentraland.org" target="_blank" rel="noreferrer">
+            <svg width="328" height="200" style={{ backgroundImage: `url('https://decentraland.org/blog/images/static/images/2020-recap-banner-500487ea620de46b53e5cb0783f231a0.png')` }} />
+            <span className='card-content'>
+              <h3>Find an event</h3>
+              <p>Decentraland is the first ever virtual world owned by its users.</p>
+              <Button as="span" primary>Events</Button>
+            </span>
+          </a>
+        </div>
+        <div className="item">
+          <a className="card" href="https://governance.decentraland.org" target="_blank" rel="noreferrer">
+            <svg width="328" height="200" style={{ backgroundImage: `url('https://decentraland.org/blog/images/static/images/governance-517ddb1597c85fa0efd1f5cfe765fe45.jpg')` }} />
+            <span className='card-content'>
+              <h3>Contribute to Decentraland</h3>
+              <p>Decentraland is the first ever virtual world owned by its users.</p>
+              <Button as="span" primary>DAO</Button>
+            </span>
+          </a>
+        </div>
+        <div className="item">
+          <a className="card" href="https://dcl.gg/discord" target="_blank" rel="noreferrer">
+            <svg width="328" height="200" className="discord" />
+            <span className='card-content'>
+              <h3>Join us on Discord</h3>
+              <p>Decentraland is the first ever virtual world owned by its users.</p>
+              <Button as="span" primary>JOIN DISCORD</Button>
+            </span>
+          </a>
+        </div>
       </div>
     </section>
 

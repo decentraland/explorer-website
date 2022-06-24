@@ -179,6 +179,27 @@
   position: absolute;
 }
 
+.MobileContainer .card {
+  position: relative;
+  display: block;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  background: white;
+}
+
+.MobileContainer .card .card-content {
+  display: block;
+  margin: 20px;
+  padding-bottom: 44px;
+}
+
+.MobileContainer .card .ui.button {
+  display: block;
+  position: absolute;
+  width: calc(100% - 40px);
+  bottom: 20px;
+}
+
 .MobileContainer .grid {
   display: flex;
   flex-wrap: wrap;
@@ -199,17 +220,14 @@
 .MobileContainer .grid .item img {
   width: 100%;
   height: auto;
-  border-radius: 10px;
-  margin-bottom: 16px;
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.1));
+  border-radius: 10px 10px 0 0;
 }
 
 .MobileContainer .grid .item svg {
+  display: block;
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  border-radius: 10px;
-  margin-bottom: 8px;
 }
 
 .MobileContainer .grid .item svg.discord {
@@ -218,6 +236,10 @@
   background-image: url('../../images/discord.svg');
   color: white;
 
+}
+
+.MobileContainer .grid .item .card {
+  height: 100%;
 }
 
 @media screen and (min-width: 480px) {
