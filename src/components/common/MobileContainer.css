@@ -1,0 +1,261 @@
+.MobileContainer {
+  width: 100vw;
+  height: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding-bottom: 60px;
+  background-color: white;
+}
+
+.MobileContainer main.MobileHero {
+  position: relative;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
+  width: 100%;
+  color: white;
+  padding: 160px 20px;
+  text-align: center;
+  background-size: cover;
+  background-color: transparent;
+  background-position: bottom left;
+  background-repeat: no-repeat;
+  background-origin: border-box;
+  background-image: url('../../images/background-v3@1x.jpg');
+  background-image: url('../../images/background-v3@1x.jpg');
+  background-image: -webkit-image-set(
+      url('../../images/background-v3@1x.jpg') 1x,
+      url('../../images/background-v3@2x.jpg') 2x,
+      url('../../images/background-v3@3x.jpg') 3x,
+      url('../../images/background-v3@4x.jpg') 3x
+    );
+  background-image: image-set(
+      url('../../images/background-v3@1x.jpg') 1x,
+      url('../../images/background-v3@2x.jpg') 2x,
+      url('../../images/background-v3@3x.jpg') 3x,
+      url('../../images/background-v3@4x.jpg') 4x
+    );
+}
+
+.MobileContainer main.MobileHero::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.6;
+  z-index: 0;
+}
+
+.MobileContainer main.MobileHero div {
+  position: relative;
+}
+
+.MobileContainer main.MobileHero h1 {
+  color: white;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 48px;
+  letter-spacing: 0px;
+  margin-bottom: 20px;
+}
+
+.MobileContainer main.MobileHero p {
+  color: white;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: 0px;
+}
+
+.MobileContainer main.MobileHero a {
+  color: white;
+  font-weight: bold;
+}
+
+.MobileContainer main.MobileHero a:hover {
+  text-decoration: underline;
+}
+
+.MobileContainer section {
+  background-color: white;
+  padding: 60px 6% 0;
+}
+
+.MobileContainer section h2 {
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 41px;
+  letter-spacing: 0px;
+  margin-bottom: 16px;
+}
+
+.MobileContainer section h3 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0px;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.MobileContainer section p {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: 0px;
+  margin-bottom: 10px;
+}
+
+.MobileContainer section p.error,
+.MobileContainer section p.message {
+  margin-top: .3em;
+  font-size: 1em;
+  text-align: center;
+}
+
+.MobileContainer section p.error {
+  color: var(--error);
+}
+
+.MobileContainer section p.message {
+  color: var(--secondary-text);
+}
+
+.MobileContainer input,
+.MobileContainer .ui.button {
+  border-radius: 10px;
+}
+
+.MobileContainer input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #A09BA8;
+  opacity: 1; /* Firefox */
+}
+
+.MobileContainer input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #A09BA8;
+}
+
+.MobileContainer input::-ms-input-placeholder { /* Microsoft Edge */
+  color: #A09BA8;
+}
+
+
+.MobileContainer input {
+  background-color: #ECEBED;
+  border: 2px solid #ECEBED;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  padding: 12px;
+}
+
+.MobileContainer input.error {
+  border-color: var(--error);
+}
+
+.MobileContainer .reminder {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.MobileContainer .reminder input,
+.MobileContainer .reminder .ui.button {
+  margin: 16px 0 0 0;
+  flex: 0 0 100%;
+}
+
+
+.MobileContainer iframe {
+  border: 0;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+}
+
+.MobileContainer .card {
+  position: relative;
+  display: block;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  background: white;
+}
+
+.MobileContainer .card .card-content {
+  display: block;
+  margin: 20px;
+  padding-bottom: 44px;
+}
+
+.MobileContainer .card .ui.button {
+  display: block;
+  position: absolute;
+  width: calc(100% - 40px);
+  bottom: 20px;
+}
+
+.MobileContainer .grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.MobileContainer .grid .item {
+  flex: 0 0 100%;
+  box-sizing: border-box;
+  display: block;
+  position: relative;
+}
+
+.MobileContainer .grid.padded .item {
+  padding-bottom: 32px;
+}
+
+.MobileContainer .grid .item svg,
+.MobileContainer .grid .item img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px 10px 0 0;
+}
+
+.MobileContainer .grid .item svg {
+  display: block;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.MobileContainer .grid .item svg.discord {
+  background-color: #404eed;
+  background-size: auto;
+  background-image: url('../../images/discord.svg');
+  color: white;
+
+}
+
+.MobileContainer .grid .item .card {
+  height: 100%;
+}
+
+@media screen and (min-width: 480px) {
+  .MobileContainer .grid .item {
+    flex: 0 0 50%;
+  }
+
+  .MobileContainer .grid .item:nth-child(odd) {
+    padding-right: 11px;
+  }
+
+  .MobileContainer .grid .item:nth-child(even) {
+    padding-left: 11px;
+  }
+
+  .MobileContainer .reminder { flex-wrap: nowrap; }
+  .MobileContainer .reminder input { flex: 0 1 100%; }
+  .MobileContainer .reminder .ui.button { flex:  0 0 auto; margin-left: 10px; }
+}
