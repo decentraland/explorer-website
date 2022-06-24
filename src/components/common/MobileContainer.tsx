@@ -5,9 +5,15 @@ import { Navbar } from './Layout/Navbar'
 import { isEmail, subscribe } from '../../integration/mail'
 import './MobileContainer.css'
 
-export default React.memo(() => {
+type MobileContainerState = {
+  sending: boolean,
+  sent: boolean,
+  error: null | Error
+}
+
+export default React.memo(function MobileContainer() {
   useMobileResize()
-  const [state, setState] = useState({ sending: false, sent: false, error: null | Error })
+  const [state, setState] = useState<MobileContainerState>({ sending: false, sent: false, error: null })
   const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const data = new FormData(e.currentTarget)
