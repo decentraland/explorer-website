@@ -10,7 +10,12 @@ export function getRequiredAnalyticsContext(state: StoreType): SessionTraits {
 }
 
 export enum FeatureFlags {
-  Stream = 'stream'
+  Stream = 'stream',
+  SignInFlowV3 = 'sign_in_flow_v3_variant'
+}
+
+export enum VariantNames {
+  New = 'new'
 }
 
 export function isFeatureEnabled(state: StoreType, key: string): boolean {
@@ -25,6 +30,18 @@ export function getFeatureVariant(state: StoreType, key: string, defaultValue: s
     const variant = state.featureFlags.variants[name]
     if (variant?.payload?.value) {
       return variant?.payload?.value
+    }
+  }
+
+  return defaultValue
+}
+
+export function getFeatureVariantName(state: StoreType, key: string, defaultValue?: string) {
+  if (isFeatureEnabled(state, key)) {
+    const name = `${FF_APPLICATION_NAME}-${key}`
+    const variant = state.featureFlags.variants[name]
+    if (variant && variant.enabled) {
+      return variant.name
     }
   }
 

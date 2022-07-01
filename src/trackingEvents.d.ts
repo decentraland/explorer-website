@@ -13,13 +13,20 @@
 
 export type TrackingEvents = {
   /** when users click in "play" */
-  open_login_popup: {}
+  open_login_popup: {
+    action_type?: 'sign_in' | 'create_account'
+  }
+  /** when users close the login popup or wallet selector */
+  close_login_popup: {}
   /** when a provider is selected to play */
   click_login_button: {
     provider_type: string
-  },
+    action_type?: 'sign_in' | 'create_account'
+  }
   /** when user cancel the current login */
-  click_cancel_login_button: {},
+  click_cancel_login_button: {}
+  /** when user click "I don't have a compatible wallet"  */
+  click_incompatible_wallet: {}
   /** when the user disconnects */
   disconnection: {}
   /** explorer-website errors (react, sagas or loading components) */
@@ -39,13 +46,18 @@ export type TrackingEvents = {
   /** enable renderer */
   enable_renderer: {}
   /** Send kernel, website and renderer versions */
-  initialize_versions: Record<string, string>,
+  initialize_versions: Record<string, string>
   /** when desktop client was detected */
   desktop_launched: {}
 
   ab_test: {
-    experimentId: string,
+    experimentId: string
     variant: string
+  }
+
+  /** easily search feature flags and/or variants and it's better for data team */
+  feature_flags: {
+    featureFlags: string[]
   }
 }
 
