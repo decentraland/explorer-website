@@ -5,6 +5,6 @@ import './JoinDiscord.css'
 export const JoinDiscord = React.memo(function () {
   return <a className="JoinDiscord" rel="noopener noreferrer" target="_blank" href="https://decentraland.org/discord/">
     <Discord />
-    <span>JOIN DISCORD</span>
+    <span>JOIN OUR DISCORD</span>
   </a>
 })

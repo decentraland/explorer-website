@@ -1,0 +1,42 @@
+.LoginContainer .LogoContainer {
+  display: flex;
+  flex-direction: column;
+  font-size: 24px;
+  line-height: 29px;
+  color: white;
+}
+
+.LoginContainer .LogoContainer p {
+  color: white;
+  margin-top: 10px;
+  font-size: 24px;
+  line-height: 29px;
+  font-weight: 300;
+  letter-spacing: 1px
+}
+
+.LoginContainer .LogoContainer.LogoContainerNew {
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
+  line-height: 29px;
+  color: #ffffff;
+}
+
+.LoginContainer .LogoContainer.LogoContainerNew p {
+  color: #ffffff;
+  margin-top: 17px;
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  width: 438px;
+  text-align: center;
+}
+
+@media screen and (min-height: 900px) {
+  .LoginContainer>.eth-container>div.LogoContainer {
+    margin-top: 14vh;
+    margin-bottom: 6vh;
+  }
+}

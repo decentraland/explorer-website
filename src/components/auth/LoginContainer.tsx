@@ -1,18 +1,22 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { LoginState } from '@dcl/kernel-interface'
 import { ProviderType } from '@dcl/schemas/dist/dapps/provider-type'
+import { toFeatureList } from '@dcl/feature-flags'
 import { connect } from 'react-redux'
 import { connection } from 'decentraland-connect/dist/index'
 import { Container } from '../common/Layout/Container'
 import { StoreType } from '../../state/redux'
+import { FeatureFlags, getFeatureVariantName, VariantNames } from '../../state/selectors'
 import { authenticate } from '../../kernel-loader'
+import { DownloadDesktopToast } from './DownloadDesktopToast'
 import { EthWalletSelector } from './EthWalletSelector'
+import { EthWalletNewSelector } from './EthWalletNewSelector'
 import { LoginGuestItem, LoginWalletItem } from './LoginItemContainer'
+import { LoginGuestItemNew, LoginWalletItemNew } from './LoginItemNewContainer'
+import LogoContainer from './LogoContainer'
 import { isElectron } from '../../integration/desktop'
 import { disconnect } from '../../eth/provider'
-import { isWindows } from '../../integration/browser'
 import { track } from '../../utils/tracking'
-import logo from '../../images/logo.png'
 import './LoginContainer.css'
 
 
@@ -30,18 +34,24 @@ const mapStateToProps = (state: StoreType): LoginContainerProps => {
     rendererReady: state.renderer.ready,
     isGuest: state.session.kernelState ? state.session.kernelState.isGuest : undefined,
     isWallet: state.session.kernelState ? !state.session.kernelState.isGuest && !!state.session.connection : undefined,
+    isSignInFlowV3: getFeatureVariantName(state, FeatureFlags.SignInFlowV3) === VariantNames.New && !isElectron(),
+    featureList: toFeatureList(state.featureFlags)
   }
 }
 
+enum TrackingActionType {
+  SignIn = 'sign_in',
+  CreateAccount = 'create_account'
+}
+
 const mapDispatchToProps = (dispatch: any) => ({
-  onLogin: (providerType: ProviderType | null) => {
-    track('click_login_button', { provider_type: providerType || 'guest' })
+  onLogin: (providerType: ProviderType | null, action_type?: TrackingActionType) => {
+    track('click_login_button', { provider_type: providerType || 'guest', action_type })
     authenticate(providerType)
   },
   onCancelLogin: () => {
     track('click_cancel_login_button')
-    disconnect()
-      .then(() => window.location.reload())
+    disconnect().then(() => window.location.reload())
   }
 })
 
@@ -53,39 +63,86 @@ export interface LoginContainerProps {
   rendererReady: boolean
   isGuest?: boolean
   isWallet?: boolean
+  isSignInFlowV3: boolean
+  featureList: string[]
 }
 
 export interface LoginContainerDispatch {
-  onLogin: (provider: ProviderType | null) => void
+  onLogin: (provider: ProviderType | null, action_type?: TrackingActionType) => void
   onCancelLogin: () => void
 }
 
-export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispatch> = ({ onLogin, onCancelLogin, stage, isWallet, isGuest, provider, kernelReady, availableProviders }) => {
-  const [ showWalletSelector, setShowWalletSelector ] = useState(false)
-  const handleOpenSelector = useCallback(
-    () => {
-      track('open_login_popup')
-      setShowWalletSelector(true)
-    },
-    []
-  )
-  const handleCloseSelector = useCallback(() => setShowWalletSelector(false), [])
+export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispatch> = ({
+  onLogin,
+  onCancelLogin,
+  stage,
+  isWallet,
+  isGuest,
+  provider,
+  kernelReady,
+  availableProviders,
+  isSignInFlowV3,
+  featureList
+}) => {
+  
+  useEffect(() => {
+    track('feature_flags', {
+      featureFlags: featureList,
+      electron: isElectron()
+    })
+  }, [featureList])
 
-  const [ canceling, setCanceling ] = useState(false)
+  const [showWalletSelector, setShowWalletSelector] = useState<{
+    open: boolean
+    action_type?: TrackingActionType
+  }>({ open: false })
+  const handleOpenSelector = useCallback(() => {
+    track('open_login_popup')
+    setShowWalletSelector({ open: true })
+  }, [])
+
+  const handleSignIn = useCallback(() => {
+    track('open_login_popup', { action_type: TrackingActionType.SignIn })
+    setShowWalletSelector({ open: true, action_type: TrackingActionType.SignIn })
+  }, [])
+
+  const handleCreateAccount = useCallback(() => {
+    track('open_login_popup', { action_type: TrackingActionType.CreateAccount })
+    setShowWalletSelector({ open: true, action_type: TrackingActionType.CreateAccount })
+  }, [])
+
+  const handleCloseSelector = useCallback(() => {
+    track('close_login_popup')
+    setShowWalletSelector({ open: false })
+  }, [])
+
+  const [canceling, setCanceling] = useState(false)
   const handleCancelLogin = useCallback(() => {
     if (onCancelLogin) {
       setCanceling(true)
       onCancelLogin()
     }
-  }, [ onCancelLogin, setCanceling ])
+  }, [onCancelLogin, setCanceling])
 
   const handleGuestLogin = useCallback(() => onLogin && onLogin(null), [onLogin])
+
+  const handleLogin = useCallback(
+    (provider_type: ProviderType) => {
+      if (onLogin) {
+        onLogin(provider_type, showWalletSelector.action_type)
+      }
+    },
+    [onLogin, showWalletSelector]
+  )
+
   const loading = useMemo(() => {
-    return stage === LoginState.SIGNATURE_PENDING ||
+    return (
+      stage === LoginState.SIGNATURE_PENDING ||
       stage === LoginState.WAITING_PROFILE ||
       stage === LoginState.WAITING_RENDERER ||
       stage === LoginState.LOADING ||
       !kernelReady
+    )
   }, [stage, kernelReady])
 
   const providerInUse = useMemo(() => {
@@ -96,38 +153,69 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
     return undefined
   }, [stage, provider])
 
-  const desktopAvailable = useMemo(() => !isElectron() && isWindows(), [])
-
   if (stage === LoginState.COMPLETED) {
     return <React.Fragment />
   }
 
   return (
-    <main className="LoginContainer">
+    <main className={`LoginContainer ${isSignInFlowV3 ? 'withDarkLayer' : ''}`}>
       {/* {stage === LoginState.CONNECT_ADVICE && <EthConnectAdvice onLogin={onLogin} />} */}
       {/* {stage === LoginState.SIGN_ADVICE && <EthSignAdvice />} */}
-      <Container>
-        <div className="LogoContainer">
-          <img alt="decentraland" src={logo} height="40" width="212" />
-          <p>Sign In or Create an Account</p>
-        </div>
-        <div>
-          <LoginWalletItem loading={loading} active={isWallet} onClick={handleOpenSelector} provider={providerInUse} onCancelLogin={handleCancelLogin} canceling={canceling} />
-          <LoginGuestItem loading={loading} active={isGuest} onClick={handleGuestLogin} />
-        </div>
-        <div style={{ visibility: desktopAvailable ? 'visible' : 'hidden' }}>
-          <a className="DownloadDesktopApp" href="https://decentraland.org/download/" target="_blank" rel="noreferrer noopener">
-            Want to play on windows? <span style={{ textDecoration: 'underline' }}>Download the desktop client</span>
-          </a>
-        </div>
-      </Container>
+
+      {isSignInFlowV3 && (
+        <Container>
+          <LogoContainer />
+          <div>
+            <LoginWalletItemNew
+              loading={loading}
+              active={isWallet}
+              onClick={handleSignIn}
+              onCreateAccount={handleCreateAccount}
+              provider={providerInUse}
+              onCancelLogin={handleCancelLogin}
+              canceling={canceling}
+            />
+            <LoginGuestItemNew loading={loading} active={isGuest} onClick={handleGuestLogin} />
+          </div>
+          <DownloadDesktopToast />
+        </Container>
+      )}
+
+      {!isSignInFlowV3 && (
+        <Container>
+          <LogoContainer />
+          <div>
+            <LoginWalletItem
+              loading={loading}
+              active={isWallet}
+              onClick={handleOpenSelector}
+              provider={providerInUse}
+              onCancelLogin={handleCancelLogin}
+              canceling={canceling}
+            />
+            <LoginGuestItem loading={loading} active={isGuest} onClick={handleGuestLogin} />
+          </div>
+          <DownloadDesktopToast />
+        </Container>
+      )}
 
       <EthWalletSelector
-        open={showWalletSelector}
+        open={showWalletSelector.open && !isSignInFlowV3}
         loading={loading}
         availableProviders={availableProviders || defaultAvailableProviders}
         provider={providerInUse}
         onLogin={onLogin}
+        canceling={canceling}
+        onCancelLogin={handleCancelLogin}
+        onClose={handleCloseSelector}
+      />
+
+      <EthWalletNewSelector
+        open={showWalletSelector.open && isSignInFlowV3}
+        loading={loading}
+        availableProviders={availableProviders || defaultAvailableProviders}
+        provider={providerInUse}
+        onLogin={handleLogin}
         canceling={canceling}
         onCancelLogin={handleCancelLogin}
         onClose={handleCloseSelector}
