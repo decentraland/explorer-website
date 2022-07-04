@@ -75,7 +75,7 @@
   border: 0;
 }
 
-.ui.modal.dcl.login-modal {
+.ui.modal.dcl.login-modal.login-new-modal {
   background-color: #FFFFFF;
   width: 600px;
 }
