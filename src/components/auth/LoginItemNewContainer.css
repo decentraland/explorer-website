@@ -31,7 +31,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  border-radius: 20px;
+  border-radius: 16px;
   background-color: rgba(67, 64, 74, .9);
   position: absolute;
   display: flex;
@@ -264,4 +264,9 @@
   .LoginWalletItem__SuccessLabelWrapper .ui.label .LoginWalletItem__SuccessLabelIcon {
     font-size: 18px;
   }
+
+  .LoginItemNewContainer .loader-background {
+    border-radius: 20px;
+  }
+
 }
