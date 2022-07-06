@@ -4,7 +4,7 @@ import { errorToString } from '../utils/errorToString'
 import { track } from '../utils/tracking'
 import { getCurrentPosition } from './browser'
 import { isElectron } from './desktop'
-import { DEBUG_ANALYTICS, RENDERER_TYPE } from './queryParamsConfig'
+import { DEBUG_ANALYTICS, PLATFORM, RENDERER_TYPE } from './queryParamsConfig'
 
 let analyticsDisabled = false
 
@@ -49,6 +49,7 @@ function injectTrackingMetadata(payload: Record<string, any>): void {
   payload.dcl_is_guest = authFlags.isGuest
   payload.dcl_disabled_analytics = authFlags.afterFatalError
   payload.dcl_renderer_type = RENDERER_TYPE
+  payload.dcl_kernel_platform = PLATFORM
 }
 
 export function configureRollbar() {
