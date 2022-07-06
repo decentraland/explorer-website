@@ -3,7 +3,7 @@ import { AnalyticsOptions, internalTrackEvent, trackError } from '../integration
 import { errorToString } from './errorToString'
 import { callOnce } from './callOnce'
 import { isRecommendedBrowser } from '../integration/browser'
-import { RENDERER_TYPE } from '../integration/queryParamsConfig'
+import { PLATFORM, RENDERER_TYPE } from '../integration/queryParamsConfig'
 
 // declare var ethereum: Record<string, boolean>
 const ethereum = (window as any).ethereum
@@ -54,7 +54,8 @@ const getWalletProps = callOnce(() => {
 
 const getEnvironmentProperties = callOnce(() => {
   const properties: Record<string, string> = {
-    rendererType: RENDERER_TYPE
+    rendererType: RENDERER_TYPE,
+    kernelPlatform: PLATFORM
   }
 
   if (rollouts) {
