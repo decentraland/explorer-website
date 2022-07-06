@@ -127,7 +127,7 @@ export const LoginGuestItemNew = React.memo((props: LoginItemNewContainerProps) 
         <span>Limited social features</span>
       </SelectionLabel>
       <SelectionLabel className={'LoginWalletItem__SuccessLabel'}>
-        <span>Cannot receive NTFs</span>
+        <span>Cannot receive NFTs</span>
       </SelectionLabel>
     </div>
 
