@@ -3,7 +3,7 @@ import { AnalyticsOptions, internalTrackEvent, trackError } from '../integration
 import { errorToString } from './errorToString'
 import { callOnce } from './callOnce'
 import { isRecommendedBrowser } from '../integration/browser'
-import { PLATFORM, RENDERER_TYPE } from '../integration/queryParamsConfig'
+import { PLATFORM, RENDERER_TYPE } from '../integration/url'
 
 // declare var ethereum: Record<string, boolean>
 const ethereum = (window as any).ethereum

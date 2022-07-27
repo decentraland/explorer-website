@@ -2,7 +2,7 @@ import React from 'react'
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import { ErrorContainer, ErrorDetails, ErrorImage } from './Error'
 import { reload } from "./utils"
-import { NETWORK } from '../../integration/queryParamsConfig'
+import { NETWORK } from '../../integration/url'
 
 import errorImage from '../../images/errors/robotsmiling.png'
 import './errors.css'
