@@ -10,13 +10,14 @@ import {
   setRendererReady
 } from '../state/actions'
 import { ErrorType, store } from '../state/redux'
+import { ChainId } from '@dcl/schemas/dist/dapps/chain-id'
 import { ProviderType } from '@dcl/schemas/dist/dapps/provider-type'
 import { FeatureFlagsResult, fetchFlags } from '@dcl/feature-flags'
 import { resolveUrlFromUrn } from '@dcl/urn-resolver'
 import { defaultWebsiteErrorTracker, track } from '../utils/tracking'
 import { injectVersions } from '../utils/rolloutVersions'
 import { KernelResult } from '@dcl/kernel-interface'
-import { ENV, NETWORK } from '../integration/queryParamsConfig'
+import { ENV, NETWORK, basedURL, ensureURL } from '../integration/url'
 import { RequestManager } from 'eth-connect'
 import { errorToString } from '../utils/errorToString'
 import { isElectron, launchDesktopApp } from '../integration/desktop'
@@ -31,10 +32,10 @@ async function getChainIdFromProvider(provider: any) {
 }
 
 function getWantedChainId() {
-  let chainId = 1 // mainnet
+  let chainId = ChainId.ETHEREUM_MAINNET // mainnet
 
   if (NETWORK === 'ropsten') {
-    chainId = 3
+    chainId = ChainId.ETHEREUM_ROPSTEN
   }
 
   return chainId
@@ -155,7 +156,7 @@ function cdnFromRollout(rollout: RolloutRecord): string {
 }
 
 function cdnFromPrefixVersion(prefix: string, version: string): string {
-  return `https://cdn.decentraland.org/${prefix}/${version}`
+  return basedURL(`${prefix}/${version}`, 'https://cdn.decentraland.org/')
 }
 
 async function getVersions(flags: FeatureFlagsResult) {
@@ -170,27 +171,36 @@ async function getVersions(flags: FeatureFlagsResult) {
   }
 
   // 2. load from URN/URL PARAM
-  if (qs.has('renderer')) {
-    globalThis.RENDERER_BASE_URL = qs.get('renderer')!
+  const rendererUrl = qs.get('renderer')
+  if (rendererUrl) {
+    globalThis.RENDERER_BASE_URL = ensureURL(rendererUrl)
   }
-  if (qs.has('kernel-urn')) {
-    globalThis.KERNEL_BASE_URL = qs.get('kernel-urn')!
+
+  const kernelUrn = qs.get('kernel-urn')
+  if (kernelUrn && kernelUrn.startsWith('urn:')) {
+    globalThis.KERNEL_BASE_URL = kernelUrn
   }
 
   // 3. load hot-branch
-  if (qs.has('renderer-branch')) {
-    globalThis.RENDERER_BASE_URL = `https://renderer-artifacts.decentraland.org/branch/${qs.get('renderer-branch')!}`
+  const rendererBranch = qs.get('renderer-branch')
+  if (rendererBranch) {
+    globalThis.RENDERER_BASE_URL = basedURL(rendererBranch, 'https://renderer-artifacts.decentraland.org/branch/')
   }
-  if (qs.has('kernel-branch')) {
-    globalThis.KERNEL_BASE_URL = `https://sdk-team-cdn.decentraland.org/@dcl/kernel/branch/${qs.get('kernel-branch')!}`
+
+  const kernelBranch = qs.get('kernel-branch')
+  if (kernelBranch) {
+    globalThis.KERNEL_BASE_URL = basedURL(kernelBranch, 'https://sdk-team-cdn.decentraland.org/@dcl/kernel/branch/')
   }
 
   // 4. specific cdn versions
-  if (qs.has('renderer-version')) {
-    globalThis.RENDERER_BASE_URL = cdnFromPrefixVersion('@dcl/unity-renderer', qs.get('renderer-version')!)
+  const rendererVersion = qs.get('renderer-version')
+  if (rendererVersion) {
+    globalThis.RENDERER_BASE_URL = cdnFromPrefixVersion('@dcl/unity-renderer', rendererVersion)
   }
-  if (qs.has('kernel-version')) {
-    globalThis.KERNEL_BASE_URL = cdnFromPrefixVersion('@dcl/kernel', qs.get('kernel-version')!)
+
+  const kernelVersion = qs.get('kernel-version')
+  if (kernelVersion) {
+    globalThis.KERNEL_BASE_URL = cdnFromPrefixVersion('@dcl/kernel', kernelVersion)
   }
 
   // default fallback

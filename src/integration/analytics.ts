@@ -4,7 +4,7 @@ import { errorToString } from '../utils/errorToString'
 import { track } from '../utils/tracking'
 import { getCurrentPosition } from './browser'
 import { isElectron } from './desktop'
-import { DEBUG_ANALYTICS, PLATFORM, RENDERER_TYPE } from './queryParamsConfig'
+import { DEBUG_ANALYTICS, PLATFORM, RENDERER_TYPE } from './url'
 
 let analyticsDisabled = false
 
