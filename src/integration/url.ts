@@ -6,7 +6,7 @@ export const RENDERER_TYPE = qs.get('ws') ? 'native' : 'web'
 export const PLATFORM = (navigator as any)?.userAgentData?.platform || navigator?.platform || 'unknown'
 export const HOSTNAME = document.location.hostname
 
-export function basedURL(url: string | URL, base: string | URL) {
+export function  withOrigin(url: string | URL, base: string | URL) {
   const finalURL = new URL(url, base)
   const baseURL = new URL(base)
   if (finalURL.toString().startsWith(baseURL.toString())) {
@@ -16,10 +16,10 @@ export function basedURL(url: string | URL, base: string | URL) {
   return baseURL.toString()
 }
 
-export function ensureURL(url: string | URL) {
+export function ensureOrigin(url: string | URL) {
   switch (HOSTNAME) {
     case 'play.decentraland.org':
-      return basedURL(url, 'https://cdn.decentraland.org')
+      return  withOrigin(url, 'https://cdn.decentraland.org')
 
     default:
       return url.toString()

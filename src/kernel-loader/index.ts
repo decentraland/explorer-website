@@ -17,7 +17,7 @@ import { resolveUrlFromUrn } from '@dcl/urn-resolver'
 import { defaultWebsiteErrorTracker, track } from '../utils/tracking'
 import { injectVersions } from '../utils/rolloutVersions'
 import { KernelResult } from '@dcl/kernel-interface'
-import { ENV, NETWORK, basedURL, ensureURL } from '../integration/url'
+import { ENV, NETWORK,  withOrigin, ensureOrigin } from '../integration/url'
 import { RequestManager } from 'eth-connect'
 import { errorToString } from '../utils/errorToString'
 import { isElectron, launchDesktopApp } from '../integration/desktop'
@@ -156,7 +156,7 @@ function cdnFromRollout(rollout: RolloutRecord): string {
 }
 
 function cdnFromPrefixVersion(prefix: string, version: string): string {
-  return basedURL(`${prefix}/${version}`, 'https://cdn.decentraland.org/')
+  return  withOrigin(`${prefix}/${version}`, 'https://cdn.decentraland.org/')
 }
 
 async function getVersions(flags: FeatureFlagsResult) {
@@ -173,7 +173,7 @@ async function getVersions(flags: FeatureFlagsResult) {
   // 2. load from URN/URL PARAM
   const rendererUrl = qs.get('renderer')
   if (rendererUrl) {
-    globalThis.RENDERER_BASE_URL = ensureURL(rendererUrl)
+    globalThis.RENDERER_BASE_URL = ensureOrigin(rendererUrl)
   }
 
   const kernelUrn = qs.get('kernel-urn')
@@ -184,12 +184,12 @@ async function getVersions(flags: FeatureFlagsResult) {
   // 3. load hot-branch
   const rendererBranch = qs.get('renderer-branch')
   if (rendererBranch) {
-    globalThis.RENDERER_BASE_URL = basedURL(rendererBranch, 'https://renderer-artifacts.decentraland.org/branch/')
+    globalThis.RENDERER_BASE_URL =  withOrigin(rendererBranch, 'https://renderer-artifacts.decentraland.org/branch/')
   }
 
   const kernelBranch = qs.get('kernel-branch')
   if (kernelBranch) {
-    globalThis.KERNEL_BASE_URL = basedURL(kernelBranch, 'https://sdk-team-cdn.decentraland.org/@dcl/kernel/branch/')
+    globalThis.KERNEL_BASE_URL =  withOrigin(kernelBranch, 'https://sdk-team-cdn.decentraland.org/@dcl/kernel/branch/')
   }
 
   // 4. specific cdn versions
