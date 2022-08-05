@@ -1,7 +1,7 @@
 import { combineReducers, createStore } from 'redux'
 import { KernelAccountState, KernelResult, KernelLoadingProgress } from '@dcl/kernel-interface'
 import { FeatureFlagsResult } from '@dcl/feature-flags'
-import { kernelReducer, sessionReducer, rendererReducer, errorReducer, bannerReducer, downloadReducer, featureFlagsReducer } from './reducers'
+import { kernelReducer, sessionReducer, rendererReducer, errorReducer, bannerReducer, downloadReducer, featureFlagsReducer, catalystReducer } from './reducers'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { ConnectionData } from 'decentraland-connect/dist/types'
 
@@ -15,6 +15,11 @@ export type RendererState = {
   visible: boolean
   version: string
   loading: KernelLoadingProgress | null
+}
+
+export type CatalystState = {
+  catalyst: string | null
+  trusted: boolean
 }
 
 export type SessionState = {
@@ -73,6 +78,7 @@ export type FeatureFlagsState = FeatureFlagsResult
 export type StoreType = {
   kernel: KernelState
   renderer: RendererState
+  catalyst: CatalystState
   session: SessionState
   error: ErrorState
   banner: BannerState
@@ -84,6 +90,7 @@ const reducers = combineReducers<StoreType>({
   kernel: kernelReducer,
   session: sessionReducer,
   renderer: rendererReducer,
+  catalyst: catalystReducer,
   error: errorReducer,
   banner: bannerReducer,
   download: downloadReducer,

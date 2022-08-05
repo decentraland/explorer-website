@@ -1,0 +1,82 @@
+main.Main {
+  position: relative;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  min-height: 790px;
+  background-size: cover;
+  background-color: transparent;
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  background-origin: border-box;
+  background-image: url('../../../images/background-v3@1x.jpg');
+  background-image: url('../../../images/background-v3@1x.jpg');
+  background-image: -webkit-image-set(
+      url('../../../images/background-v3@1x.jpg') 1x,
+      url('../../../images/background-v3@2x.jpg') 2x,
+      url('../../../images/background-v3@3x.jpg') 3x,
+      url('../../../images/background-v3@4x.jpg') 3x
+    );
+  background-image: image-set(
+      url('../../../images/background-v3@1x.jpg') 1x,
+      url('../../../images/background-v3@2x.jpg') 2x,
+      url('../../../images/background-v3@3x.jpg') 3x,
+      url('../../../images/background-v3@4x.jpg') 4x
+    );
+}
+
+main.Main.withDarkLayer:before {
+  content: '';
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.25);
+}
+
+.Main * {
+  box-sizing: content-box;
+}
+
+.Main button {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+.Main > .eth-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 128px);
+  margin: 128px auto 64px;
+  justify-content: space-between;
+  position: relative;
+}
+
+.Main > .eth-container > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.Main .LoginItemContainer {
+  margin: 0 30px
+}
+
+@media screen and (min-height: 900px) {
+  main.Main {
+    align-items: flex-start;
+  }
+
+  main.Main > .eth-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin: 0 auto;
+  }
+}
