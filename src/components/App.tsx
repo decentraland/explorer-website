@@ -15,6 +15,7 @@ import { FeatureFlags, getFeatureVariant } from '../state/selectors'
 import StreamContainer from './common/StreamContainer'
 import { isMobile } from '../integration/browser'
 import MobileContainer from './common/MobileContainer'
+import CatalystWarningContainer from './warning/CatalystWarningContainer'
 import './App.css'
 
 function mapStateToProps(state: StoreType): AppProps {
@@ -23,6 +24,7 @@ function mapStateToProps(state: StoreType): AppProps {
     hasBanner: !!state.banner.banner,
     sessionReady: !!state.session?.ready,
     rendererReady: !!state.renderer?.ready,
+    trustedCatalyst: !!state.catalyst?.trusted,
     error: !!state.error.error,
     sound: true // TODO: sound must be true after the first click
   }
@@ -33,6 +35,7 @@ export interface AppProps {
   hasBanner: boolean
   sessionReady: boolean
   rendererReady: boolean
+  trustedCatalyst: boolean
   error: boolean
   sound: boolean
 }
@@ -40,6 +43,10 @@ export interface AppProps {
 const App: React.FC<AppProps> = (props) => {
   const mobile = useMemo(() => isMobile(), [])
   const small = useMobileMediaQuery()
+
+  if (!props.trustedCatalyst) {
+    return <CatalystWarningContainer />
+  }
 
   if (props.hasStream && (small || mobile)) {
     return <StreamContainer />

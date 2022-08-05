@@ -17,7 +17,7 @@ import { resolveUrlFromUrn } from '@dcl/urn-resolver'
 import { defaultWebsiteErrorTracker, track } from '../utils/tracking'
 import { injectVersions } from '../utils/rolloutVersions'
 import { KernelResult } from '@dcl/kernel-interface'
-import { ENV, NETWORK,  withOrigin, ensureOrigin } from '../integration/url'
+import { ENV, NETWORK,  withOrigin, ensureOrigin, CATALYST } from '../integration/url'
 import { RequestManager } from 'eth-connect'
 import { errorToString } from '../utils/errorToString'
 import { isElectron, launchDesktopApp } from '../integration/desktop'
@@ -366,6 +366,10 @@ export function startKernel() {
       )
       return
     }
+  }
+
+  if (CATALYST) {
+    track('custom_catalyst', { catalyst: CATALYST })
   }
 
   track('initialize_versions', injectVersions({}))

@@ -12,7 +12,8 @@ import {
   SET_RENDERER_LOADING,
   SET_RENDERER_READY,
   SET_RENDERER_VISIBLE,
-  SET_FEATURE_FLAGS
+  SET_FEATURE_FLAGS,
+  SET_CATALYST_AS_TRUSTED
 } from './actions'
 import {
   KernelState,
@@ -22,12 +23,14 @@ import {
   BannerState,
   DownloadState,
   DownloadCurrentState,
-  FeatureFlagsState
+  FeatureFlagsState,
+  CatalystState
 } from './redux'
 import { v4 } from 'uuid'
 import { errorToString } from '../utils/errorToString'
 import { isElectron } from '../integration/desktop'
 import { defaultFeatureFlagsState } from './types'
+import { CATALYST } from '../integration/url'
 
 export function kernelReducer(state: KernelState | undefined, action: AnyAction): KernelState {
   if (action.type === SET_KERNEL_LOADED) {
@@ -86,6 +89,17 @@ export function rendererReducer(state: RendererState | undefined, action: AnyAct
       loading: null
     }
   )
+}
+
+export function catalystReducer(state: CatalystState = { catalyst: CATALYST, trusted: !CATALYST }, action: AnyAction): CatalystState {
+  if (action.type === SET_CATALYST_AS_TRUSTED && !!state.catalyst && !state.trusted) {
+    return {
+      ...state,
+      trusted: true
+    }
+  }
+
+  return state
 }
 
 export function errorReducer(state: ErrorState | undefined, action: AnyAction): ErrorState {

@@ -18,6 +18,7 @@ import { isElectron } from '../../integration/desktop'
 import { disconnect } from '../../eth/provider'
 import { track } from '../../utils/tracking'
 import './LoginContainer.css'
+import Main from '../common/Layout/Main'
 
 
 export const defaultAvailableProviders = []
@@ -84,7 +85,7 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
   isSignInFlowV3,
   featureList
 }) => {
-  
+
   useEffect(() => {
     track('feature_flags', {
       featureFlags: featureList,
@@ -158,7 +159,7 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
   }
 
   return (
-    <main className={`LoginContainer ${isSignInFlowV3 ? 'withDarkLayer' : ''}`}>
+    <Main withDarkLayer={isSignInFlowV3}>
       {/* {stage === LoginState.CONNECT_ADVICE && <EthConnectAdvice onLogin={onLogin} />} */}
       {/* {stage === LoginState.SIGN_ADVICE && <EthSignAdvice />} */}
 
@@ -220,7 +221,7 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
         onCancelLogin={handleCancelLogin}
         onClose={handleCloseSelector}
       />
-    </main>
+    </Main>
   )
 }
 export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer)

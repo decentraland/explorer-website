@@ -16,6 +16,14 @@ export type TrackingEvents = {
   open_login_popup: {
     action_type?: 'sign_in' | 'create_account'
   }
+  /** when users open a url with a custom catalyst */
+  custom_catalyst: {
+    catalyst: string
+  },
+  /** when users reject to connect to a custom catalyst */
+  clear_catalyst: {}
+  /** when users agree to connect to a custom catalyst */
+  trust_catalyst: {}
   /** when users close the login popup or wallet selector */
   close_login_popup: {}
   /** when a provider is selected to play */

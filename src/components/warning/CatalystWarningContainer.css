@@ -1,0 +1,39 @@
+.catalyst-warning-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.catalyst-warning-container div.catalyst-warning-content {
+  box-sizing: border-box;
+  width: 800px;
+  height: auto;
+  position: relative;
+  background: #161518;
+  color: white;
+  border-radius: 20px;
+  padding: 64px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  color: white;
+}
+
+.catalyst-warning-container div.catalyst-warning-content h2 {
+  color: white;
+  font-weight: 500;
+  font-size: 28px;
+}
+
+.catalyst-warning-container div.catalyst-warning-content p {
+  color: white;
+  font-size: 18px;
+}
+
+.catalyst-warning-container div.catalyst-warning-content .ui.button {
+  margin-top: 18px;
+  border-radius: 10px;
+}
