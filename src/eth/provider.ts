@@ -2,6 +2,7 @@ import { connection, ConnectionResponse } from 'decentraland-connect'
 import { WebSocketProvider } from 'eth-connect'
 import { ChainId } from '@dcl/schemas/dist/dapps/chain-id'
 import { ProviderType } from '@dcl/schemas/dist/dapps/provider-type'
+import { switchProviderChainId } from 'decentraland-dapps/dist/modules/wallet/utils'
 import { IEthereumProvider } from '@dcl/kernel-interface'
 import { defaultWebsiteErrorTracker } from '../utils/tracking'
 
@@ -53,5 +54,18 @@ export async function disconnect(): Promise<void> {
   } catch (err) {
     defaultWebsiteErrorTracker(err)
     return
+  }
+}
+
+export async function switchToChainId(chainId: ChainId) {
+  try {
+    const provider = await connection.getProvider()
+
+    await switchProviderChainId(provider, chainId)
+    window.location.reload()
+    return 
+  } catch (error: any) {
+      defaultWebsiteErrorTracker(error)
+      throw new Error(error.message)
   }
 }
