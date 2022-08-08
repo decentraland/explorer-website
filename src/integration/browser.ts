@@ -77,6 +77,22 @@ export function isWindows() {
   return false
 }
 
+export function isMacOS() {
+  if ((navigator as any).userAgentData?.platform === 'macOS') {
+    return true
+  }
+
+  if (/Macintosh/gi.test(navigator.userAgent)) {
+    return true
+  }
+
+  if (navigator.platform === 'MacIntel') {
+    return true
+  }
+
+  return false
+}
+
 export type UserPosition = Partial<{
   realm: string,
   position: string,
