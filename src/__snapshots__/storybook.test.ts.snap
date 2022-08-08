@@ -365,29 +365,19 @@ exports[`Storyshots Explorer/Errors Net Mismatch Error 1`] = `
         <div
           className="error-title"
         >
-          A network mismatch was detected
+          Wrong network
         </div>
         <div
           className="error-description"
         >
-          We detected that you are trying to enter the 
-          <strong
-            id="tld"
-          >
-            mainnet
+          You need to be connected to 
+          <strong>
+            Ethereum Mainnet
           </strong>
-           network, and your Ethereum wallet is set to other network.
-          <br />
-          <br />
-          To continue, please change the Ethereum network in your wallet to 
-          <strong
-            id="web3NetGoal"
-          >
-            mainnet
+           network to use this app, but you are currently connected to 
+          <strong>
+            Ropsten
           </strong>
-           and click "Reload".
-          
-          
         </div>
         <div
           className="error-cta"
@@ -396,13 +386,10 @@ exports[`Storyshots Explorer/Errors Net Mismatch Error 1`] = `
             className="ui primary button"
             onClick={[Function]}
           >
-            Retry
-          </button>
-          <button
-            className="ui primary button"
-            onClick={[Function]}
-          >
-            Log out
+            Switch to 
+            <strong>
+              Ethereum Mainnet
+            </strong>
           </button>
         </div>
       </div>

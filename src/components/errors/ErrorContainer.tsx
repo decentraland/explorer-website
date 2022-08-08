@@ -43,8 +43,7 @@ export const ErrorContainer = React.memo(function (props: ErrorContainerProps) {
   if (props.error.type === ErrorType.NEW_LOGIN) return <ErrorNewLogin />
   if (props.error.type === ErrorType.NOT_MOBILE) return <ErrorNoMobile />
   if (props.error.type === ErrorType.NOT_SUPPORTED) return <ErrorNotSupported />
-  if (props.error.type === ErrorType.NET_MISMATCH)
-    return <ErrorNetworkMismatch details={props.error.details} extra={props.error.extra!} />
+  if (props.error.type === ErrorType.NET_MISMATCH) return <ErrorNetworkMismatch extra={props.error.extra!} />
   if (props.error.type === ErrorType.AVATAR_ERROR) return <ErrorAvatarLoading />
 
   return (

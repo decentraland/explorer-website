@@ -7,7 +7,6 @@ import './errors.css'
 import { getChainName } from '@dcl/schemas/dist/dapps/chain-id'
 
 export interface ErrorNetworkMismatchProps {
-  details: string
   extra: Record<string, any>
 }
 
