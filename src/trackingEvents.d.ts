@@ -19,7 +19,7 @@ export type TrackingEvents = {
   /** when users open a url with a custom catalyst */
   custom_catalyst: {
     catalyst: string
-  },
+  }
   /** when users reject to connect to a custom catalyst */
   clear_catalyst: {}
   /** when users agree to connect to a custom catalyst */
@@ -66,6 +66,12 @@ export type TrackingEvents = {
   /** easily search feature flags and/or variants and it's better for data team */
   feature_flags: {
     featureFlags: string[]
+  }
+
+  /** when the user try to switch chain in network mismatch */
+  switch_chain: {
+    wanted_chain_id: number
+    provider_chain_id: number
   }
 }
 

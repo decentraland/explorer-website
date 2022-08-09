@@ -4,10 +4,19 @@ import { getChainName } from '@dcl/schemas/dist/dapps/chain-id'
 import { ErrorContainer, ErrorDetails, ErrorImage } from './Error'
 import errorImage from '../../images/errors/robotsmiling.png'
 import { switchToChainId } from '../../eth/provider'
+import { track } from '../../utils/tracking'
 import './errors.css'
 
 export interface ErrorNetworkMismatchProps {
   extra: Record<string, any>
+}
+
+const switchChain = (options: Record<string, any>) => {
+  track('switch_chain', {
+    wanted_chain_id: options.wantedChainId,
+    provider_chain_id: options.providerChainId
+  })
+  switchToChainId(options.wantedChainId)
 }
 
 export const ErrorNetworkMismatch = React.memo(function (props: ErrorNetworkMismatchProps)  {
@@ -25,7 +34,7 @@ export const ErrorNetworkMismatch = React.memo(function (props: ErrorNetworkMism
           </>
         }
       >
-        <Button primary onClick={() => switchToChainId(props.extra.wantedChainId)}>
+        <Button primary onClick={() => switchChain(props.extra)}>
           Switch to <strong>{wantedChainName}</strong>
         </Button>
       </ErrorDetails>
