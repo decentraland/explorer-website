@@ -1,10 +1,10 @@
 import React from 'react'
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
+import { getChainName } from '@dcl/schemas/dist/dapps/chain-id'
 import { ErrorContainer, ErrorDetails, ErrorImage } from './Error'
 import errorImage from '../../images/errors/robotsmiling.png'
 import { switchToChainId } from '../../eth/provider'
 import './errors.css'
-import { getChainName } from '@dcl/schemas/dist/dapps/chain-id'
 
 export interface ErrorNetworkMismatchProps {
   extra: Record<string, any>
