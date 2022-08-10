@@ -53,7 +53,11 @@ export async function authenticate(providerType: ProviderType | null) {
           error: new Error(
             `Network mismatch NETWORK url param is not equal to the provided by Ethereum Provider (wanted: ${wantedChainId} actual: ${providerChainId}, E01)`
           ),
-          code: ErrorType.NET_MISMATCH
+          code: ErrorType.NET_MISMATCH,
+          extra: {
+            providerChainId: providerChainId,
+            wantedChainId: wantedChainId
+          }
         })
       )
       return
@@ -67,7 +71,11 @@ export async function authenticate(providerType: ProviderType | null) {
             error: new Error(
               `Network mismatch NETWORK url param is not equal to the provided by Ethereum Provider (wanted: ${wantedChainId} actual: ${providerChainId}, E02)`
             ),
-            code: ErrorType.NET_MISMATCH
+            code: ErrorType.NET_MISMATCH,
+            extra: {
+              providerChainId: providerChainId,
+              wantedChainId: wantedChainId
+            }
           })
         )
         return

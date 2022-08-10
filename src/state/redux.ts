@@ -35,6 +35,7 @@ export type ErrorState = {
   error: {
     type: string | ErrorType
     details: string
+    extra?: Record<string, any>
   } | null
 }
 

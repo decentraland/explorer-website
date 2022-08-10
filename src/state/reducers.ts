@@ -113,7 +113,8 @@ export function errorReducer(state: ErrorState | undefined, action: AnyAction): 
     return {
       error: {
         details: errorToString(payload.error),
-        type: payload.code as any
+        type: payload.code as any,
+        extra: payload.extra
       }
     }
   }

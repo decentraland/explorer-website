@@ -88,8 +88,7 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
 
   useEffect(() => {
     track('feature_flags', {
-      featureFlags: featureList,
-      electron: isElectron()
+      featureFlags: featureList
     })
   }, [featureList])
 

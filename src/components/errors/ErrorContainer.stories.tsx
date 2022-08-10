@@ -57,7 +57,7 @@ NotSupportedError.args = {
 export const NetMismatchError = Template.bind({})
 NetMismatchError.args = {
   ...Template.args,
-  error: { type: ErrorType.NET_MISMATCH, details: '' }
+  error: { type: ErrorType.NET_MISMATCH, extra: { providerChainId: 3, wantedChainId: 1} }
 }
 
 export const AvatarError = Template.bind({})
