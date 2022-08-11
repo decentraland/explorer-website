@@ -621,7 +621,7 @@ exports[`Storyshots Explorer/Warnings Network Warning 1`] = `
     Blockchain transactions in this network have a cost and real consequences. We recommend you use the
      
     <strong>
-      Ropsten
+      Goerli
     </strong>
      test network instead.
   </div>
