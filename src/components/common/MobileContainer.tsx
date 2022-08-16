@@ -1,8 +1,9 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import { useMobileResize } from '../../integration/mobile'
 import { Navbar } from './Layout/Navbar'
 import { isEmail, subscribe } from '../../integration/mail'
+import { track } from '../../utils/tracking'
 import './MobileContainer.css'
 
 type MobileContainerState = {
@@ -13,6 +14,11 @@ type MobileContainerState = {
 
 export default React.memo(function MobileContainer() {
   useMobileResize()
+
+  useEffect(() => {
+    track('explorer_website_mobile_screen')
+  }, [])
+  
   const [state, setState] = useState<MobileContainerState>({ sending: false, sent: false, error: null })
   const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()

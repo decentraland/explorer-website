@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { setKernelError } from '../../state/actions'
 import { disconnect } from '../../eth/provider'
@@ -12,6 +12,7 @@ import { ErrorNewLogin } from './ErrorNewLogin'
 import { ErrorNoMobile } from './ErrorNoMobile'
 import { ErrorNotSupported } from './ErrorNotSupported'
 import { useMobileResize } from '../../integration/mobile'
+import { track } from '../../utils/tracking'
 
 const mapStateToProps = (state: StoreType): Pick<ErrorContainerProps, 'error'> => {
   return {
@@ -35,6 +36,10 @@ export interface ErrorContainerProps {
 export const ErrorContainer = React.memo(function (props: ErrorContainerProps) {
   useMobileResize(!!props.error)
 
+  useEffect(() => {
+    if (props.error) track('explorer_website_error_screen', props.error)
+  }, [props.error])
+  
   if (!props.error) return <React.Fragment></React.Fragment>
 
   if (props.error.type === ErrorType.COMMS) return <ErrorComms />

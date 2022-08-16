@@ -73,6 +73,16 @@ export type TrackingEvents = {
     wanted_chain_id: number
     provider_chain_id: number
   }
+
+  /** when the error screen has been displayed */
+  explorer_website_error_screen: {
+    type: string
+    details: string
+    extra?: Record<string, any> | undefined
+  }
+
+  /** when the mobile screen has been displayed */
+  explorer_website_mobile_screen: {}
 }
 
 export type SessionTraits = {
