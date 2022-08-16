@@ -8,7 +8,7 @@ import { defaultWebsiteErrorTracker, track } from '../utils/tracking'
 
 export const chainIdRpc = new Map<number, string>([
   [1, 'wss://rpc.decentraland.org/mainnet'],
-  [3, 'wss://rpc.decentraland.org/ropsten']
+  [5, 'wss://rpc.decentraland.org/goerli']
 ])
 
 export async function getEthereumProvider(
