@@ -17,7 +17,7 @@ import { resolveUrlFromUrn } from '@dcl/urn-resolver'
 import { defaultWebsiteErrorTracker, track } from '../utils/tracking'
 import { injectVersions } from '../utils/rolloutVersions'
 import { KernelResult } from '@dcl/kernel-interface'
-import { ENV, NETWORK,  withOrigin, ensureOrigin, CATALYST } from '../integration/url'
+import { ENV, NETWORK, withOrigin, ensureOrigin, CATALYST } from '../integration/url'
 import { RequestManager } from 'eth-connect'
 import { errorToString } from '../utils/errorToString'
 import { isElectron, launchDesktopApp } from '../integration/desktop'
@@ -164,7 +164,7 @@ function cdnFromRollout(rollout: RolloutRecord): string {
 }
 
 function cdnFromPrefixVersion(prefix: string, version: string): string {
-  return  withOrigin(`${prefix}/${version}`, 'https://cdn.decentraland.org/')
+  return withOrigin(`${prefix}/${version}`, 'https://cdn.decentraland.org/')
 }
 
 async function getVersions(flags: FeatureFlagsResult) {
@@ -192,12 +192,12 @@ async function getVersions(flags: FeatureFlagsResult) {
   // 3. load hot-branch
   const rendererBranch = qs.get('renderer-branch')
   if (rendererBranch) {
-    globalThis.RENDERER_BASE_URL =  withOrigin(rendererBranch, 'https://renderer-artifacts.decentraland.org/branch/')
+    globalThis.RENDERER_BASE_URL = withOrigin(rendererBranch, 'https://renderer-artifacts.decentraland.org/branch/')
   }
 
   const kernelBranch = qs.get('kernel-branch')
   if (kernelBranch) {
-    globalThis.KERNEL_BASE_URL =  withOrigin(kernelBranch, 'https://sdk-team-cdn.decentraland.org/@dcl/kernel/branch/')
+    globalThis.KERNEL_BASE_URL = withOrigin(kernelBranch, 'https://sdk-team-cdn.decentraland.org/@dcl/kernel/branch/')
   }
 
   // 4. specific cdn versions
@@ -252,8 +252,17 @@ async function initKernel() {
   })
 
   kernel.on('openUrl', ({ url }) => {
-    const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
-    if (newWindow != null) newWindow.opener = null
+    try {
+      const u = new URL(url)
+      if (u.protocol === 'https:') {
+        const newWindow = window.open(u.toString(), '_blank', 'noopener,noreferrer')
+        if (newWindow != null) newWindow.opener = null
+      } else {
+        track('invalid_external_url', { url })
+      }
+    } catch (err: any) {
+      trackError(err, { context: 'explorer-website' })
+    }
   })
 
   let isGuest = true
