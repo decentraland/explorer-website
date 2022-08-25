@@ -83,6 +83,9 @@ export type TrackingEvents = {
 
   /** when the mobile screen has been displayed */
   explorer_website_mobile_screen: {}
+
+  /** Attempt to open non-https url */
+  invalid_external_url: { url: string }
 }
 
 export type SessionTraits = {
