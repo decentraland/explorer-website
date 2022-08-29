@@ -110,6 +110,7 @@ export function identifyUser(address: string, isGuest: boolean, email?: string) 
   if (window.analytics) {
     const userTraits = {
       sessionId: getRequiredAnalyticsContext(store.getState()).sessionId,
+      address,
       email
     }
 
@@ -117,11 +118,7 @@ export function identifyUser(address: string, isGuest: boolean, email?: string) 
       console.info('explorer-website: DEBUG_ANALYTICS identifyUser', address, userTraits)
     }
 
-    if (isGuest) {
-      window.analytics.identify(userTraits)
-    } else {
-      window.analytics.identify(address, userTraits)
-    }
+    window.analytics.identify(userTraits)
   }
 }
 
