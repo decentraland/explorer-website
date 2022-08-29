@@ -104,24 +104,21 @@ export function trackError(error: string | Error, payload?: Record<string, any>)
   }
 }
 
-export function identifyUser(address: string, isGuest: boolean, email?: string) {
+export function identifyUser(ethAddress: string, isGuest: boolean, email?: string) {
   authFlags.isGuest = isGuest
-  authFlags.isAuthenticated = !!address
+  authFlags.isAuthenticated = !!ethAddress
   if (window.analytics) {
     const userTraits = {
       sessionId: getRequiredAnalyticsContext(store.getState()).sessionId,
+      ethAddress,
       email
     }
 
     if (DEBUG_ANALYTICS) {
-      console.info('explorer-website: DEBUG_ANALYTICS identifyUser', address, userTraits)
+      console.info('explorer-website: DEBUG_ANALYTICS identifyUser', ethAddress, userTraits)
     }
 
-    if (isGuest) {
-      window.analytics.identify(userTraits)
-    } else {
-      window.analytics.identify(address, userTraits)
-    }
+    window.analytics.identify(userTraits)
   }
 }
 
