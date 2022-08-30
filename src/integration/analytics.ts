@@ -51,6 +51,7 @@ function injectTrackingMetadata(payload: Record<string, any>): void {
   payload.dcl_disabled_analytics = authFlags.afterFatalError
   payload.dcl_renderer_type = RENDERER_TYPE
   payload.dcl_kernel_platform = PLATFORM
+  payload.dcl_eth_address = authFlags.ethAddress
 }
 
 export function configureRollbar() {
