@@ -21,7 +21,8 @@ enum RollbarAccount {
 const authFlags = {
   isAuthenticated: false,
   isGuest: false,
-  afterFatalError: false
+  afterFatalError: false,
+  ethAddress: null as null | string,
 }
 
 export type AnalyticsOptions = { integrations?: Record<string, boolean> }
@@ -50,6 +51,7 @@ function injectTrackingMetadata(payload: Record<string, any>): void {
   payload.dcl_disabled_analytics = authFlags.afterFatalError
   payload.dcl_renderer_type = RENDERER_TYPE
   payload.dcl_kernel_platform = PLATFORM
+  payload.dcl_eth_address = authFlags.ethAddress
 }
 
 export function configureRollbar() {
@@ -107,6 +109,8 @@ export function trackError(error: string | Error, payload?: Record<string, any>)
 export function identifyUser(ethAddress: string, isGuest: boolean, email?: string) {
   authFlags.isGuest = isGuest
   authFlags.isAuthenticated = !!ethAddress
+  authFlags.ethAddress = ethAddress
+
   if (window.analytics) {
     const userTraits = {
       sessionId: getRequiredAnalyticsContext(store.getState()).sessionId,
