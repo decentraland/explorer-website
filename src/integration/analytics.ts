@@ -22,7 +22,7 @@ const authFlags = {
   isAuthenticated: false,
   isGuest: false,
   afterFatalError: false,
-  ethAddress: ''
+  ethAddress: null as null | string,
 }
 
 export type AnalyticsOptions = { integrations?: Record<string, boolean> }
