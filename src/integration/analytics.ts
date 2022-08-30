@@ -21,7 +21,8 @@ enum RollbarAccount {
 const authFlags = {
   isAuthenticated: false,
   isGuest: false,
-  afterFatalError: false
+  afterFatalError: false,
+  ethAddress: ''
 }
 
 export type AnalyticsOptions = { integrations?: Record<string, boolean> }
@@ -107,6 +108,8 @@ export function trackError(error: string | Error, payload?: Record<string, any>)
 export function identifyUser(ethAddress: string, isGuest: boolean, email?: string) {
   authFlags.isGuest = isGuest
   authFlags.isAuthenticated = !!ethAddress
+  authFlags.ethAddress = ethAddress
+
   if (window.analytics) {
     const userTraits = {
       sessionId: getRequiredAnalyticsContext(store.getState()).sessionId,
