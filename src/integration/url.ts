@@ -2,7 +2,7 @@ const qs = new URLSearchParams(document.location.search || '')
 export const DEBUG_ANALYTICS = qs.has('DEBUG_ANALYTICS')
 export const ENV = qs.get('ENV')
 export const NETWORK = qs.get('NETWORK')
-export const RENDERER_TYPE = qs.get('ws') ? 'native' : 'web'
+export const RENDERER_TYPE = detectClientType(qs)
 export const CATALYST = addHttpsIfNoProtocolIsSet(qs.get('CATALYST'))
 export const PLATFORM = (navigator as any)?.userAgentData?.platform || navigator?.platform || 'unknown'
 export const HOSTNAME = document.location.hostname
@@ -15,6 +15,16 @@ function addHttpsIfNoProtocolIsSet(domain: string | null) {
   }
 
   return domain
+}
+
+function detectClientType(qs: URLSearchParams) {
+  if (!qs.has("VR_TYPE")) {
+    return qs.get('ws') ? 'native' : 'web'
+  }
+  
+  const vr_type = qs.get("VR_TYPE")
+  if (vr_type === 'desktop') return 'vr_desktop'
+  if (vr_type === 'android') return 'vr_android'
 }
 
 export function withoutCatalyst(url: string = window.location.href) {
