@@ -41,7 +41,7 @@
   font-weight: 700;
   font-size: 30px;
   line-height: 120%;
-  color: #16141A;
+  color: var(--text);
   margin-top: 10px;
   margin-bottom: 24px;
 }
