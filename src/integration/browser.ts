@@ -1,7 +1,7 @@
-import { detect } from "detect-browser"
-import { setBanner } from "../state/actions"
-import { BannerType, store } from "../state/redux"
-import { callOnce } from "../utils/callOnce"
+import { detect } from 'detect-browser'
+import { setBanner } from '../state/actions'
+import { BannerType, store } from '../state/redux'
+import { callOnce } from '../utils/callOnce'
 
 export const initializeBrowserRecommendation = callOnce(() => {
   if (!isRecommendedBrowser()) {
@@ -46,6 +46,7 @@ export const isRecommendedBrowser = callOnce(() => {
 })
 
 const BROWSER_LAST_SESSION_KEY = 'dcl-last-session-at'
+const BROWSER_LAST_DOWNLOAD_MODAL_SHOWN_KEY = 'dcl-last-download-modal-shown-at'
 export const BROWSER_LAST_SESSION_EXPIRATION = 1000 * 60 * 60 * 24 * 7 /* one week */
 
 export const hasRecentlyLoggedIn = callOnce(() => {
@@ -57,8 +58,21 @@ export const hasRecentlyLoggedIn = callOnce(() => {
   return lastLoginAt + BROWSER_LAST_SESSION_EXPIRATION > Date.now()
 })
 
+export const hasRecentlyDownloadModalShown = callOnce(() => {
+  const lastLoginAt = Number(localStorage.getItem(BROWSER_LAST_DOWNLOAD_MODAL_SHOWN_KEY))
+  if (Number.isNaN(lastLoginAt)) {
+    return false
+  }
+
+  return lastLoginAt + BROWSER_LAST_SESSION_EXPIRATION > Date.now()
+})
+
 export function setAsRecentlyLoggedIn() {
   localStorage.setItem(BROWSER_LAST_SESSION_KEY, String(Date.now()))
+}
+
+export function setAsRecentlyDownloadModalShown() {
+  localStorage.setItem(BROWSER_LAST_DOWNLOAD_MODAL_SHOWN_KEY, String(Date.now()))
 }
 
 export function isWindows() {
@@ -94,8 +108,8 @@ export function isMacOS() {
 }
 
 export type UserPosition = Partial<{
-  realm: string,
-  position: string,
+  realm: string
+  position: string
 }>
 
 export function getCurrentPosition() {

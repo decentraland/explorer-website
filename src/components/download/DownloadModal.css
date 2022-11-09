@@ -1,0 +1,61 @@
+.ui.modal.visible.active.DownloadModal {
+  width: 800px!important;
+  border: none;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.ui.modal.visible.active.DownloadModal .dcl.close > .close-icon {
+  background-image: url(../../images/close-icon.svg)
+}
+
+.ui.modal.visible.active.DownloadModal > .content {
+  margin: 0;
+  display: flex;
+}
+
+.ui.modal.visible.active.DownloadModal > .content > .DownloadModal__ImageContainer {
+  width: 400px;
+  height: 450px;
+  background-size: cover;
+}
+
+.ui.modal.visible.active.DownloadModal > .content > .DownloadModal__TextContainer {
+  width: 400px;
+  height: 450px;
+}
+
+.ui.modal.visible.active.DownloadModal > .content > .DownloadModal__TextContainer > .dcl.hero {
+  padding: 70px;
+}
+
+.ui.modal.visible.active.DownloadModal > .content > .DownloadModal__TextContainer > .dcl.hero > .ui.container > .ui.header.hero-subtitle {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+  text-transform: uppercase;
+  color: #716B7C;
+}
+
+.ui.modal.visible.active.DownloadModal > .content > .DownloadModal__TextContainer > .dcl.hero >.ui.container > .ui.header.hero-title {
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 120%;
+  color: #16141A;
+  margin-top: 10px;
+  margin-bottom: 24px;
+}
+
+.ui.modal.visible.active.DownloadModal > .content > .DownloadModal__TextContainer > .dcl.hero > .hero-content {
+  position: inherit;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 24px;
+  letter-spacing: -0.2px;
+  color: #000000;
+}
+
+.ui.modal.visible.active.DownloadModal > .content > .DownloadModal__TextContainer > .dcl.hero >.ui.container.hero-actions > .button {
+  width: 75%;
+  border-radius: 15px;
+}
