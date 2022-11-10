@@ -220,7 +220,7 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
         onClose={handleCloseSelector}
       />
 
-      <DownloadModal />
+      {!isElectron() && <DownloadModal />}
     </Main>
   )
 }
