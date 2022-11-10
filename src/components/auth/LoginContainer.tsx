@@ -8,18 +8,18 @@ import { Container } from '../common/Layout/Container'
 import { StoreType } from '../../state/redux'
 import { FeatureFlags, getFeatureVariantName, VariantNames } from '../../state/selectors'
 import { authenticate } from '../../kernel-loader'
-import { DownloadDesktopToast } from './DownloadDesktopToast'
 import { EthWalletSelector } from './EthWalletSelector'
 import { EthWalletNewSelector } from './EthWalletNewSelector'
 import { LoginGuestItem, LoginWalletItem } from './LoginItemContainer'
 import { LoginGuestItemNew, LoginWalletItemNew } from './LoginItemNewContainer'
 import LogoContainer from './LogoContainer'
+import { DownloadDesktopToast } from '../download/DownloadDesktopToast'
+import { DownloadModal } from '../download/DownloadModal'
 import { isElectron } from '../../integration/desktop'
 import { disconnect } from '../../eth/provider'
 import { track } from '../../utils/tracking'
 import './LoginContainer.css'
 import Main from '../common/Layout/Main'
-
 
 export const defaultAvailableProviders = []
 
@@ -85,7 +85,6 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
   isSignInFlowV3,
   featureList
 }) => {
-
   useEffect(() => {
     track('feature_flags', {
       featureFlags: featureList
@@ -220,6 +219,8 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
         onCancelLogin={handleCancelLogin}
         onClose={handleCloseSelector}
       />
+
+      <DownloadModal />
     </Main>
   )
 }
