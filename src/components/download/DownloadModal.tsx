@@ -10,7 +10,7 @@ import {
   setAsRecentlyDownloadModalShown,
   hasRecentlyDownloadModalShown
 } from '../../integration/browser'
-import FollowTheWhiteRabbit from '../../images/follow-the-white-rabbit.jpeg'
+import ModalImage from '../../images/dcl-modal-image.jpeg'
 import './DownloadModal.css'
 
 export const DownloadModal = React.memo(() => {
@@ -42,18 +42,15 @@ export const DownloadModal = React.memo(() => {
   return (
     <Modal className="DownloadModal" open={open} closeIcon={<Close />} onClose={handleClose}>
       <Modal.Content>
-        <div
-          className="DownloadModal__ImageContainer"
-          style={{ backgroundImage: `url(${FollowTheWhiteRabbit})` }}
-        ></div>
+        <div className="DownloadModal__ImageContainer" style={{ backgroundImage: `url(${ModalImage})` }}></div>
         <div className="DownloadModal__TextContainer">
           <Hero>
-            <Hero.Description>Decentraland for {platform}</Hero.Description>
-            <Hero.Header>The Best Festival Experience</Hero.Header>
+            <Hero.Header>
+              Decentraland for <span>{platform}</span>
+            </Hero.Header>
             <Hero.Content>
-              With the Desktop Client, your visit to Decentraland Metaverse Music Festival will be{' '}
-              <strong>faster</strong> and <strong>more stable</strong> with{' '}
-              <strong>better performance and graphics.</strong>
+              With the Desktop Client, your visit to Decentraland will be <strong>faster</strong> and{' '}
+              <strong>more stable</strong> with <strong>better performance and graphics.</strong>
             </Hero.Content>
             <Hero.Actions>
               <Button primary as="a" href="https://decentraland.org/download/" target="_blank">
