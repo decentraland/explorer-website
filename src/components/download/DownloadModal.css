@@ -46,6 +46,10 @@
   margin-bottom: 24px;
 }
 
+.ui.modal.visible.active.DownloadModal>.content>.DownloadModal__TextContainer>.dcl.hero>.ui.container>.ui.header.hero-title span {
+  text-transform: capitalize;
+}
+
 .ui.modal.visible.active.DownloadModal > .content > .DownloadModal__TextContainer > .dcl.hero > .hero-content {
   position: inherit;
   font-weight: 400;
