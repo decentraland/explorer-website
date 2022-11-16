@@ -26,6 +26,9 @@ export const Navbar = React.memo(function (props: NavbarProps) {
         <Menu.Item href="https://docs.decentraland.org">
           {Base.defaultProps.i18n?.menu?.docs}
         </Menu.Item>
+        <Menu.Item href="https://places.decentraland.org">
+          {Base.defaultProps.i18n?.menu?.places}
+        </Menu.Item>
         <Menu.Item href="https://events.decentraland.org">
           {Base.defaultProps.i18n?.menu?.events}
         </Menu.Item>
