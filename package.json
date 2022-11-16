@@ -44,6 +44,7 @@
     "decentraland-connect": "^3.3.1",
     "decentraland-dapps": "^13.7.0",
     "decentraland-ecs": "^6.10.0",
+    "decentraland-ui": "^3.55.0",
     "detect-browser": "^5.2.0",
     "eth-connect": "^6.0.2",
     "md5-file": "^5.0.0",
