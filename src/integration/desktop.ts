@@ -2,6 +2,7 @@ import { setDownloadNewVersion, setDownloadProgress, setDownloadReady, setKernel
 import { store } from '../state/redux'
 import { callOnce } from '../utils/callOnce'
 import { getCurrentPosition, hasRecentlyLoggedIn, isMobile } from './browser'
+import { Reflector_IPC_window, l as reflector_l } from '@ipsme/reflector-electron-ipc-window'
 
 export const isElectron = callOnce((): boolean => {
   // Renderer process
@@ -58,6 +59,10 @@ export const initializeDesktopApp = callOnce(() => {
 
     ipcRenderer.send('checkVersion')
     console.log('Electron found')
+
+    // IPSME: reflector ipc <-> bc
+    const reflector_IPC_window_ = new Reflector_IPC_window(window);
+    reflector_IPC_window_.subscribe();
   }
 })
 

@@ -40,6 +40,7 @@
     "@dcl/kernel-interface": "^2.0.0-20210922153939.commit-017905d",
     "@dcl/schemas": "^4.15.0",
     "@dcl/urn-resolver": "^1.4.0",
+    "@ipsme/reflector-electron-ipc-window": "^0.1.5-DCL",
     "@types/validator": "^13.7.3",
     "decentraland-connect": "^3.3.1",
     "decentraland-dapps": "^13.5.0",
