@@ -11,6 +11,7 @@
     "eject": "react-scripts eject",
     "postinstall": "node ./scripts/hash_generator.js",
     "copy-cdn": "node ./scripts/copy_cdn.js",
+    "copy-reflector": "node ./scripts/copy_reflector.js",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
   },
@@ -41,6 +42,7 @@
     "@dcl/schemas": "^4.15.0",
     "@dcl/urn-resolver": "^1.4.0",
     "@ipsme/reflector-electron-ipc-window": "^0.1.5-DCL",
+    "@ipsme/reflector-ws-client": "^0.4.0",
     "@types/validator": "^13.7.3",
     "decentraland-connect": "^3.3.1",
     "decentraland-dapps": "^13.5.0",
