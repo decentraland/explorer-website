@@ -10,7 +10,6 @@
   background-color: #000000;
 }
 
-.LoadingRender img,
 .LoadingRender video {
   display: block;
   position: relative;
