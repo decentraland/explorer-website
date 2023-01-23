@@ -622,6 +622,18 @@ exports[`Storyshots Explorer/Warnings Network Warning 1`] = `
 
 exports[`Storyshots Explorer/Warnings None 1`] = `null`;
 
+exports[`Storyshots Explorer/base/Audio Template 1`] = `
+<audio
+  autoPlay={true}
+  loop={true}
+>
+  <source
+    src="https://play.decentraland.org/tone4.mp3"
+    type="audio/mpeg"
+  />
+</audio>
+`;
+
 exports[`Storyshots Explorer/base/BigFooter Template 1`] = `
 <footer
   className="big-footer"
