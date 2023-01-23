@@ -1,10 +1,9 @@
 const path = require('path')
 
 /**
- * This module creates a "CDN-like" environment. Serving static content directly
- * from NPM modules.
+ * This module set ups routes to serve static content directly from NPM modules.
+ * It aims to imitate the production environment, but on the local machine, for the preview mode.
  */
-
 module.exports = function (app) {
   if (!process.env.KERNEL_PATH) throw new Error('KERNEL_PATH not present in process.env')
 
