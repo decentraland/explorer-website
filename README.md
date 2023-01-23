@@ -27,7 +27,8 @@ The website has the [kernel](https://github.com/decentraland/kernel) as a depend
 
 1. Edit `.env.development` to point the `KERNEL_PATH` env var to your local kernel folder
 2. Run `npm run postinstall` to update the .env files
-3. Run `npm run start:linked`
+3. Run `npm install`
+4. Run `npm run start:linked`
 
 If the linking is not working you can try one of two things:
 
@@ -40,3 +41,23 @@ Another choice is to:
 1. Clone the [kernel](https://github.com/decentraland/kernel) project
 2. Make sure the folder is located where the linking error is trying to find it, usually `../kernel`
 3. Build it locally (check the [kernel README](https://github.com/decentraland/kernel#running-the-explorer))
+
+## Troubleshooting
+
+If you get this error while running `npm install`:
+```
+npm ERR! Could not install from "node_modules/eth-sig-util/ethereumjs-abi@git+https:/github.com/ethereumjs/ethereumjs-abi.git" as it does not contain a package.json file.
+```
+
+Run `npm install -g npm@5` to install a compatible version of npm as described in [governance#144](https://github.com/decentraland/governance/pull/144).
+
+Then run `npm install` again.
+
+
+If you get this error when running `npm run start:linked`:
+
+```
+Module not found: Can't resolve 'ethereumjs-abi' in './decentraland/explorer-website/node_modules/eth-sig-util'
+```
+
+Run `npm install ethereumjs-abi` and try `npm run start:linked` again.
