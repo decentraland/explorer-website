@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 import { connect } from 'react-redux'
+import { LoginState } from '@dcl/kernel-interface'
 import { useMobileMediaQuery } from 'decentraland-ui/dist/components/Media'
 import ErrorContainer from './errors/ErrorContainer'
 import LoginContainer from './auth/LoginContainer'
@@ -10,7 +11,12 @@ import { BigFooter } from './common/Layout/BigFooter'
 import BannerContainer from './banners/BannerContainer'
 import { LoadingRender } from './common/Loading/LoadingRender'
 import { Navbar } from './common/Layout/Navbar'
-import { FeatureFlags, getFeatureVariant, isWaitingForRenderer } from '../state/selectors'
+import {
+  FeatureFlags,
+  getFeatureVariant,
+  isWaitingForRenderer,
+  isLoginComplete
+} from '../state/selectors'
 import StreamContainer from './common/StreamContainer'
 import { Audio } from './common/Audio'
 import { isMobile } from '../integration/browser'
@@ -24,6 +30,7 @@ function mapStateToProps(state: StoreType): AppProps {
     hasBanner: !!state.banner.banner,
     sessionReady: !!state.session?.ready,
     waitingForRenderer: isWaitingForRenderer(state),
+    loginComplete: isLoginComplete(state),
     rendererReady: !!state.renderer?.ready,
     trustedCatalyst: !!state.catalyst?.trusted,
     error: !!state.error.error,
