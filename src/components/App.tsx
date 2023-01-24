@@ -58,7 +58,7 @@ const App: React.FC<AppProps> = (props) => {
     return <MobileContainer />
   }
 
-  if (props.error) {
+  if (props.error) {https://explorer-artifacts.decentraland.org/@dcl/explorer-website/branch/feat/show-download/?kernel-branch=main&renderer-branch=master
     return <ErrorContainer />
   }
 
@@ -66,7 +66,11 @@ const App: React.FC<AppProps> = (props) => {
     return <React.Fragment />
   }
 
-  if (props.sessionReady || props.waitingForRenderer) {
+  if (props.waitingForRenderer) {
+    return <LoadingRender />
+  }
+
+  if (props.sessionReady) {
     return <LoadingRender />
   }
 
