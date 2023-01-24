@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react'
 import { connect } from 'react-redux'
-import { LoginState } from '@dcl/kernel-interface'
 import { useMobileMediaQuery } from 'decentraland-ui/dist/components/Media'
 import ErrorContainer from './errors/ErrorContainer'
 import LoginContainer from './auth/LoginContainer'
