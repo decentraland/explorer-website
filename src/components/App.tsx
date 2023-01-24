@@ -72,11 +72,7 @@ const App: React.FC<AppProps> = (props) => {
     return <React.Fragment />
   }
 
-  if (props.waitingForRenderer) {
-    return <LoadingRender />
-  }
-
-  if (props.sessionReady) {
+  if (props.waitingForRenderer || props.sessionReady) {
     return <LoadingRender />
   }
 
