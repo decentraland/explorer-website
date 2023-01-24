@@ -58,7 +58,7 @@ const App: React.FC<AppProps> = (props) => {
     return <MobileContainer />
   }
 
-  if (props.error) {https://explorer-artifacts.decentraland.org/@dcl/explorer-website/branch/feat/show-download/?kernel-branch=main&renderer-branch=master
+  if (props.error) {
     return <ErrorContainer />
   }
 
