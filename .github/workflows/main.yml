@@ -119,7 +119,7 @@ jobs:
             This branch can be previewed at
             - [`stable` kernel & `stable` renderer](${{ needs.build.outputs.public_url }}/)
             - [`development` kernel & `stable` renderer](${{ needs.build.outputs.public_url }}/?kernel-branch=main)
-            - [`stable` kernel & `development` renderer](${{ needs.build.outputs.public_url }}/?renderer-branch=master)
-            - [`development` kernel & `development` renderer](${{ needs.build.outputs.public_url }}/?kernel-branch=main&renderer-branch=master)
+            - [`stable` kernel & `development` renderer](${{ needs.build.outputs.public_url }}/?renderer-branch=dev)
+            - [`development` kernel & `development` renderer](${{ needs.build.outputs.public_url }}/?kernel-branch=main&renderer-branch=dev)
 
           edit-mode: replace
