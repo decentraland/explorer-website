@@ -10,7 +10,12 @@ import { BigFooter } from './common/Layout/BigFooter'
 import BannerContainer from './banners/BannerContainer'
 import { LoadingRender } from './common/Loading/LoadingRender'
 import { Navbar } from './common/Layout/Navbar'
-import { FeatureFlags, getFeatureVariant } from '../state/selectors'
+import {
+  FeatureFlags,
+  getFeatureVariant,
+  isWaitingForRenderer,
+  isLoginComplete
+} from '../state/selectors'
 import StreamContainer from './common/StreamContainer'
 import { Audio } from './common/Audio'
 import { isMobile } from '../integration/browser'
@@ -23,6 +28,8 @@ function mapStateToProps(state: StoreType): AppProps {
     hasStream: !!getFeatureVariant(state, FeatureFlags.Stream),
     hasBanner: !!state.banner.banner,
     sessionReady: !!state.session?.ready,
+    waitingForRenderer: isWaitingForRenderer(state),
+    loginComplete: isLoginComplete(state),
     rendererReady: !!state.renderer?.ready,
     trustedCatalyst: !!state.catalyst?.trusted,
     error: !!state.error.error,
@@ -34,6 +41,7 @@ export interface AppProps {
   hasStream: boolean
   hasBanner: boolean
   sessionReady: boolean
+  waitingForRenderer: boolean
   rendererReady: boolean
   trustedCatalyst: boolean
   error: boolean
@@ -64,7 +72,7 @@ const App: React.FC<AppProps> = (props) => {
     return <React.Fragment />
   }
 
-  if (props.sessionReady) {
+  if (props.waitingForRenderer || props.sessionReady) {
     return <LoadingRender />
   }
 

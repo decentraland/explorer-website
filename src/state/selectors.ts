@@ -1,4 +1,5 @@
 import { SessionTraits } from '../trackingEvents'
+import { LoginState } from '@dcl/kernel-interface'
 import { StoreType } from './redux'
 import { defaultFeatureFlagsState, FF_APPLICATION_NAME } from './types'
 
@@ -46,4 +47,12 @@ export function getFeatureVariantName(state: StoreType, key: string, defaultValu
   }
 
   return defaultValue
+}
+
+export function isWaitingForRenderer(state: StoreType): boolean {
+  return state.session?.kernelState?.loginStatus === LoginState.WAITING_RENDERER
+}
+
+export function isLoginComplete(state: StoreType): boolean {
+  return state.session?.kernelState?.loginStatus === LoginState.COMPLETED
 }
