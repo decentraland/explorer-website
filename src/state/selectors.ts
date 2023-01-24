@@ -52,3 +52,7 @@ export function getFeatureVariantName(state: StoreType, key: string, defaultValu
 export function isWaitingForRenderer(state: StoreType): boolean {
   return state.session?.kernelState?.loginStatus === LoginState.WAITING_RENDERER
 }
+
+export function isLoginComplete(state: StoreType): boolean {
+  return state.session?.kernelState?.loginStatus === LoginState.COMPLETED
+}
