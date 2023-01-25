@@ -99,7 +99,7 @@ export async function authenticate(providerType: ProviderType | null) {
     if (
       err &&
       typeof err === 'object' &&
-      ['Fortmatic: User denied account access.', 'The user rejected the request.'].includes(err.message)
+      ['Fortmatic: User denied account access.', 'The user rejected the request.'].includes((err as Error)?.message)
     ) {
       return
     }
@@ -107,8 +107,8 @@ export async function authenticate(providerType: ProviderType | null) {
     if (
       err &&
       typeof err === 'object' &&
-      typeof err.message == 'string' &&
-      (err.message.includes('Already processing eth_requestAccounts.') || err.message.includes('Please wait.'))
+      typeof (err as Error)?.message == 'string' &&
+      ((err as Error)?.message.includes('Already processing eth_requestAccounts.') || (err as Error)?.message.includes('Please wait.'))
     ) {
       // https://github.com/decentraland/explorer-website/issues/46
       store.dispatch(
