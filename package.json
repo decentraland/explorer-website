@@ -42,7 +42,7 @@
     "@dcl/urn-resolver": "^1.4.0",
     "@types/validator": "^13.7.3",
     "decentraland-connect": "^3.4.0",
-    "decentraland-dapps": "^13.7.0",
+    "decentraland-dapps": "^13.30.2",
     "decentraland-ecs": "^6.10.0",
     "decentraland-ui": "^3.55.0",
     "detect-browser": "^5.2.0",
