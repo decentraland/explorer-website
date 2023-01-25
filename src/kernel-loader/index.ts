@@ -127,7 +127,7 @@ export async function authenticate(providerType: ProviderType | null) {
 
     store.dispatch(
       setKernelError({
-        error: err
+        error: err as Error
       })
     )
   }
