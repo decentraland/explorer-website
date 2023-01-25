@@ -804,6 +804,7 @@ exports[`Storyshots Explorer/base/LoadingRender Template 1`] = `
     autoPlay={true}
     height="150"
     loop={true}
+    muted={true}
     src="loading.mp4"
     width="150"
   />
