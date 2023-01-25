@@ -196,7 +196,7 @@ async function getVersions(flags: FeatureFlagsResult) {
   if (!globalThis.EXPLORER_BASE_URL) {
     if (flags.variants['explorer-rollout-explorer-version']) {
       const version = flags.variants['explorer-rollout-explorer-version'].name
-      globalThis.EXPLORER_BASE_URL = `urn:decentraland:off-chain:unity-renderer-cdn:${version}`
+      globalThis.EXPLORER_BASE_URL = `https://cdn.decentraland.org/@dcl/explorer/${version}`
     }
   }
 }
@@ -210,13 +210,13 @@ async function initKernel() {
 
   const kernel = await injectKernel({
     kernelOptions: {
-      baseUrl: await resolveBaseUrl(globalThis.EXPLORER_BASE_URL || `urn:decentraland:off-chain:unity-renderer-cdn:latest`),
+      baseUrl: await resolveBaseUrl(globalThis.EXPLORER_BASE_URL || `https://cdn.decentraland.org/@dcl/explorer/latest`),
       configurations: {}
     },
     rendererOptions: {
       container,
       baseUrl: await resolveBaseUrl(
-        globalThis.EXPLORER_BASE_URL || `urn:decentraland:off-chain:unity-renderer-cdn:latest`
+        globalThis.EXPLORER_BASE_URL || `https://cdn.decentraland.org/@dcl/explorer/latest`
       )
     }
   })
