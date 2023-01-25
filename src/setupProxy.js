@@ -5,11 +5,9 @@ const path = require('path')
  * It aims to imitate the production environment, but on the local machine, for the preview mode.
  */
 module.exports = function (app) {
-  if (!process.env.KERNEL_PATH) throw new Error('KERNEL_PATH not present in process.env')
-
-  createStaticRoutes(app, '/cdn/packages/kernel/:version/*', path.resolve(process.env.KERNEL_PATH))
   createStaticRoutes(app, '/cdn/packages/website/:version/*', `./public`)
-  createStaticRoutes(app, '/cdn/packages/explorer/:version/*', `./node_modules/@dcl/unity-renderer`)
+  createStaticRoutes(app, '/cdn/packages/explorer/:version/*', `./node_modules/@dcl/explorer`)
+  //createStaticRoutes(app, '/cdn/packages/explorer/:version/*', path.resolve(process.env.EXPLORER_PATH))
 }
 
 function createStaticRoutes(app, route, localFolder) {
