@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { Dispatch } from 'redux'
 import { connect } from 'react-redux'
 import { setKernelError } from '../../state/actions'
 import { disconnect } from '../../eth/provider'
@@ -14,23 +15,23 @@ import { ErrorNotSupported } from './ErrorNotSupported'
 import { useMobileResize } from '../../integration/mobile'
 import { track } from '../../utils/tracking'
 
+export interface ErrorContainerProps {
+  error: ErrorState['error']
+  onLogout(): void
+  closeError(): void
+}
+
 const mapStateToProps = (state: StoreType): Pick<ErrorContainerProps, 'error'> => {
   return {
     error: state.error.error || null
   }
 }
 
-const mapDispatchToProps = (dispatch: (a: any) => void, state: StoreType): Pick<ErrorContainerProps, 'closeError' | 'onLogout'> => {
+const mapDispatchToProps = (dispatch: Dispatch): Pick<ErrorContainerProps, 'closeError' | 'onLogout'> => {
   return {
     closeError: () => dispatch(setKernelError(null)),
     onLogout: () => disconnect()
   }
-}
-
-export interface ErrorContainerProps {
-  error: ErrorState['error']
-  onLogout(): void
-  closeError(): void
 }
 
 export const ErrorContainer = React.memo(function (props: ErrorContainerProps) {
@@ -39,7 +40,7 @@ export const ErrorContainer = React.memo(function (props: ErrorContainerProps) {
   useEffect(() => {
     if (props.error) track('explorer_website_error_screen', props.error)
   }, [props.error])
-  
+
   if (!props.error) return <React.Fragment></React.Fragment>
 
   if (props.error.type === ErrorType.COMMS) return <ErrorComms />
