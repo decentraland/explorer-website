@@ -12,7 +12,7 @@ if (fs.existsSync('.env')) {
 const packageJson = JSON.parse(fs.readFileSync('./package.json').toString())
 const publicPackageJson = JSON.parse(fs.readFileSync('./public/package.json').toString())
 
-//const explorerVersion = JSON.parse(fs.readFileSync(require.resolve('@dcl/explorer/package.json'))).version
+const explorerVersion = JSON.parse(fs.readFileSync(require.resolve('@dcl/unity-renderer/package.json'))).version
 
 ENV_CONTENT['REACT_APP_WEBSITE_VERSION'] = packageJson.version
 //ENV_CONTENT['REACT_APP_EXPLORER_VERSION'] = explorerVersion
@@ -61,6 +61,7 @@ function getPublicUrls() {
   // localhost
   return {
     PUBLIC_URL: ``,
-    REACT_APP_EXPLORER_BASE_URL: ``//cdnFolder('@dcl/explorer', explorerVersion) + `/`,
+    REACT_APP_EXPLORER_BASE_URL: cdnFolder('@dcl/explorer', explorerVersion) + `/`,
+    REACT_APP_RENDERER_BASE_URL: cdnFolder('@dcl/explorer', explorerVersion) + `/`,
   }
 }

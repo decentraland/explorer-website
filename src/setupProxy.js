@@ -9,7 +9,7 @@ module.exports = function (app) {
 
   createStaticRoutes(app, '/cdn/packages/kernel/:version/*', path.resolve(process.env.KERNEL_PATH))
   createStaticRoutes(app, '/cdn/packages/website/:version/*', `./public`)
-  createStaticRoutes(app, '/cdn/packages/unity-renderer/:version/*', `./node_modules/@dcl/unity-renderer`)
+  createStaticRoutes(app, '/cdn/packages/explorer/:version/*', `./node_modules/@dcl/unity-renderer`)
 }
 
 function createStaticRoutes(app, route, localFolder) {
