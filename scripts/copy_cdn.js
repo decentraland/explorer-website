@@ -1,4 +1,4 @@
-// this file creates the /build/cdn folder containing the renderer and kernel
+// this file creates the /build/cdn folder containing the @dcl/explorer package
 
 const path = require('path')
 const fs = require('fs')
@@ -34,7 +34,6 @@ function copyPackage(packageName, envValueToCheck) {
   console.log('\n')
 }
 
-copyPackage('@dcl/unity-renderer', process.env.REACT_APP_RENDERER_BASE_URL)
-copyPackage('@dcl/kernel', process.env.REACT_APP_KERNEL_BASE_URL)
+copyPackage('@dcl/explorer', process.env.REACT_APP_EXPLORER_BASE_URL)
 
 console.log('copy-cdn SUCCEED')
