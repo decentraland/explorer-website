@@ -111,7 +111,7 @@ export function identifyUser(ethAddress: string, isGuest: boolean, email?: strin
   authFlags.isAuthenticated = !!ethAddress
   authFlags.ethAddress = ethAddress
 
-  if (window.analytics) {
+  if ((window as any).analytics) {
     const userTraits = {
       sessionId: getRequiredAnalyticsContext(store.getState()).sessionId,
       ethAddress,
@@ -122,17 +122,17 @@ export function identifyUser(ethAddress: string, isGuest: boolean, email?: strin
       console.info('explorer-website: DEBUG_ANALYTICS identifyUser', ethAddress, userTraits)
     }
 
-    window.analytics.identify(userTraits)
+    (window as any).analytics.identify(userTraits)
   }
 }
 
 async function initialize(segmentKey: string): Promise<void> {
-  if (window.analytics.load) {
+  if ((window as any).analytics.load) {
     // loading client for the first time
-    window.analytics.load(segmentKey)
-    window.analytics.page()
-    window.analytics.ready(() => {
-      window.analytics.timeout(1000)
+    (window as any).analytics.load(segmentKey)
+    (window as any).analytics.page()
+    (window as any).analytics.ready(() => {
+      (window as any).analytics.timeout(1000)
     })
   }
 }
@@ -143,7 +143,7 @@ export function internalTrackEvent(
   eventData: Record<string, any>,
   options?: { integrations?: Record<string, boolean> }
 ) {
-  if (!window.analytics || analyticsDisabled) {
+  if (!(window as any).analytics || analyticsDisabled) {
     return
   }
 
@@ -155,5 +155,5 @@ export function internalTrackEvent(
     console.info('explorer-website: DEBUG_ANALYTICS trackEvent', eventName, data, options)
   }
 
-  window.analytics.track(eventName, data, options ?? defaultAnalyticsOptions)
+  (window as any).analytics.track(eventName, data, options ?? defaultAnalyticsOptions)
 }

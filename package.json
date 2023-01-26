@@ -38,11 +38,11 @@
   "dependencies": {
     "@dcl/feature-flags": "^1.1.0",
     "@dcl/kernel-interface": "^2.0.0-20210922153939.commit-017905d",
-    "@dcl/schemas": "^4.15.0",
+    "@dcl/schemas": "^6.4.2",
     "@dcl/urn-resolver": "^1.4.0",
     "@types/validator": "^13.7.3",
     "decentraland-connect": "^3.4.0",
-    "decentraland-dapps": "^13.7.0",
+    "decentraland-dapps": "^13.30.2",
     "decentraland-ecs": "^6.10.0",
     "decentraland-ui": "^3.55.0",
     "detect-browser": "^5.2.0",
@@ -51,7 +51,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.9",
-    "react-scripts": "^4.0.0",
+    "react-scripts": "^4.0.3",
     "redux": "^4.0.5",
     "validator": "^13.7.0"
   },
@@ -78,7 +78,7 @@
     "react-is": "^17.0.2",
     "react-test-renderer": "^17.0.2",
     "redux-devtools-extension": "^2.13.8",
-    "typescript": "~3.7.2"
+    "typescript": "^4.5.5"
   },
   "homepage": ""
 }
