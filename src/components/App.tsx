@@ -42,6 +42,7 @@ export interface AppProps {
   hasBanner: boolean
   sessionReady: boolean
   waitingForRenderer: boolean
+  loginComplete: boolean
   rendererReady: boolean
   trustedCatalyst: boolean
   error: boolean
