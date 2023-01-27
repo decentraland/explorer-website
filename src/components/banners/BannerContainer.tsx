@@ -11,7 +11,7 @@ const mapStateToProps = (state: StoreType): Pick<BannerContainerProps, 'banner'>
   }
 }
 
-const mapDispatchToProps = (dispatch: (a: any) => void, state: StoreType): Pick<BannerContainerProps, 'onClose'> => {
+const mapDispatchToProps = (dispatch: (a: any) => void): Pick<BannerContainerProps, 'onClose'> => {
   return {
     onClose: () => dispatch(setBanner(null))
   }
