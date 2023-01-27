@@ -36,6 +36,7 @@
     ]
   },
   "dependencies": {
+    "@dcl/explorer": "^1.0.73952-20230125122546.commit-2029f5d",
     "@dcl/feature-flags": "^1.1.0",
     "@dcl/kernel-interface": "^2.0.0-20210922153939.commit-017905d",
     "@dcl/schemas": "^6.4.2",
