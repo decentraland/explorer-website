@@ -129,9 +129,9 @@ export function identifyUser(ethAddress: string, isGuest: boolean, email?: strin
 async function initialize(segmentKey: string): Promise<void> {
   if ((window as any).analytics.load) {
     // loading client for the first time
-    (window as any).analytics.load(segmentKey)
-    (window as any).analytics.page()
-    (window as any).analytics.ready(() => {
+    ;(window as any).analytics.load(segmentKey)
+    ;(window as any).analytics.page()
+    ;(window as any).analytics.ready(() => {
       (window as any).analytics.timeout(1000)
     })
   }
