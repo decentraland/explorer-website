@@ -1,5 +1,4 @@
 const fs = require('fs')
-const path = require('path')
 const dotenv = require('dotenv')
 const { cdnFolder } = require('./utils')
 
@@ -12,13 +11,10 @@ if (fs.existsSync('.env')) {
 const packageJson = JSON.parse(fs.readFileSync('./package.json').toString())
 const publicPackageJson = JSON.parse(fs.readFileSync('./public/package.json').toString())
 
-const kernelVersion = JSON.parse(fs.readFileSync(require.resolve('@dcl/kernel/package.json'))).version
-const rendererVersion = JSON.parse(fs.readFileSync(require.resolve('@dcl/unity-renderer/package.json'))).version
+const explorerVersion = JSON.parse(fs.readFileSync(require.resolve('@dcl/explorer/package.json'))).version
 
-ENV_CONTENT['KERNEL_PATH'] = path.dirname(require.resolve('@dcl/kernel/package.json'))
 ENV_CONTENT['REACT_APP_WEBSITE_VERSION'] = packageJson.version
-ENV_CONTENT['REACT_APP_RENDERER_VERSION'] = rendererVersion
-ENV_CONTENT['REACT_APP_KERNEL_VERSION'] = kernelVersion
+ENV_CONTENT['REACT_APP_EXPLORER_VERSION'] = explorerVersion
 
 Object.assign(ENV_CONTENT, getPublicUrls())
 
@@ -51,22 +47,19 @@ function getPublicUrls() {
       // Pull request
       return {
         PUBLIC_URL: `https://explorer-artifacts.decentraland.org/${packageJson.name}/branch/${process.env.GITHUB_HEAD_REF}`,
-        REACT_APP_RENDERER_BASE_URL: ``,
-        REACT_APP_KERNEL_BASE_URL: ``
+        REACT_APP_EXPLORER_BASE_URL: ``,
       }
     } else if (process.env.CI) {
       // master/main branch, also releases
       return {
         PUBLIC_URL: `https://cdn.decentraland.org/${packageJson.name}/${packageJson.version}`,
-        REACT_APP_RENDERER_BASE_URL: ``,
-        REACT_APP_KERNEL_BASE_URL: ``
+        REACT_APP_EXPLORER_BASE_URL: ``,
       }
     }
   }
   // localhost
   return {
     PUBLIC_URL: ``,
-    REACT_APP_RENDERER_BASE_URL: cdnFolder('@dcl/unity-renderer', rendererVersion) + `/`,
-    REACT_APP_KERNEL_BASE_URL: cdnFolder('@dcl/kernel', kernelVersion) + `/`
+    REACT_APP_EXPLORER_BASE_URL: cdnFolder('@dcl/explorer', explorerVersion) + `/`,
   }
 }
