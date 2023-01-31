@@ -1,6 +1,6 @@
 import { combineReducers, createStore } from 'redux'
-import type { KernelAccountState, KernelResult, KernelLoadingProgress } from '@dcl/kernel-interface'
-import type { FeatureFlagsResult } from '@dcl/feature-flags'
+import { KernelAccountState, KernelResult, KernelLoadingProgress } from '@dcl/kernel-interface'
+import { FeatureFlagsResult } from '@dcl/feature-flags'
 import { kernelReducer, sessionReducer, rendererReducer, errorReducer, bannerReducer, downloadReducer, featureFlagsReducer, catalystReducer } from './reducers'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { ConnectionData } from 'decentraland-connect/dist/types'
