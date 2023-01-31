@@ -1,5 +1,6 @@
 import type { ConnectionResponse, Provider } from 'decentraland-connect/dist/types'
 import { connection } from 'decentraland-connect/dist/ConnectionManager'
+import { ProviderAdapter } from 'decentraland-connect/dist/ProviderAdapter'
 import { WebSocketProvider } from 'eth-connect/providers/WebSocketProvider'
 import { ChainId } from '@dcl/schemas/dist/dapps/chain-id'
 import { ProviderType } from '@dcl/schemas/dist/dapps/provider-type'
@@ -22,8 +23,11 @@ export async function getEthereumProvider(
   if (type === null) {
     const rpc = chainIdRpc.get(chainId)
     if (!rpc) throw new Error("Can't get RPC for chainId " + chainId)
+    // const provider = new WebSocketProvider(rpc)
+    // provider.sendAsync
+    // const adapter = new ProviderAdapter(provider)
     return {
-      provider: new WebSocketProvider(rpc) as any,
+      provider: new ProviderAdapter(new WebSocketProvider(rpc) as any) as any,
       chainId,
       account: null
     }
