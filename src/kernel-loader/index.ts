@@ -1,4 +1,5 @@
 import { trackConnectWallet } from 'decentraland-dapps/dist/modules/analytics/utils'
+import { getProviderChainId } from 'decentraland-dapps/dist/modules/wallet/utils/getProviderChainId'
 import { disconnect, getEthereumProvider, restoreConnection } from '../eth/provider'
 import { internalTrackEvent, identifyUser, trackError, disableAnalytics } from '../integration/analytics'
 import { injectKernel } from './injector'
@@ -18,18 +19,9 @@ import { defaultWebsiteErrorTracker, track } from '../utils/tracking'
 import { injectVersions } from '../utils/rolloutVersions'
 import { KernelResult } from '@dcl/kernel-interface'
 import { ENV, NETWORK, withOrigin, ensureOrigin, CATALYST } from '../integration/url'
-import { RequestManager } from 'eth-connect'
 import { errorToString } from '../utils/errorToString'
 import { isElectron, launchDesktopApp } from '../integration/desktop'
 import { setAsRecentlyLoggedIn } from '../integration/browser'
-
-// this function exists because decentraland-connect seems to return
-// invalid or cached values in chainId, ignoring network changes in the
-// real provider.
-async function getChainIdFromProvider(provider: any) {
-  const rm = new RequestManager(provider)
-  return parseInt(await rm.net_version(), 10)
-}
 
 function getWantedChainId() {
   let chainId = ChainId.ETHEREUM_MAINNET // mainnet
@@ -64,7 +56,7 @@ export async function authenticate(providerType: ProviderType | null) {
     }
 
     {
-      const providerChainId = await getChainIdFromProvider(provider)
+      const providerChainId = await getProviderChainId(provider)
       if (providerChainId !== wantedChainId) {
         store.dispatch(
           setKernelError({
@@ -334,7 +326,7 @@ async function initLogin(kernel: KernelResult) {
   if (!isElectron()) {
     const provider = await restoreConnection()
     if (provider && provider.account) {
-      const providerChainId = await getChainIdFromProvider(provider.provider)
+      const providerChainId = await getProviderChainId(provider.provider)
 
       // BUG OF decentraland-connect:
       // provider.chainId DOES NOT reflect the selected chain in the real provider
