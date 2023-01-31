@@ -1,9 +1,9 @@
-import type { ConnectionResponse, Provider } from 'decentraland-connect/dist/types'
-import { connection } from 'decentraland-connect/dist/ConnectionManager'
-import { WebSocketProvider } from 'eth-connect/providers/WebSocketProvider'
+import { connection, ConnectionResponse } from 'decentraland-connect'
+import { WebSocketProvider } from 'eth-connect'
 import { ChainId } from '@dcl/schemas/dist/dapps/chain-id'
 import { ProviderType } from '@dcl/schemas/dist/dapps/provider-type'
-import { switchProviderChainId } from 'decentraland-dapps/dist/modules/wallet/utils/switchProviderChainId'
+import { switchProviderChainId } from 'decentraland-dapps/dist/modules/wallet/utils'
+import { IEthereumProvider } from '@dcl/kernel-interface'
 import { defaultWebsiteErrorTracker, track } from '../utils/tracking'
 
 export const chainIdRpc = new Map<number, string>([
@@ -15,7 +15,7 @@ export async function getEthereumProvider(
   type: ProviderType | null,
   chainId: ChainId
 ): Promise<{
-  provider: Provider
+  provider: IEthereumProvider
   chainId: number
   account: string | null
 }> {
@@ -23,7 +23,7 @@ export async function getEthereumProvider(
     const rpc = chainIdRpc.get(chainId)
     if (!rpc) throw new Error("Can't get RPC for chainId " + chainId)
     return {
-      provider: new WebSocketProvider(rpc) as any,
+      provider: new WebSocketProvider(rpc),
       chainId,
       account: null
     }
