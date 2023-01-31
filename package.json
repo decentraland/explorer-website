@@ -42,7 +42,6 @@
     "@dcl/schemas": "^6.4.2",
     "@dcl/urn-resolver": "^1.4.0",
     "@types/validator": "^13.7.3",
-    "bignumber.js": "^9.1.1",
     "decentraland-connect": "^3.4.0",
     "decentraland-dapps": "^13.31.3",
     "decentraland-ui": "^3.55.0",
