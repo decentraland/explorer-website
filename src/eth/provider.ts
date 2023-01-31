@@ -23,9 +23,6 @@ export async function getEthereumProvider(
   if (type === null) {
     const rpc = chainIdRpc.get(chainId)
     if (!rpc) throw new Error("Can't get RPC for chainId " + chainId)
-    // const provider = new WebSocketProvider(rpc)
-    // provider.sendAsync
-    // const adapter = new ProviderAdapter(provider)
     return {
       provider: new ProviderAdapter(new WebSocketProvider(rpc) as any) as any,
       chainId,
