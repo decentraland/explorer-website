@@ -1,5 +1,5 @@
 import { AnyAction } from 'redux'
-import { connection } from 'decentraland-connect'
+import { connection } from 'decentraland-connect/dist/ConnectionManager'
 import { KernelResult, KernelError, LoginState, KernelAccountState } from '@dcl/kernel-interface'
 import {
   SET_BANNER,
