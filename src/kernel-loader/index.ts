@@ -18,7 +18,7 @@ import { resolveUrlFromUrn } from '@dcl/urn-resolver'
 import { defaultWebsiteErrorTracker, track } from '../utils/tracking'
 import { injectVersions } from '../utils/rolloutVersions'
 import { KernelResult } from '@dcl/kernel-interface'
-import { ENV, NETWORK, withOrigin, ensureOrigin, CATALYST } from '../integration/url'
+import { ENV, NETWORK, withOrigin, ensureOrigin, CATALYST, RENDERER_TYPE } from '../integration/url'
 import { errorToString } from '../utils/errorToString'
 import { isElectron, launchDesktopApp } from '../integration/desktop'
 import { setAsRecentlyLoggedIn } from '../integration/browser'
@@ -181,6 +181,14 @@ async function getVersions(flags: FeatureFlagsResult) {
   const explorerVersion = qs.get('explorer-version')
   if (explorerVersion) {
     globalThis.EXPLORER_BASE_URL = cdnFromPrefixVersion('@dcl/explorer', explorerVersion)
+  }
+
+  // 5. @deprecated if we're in native, load kernel version (to mantain compatibility)
+  if (RENDERER_TYPE === 'native') {
+    const kernelVersion = qs.get('kernel-version')
+    if (kernelVersion) {
+      globalThis.EXPLORER_BASE_URL = cdnFromPrefixVersion('@dcl/kernel', kernelVersion)
+    }
   }
 
   // default fallback
