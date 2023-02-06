@@ -58,20 +58,16 @@ export const hasRecentlyLoggedIn = callOnce(() => {
   return lastLoginAt + BROWSER_LAST_SESSION_EXPIRATION > Date.now()
 })
 
-export const hasRecentlyDownloadModalShown = callOnce(() => {
+export const hasDownloadModalShown = callOnce(() => {
   const lastLoginAt = Number(localStorage.getItem(BROWSER_LAST_DOWNLOAD_MODAL_SHOWN_KEY))
-  if (Number.isNaN(lastLoginAt)) {
-    return false
-  }
-
-  return lastLoginAt + BROWSER_LAST_SESSION_EXPIRATION > Date.now()
+  return !!lastLoginAt
 })
 
 export function setAsRecentlyLoggedIn() {
   localStorage.setItem(BROWSER_LAST_SESSION_KEY, String(Date.now()))
 }
 
-export function setAsRecentlyDownloadModalShown() {
+export function setDownloadModalShown() {
   localStorage.setItem(BROWSER_LAST_DOWNLOAD_MODAL_SHOWN_KEY, String(Date.now()))
 }
 

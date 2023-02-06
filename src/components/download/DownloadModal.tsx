@@ -7,8 +7,8 @@ import { launchDesktopApp } from '../../integration/desktop'
 import {
   isWindows,
   isMacOS,
-  setAsRecentlyDownloadModalShown,
-  hasRecentlyDownloadModalShown
+  setDownloadModalShown,
+  hasDownloadModalShown
 } from '../../integration/browser'
 import ModalImage from '../../images/dcl-modal-image.jpeg'
 import './DownloadModal.css'
@@ -27,7 +27,7 @@ export const DownloadModal = React.memo(() => {
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    if (platform && !hasRecentlyDownloadModalShown()) {
+    if (platform && !hasDownloadModalShown()) {
       launchDesktopApp().then((launched) => {
         setOpen(!launched)
       })
@@ -35,7 +35,7 @@ export const DownloadModal = React.memo(() => {
   }, [platform])
 
   const handleClose = useCallback(() => {
-    setAsRecentlyDownloadModalShown()
+    setDownloadModalShown()
     setOpen(false)
   }, [])
 
