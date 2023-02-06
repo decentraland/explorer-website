@@ -60,7 +60,7 @@ export const hasRecentlyLoggedIn = callOnce(() => {
 
 export const hasDownloadModalShown = callOnce(() => {
   const lastLoginAt = Number(localStorage.getItem(BROWSER_LAST_DOWNLOAD_MODAL_SHOWN_KEY))
-  return !(Number.isNaN(lastLoginAt) || !lastLoginAt)
+  return !!lastLoginAt
 })
 
 export function setAsRecentlyLoggedIn() {
