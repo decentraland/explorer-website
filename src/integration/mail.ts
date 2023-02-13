@@ -1,7 +1,7 @@
 import isEmail from 'validator/lib/isEmail'
 
 export async function subscribe(email: string) {
-  const res = await fetch("https://decentraland.org/subscribe", {
+  const res = await fetch("https://subscription.decentraland.org/subscribe", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
