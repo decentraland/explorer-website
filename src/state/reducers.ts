@@ -103,18 +103,20 @@ export function catalystReducer(state: CatalystState = { catalyst: CATALYST, tru
 }
 
 export function errorReducer(state: ErrorState | undefined, action: AnyAction): ErrorState {
-  if (action.type === SET_KERNEL_ERROR && !state?.error) {
+  if (action.type === SET_KERNEL_ERROR) {
     const payload: KernelError = action.payload
 
     if (!payload) {
       return { error: null }
     }
 
-    return {
-      error: {
-        details: errorToString(payload.error),
-        type: payload.code as any,
-        extra: payload.extra
+    if (!state?.error) {
+      return {
+        error: {
+          details: errorToString(payload.error),
+          type: payload.code as any,
+          extra: payload.extra
+        }
       }
     }
   }
