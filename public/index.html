@@ -172,7 +172,7 @@
       function injectVersions(versions) {
         var rolloutsInfo = globalThis.ROLLOUTS || {}
         for (let component in rolloutsInfo) {
-          if (rolloutsInfo[component] && rolloutsInfo[component].version) {
+          if (rolloutsInfo[component] && rolloutsInfo[component].version && component === '@dcl/explorer-website') {
             versions[component] = rolloutsInfo[component].version
             if (typeof rolloutsInfo[component].prefix === 'string') {
               versions[rolloutsInfo[component].prefix] = rolloutsInfo[component].version
@@ -190,9 +190,10 @@
         accessToken: "44963d3f89db4e5cbf552faba06c6ec0",
         captureUncaught: true,
         captureUnhandledRejections: true,
-        payload: injectVersions({
+        payload: {
           environment: document.domain.endsWith(".decentraland.org") ? "production" : "development",
           website_version: "%REACT_APP_WEBSITE_VERSION%",
+          explorer_version: _explorerVersion,
           client: {
             javascript: {
               code_version: _explorerVersion,
@@ -201,7 +202,7 @@
               source_map: "https://cdn.decentraland.org/@dcl/explorer/" + _explorerVersion + "/index.js.map"
             }
           }
-        })
+        }
       };
       // Rollbar Snippet
       // prettier-ignore
