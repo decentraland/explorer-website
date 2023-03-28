@@ -41,6 +41,8 @@
     "@dcl/kernel-interface": "^2.0.0-20210922153939.commit-017905d",
     "@dcl/schemas": "^6.4.2",
     "@dcl/urn-resolver": "^1.4.0",
+    "@sentry/browser": "^7.45.0",
+    "@sentry/tracing": "^7.45.0",
     "@types/validator": "^13.7.3",
     "decentraland-connect": "^3.4.0",
     "decentraland-dapps": "^13.31.3",
