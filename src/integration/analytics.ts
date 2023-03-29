@@ -5,6 +5,8 @@ import { track } from '../utils/tracking'
 import { getCurrentPosition } from './browser'
 import { isElectron } from './desktop'
 import { DEBUG_ANALYTICS, PLATFORM, RENDERER_TYPE } from './url'
+import * as Sentry from "@sentry/browser"
+import { BrowserTracing } from "@sentry/tracing"
 
 let analyticsDisabled = false
 
@@ -156,4 +158,16 @@ export function internalTrackEvent(
   }
 
   (window as any).analytics.track(eventName, data, options ?? defaultAnalyticsOptions)
+}
+
+export function initializeSentry() {
+  Sentry.init({
+    dsn: 'https://e32771e19b294c268aa24df99e30fbd9@o4504361728212992.ingest.sentry.io/4504891409432576',
+    integrations: [new BrowserTracing()],
+
+    // Set tracesSampleRate to 1.0 to capture 100%
+    // of transactions for performance monitoring.
+    // We recommend adjusting this value in production
+    tracesSampleRate: 1.0
+  })
 }
