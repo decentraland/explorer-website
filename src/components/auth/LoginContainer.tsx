@@ -47,8 +47,14 @@ enum TrackingActionType {
 
 const mapDispatchToProps = (dispatch: any) => ({
   onLogin: (providerType: ProviderType | null, action_type?: TrackingActionType) => {
-    track('click_login_button', { provider_type: providerType || 'guest', action_type })
-    authenticate(providerType)
+    let mappedProviderType = providerType
+
+    if (mappedProviderType === ProviderType.WALLET_CONNECT) {
+      mappedProviderType = ProviderType.WALLET_CONNECT_V2
+    }
+
+    track('click_login_button', { provider_type: mappedProviderType || 'guest', action_type })
+    authenticate(mappedProviderType)
   },
   onCancelLogin: () => {
     track('click_cancel_login_button')
