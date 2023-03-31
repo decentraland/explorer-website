@@ -82,7 +82,8 @@ export const EthWalletSelector: React.FC<WalletSelectorProps> = React.memo(({
             browser_extension: 'Using your mobile wallet',
             email: '',
             mobile: '',
-            mobile_and_browser: ''
+            mobile_and_browser: '',
+            metamask_mobile: ''
           }}
         />
       )}
@@ -102,10 +103,11 @@ export const EthWalletSelector: React.FC<WalletSelectorProps> = React.memo(({
           onClick={handleLoginWalletLink} 
           i18n={{
             // Decentraland ui picks the label depending on the type, WALLET_LINK displays the mobile_and_browser label.
+            mobile_and_browser: 'Using your mobile wallet',
             browser_extension: '',
             email: '',
             mobile: '',
-            mobile_and_browser: 'Using your mobile wallet'
+            metamask_mobile: ''
           }} 
         />
       )}
