@@ -1,7 +1,7 @@
 import { store } from '../state/redux'
 import { getRequiredAnalyticsContext } from '../state/selectors'
 import { errorToString } from '../utils/errorToString'
-import { track } from '../utils/tracking'
+import { getRepositoryName, getRepositoryVersion, track } from '../utils/tracking'
 import { getCurrentPosition } from './browser'
 import { isElectron } from './desktop'
 import { DEBUG_ANALYTICS, PLATFORM, RENDERER_TYPE } from './url'
@@ -109,6 +109,8 @@ export function trackError(error: string | Error, payload?: Record<string, any>)
   }
 
   Sentry.withScope(function(scope) {
+    payload = payload || {}
+    injectTrackingMetadata(payload);
     scope.setLevel("error");
     scope.setExtras(payload || {})
     let err = typeof error === 'string' ? new Error(error) :
@@ -170,7 +172,11 @@ export function internalTrackEvent(
 }
 
 export function initializeSentry() {
+  const repository = getRepositoryName()
+  const version = getRepositoryVersion()
   Sentry.init({
+    release: !!repository && !!version ? `${repository}@${version}` : undefined,
+    environment: !!repository && !!version ? 'production' : 'development',
     dsn: 'https://d067f6e6fc9c467ca8deb2b26b16aab1@o4504361728212992.ingest.sentry.io/4504915943489536',
     integrations: [new BrowserTracing()],
 
