@@ -162,7 +162,7 @@ export function internalTrackEvent(
 
 export function initializeSentry() {
   Sentry.init({
-    dsn: 'https://e32771e19b294c268aa24df99e30fbd9@o4504361728212992.ingest.sentry.io/4504891409432576',
+    dsn: 'https://d067f6e6fc9c467ca8deb2b26b16aab1@o4504361728212992.ingest.sentry.io/4504915943489536',
     integrations: [new BrowserTracing()],
 
     // Set tracesSampleRate to 1.0 to capture 100%
