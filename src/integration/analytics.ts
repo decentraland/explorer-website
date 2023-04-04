@@ -94,18 +94,27 @@ export function trackError(error: string | Error, payload?: Record<string, any>)
   if (DEBUG_ANALYTICS) {
     console.info('explorer-website: DEBUG_ANALYTICS trackCriticalError ', error)
   }
-  if (!(window as any).Rollbar) return
 
-  if (typeof error === 'string') {
-    ; (window as any).Rollbar.critical(errorToString(error), payload)
-  } else if (error && error instanceof Error) {
-    ; (window as any).Rollbar.critical(
-      errorToString(error),
-      Object.assign(error, payload, { fullErrorStack: error.toString() })
-    )
-  } else {
-    ; (window as any).Rollbar.critical(errorToString(error), payload)
+  if ((window as any).Rollbar) {
+    if (typeof error === 'string') {
+      ; (window as any).Rollbar.critical(errorToString(error), payload)
+    } else if (error && error instanceof Error) {
+      ; (window as any).Rollbar.critical(
+        errorToString(error),
+        Object.assign(error, payload, { fullErrorStack: error.toString() })
+      )
+    } else {
+      ; (window as any).Rollbar.critical(errorToString(error), payload)
+    }
   }
+
+  Sentry.withScope(function(scope) {
+    scope.setLevel("error");
+    scope.setExtras(payload || {})
+    let err = typeof error === 'string' ? new Error(error) :
+      error && error instanceof Error ? error : new Error(errorToString(error));
+    Sentry.captureException(err);
+  })
 }
 
 export function identifyUser(ethAddress: string, isGuest: boolean, email?: string) {
