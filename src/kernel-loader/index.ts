@@ -19,7 +19,6 @@ import { defaultWebsiteErrorTracker, defaultKernelErrorTracker, track } from '..
 import { injectVersions } from '../utils/rolloutVersions'
 import { KernelResult } from '@dcl/kernel-interface'
 import { ENV, NETWORK, withOrigin, ensureOrigin, CATALYST, RENDERER_TYPE } from '../integration/url'
-import { errorToString } from '../utils/errorToString'
 import { isElectron, launchDesktopApp } from '../integration/desktop'
 import { setAsRecentlyLoggedIn } from '../integration/browser'
 
