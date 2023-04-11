@@ -1,7 +1,7 @@
 import { store } from '../state/redux'
 import { getRequiredAnalyticsContext } from '../state/selectors'
 import { errorToString } from '../utils/errorToString'
-import { track } from '../utils/tracking'
+import { getRepositoryName, getRepositoryVersion, track } from '../utils/tracking'
 import { getCurrentPosition } from './browser'
 import { isElectron } from './desktop'
 import { DEBUG_ANALYTICS, PLATFORM, RENDERER_TYPE } from './url'
@@ -94,18 +94,29 @@ export function trackError(error: string | Error, payload?: Record<string, any>)
   if (DEBUG_ANALYTICS) {
     console.info('explorer-website: DEBUG_ANALYTICS trackCriticalError ', error)
   }
-  if (!(window as any).Rollbar) return
 
-  if (typeof error === 'string') {
-    ; (window as any).Rollbar.critical(errorToString(error), payload)
-  } else if (error && error instanceof Error) {
-    ; (window as any).Rollbar.critical(
-      errorToString(error),
-      Object.assign(error, payload, { fullErrorStack: error.toString() })
-    )
-  } else {
-    ; (window as any).Rollbar.critical(errorToString(error), payload)
+  if ((window as any).Rollbar) {
+    if (typeof error === 'string') {
+      ; (window as any).Rollbar.critical(errorToString(error), payload)
+    } else if (error && error instanceof Error) {
+      ; (window as any).Rollbar.critical(
+        errorToString(error),
+        Object.assign(error, payload, { fullErrorStack: error.toString() })
+      )
+    } else {
+      ; (window as any).Rollbar.critical(errorToString(error), payload)
+    }
   }
+
+  Sentry.withScope(function(scope) {
+    payload = payload || {}
+    injectTrackingMetadata(payload);
+    scope.setLevel("error");
+    scope.setExtras(payload || {})
+    let err = typeof error === 'string' ? new Error(error) :
+      error && error instanceof Error ? error : new Error(errorToString(error));
+    Sentry.captureException(err);
+  })
 }
 
 export function identifyUser(ethAddress: string, isGuest: boolean, email?: string) {
@@ -161,8 +172,12 @@ export function internalTrackEvent(
 }
 
 export function initializeSentry() {
+  const repository = getRepositoryName()
+  const version = getRepositoryVersion()
   Sentry.init({
-    dsn: 'https://e32771e19b294c268aa24df99e30fbd9@o4504361728212992.ingest.sentry.io/4504891409432576',
+    release: !!repository && !!version ? `${repository}@${version}` : undefined,
+    environment: !!repository && !!version ? 'production' : 'development',
+    dsn: 'https://d067f6e6fc9c467ca8deb2b26b16aab1@o4504361728212992.ingest.sentry.io/4504915943489536',
     integrations: [new BrowserTracing()],
 
     // Set tracesSampleRate to 1.0 to capture 100%

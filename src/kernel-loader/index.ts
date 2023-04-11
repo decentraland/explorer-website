@@ -1,7 +1,7 @@
 import { trackConnectWallet } from 'decentraland-dapps/dist/modules/analytics/utils'
 import { getProviderChainId } from 'decentraland-dapps/dist/modules/wallet/utils/getProviderChainId'
 import { disconnect, getEthereumProvider, restoreConnection } from '../eth/provider'
-import { internalTrackEvent, identifyUser, trackError, disableAnalytics } from '../integration/analytics'
+import { internalTrackEvent, identifyUser, disableAnalytics } from '../integration/analytics'
 import { injectKernel } from './injector'
 import {
   setKernelAccountState,
@@ -15,11 +15,10 @@ import { ChainId } from '@dcl/schemas/dist/dapps/chain-id'
 import { ProviderType } from '@dcl/schemas/dist/dapps/provider-type'
 import { FeatureFlagsResult, fetchFlags } from '@dcl/feature-flags'
 import { resolveUrlFromUrn } from '@dcl/urn-resolver'
-import { defaultWebsiteErrorTracker, track } from '../utils/tracking'
+import { defaultWebsiteErrorTracker, defaultKernelErrorTracker, track } from '../utils/tracking'
 import { injectVersions } from '../utils/rolloutVersions'
 import { KernelResult } from '@dcl/kernel-interface'
 import { ENV, NETWORK, withOrigin, ensureOrigin, CATALYST, RENDERER_TYPE } from '../integration/url'
-import { errorToString } from '../utils/errorToString'
 import { isElectron, launchDesktopApp } from '../integration/desktop'
 import { setAsRecentlyLoggedIn } from '../integration/browser'
 
@@ -235,7 +234,7 @@ async function initKernel() {
         track('invalid_external_url', { url })
       }
     } catch (err: any) {
-      trackError(err, { context: 'explorer-website' })
+      defaultWebsiteErrorTracker(err)
     }
   })
 
@@ -267,17 +266,7 @@ async function initKernel() {
   // all errors are also sent as trackingEvent
   kernel.on('error', (error) => {
     store.dispatch(setKernelError(error))
-
-    // TODO: move this into a saga for setKernelError
-    trackError(error.error, { context: 'kernel', ...(error.extra || {}) })
-
-    // trackError only sends information to rollbar, we must get statistical information of errors in segment
-    // via this track() function
-    track('explorer_kernel_error', {
-      // this string concatenation exists on purpose, it is a safe way to do (error).toString in case (error) is nullish
-      error: errorToString(error)
-    })
-
+    defaultKernelErrorTracker(error.error, error.extra)
     // since setKernelError(error) produces an unrecoverable black screen of death, we disable analytics
     disableAnalytics()
   })
