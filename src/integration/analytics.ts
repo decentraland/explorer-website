@@ -199,12 +199,30 @@ export function internalTrackEvent(
   (window as any).analytics.track(eventName, data, options ?? defaultAnalyticsOptions)
 }
 
-export function initializeSentry() {
+function getSentryRelease() {
   const repository = getRepositoryName()
   const version = getRepositoryVersion()
+  if (repository && version) {
+    return `${repository}@${version}`
+  }
+
+  return undefined
+}
+
+function getSentryEnvironment() {
+  const repository = getRepositoryName()
+  const version = getRepositoryVersion()
+  if (repository && version) {
+    return 'production'
+  }
+
+  return 'development'
+}
+
+export function configureSentry() {
   Sentry.init({
-    release: !!repository && !!version ? `${repository}@${version}` : undefined,
-    environment: !!repository && !!version ? 'production' : 'development',
+    release: getSentryRelease(),
+    environment: getSentryEnvironment(),
     dsn: 'https://d067f6e6fc9c467ca8deb2b26b16aab1@o4504361728212992.ingest.sentry.io/4504915943489536',
     integrations: [new BrowserTracing()],
     tracesSampleRate: 0.01 // 1% of transactions
