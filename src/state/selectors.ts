@@ -1,7 +1,7 @@
 import { SessionTraits } from '../trackingEvents'
 import { LoginState } from '@dcl/kernel-interface'
 import { StoreType } from './redux'
-import { defaultFeatureFlagsState, FF_APPLICATION_NAME } from './types'
+import { ABVariant, defaultFeatureFlagsState, FF_APPLICATION_NAME } from './types'
 
 // This function is used for every rollbar and segment events.
 export function getRequiredAnalyticsContext(state: StoreType): SessionTraits {
@@ -35,6 +35,11 @@ export function getFeatureVariant(state: StoreType, key: string, defaultValue: s
   }
 
   return defaultValue
+}
+
+export function isFeatureVariantEnabled(state: StoreType, key: string) {
+  const variant = getFeatureVariant(state, key, ABVariant.Disabled)
+  return  variant === ABVariant.Enabled
 }
 
 export function getFeatureVariantName(state: StoreType, key: string, defaultValue?: string) {

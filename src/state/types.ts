@@ -6,3 +6,12 @@ export const defaultFeatureFlagsState: FeatureFlagsState = {
   flags: {},
   variants: {}
 }
+
+export enum FeatureFlags {
+  SeamlessLogin = 'seamless_login_variant',
+}
+
+export enum ABVariant {
+  Enabled = 'enabled',
+  Disabled = 'disabled',
+}
