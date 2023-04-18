@@ -308,13 +308,17 @@ async function initLogin(kernel: KernelResult) {
       if (storedSession) {
         track('automatic_relogin', { provider_type: provider.providerType })
         authenticate(provider.providerType).catch(defaultWebsiteErrorTracker)
-      } else if (
-        isFeatureVariantEnabled(store.getState(), FeatureFlags.SeamlessLogin) &&
-        !SHOW_WALLET_SELECTOR
-      ) {
-        track('seamless_login')
-        authenticate(null).catch(defaultWebsiteErrorTracker)
+        return
       }
+    }
+
+    if (
+      isFeatureVariantEnabled(store.getState(), FeatureFlags.SeamlessLogin) &&
+      !SHOW_WALLET_SELECTOR
+    ) {
+      track('seamless_login')
+      authenticate(null).catch(defaultWebsiteErrorTracker)
+      return
     }
   }
 }
