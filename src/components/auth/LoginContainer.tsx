@@ -94,16 +94,6 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
     setShowWalletSelector({ open: true })
   }, [])
 
-  const handleSignIn = useCallback(() => {
-    track('open_login_popup', { action_type: TrackingActionType.SignIn })
-    setShowWalletSelector({ open: true, action_type: TrackingActionType.SignIn })
-  }, [])
-
-  const handleCreateAccount = useCallback(() => {
-    track('open_login_popup', { action_type: TrackingActionType.CreateAccount })
-    setShowWalletSelector({ open: true, action_type: TrackingActionType.CreateAccount })
-  }, [])
-
   const handleCloseSelector = useCallback(() => {
     track('close_login_popup')
     setShowWalletSelector({ open: false })
