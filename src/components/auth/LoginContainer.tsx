@@ -41,7 +41,7 @@ enum TrackingActionType {
   CreateAccount = 'create_account'
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = () => ({
   onLogin: (providerType: ProviderType | null, action_type?: TrackingActionType) => {
     track('click_login_button', { provider_type: providerType || 'guest', action_type })
     authenticate(providerType)
