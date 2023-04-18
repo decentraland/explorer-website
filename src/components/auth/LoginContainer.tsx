@@ -16,6 +16,7 @@ import { isElectron } from '../../integration/desktop'
 import { disconnect } from '../../eth/provider'
 import { track } from '../../utils/tracking'
 import Main from '../common/Layout/Main'
+import { SHOW_WALLET_SELECTOR } from '../../integration/url'
 import './LoginContainer.css'
 
 export const defaultAvailableProviders = []
@@ -88,7 +89,7 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
   const [showWalletSelector, setShowWalletSelector] = useState<{
     open: boolean
     action_type?: TrackingActionType
-  }>({ open: false })
+  }>({ open: SHOW_WALLET_SELECTOR })
   const handleOpenSelector = useCallback(() => {
     track('open_login_popup')
     setShowWalletSelector({ open: true })
