@@ -109,15 +109,6 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
 
   const handleGuestLogin = useCallback(() => onLogin && onLogin(null), [onLogin])
 
-  const handleLogin = useCallback(
-    (provider_type: ProviderType) => {
-      if (onLogin) {
-        onLogin(provider_type, showWalletSelector.action_type)
-      }
-    },
-    [onLogin, showWalletSelector]
-  )
-
   const loading = useMemo(() => {
     return (
       stage === LoginState.SIGNATURE_PENDING ||
