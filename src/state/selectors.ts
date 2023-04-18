@@ -1,7 +1,7 @@
 import { SessionTraits } from '../trackingEvents'
 import { LoginState } from '@dcl/kernel-interface'
 import { StoreType } from './redux'
-import { ABVariant, defaultFeatureFlagsState, FF_APPLICATION_NAME } from './types'
+import { defaultFeatureFlagsState, FF_APPLICATION_NAME } from './types'
 
 // This function is used for every rollbar and segment events.
 export function getRequiredAnalyticsContext(state: StoreType): SessionTraits {
@@ -12,11 +12,16 @@ export function getRequiredAnalyticsContext(state: StoreType): SessionTraits {
 
 export enum FeatureFlags {
   Stream = 'stream',
-  SignInFlowV3 = 'sign_in_flow_v3_variant'
+  SeamlessLogin = 'seamless_login_variant',
 }
 
 export enum VariantNames {
   New = 'new'
+}
+
+export enum ABTestingVariant {
+  Enabled = 'enabled',
+  Disabled = 'disabled',
 }
 
 export function isFeatureEnabled(state: StoreType, key: string): boolean {
@@ -38,8 +43,8 @@ export function getFeatureVariant(state: StoreType, key: string, defaultValue: s
 }
 
 export function isFeatureVariantEnabled(state: StoreType, key: string) {
-  const variant = getFeatureVariant(state, key, ABVariant.Disabled)
-  return  variant === ABVariant.Enabled
+  const variant = getFeatureVariant(state, key, ABTestingVariant.Disabled)
+  return  variant === ABTestingVariant.Enabled
 }
 
 export function getFeatureVariantName(state: StoreType, key: string, defaultValue?: string) {

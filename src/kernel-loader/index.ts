@@ -21,8 +21,7 @@ import { KernelError, KernelResult } from '@dcl/kernel-interface'
 import { ENV, NETWORK, withOrigin, ensureOrigin, CATALYST, RENDERER_TYPE, SHOW_WALLET_SELECTOR } from '../integration/url'
 import { isElectron, launchDesktopApp } from '../integration/desktop'
 import { setAsRecentlyLoggedIn } from '../integration/browser'
-import { isFeatureVariantEnabled } from '../state/selectors'
-import { FeatureFlags } from '../state/types'
+import { FeatureFlags, isFeatureVariantEnabled } from '../state/selectors'
 
 function getWantedChainId() {
   let chainId = ChainId.ETHEREUM_MAINNET // mainnet

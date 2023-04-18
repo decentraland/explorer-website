@@ -6,10 +6,8 @@ import { connect } from 'react-redux'
 import { connection } from 'decentraland-connect/dist/index'
 import { Container } from '../common/Layout/Container'
 import { StoreType } from '../../state/redux'
-import { FeatureFlags, getFeatureVariantName, VariantNames } from '../../state/selectors'
 import { authenticate } from '../../kernel-loader'
 import { EthWalletSelector } from './EthWalletSelector'
-import { EthWalletNewSelector } from './EthWalletNewSelector'
 import { LoginGuestItem, LoginWalletItem } from './LoginItemContainer'
 import { LoginGuestItemNew, LoginWalletItemNew } from './LoginItemNewContainer'
 import LogoContainer from './LogoContainer'
@@ -18,8 +16,8 @@ import { DownloadModal } from '../download/DownloadModal'
 import { isElectron } from '../../integration/desktop'
 import { disconnect } from '../../eth/provider'
 import { track } from '../../utils/tracking'
-import './LoginContainer.css'
 import Main from '../common/Layout/Main'
+import './LoginContainer.css'
 
 export const defaultAvailableProviders = []
 
@@ -35,7 +33,6 @@ const mapStateToProps = (state: StoreType): LoginContainerProps => {
     rendererReady: state.renderer.ready,
     isGuest: state.session.kernelState ? state.session.kernelState.isGuest : undefined,
     isWallet: state.session.kernelState ? !state.session.kernelState.isGuest && !!state.session.connection : undefined,
-    isSignInFlowV3: getFeatureVariantName(state, FeatureFlags.SignInFlowV3) === VariantNames.New && !isElectron(),
     featureList: toFeatureList(state.featureFlags)
   }
 }
@@ -64,7 +61,6 @@ export interface LoginContainerProps {
   rendererReady: boolean
   isGuest?: boolean
   isWallet?: boolean
-  isSignInFlowV3: boolean
   featureList: string[]
 }
 
@@ -82,7 +78,6 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
   provider,
   kernelReady,
   availableProviders,
-  isSignInFlowV3,
   featureList
 }) => {
   useEffect(() => {
@@ -157,64 +152,32 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
   }
 
   return (
-    <Main withDarkLayer={isSignInFlowV3}>
+    <Main>
       {/* {stage === LoginState.CONNECT_ADVICE && <EthConnectAdvice onLogin={onLogin} />} */}
       {/* {stage === LoginState.SIGN_ADVICE && <EthSignAdvice />} */}
 
-      {isSignInFlowV3 && (
-        <Container>
-          <LogoContainer />
-          <div>
-            <LoginWalletItemNew
-              loading={loading}
-              active={isWallet}
-              onClick={handleSignIn}
-              onCreateAccount={handleCreateAccount}
-              provider={providerInUse}
-              onCancelLogin={handleCancelLogin}
-              canceling={canceling}
-            />
-            <LoginGuestItemNew loading={loading} active={isGuest} onClick={handleGuestLogin} />
-          </div>
-          <DownloadDesktopToast />
-        </Container>
-      )}
-
-      {!isSignInFlowV3 && (
-        <Container>
-          <LogoContainer />
-          <div>
-            <LoginWalletItem
-              loading={loading}
-              active={isWallet}
-              onClick={handleOpenSelector}
-              provider={providerInUse}
-              onCancelLogin={handleCancelLogin}
-              canceling={canceling}
-            />
-            <LoginGuestItem loading={loading} active={isGuest} onClick={handleGuestLogin} />
-          </div>
-          <DownloadDesktopToast />
-        </Container>
-      )}
+      <Container>
+        <LogoContainer />
+        <div>
+          <LoginWalletItem
+            loading={loading}
+            active={isWallet}
+            onClick={handleOpenSelector}
+            provider={providerInUse}
+            onCancelLogin={handleCancelLogin}
+            canceling={canceling}
+          />
+          <LoginGuestItem loading={loading} active={isGuest} onClick={handleGuestLogin} />
+        </div>
+        <DownloadDesktopToast />
+      </Container>
 
       <EthWalletSelector
-        open={showWalletSelector.open && !isSignInFlowV3}
+        open={showWalletSelector.open}
         loading={loading}
         availableProviders={availableProviders || defaultAvailableProviders}
         provider={providerInUse}
         onLogin={onLogin}
-        canceling={canceling}
-        onCancelLogin={handleCancelLogin}
-        onClose={handleCloseSelector}
-      />
-
-      <EthWalletNewSelector
-        open={showWalletSelector.open && isSignInFlowV3}
-        loading={loading}
-        availableProviders={availableProviders || defaultAvailableProviders}
-        provider={providerInUse}
-        onLogin={handleLogin}
         canceling={canceling}
         onCancelLogin={handleCancelLogin}
         onClose={handleCloseSelector}
