@@ -5,8 +5,9 @@ import { toFeatureList } from '@dcl/feature-flags'
 import { connect } from 'react-redux'
 import { connection } from 'decentraland-connect/dist/index'
 import { Container } from '../common/Layout/Container'
+import Main from '../common/Layout/Main'
 import { StoreType } from '../../state/redux'
-import { FeatureFlags, getFeatureVariantName, VariantNames } from '../../state/selectors'
+import { FeatureFlags, getFeatureVariantName, isFeatureEnabled, VariantNames } from '../../state/selectors'
 import { authenticate } from '../../kernel-loader'
 import { EthWalletSelector } from './EthWalletSelector'
 import { EthWalletNewSelector } from './EthWalletNewSelector'
@@ -19,7 +20,6 @@ import { isElectron } from '../../integration/desktop'
 import { disconnect } from '../../eth/provider'
 import { track } from '../../utils/tracking'
 import './LoginContainer.css'
-import Main from '../common/Layout/Main'
 
 export const defaultAvailableProviders = []
 
@@ -36,7 +36,8 @@ const mapStateToProps = (state: StoreType): LoginContainerProps => {
     isGuest: state.session.kernelState ? state.session.kernelState.isGuest : undefined,
     isWallet: state.session.kernelState ? !state.session.kernelState.isGuest && !!state.session.connection : undefined,
     isSignInFlowV3: getFeatureVariantName(state, FeatureFlags.SignInFlowV3) === VariantNames.New && !isElectron(),
-    featureList: toFeatureList(state.featureFlags)
+    featureList: toFeatureList(state.featureFlags),
+    isWalletConnectV2: isFeatureEnabled(state, FeatureFlags.WalletConnectV2)
   }
 }
 
@@ -45,22 +46,36 @@ enum TrackingActionType {
   CreateAccount = 'create_account'
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
-  onLogin: (providerType: ProviderType | null, action_type?: TrackingActionType) => {
-    let mappedProviderType = providerType
-
-    if (mappedProviderType === ProviderType.WALLET_CONNECT) {
-      mappedProviderType = ProviderType.WALLET_CONNECT_V2
-    }
-
-    track('click_login_button', { provider_type: mappedProviderType || 'guest', action_type })
-    authenticate(mappedProviderType)
+const mapDispatchToProps = (): LoginContainerDispatch => ({
+  onLogin: () => {
+    // Does nothing as it will be replaced by mergeProps.
   },
   onCancelLogin: () => {
     track('click_cancel_login_button')
     disconnect().then(() => window.location.reload())
   }
 })
+
+const mergeProps = (
+  stateProps: LoginContainerProps,
+  dispatchProps: LoginContainerDispatch
+): LoginContainerProps & LoginContainerDispatch => {
+  return {
+    ...stateProps,
+    ...dispatchProps,
+    onLogin: (providerType: ProviderType | null, action_type?: TrackingActionType) => {
+      let finalProviderType = providerType
+
+      // If the WC2 ff is enabled, login with WC2 instead of WC1
+      if (stateProps.isWalletConnectV2 && finalProviderType === ProviderType.WALLET_CONNECT) {
+        finalProviderType = ProviderType.WALLET_CONNECT_V2
+      }
+
+      track('click_login_button', { provider_type: finalProviderType || 'guest', action_type })
+      authenticate(finalProviderType)
+    }
+  }
+}
 
 export interface LoginContainerProps {
   stage?: LoginState
@@ -72,6 +87,7 @@ export interface LoginContainerProps {
   isWallet?: boolean
   isSignInFlowV3: boolean
   featureList: string[]
+  isWalletConnectV2: boolean
 }
 
 export interface LoginContainerDispatch {
@@ -230,4 +246,4 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
     </Main>
   )
 }
-export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer)
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(LoginContainer)
