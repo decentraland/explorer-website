@@ -97,19 +97,19 @@ export const EthWalletSelector: React.FC<WalletSelectorProps> = React.memo(({
       {!isElectron() ? (
         <LoginModal.Option type={LoginModalOptionType.WALLET_LINK} onClick={handleLoginWalletLink}  />
       ) : (
-        <LoginModal.Option 
-          type={LoginModalOptionType.WALLET_LINK} 
-          onClick={handleLoginWalletLink} 
+        <LoginModal.Option
+          type={LoginModalOptionType.WALLET_LINK}
+          onClick={handleLoginWalletLink}
           i18n={{
             // Decentraland ui picks the label depending on the type, WALLET_LINK displays the mobile_and_browser label.
             browser_extension: '',
             email: '',
             mobile: '',
             mobile_and_browser: 'Using your mobile wallet'
-          }} 
+          }}
         />
       )}
-      
+
       <small className="message">Trezor and smart contract wallets like Dapper, Argent or Gnosis safe, do not work with Polygon. Read more about the Trezor support status
         {' '}
         <a
@@ -121,8 +121,8 @@ export const EthWalletSelector: React.FC<WalletSelectorProps> = React.memo(({
       </small>
       {loading && <div className="loader-background">
         <Loader active={loading} provider={provider} size="massive" />
-        <EthConnectAdvice provider={provider} style={{ marginTop: '27px'}} />
-        <div style={{ marginTop: '22px'}}>- or -</div>
+        {provider && <EthConnectAdvice provider={provider} style={{ marginTop: '27px'}} />}
+        {provider && <div style={{ marginTop: '22px'}}>- or -</div>}
         <Button onClick={onCancelLogin} loading={canceling} style={{ marginTop: '28px'}}>cancel login</Button>
       </div>}
     </LoginModal>
