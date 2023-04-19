@@ -18,4 +18,11 @@ const wcEthereumProviderSupport = [
   path.resolve(__dirname, 'node_modules/@walletconnect/sign-client/node_modules/@walletconnect/core/dist/index.es.js')
 ]
 
-module.exports = override(babelInclude([path.resolve(__dirname, 'src'), ...wcEthereumProviderSupport]))
+module.exports = override(
+  babelInclude([
+    // Required in order to include the actual project's source code.
+    path.resolve(__dirname, 'src'),
+    // Include all files from @walletconnect/ethereum-provider that have unsupported code.
+    ...wcEthereumProviderSupport
+  ])
+)
