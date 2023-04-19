@@ -42,11 +42,6 @@ export function getFeatureVariant(state: StoreType, key: string, defaultValue: s
   return defaultValue
 }
 
-export function isFeatureVariantEnabled(state: StoreType, key: string) {
-  const variant = getFeatureVariant(state, key, ABTestingVariant.Disabled)
-  return  variant === ABTestingVariant.Enabled
-}
-
 export function getFeatureVariantName(state: StoreType, key: string, defaultValue?: string) {
   if (isFeatureEnabled(state, key)) {
     const name = `${FF_APPLICATION_NAME}-${key}`
@@ -57,6 +52,11 @@ export function getFeatureVariantName(state: StoreType, key: string, defaultValu
   }
 
   return defaultValue
+}
+
+export function isFeatureVariantEnabled(state: StoreType, key: string) {
+  const variant = getFeatureVariantName(state, key, ABTestingVariant.Disabled)
+  return  variant === ABTestingVariant.Enabled
 }
 
 export function isWaitingForRenderer(state: StoreType): boolean {
