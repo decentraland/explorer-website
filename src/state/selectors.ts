@@ -12,7 +12,8 @@ export function getRequiredAnalyticsContext(state: StoreType): SessionTraits {
 
 export enum FeatureFlags {
   Stream = 'stream',
-  SignInFlowV3 = 'sign_in_flow_v3_variant'
+  SignInFlowV3 = 'sign_in_flow_v3_variant',
+  WalletConnectV2 = 'wallet-connect-v2',
 }
 
 export enum VariantNames {
