@@ -179,10 +179,6 @@ export function initializeSentry() {
     environment: !!repository && !!version ? 'production' : 'development',
     dsn: 'https://d067f6e6fc9c467ca8deb2b26b16aab1@o4504361728212992.ingest.sentry.io/4504915943489536',
     integrations: [new BrowserTracing()],
-
-    // Set tracesSampleRate to 1.0 to capture 100%
-    // of transactions for performance monitoring.
-    // We recommend adjusting this value in production
-    tracesSampleRate: 1.0
+    tracesSampleRate: 0.01 // 1% of transactions
   })
 }
