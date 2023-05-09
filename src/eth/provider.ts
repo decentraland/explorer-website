@@ -5,6 +5,8 @@ import { WebSocketProvider } from 'eth-connect/providers/WebSocketProvider'
 import { ChainId } from '@dcl/schemas/dist/dapps/chain-id'
 import { ProviderType } from '@dcl/schemas/dist/dapps/provider-type'
 import { switchProviderChainId } from 'decentraland-dapps/dist/modules/wallet/utils/switchProviderChainId'
+import { SwitchEthereumChainBaseError } from 'decentraland-dapps/dist/modules/wallet/utils/SwitchEthereumChainBaseError'
+
 import { defaultWebsiteErrorTracker, track } from '../utils/tracking'
 
 export const SECONDS_IN_MILLIS = 1000
@@ -42,10 +44,7 @@ export async function getEthereumProvider(
 }
 
 export async function restoreConnection(): Promise<ConnectionResponse | null> {
-  return await Promise.race([
-    connection.tryPreviousConnection().catch(() => null),
-    delay(CONNECTION_TIMEOUT_IN_MILLIS)
-  ])
+  return await Promise.race([connection.tryPreviousConnection().catch(() => null), delay(CONNECTION_TIMEOUT_IN_MILLIS)])
 }
 
 export async function disconnect(): Promise<void> {
@@ -70,13 +69,13 @@ export async function switchToChainId(wantedChainId: ChainId, providerChainId: C
     window.location.reload()
     return
   } catch (error: any) {
-    defaultWebsiteErrorTracker(error)
+    if (!(error instanceof JsonRPCInvalidResponseError)) defaultWebsiteErrorTracker(error)
     throw new Error(error.message)
   }
 }
 
 function delay(millis: number): Promise<null> {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(() => resolve(null), millis)
   })
 }
