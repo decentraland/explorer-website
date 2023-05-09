@@ -5,7 +5,7 @@ import { WebSocketProvider } from 'eth-connect/providers/WebSocketProvider'
 import { ChainId } from '@dcl/schemas/dist/dapps/chain-id'
 import { ProviderType } from '@dcl/schemas/dist/dapps/provider-type'
 import { switchProviderChainId } from 'decentraland-dapps/dist/modules/wallet/utils/switchProviderChainId'
-import { SwitchEthereumChainBaseError } from 'decentraland-dapps/dist/modules/wallet/utils/SwitchEthereumChainBaseError'
+import { JsonRPCInvalidResponseError } from 'decentraland-dapps/dist/modules/wallet/utils/JsonRPCInvalidResponseError'
 
 import { defaultWebsiteErrorTracker, track } from '../utils/tracking'
 
