@@ -1,3 +1,4 @@
+import { KernelSeverityLevel } from '@dcl/kernel-interface'
 import { store } from '../state/redux'
 import { getRequiredAnalyticsContext } from '../state/selectors'
 import { errorToString } from '../utils/errorToString'
@@ -7,6 +8,7 @@ import { isElectron } from './desktop'
 import { DEBUG_ANALYTICS, PLATFORM, RENDERER_TYPE } from './url'
 import * as Sentry from "@sentry/browser"
 import { BrowserTracing } from "@sentry/tracing"
+import { SeverityLevel } from '@sentry/browser'
 
 let analyticsDisabled = false
 
@@ -62,7 +64,7 @@ export function configureRollbar() {
   }
 
   const Rollbar = (window as any).Rollbar
-  const accessToken  = isElectron() ? RollbarAccount.Desktop : RollbarAccount.Web
+  const accessToken = isElectron() ? RollbarAccount.Desktop : RollbarAccount.Web
 
   if (Rollbar) {
     Rollbar.configure({
@@ -88,30 +90,47 @@ export function disableAnalytics() {
   }
 }
 
-export function trackError(error: string | Error, payload?: Record<string, any>) {
+function kernelSeverityToSentrySeverity(level: KernelSeverityLevel): SeverityLevel {
+  switch (level) {
+    case 'warning':
+      return 'warning'
+    case 'critical':
+      return 'fatal'
+    case 'fatal':
+      return 'fatal'
+    case 'serious':
+      return 'error'
+    default:
+      return 'fatal'
+  }
+}
+
+export function trackError(error: string | Error, payload?: Record<string, any>, level: KernelSeverityLevel = 'critical') {
   if (analyticsDisabled) return
 
   if (DEBUG_ANALYTICS) {
     console.info('explorer-website: DEBUG_ANALYTICS trackCriticalError ', error)
   }
 
-  if ((window as any).Rollbar) {
+  const Rollbar = (window as any).Rollbar
+  if (Rollbar) {
+    const reportFn = level === 'warning' ? Rollbar.warning : Rollbar.critical
     if (typeof error === 'string') {
-      ; (window as any).Rollbar.critical(errorToString(error), payload)
+      reportFn(errorToString(error), payload)
     } else if (error && error instanceof Error) {
-      ; (window as any).Rollbar.critical(
+      reportFn(
         errorToString(error),
         Object.assign(error, payload, { fullErrorStack: error.toString() })
       )
     } else {
-      ; (window as any).Rollbar.critical(errorToString(error), payload)
+      reportFn(errorToString(error), payload)
     }
   }
 
-  Sentry.withScope(function(scope) {
+  Sentry.withScope(function (scope) {
     payload = payload || {}
     injectTrackingMetadata(payload);
-    scope.setLevel("error");
+    scope.setLevel(kernelSeverityToSentrySeverity(level));
     scope.setExtras(payload || {})
     let err = typeof error === 'string' ? new Error(error) :
       error && error instanceof Error ? error : new Error(errorToString(error));
@@ -142,11 +161,11 @@ export function identifyUser(ethAddress: string, isGuest: boolean, email?: strin
 async function initialize(segmentKey: string): Promise<void> {
   if ((window as any).analytics.load) {
     // loading client for the first time
-    ;(window as any).analytics.load(segmentKey)
-    ;(window as any).analytics.page()
-    ;(window as any).analytics.ready(() => {
-      (window as any).analytics.timeout(1000)
-    })
+    ; (window as any).analytics.load(segmentKey)
+      ; (window as any).analytics.page()
+      ; (window as any).analytics.ready(() => {
+        (window as any).analytics.timeout(1000)
+      })
   }
 }
 

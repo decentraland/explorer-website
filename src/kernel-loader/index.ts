@@ -17,7 +17,7 @@ import { FeatureFlagsResult, fetchFlags } from '@dcl/feature-flags'
 import { resolveUrlFromUrn } from '@dcl/urn-resolver'
 import { defaultWebsiteErrorTracker, defaultKernelErrorTracker, track } from '../utils/tracking'
 import { injectVersions } from '../utils/rolloutVersions'
-import { KernelResult } from '@dcl/kernel-interface'
+import { KernelError, KernelResult } from '@dcl/kernel-interface'
 import { ENV, NETWORK, withOrigin, ensureOrigin, CATALYST, RENDERER_TYPE } from '../integration/url'
 import { isElectron, launchDesktopApp } from '../integration/desktop'
 import { setAsRecentlyLoggedIn } from '../integration/browser'
@@ -264,9 +264,10 @@ async function initKernel() {
   })
 
   // all errors are also sent as trackingEvent
-  kernel.on('error', (error) => {
+  kernel.on('error', (error: KernelError) => {
     store.dispatch(setKernelError(error))
-    defaultKernelErrorTracker(error.error, error.extra)
+
+    defaultKernelErrorTracker(error.error, error.extra, error.level)
     // since setKernelError(error) produces an unrecoverable black screen of death, we disable analytics
     disableAnalytics()
   })
