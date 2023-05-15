@@ -64,7 +64,7 @@ export function configureRollbar() {
   }
 
   const Rollbar = (window as any).Rollbar
-  const accessToken  = isElectron() ? RollbarAccount.Desktop : RollbarAccount.Web
+  const accessToken = isElectron() ? RollbarAccount.Desktop : RollbarAccount.Web
 
   if (Rollbar) {
     Rollbar.configure({
@@ -112,9 +112,9 @@ export function trackError(error: string | Error, payload?: Record<string, any>,
     console.info('explorer-website: DEBUG_ANALYTICS trackCriticalError ', error)
   }
 
-  const reportFn: any = level !== 'warning' ? (window as any).Rollbar.critical : (window as any).Rollbar.warning
-
-  if ((window as any).Rollbar) {
+  const Rollbar = (window as any).Rollbar
+  if (Rollbar) {
+    const reportFn = level === 'warning' ? Rollbar.warning : Rollbar.critical
     if (typeof error === 'string') {
       reportFn(errorToString(error), payload)
     } else if (error && error instanceof Error) {
@@ -127,7 +127,7 @@ export function trackError(error: string | Error, payload?: Record<string, any>,
     }
   }
 
-  Sentry.withScope(function(scope) {
+  Sentry.withScope(function (scope) {
     payload = payload || {}
     injectTrackingMetadata(payload);
     scope.setLevel(kernelSeverityToSentrySeverity(level));
@@ -161,11 +161,11 @@ export function identifyUser(ethAddress: string, isGuest: boolean, email?: strin
 async function initialize(segmentKey: string): Promise<void> {
   if ((window as any).analytics.load) {
     // loading client for the first time
-    ;(window as any).analytics.load(segmentKey)
-    ;(window as any).analytics.page()
-    ;(window as any).analytics.ready(() => {
-      (window as any).analytics.timeout(1000)
-    })
+    ; (window as any).analytics.load(segmentKey)
+      ; (window as any).analytics.page()
+      ; (window as any).analytics.ready(() => {
+        (window as any).analytics.timeout(1000)
+      })
   }
 }
 
