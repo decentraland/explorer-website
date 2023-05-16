@@ -69,7 +69,7 @@ export async function switchToChainId(wantedChainId: ChainId, providerChainId: C
     window.location.reload()
     return
   } catch (error: any) {
-    // We're nor logging this specific error  because we don't know how to reproduce it
+    // We're not logging this specific error because is not happening on our side
     if (!(error instanceof JsonRPCInvalidResponseError)) defaultWebsiteErrorTracker(error)
     throw new Error(error.message)
   }
