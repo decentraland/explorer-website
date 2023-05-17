@@ -105,26 +105,35 @@ function kernelSeverityToSentrySeverity(level: KernelSeverityLevel): SeverityLev
   }
 }
 
+export function reportRollbar(level: KernelSeverityLevel, ...payload: any[]) {
+  if ((window as any).Rollbar) {
+    switch(level) {
+      case 'warning':
+        ;(window as any).Rollbar.warning(...payload)
+        break
+      default:
+        ;(window as any).Rollbar.critical(...payload)
+        break
+    }
+  }
+}
+
 export function trackError(error: string | Error, payload?: Record<string, any>, level: KernelSeverityLevel = 'critical') {
   if (analyticsDisabled) return
 
   if (DEBUG_ANALYTICS) {
-    console.info('explorer-website: DEBUG_ANALYTICS trackCriticalError ', error)
+    console.info('explorer-website: DEBUG_ANALYTICS level: ', level, ' trackError ', error)
   }
 
-  const Rollbar = (window as any).Rollbar
-  if (Rollbar) {
-    const reportFn = level === 'warning' ? Rollbar.warning : Rollbar.critical
-    if (typeof error === 'string') {
-      reportFn(errorToString(error), payload)
-    } else if (error && error instanceof Error) {
-      reportFn(
-        errorToString(error),
-        Object.assign(error, payload, { fullErrorStack: error.toString() })
-      )
-    } else {
-      reportFn(errorToString(error), payload)
-    }
+  if (typeof error === 'string') {
+    reportRollbar(level, errorToString(error), payload)
+  } else if (error && error instanceof Error) {
+    reportRollbar(level,
+      errorToString(error),
+      Object.assign(error, payload, { fullErrorStack: error.toString() })
+    )
+  } else {
+    reportRollbar(level, errorToString(error), payload)
   }
 
   Sentry.withScope(function (scope) {
