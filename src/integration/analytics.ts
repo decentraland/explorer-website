@@ -1,4 +1,6 @@
-import { KernelSeverityLevel } from '@dcl/kernel-interface'
+import * as Sentry from "@sentry/browser"
+import { BrowserTracing } from "@sentry/tracing"
+import type { KernelSeverityLevel } from '@dcl/kernel-interface'
 import { store } from '../state/redux'
 import { getRequiredAnalyticsContext } from '../state/selectors'
 import { errorToString } from '../utils/errorToString'
@@ -6,9 +8,6 @@ import { getRepositoryName, getRepositoryVersion, track } from '../utils/trackin
 import { getCurrentPosition } from './browser'
 import { isElectron } from './desktop'
 import { DEBUG_ANALYTICS, PLATFORM, RENDERER_TYPE } from './url'
-import * as Sentry from "@sentry/browser"
-import { BrowserTracing } from "@sentry/tracing"
-import { SeverityLevel } from '@sentry/browser'
 
 let analyticsDisabled = false
 
@@ -90,7 +89,7 @@ export function disableAnalytics() {
   }
 }
 
-function kernelSeverityToSentrySeverity(level: KernelSeverityLevel): SeverityLevel {
+function kernelSeverityToSentrySeverity(level: KernelSeverityLevel): Sentry.SeverityLevel {
   switch (level) {
     case 'warning':
       return 'warning'
