@@ -2,6 +2,7 @@
   "name": "@dcl/explorer-website",
   "version": "0.1.0",
   "description": "The website for decentraland's explorer ",
+  "homepage": "https://decentraland.org/",
   "main": "website.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -14,6 +15,5 @@
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/decentraland/explorer-website/issues"
-  },
-  "homepage": ""
+  }
 }
