@@ -12,7 +12,7 @@ import { LoadingRender } from './common/Loading/LoadingRender'
 import { Navbar } from './common/Layout/Navbar'
 import {
   FeatureFlags,
-  getFeatureVariant,
+  getFeatureVariantValue,
   isWaitingForRenderer,
   isLoginComplete
 } from '../state/selectors'
@@ -25,7 +25,7 @@ import './App.css'
 
 function mapStateToProps(state: StoreType): AppProps {
   return {
-    hasStream: !!getFeatureVariant(state, FeatureFlags.Stream),
+    hasStream: !!getFeatureVariantValue(state, FeatureFlags.Stream),
     hasBanner: !!state.banner.banner,
     sessionReady: !!state.session?.ready,
     waitingForRenderer: isWaitingForRenderer(state),
@@ -47,6 +47,7 @@ export interface AppProps {
   trustedCatalyst: boolean
   error: boolean
   sound: boolean
+  seamless?: boolean
 }
 
 const App: React.FC<AppProps> = (props) => {

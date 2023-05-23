@@ -30,7 +30,7 @@ export function isFeatureEnabled(state: StoreType, key: string): boolean {
   return !!ff.flags[name]
 }
 
-export function getFeatureVariant(state: StoreType, key: string, defaultValue: string | undefined = undefined) {
+export function getFeatureVariantValue(state: StoreType, key: string, defaultValue: string | undefined = undefined) {
   if (isFeatureEnabled(state, key)) {
     const name = `${FF_APPLICATION_NAME}-${key}`
     const variant = state.featureFlags.variants[name]
