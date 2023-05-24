@@ -5,6 +5,7 @@ import ErrorContainer from './errors/ErrorContainer'
 import LoginContainer from './auth/LoginContainer'
 import { StoreType } from '../state/redux'
 import { isElectron } from '../integration/desktop'
+import { SHOW_WALLET_SELECTOR } from '../integration/url'
 import { BeginnersGuide } from './auth/BeginnersGuide'
 import { BigFooter } from './common/Layout/BigFooter'
 import BannerContainer from './banners/BannerContainer'
@@ -14,7 +15,8 @@ import {
   FeatureFlags,
   getFeatureVariantValue,
   isWaitingForRenderer,
-  isLoginComplete
+  isLoginComplete,
+  ABTestingVariant
 } from '../state/selectors'
 import StreamContainer from './common/StreamContainer'
 import { Audio } from './common/Audio'
@@ -24,16 +26,31 @@ import CatalystWarningContainer from './warning/CatalystWarningContainer'
 import './App.css'
 
 function mapStateToProps(state: StoreType): AppProps {
+  const seamlessLogin = isElectron() || SHOW_WALLET_SELECTOR ?
+    ABTestingVariant.Disabled :
+    getFeatureVariantValue(state, FeatureFlags.SeamlessLogin) as ABTestingVariant | undefined
+
+  const hasStream = !!getFeatureVariantValue(state, FeatureFlags.Stream)
+  const hasBanner = !!state.banner.banner
+  const sessionReady = !!state.session?.ready
+  const waitingForRenderer = isWaitingForRenderer(state)
+  const loginComplete = isLoginComplete(state)
+  const rendererReady = !!state.renderer?.ready
+  const trustedCatalyst = !!state.catalyst?.trusted
+  const error = !!state.error.error
+  const sound = true // TODO: sound must be true after the first click
+
   return {
-    hasStream: !!getFeatureVariantValue(state, FeatureFlags.Stream),
-    hasBanner: !!state.banner.banner,
-    sessionReady: !!state.session?.ready,
-    waitingForRenderer: isWaitingForRenderer(state),
-    loginComplete: isLoginComplete(state),
-    rendererReady: !!state.renderer?.ready,
-    trustedCatalyst: !!state.catalyst?.trusted,
-    error: !!state.error.error,
-    sound: true // TODO: sound must be true after the first click
+    seamlessLogin,
+    hasStream,
+    hasBanner,
+    sessionReady,
+    waitingForRenderer,
+    loginComplete,
+    rendererReady,
+    trustedCatalyst,
+    error,
+    sound
   }
 }
 
@@ -41,13 +58,13 @@ export interface AppProps {
   hasStream: boolean
   hasBanner: boolean
   sessionReady: boolean
+  seamlessLogin?: ABTestingVariant
   waitingForRenderer: boolean
   loginComplete: boolean
   rendererReady: boolean
   trustedCatalyst: boolean
   error: boolean
   sound: boolean
-  seamless?: boolean
 }
 
 const App: React.FC<AppProps> = (props) => {
@@ -74,7 +91,7 @@ const App: React.FC<AppProps> = (props) => {
     return <React.Fragment />
   }
 
-  if (props.waitingForRenderer || props.sessionReady) {
+  if (props.waitingForRenderer || props.sessionReady || props.seamlessLogin === ABTestingVariant.Enabled) {
     return <LoadingRender />
   }
 

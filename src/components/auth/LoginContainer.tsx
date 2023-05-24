@@ -18,6 +18,7 @@ import { track } from '../../utils/tracking'
 import Main from '../common/Layout/Main'
 import { SHOW_WALLET_SELECTOR } from '../../integration/url'
 import './LoginContainer.css'
+import { ABTestingVariant, FeatureFlags, getFeatureVariantValue } from '../../state/selectors'
 
 export const defaultAvailableProviders = []
 
@@ -25,8 +26,10 @@ const mapStateToProps = (state: StoreType): LoginContainerProps => {
   // test all connectors
   const enableProviders = new Set([ProviderType.INJECTED, ProviderType.FORTMATIC, ProviderType.WALLET_CONNECT])
   const availableProviders = connection.getAvailableProviders().filter((provider) => enableProviders.has(provider))
+  const seamlessLogin = SHOW_WALLET_SELECTOR ? ABTestingVariant.Disabled : getFeatureVariantValue(state, FeatureFlags.SeamlessLogin) as ABTestingVariant | undefined
   return {
     availableProviders,
+    seamlessLogin,
     stage: state.session.kernelState?.loginStatus,
     provider: state.session.connection?.providerType,
     kernelReady: state.kernel.ready,
@@ -61,6 +64,7 @@ export interface LoginContainerProps {
   rendererReady: boolean
   isGuest?: boolean
   isWallet?: boolean
+  seamlessLogin?: ABTestingVariant
   featureList: string[]
 }
 
@@ -78,6 +82,7 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
   provider,
   kernelReady,
   availableProviders,
+  seamlessLogin,
   featureList
 }) => {
   useEffect(() => {
@@ -132,23 +137,25 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
     return <React.Fragment />
   }
 
+  console.log(seamlessLogin)
+
   return (
     <Main>
       {/* {stage === LoginState.CONNECT_ADVICE && <EthConnectAdvice onLogin={onLogin} />} */}
       {/* {stage === LoginState.SIGN_ADVICE && <EthSignAdvice />} */}
 
       <Container>
-        <LogoContainer />
+        <LogoContainer loading={!seamlessLogin} />
         <div>
-          <LoginWalletItem
+          {seamlessLogin && <LoginWalletItem
             loading={loading}
             active={isWallet}
             onClick={handleOpenSelector}
             provider={providerInUse}
             onCancelLogin={handleCancelLogin}
             canceling={canceling}
-          />
-          <LoginGuestItem loading={loading} active={isGuest} onClick={handleGuestLogin} />
+          />}
+          {seamlessLogin && <LoginGuestItem loading={loading} active={isGuest} onClick={handleGuestLogin} />}
         </div>
         <DownloadDesktopToast />
       </Container>
