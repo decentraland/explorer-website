@@ -371,12 +371,12 @@ export function startKernel() {
 
   launchDesktopApp().then((launched) => {
     if (launched) {
+      store.dispatch(setDesktopDetected(launched))
       track('desktop_launched')
     }
 
     return initKernel()
       .then((kernel) => {
-        store.dispatch(setDesktopDetected(launched))
         store.dispatch(setKernelLoaded(kernel))
         if (!launched) {
           return initLogin(kernel)
