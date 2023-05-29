@@ -8,7 +8,8 @@ import {
   setKernelError,
   setRendererLoading,
   setKernelLoaded,
-  setRendererReady
+  setRendererReady,
+  setDesktopDetected
 } from '../state/actions'
 import { ErrorType, store } from '../state/redux'
 import { ChainId } from '@dcl/schemas/dist/dapps/chain-id'
@@ -375,6 +376,7 @@ export function startKernel() {
 
     return initKernel()
       .then((kernel) => {
+        store.dispatch(setDesktopDetected(launched))
         store.dispatch(setKernelLoaded(kernel))
         if (!launched) {
           return initLogin(kernel)

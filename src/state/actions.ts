@@ -20,6 +20,8 @@ export const SET_RENDERER_LOADING = 'Set renderer loading'
 export const SET_RENDERER_READY = 'Set renderer ready'
 export const SET_RENDERER_VISIBLE = 'Set renderer visible'
 
+export const SET_DESKTOP_DETECTED = 'Set desktop detected'
+
 export const SET_CATALYST_AS_TRUSTED = 'Set catalyst as trusted'
 
 export const SET_DOWNLOAD_PROGRESS = '[DownloadProgress]'
@@ -32,6 +34,7 @@ export const setKernelAccountState = (accountState: KernelAccountState) =>
   action(SET_KERNEL_ACCOUNT_STATE, accountState)
 export const setKernelError = (error: KernelError | null) => action(SET_KERNEL_ERROR, error)
 export const setKernelLoaded = (kernel: KernelResult) => action(SET_KERNEL_LOADED, kernel)
+export const setDesktopDetected = (detected: boolean) => action(SET_DESKTOP_DETECTED, detected)
 export const setCatalystAsTrusted = () => action(SET_CATALYST_AS_TRUSTED)
 export const setRendererLoading = (progressEvent: KernelLoadingProgress) => action(SET_RENDERER_LOADING, progressEvent)
 export const setRendererReady = (ready: boolean) => action(SET_RENDERER_READY, { ready })

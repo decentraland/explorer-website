@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { LoginState } from '@dcl/kernel-interface'
 import { ProviderType } from '@dcl/schemas/dist/dapps/provider-type'
-import { toFeatureList } from '@dcl/feature-flags'
 import { connect } from 'react-redux'
 import { connection } from 'decentraland-connect/dist/index'
 import { Container } from '../common/Layout/Container'
@@ -17,8 +16,8 @@ import { disconnect } from '../../eth/provider'
 import { track } from '../../utils/tracking'
 import Main from '../common/Layout/Main'
 import { SHOW_WALLET_SELECTOR } from '../../integration/url'
-import './LoginContainer.css'
 import { ABTestingVariant, FeatureFlags, getFeatureVariantName } from '../../state/selectors'
+import './LoginContainer.css'
 
 export const defaultAvailableProviders = []
 
@@ -35,8 +34,7 @@ const mapStateToProps = (state: StoreType): LoginContainerProps => {
     kernelReady: state.kernel.ready,
     rendererReady: state.renderer.ready,
     isGuest: state.session.kernelState ? state.session.kernelState.isGuest : undefined,
-    isWallet: state.session.kernelState ? !state.session.kernelState.isGuest && !!state.session.connection : undefined,
-    featureList: toFeatureList(state.featureFlags)
+    isWallet: state.session.kernelState ? !state.session.kernelState.isGuest && !!state.session.connection : undefined
   }
 }
 
@@ -65,7 +63,6 @@ export interface LoginContainerProps {
   isGuest?: boolean
   isWallet?: boolean
   seamlessLogin?: ABTestingVariant
-  featureList: string[]
 }
 
 export interface LoginContainerDispatch {
@@ -82,15 +79,8 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
   provider,
   kernelReady,
   availableProviders,
-  seamlessLogin,
-  featureList
+  seamlessLogin
 }) => {
-  useEffect(() => {
-    track('feature_flags', {
-      featureFlags: featureList
-    })
-  }, [featureList])
-
   const [showWalletSelector, setShowWalletSelector] = useState<{
     open: boolean
     action_type?: TrackingActionType

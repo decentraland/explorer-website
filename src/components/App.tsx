@@ -26,7 +26,7 @@ import CatalystWarningContainer from './warning/CatalystWarningContainer'
 import './App.css'
 
 function mapStateToProps(state: StoreType): AppProps {
-  const seamlessLogin = isElectron() || SHOW_WALLET_SELECTOR ?
+  const seamlessLogin = isElectron() || !!state.desktop.detected || SHOW_WALLET_SELECTOR ?
     ABTestingVariant.Disabled :
     getFeatureVariantValue(state, FeatureFlags.SeamlessLogin) as ABTestingVariant | undefined
 
