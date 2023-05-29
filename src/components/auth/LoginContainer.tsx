@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { LoginState } from '@dcl/kernel-interface'
 import { ProviderType } from '@dcl/schemas/dist/dapps/provider-type'
 import { connect } from 'react-redux'
