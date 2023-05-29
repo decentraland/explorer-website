@@ -7,4 +7,5 @@ import { callOnce } from "../utils/callOnce"
 export const initializeFeatureFlags = callOnce(async () => {
   const ff = await fetchFlags({ applicationName: FF_APPLICATION_NAME })
   store.dispatch(setFeatureFlags(ff))
+  return ff
 })
