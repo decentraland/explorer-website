@@ -145,7 +145,7 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
       <Container>
         <LogoContainer loading={!seamlessLogin} />
         <div>
-          {seamlessLogin && <LoginWalletItem
+          {seamlessLogin === ABTestingVariant.Disabled && <LoginWalletItem
             loading={loading}
             active={isWallet}
             onClick={handleOpenSelector}
@@ -153,7 +153,7 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
             onCancelLogin={handleCancelLogin}
             canceling={canceling}
           />}
-          {seamlessLogin && <LoginGuestItem loading={loading} active={isGuest} onClick={handleGuestLogin} />}
+          {seamlessLogin === ABTestingVariant.Disabled && <LoginGuestItem loading={loading} active={isGuest} onClick={handleGuestLogin} />}
         </div>
         <DownloadDesktopToast />
       </Container>
