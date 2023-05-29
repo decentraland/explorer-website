@@ -25,7 +25,10 @@ const mapStateToProps = (state: StoreType): LoginContainerProps => {
   // test all connectors
   const enableProviders = new Set([ProviderType.INJECTED, ProviderType.FORTMATIC, ProviderType.WALLET_CONNECT])
   const availableProviders = connection.getAvailableProviders().filter((provider) => enableProviders.has(provider))
-  const seamlessLogin = SHOW_WALLET_SELECTOR ? ABTestingVariant.Disabled : getFeatureVariantName(state, FeatureFlags.SeamlessLogin) as ABTestingVariant | undefined
+  const seamlessLogin = isElectron() || !!state.desktop.detected || SHOW_WALLET_SELECTOR ?
+    ABTestingVariant.Disabled :
+    getFeatureVariantName(state, FeatureFlags.SeamlessLogin) as ABTestingVariant | undefined
+
   return {
     availableProviders,
     seamlessLogin,
@@ -133,7 +136,7 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
       {/* {stage === LoginState.SIGN_ADVICE && <EthSignAdvice />} */}
 
       <Container>
-        <LogoContainer loading={!seamlessLogin} />
+        <LogoContainer loading={!seamlessLogin || seamlessLogin === ABTestingVariant.Enabled} />
         <div>
           {seamlessLogin === ABTestingVariant.Disabled && <LoginWalletItem
             loading={loading}

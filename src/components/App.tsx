@@ -16,7 +16,8 @@ import {
   getFeatureVariantValue,
   isWaitingForRenderer,
   isLoginComplete,
-  ABTestingVariant
+  ABTestingVariant,
+  getFeatureVariantName
 } from '../state/selectors'
 import StreamContainer from './common/StreamContainer'
 import { Audio } from './common/Audio'
@@ -28,7 +29,7 @@ import './App.css'
 function mapStateToProps(state: StoreType): AppProps {
   const seamlessLogin = isElectron() || !!state.desktop.detected || SHOW_WALLET_SELECTOR ?
     ABTestingVariant.Disabled :
-    getFeatureVariantValue(state, FeatureFlags.SeamlessLogin) as ABTestingVariant | undefined
+    getFeatureVariantName(state, FeatureFlags.SeamlessLogin) as ABTestingVariant | undefined
 
   const hasStream = !!getFeatureVariantValue(state, FeatureFlags.Stream)
   const hasBanner = !!state.banner.banner
