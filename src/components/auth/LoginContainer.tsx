@@ -18,7 +18,7 @@ import { track } from '../../utils/tracking'
 import Main from '../common/Layout/Main'
 import { SHOW_WALLET_SELECTOR } from '../../integration/url'
 import './LoginContainer.css'
-import { ABTestingVariant, FeatureFlags, getFeatureVariantValue } from '../../state/selectors'
+import { ABTestingVariant, FeatureFlags, getFeatureVariantName } from '../../state/selectors'
 
 export const defaultAvailableProviders = []
 
@@ -26,7 +26,7 @@ const mapStateToProps = (state: StoreType): LoginContainerProps => {
   // test all connectors
   const enableProviders = new Set([ProviderType.INJECTED, ProviderType.FORTMATIC, ProviderType.WALLET_CONNECT])
   const availableProviders = connection.getAvailableProviders().filter((provider) => enableProviders.has(provider))
-  const seamlessLogin = SHOW_WALLET_SELECTOR ? ABTestingVariant.Disabled : getFeatureVariantValue(state, FeatureFlags.SeamlessLogin) as ABTestingVariant | undefined
+  const seamlessLogin = SHOW_WALLET_SELECTOR ? ABTestingVariant.Disabled : getFeatureVariantName(state, FeatureFlags.SeamlessLogin) as ABTestingVariant | undefined
   return {
     availableProviders,
     seamlessLogin,
@@ -136,8 +136,6 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
   if (stage === LoginState.COMPLETED) {
     return <React.Fragment />
   }
-
-  console.log(seamlessLogin)
 
   return (
     <Main>
