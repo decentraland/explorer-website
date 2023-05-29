@@ -47,8 +47,9 @@ export async function authenticate(providerType: ProviderType | null) {
           ),
           code: ErrorType.NET_MISMATCH,
           extra: {
+            providerType,
             providerChainId: providerChainId,
-            wantedChainId: wantedChainId
+            wantedChainId: wantedChainId,
           }
         })
       )
@@ -65,6 +66,7 @@ export async function authenticate(providerType: ProviderType | null) {
             ),
             code: ErrorType.NET_MISMATCH,
             extra: {
+              providerType,
               providerChainId: providerChainId,
               wantedChainId: wantedChainId
             }

@@ -155,6 +155,7 @@ export function identifyUser(ethAddress: string, isGuest: boolean, email?: strin
     const userTraits = {
       sessionId: getRequiredAnalyticsContext(store.getState()).sessionId,
       ethAddress,
+      isGuest,
       email
     }
 
