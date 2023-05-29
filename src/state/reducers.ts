@@ -187,7 +187,10 @@ export function featureFlagsReducer(
 ): FeatureFlagsState {
   if (action.type === SET_FEATURE_FLAGS) {
     const result: FeatureFlagsState = action.payload
-    track('feature_flags', { featureFlags: toFeatureList(result) })
+    queueMicrotask(async () => track('feature_flags', {
+      featureFlags: toFeatureList(result)
+    }))
+
     return {
       ...state,
       flags: {
