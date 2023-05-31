@@ -193,6 +193,7 @@ export function featureFlagsReducer(
 
     return {
       ...state,
+      ready: true,
       flags: {
         ...state.flags,
         ...result.flags

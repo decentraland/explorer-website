@@ -78,7 +78,9 @@ export type DownloadState = {
   ready: boolean
 }
 
-export type FeatureFlagsState = FeatureFlagsResult
+export type FeatureFlagsState = FeatureFlagsResult & {
+  ready: boolean
+}
 
 export type StoreType = {
   desktop: DesktopState

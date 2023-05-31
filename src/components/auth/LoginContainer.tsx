@@ -25,9 +25,14 @@ const mapStateToProps = (state: StoreType): LoginContainerProps => {
   // test all connectors
   const enableProviders = new Set([ProviderType.INJECTED, ProviderType.FORTMATIC, ProviderType.WALLET_CONNECT])
   const availableProviders = connection.getAvailableProviders().filter((provider) => enableProviders.has(provider))
-  const seamlessLogin = isElectron() || !!state.desktop.detected || SHOW_WALLET_SELECTOR ?
+
+  let seamlessLogin = isElectron() || !!state.desktop.detected || SHOW_WALLET_SELECTOR ?
     ABTestingVariant.Disabled :
     getFeatureVariantName(state, FeatureFlags.SeamlessLogin) as ABTestingVariant | undefined
+
+  if (!seamlessLogin && !!state.featureFlags.ready) {
+    seamlessLogin = ABTestingVariant.Disabled
+  }
 
   return {
     availableProviders,
