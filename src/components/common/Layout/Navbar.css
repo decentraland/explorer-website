@@ -1,0 +1,8 @@
+.dcl.navbar.fullscreen .ui.secondary.stackable.menu .item .submenu {
+  opacity: 1;
+}
+
+.dcl.navbar.fullscreen .ui.secondary.stackable.menu .item .submenu .item {
+  color: black;
+  font-weight: 400;
+}

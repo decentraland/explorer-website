@@ -86,6 +86,12 @@ export type TrackingEvents = {
 
   /** Attempt to open non-https url */
   invalid_external_url: { url: string }
+
+  /** when users click in a navbar section */
+  click_navbar_button: {
+    section: string
+    menu?: string
+  }
 }
 
 export type SessionTraits = {
