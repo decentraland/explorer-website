@@ -19,7 +19,7 @@ export const Navbar = React.memo(function (props: NavbarProps) {
     <Base
       isFullscreen
       onClickMenuOption={handleClickMenuOption}
-      leftMenuDecorator={(props: { children: React.ReactNode }) => {
+      leftMenuDecorator={(props) => {
         return (
           <>
             <Menu.Item href="https://decentraland.org" onClick={(e) => handleClickMenuOption(e, 'home')}>
