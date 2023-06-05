@@ -1,44 +1,38 @@
-import React from 'react'
-import { Navbar as Base } from'decentraland-ui/dist/components/Navbar/Navbar'
-import { JoinDiscord } from '../Button/JoinDiscord'
+import React, { useCallback } from 'react'
 import Menu from 'semantic-ui-react/dist/commonjs/collections/Menu'
+import { Navbar as Base } from 'decentraland-ui/dist/components/Navbar/Navbar'
+import { JoinDiscord } from '../Button/JoinDiscord'
+import { track } from '../../../utils/tracking'
+import './Navbar.css'
 
 export type NavbarProps = {
   rightMenu?: React.ReactNode
 }
 
 export const Navbar = React.memo(function (props: NavbarProps) {
-  return <Base
-    isFullscreen
-    leftMenu={<>
-        <Menu.Item href="https://decentraland.org">
-          HOME
-        </Menu.Item>
-        <Menu.Item active href="https://play.decentraland.org" onClick={(e) => e.preventDefault()}>
-          PLAY
-        </Menu.Item>
-       <Menu.Item href="https://market.decentraland.org">
-          {Base.defaultProps.i18n?.menu?.marketplace}
-        </Menu.Item>
-        <Menu.Item href="https://builder.decentraland.org">
-          {Base.defaultProps.i18n?.menu?.builder}
-        </Menu.Item>
-        <Menu.Item href="https://docs.decentraland.org">
-          {Base.defaultProps.i18n?.menu?.docs}
-        </Menu.Item>
-        <Menu.Item href="https://places.decentraland.org">
-          {Base.defaultProps.i18n?.menu?.places}
-        </Menu.Item>
-        <Menu.Item href="https://events.decentraland.org">
-          {Base.defaultProps.i18n?.menu?.events}
-        </Menu.Item>
-        <Menu.Item href="https://dao.decentraland.org">
-          {Base.defaultProps.i18n?.menu?.dao}
-        </Menu.Item>
-        <Menu.Item href="https://decentraland.org/blog">
-          {Base.defaultProps.i18n?.menu?.blog}
-        </Menu.Item>
-    </>}
-    rightMenu={props.rightMenu ?? <JoinDiscord />}
-  />
+  const handleClickMenuOption = useCallback((e: React.MouseEvent, section: string) => {
+    const [menuSection, subMenuSection = undefined] = section.split('_')
+    track('click_navbar_button', { section: menuSection, menu: subMenuSection })
+  }, [])
+
+  return (
+    <Base
+      isFullscreen
+      onClickMenuOption={handleClickMenuOption}
+      leftMenuDecorator={(props) => {
+        return (
+          <>
+            <Menu.Item href="https://decentraland.org" onClick={(e) => handleClickMenuOption(e, 'home')}>
+              HOME
+            </Menu.Item>
+            <Menu.Item active href="https://play.decentraland.org" onClick={(e) => e.preventDefault()}>
+              PLAY
+            </Menu.Item>
+            {props.children}
+          </>
+        )
+      }}
+      rightMenu={props.rightMenu ?? <JoinDiscord />}
+    />
+  )
 })
