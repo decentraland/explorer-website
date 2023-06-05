@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { connection } from 'decentraland-connect/dist/index'
 import { Container } from '../common/Layout/Container'
 import { StoreType } from '../../state/redux'
-import { FeatureFlags, getFeatureVariantName, VariantNames } from '../../state/selectors'
+import { FeatureFlags, getFeatureVariantName, isFeatureEnabled, VariantNames } from '../../state/selectors'
 import { authenticate } from '../../kernel-loader'
 import { EthWalletSelector } from './EthWalletSelector'
 import { EthWalletNewSelector } from './EthWalletNewSelector'
@@ -20,6 +20,7 @@ import { disconnect } from '../../eth/provider'
 import { track } from '../../utils/tracking'
 import './LoginContainer.css'
 import Main from '../common/Layout/Main'
+import { FF_DAPPS_APPLICATION_NAME } from '../../state/types'
 
 export const defaultAvailableProviders = []
 
@@ -36,7 +37,8 @@ const mapStateToProps = (state: StoreType): LoginContainerProps => {
     isGuest: state.session.kernelState ? state.session.kernelState.isGuest : undefined,
     isWallet: state.session.kernelState ? !state.session.kernelState.isGuest && !!state.session.connection : undefined,
     isSignInFlowV3: getFeatureVariantName(state, FeatureFlags.SignInFlowV3) === VariantNames.New && !isElectron(),
-    featureList: toFeatureList(state.featureFlags)
+    featureList: toFeatureList(state.featureFlags),
+    isWalletConnectV2Enabled: isFeatureEnabled(state, FeatureFlags.WalletConnectV2, FF_DAPPS_APPLICATION_NAME)
   }
 }
 
@@ -56,6 +58,33 @@ const mapDispatchToProps = (dispatch: any) => ({
   }
 })
 
+const mergeProps = (
+  stateProps: ReturnType<typeof mapStateToProps>,
+  dispatchProps: ReturnType<typeof mapDispatchToProps>
+) => {
+  return {
+    ...stateProps,
+    ...dispatchProps,
+    onLogin: (providerType: ProviderType | null, action_type?: TrackingActionType) => {
+      // The UI will dispatch ProviderType.WALLET_CONNECT disregarding the version required.
+      // We need to map it to the correct version to provide it to the connection library.
+      const _providerType =
+        providerType === ProviderType.WALLET_CONNECT && stateProps.isWalletConnectV2Enabled
+          ? ProviderType.WALLET_CONNECT_V2
+          : providerType
+
+      track('click_login_button', {
+        // I don't want to diff if I'm using Wallet Connect V2 in the tracking.
+        // I just care about Wallet Connect as a whole, not its version.
+        provider_type: providerType || 'guest',
+        action_type
+      })
+
+      authenticate(_providerType)
+    }
+  }
+}
+
 export interface LoginContainerProps {
   stage?: LoginState
   provider?: ProviderType
@@ -66,6 +95,7 @@ export interface LoginContainerProps {
   isWallet?: boolean
   isSignInFlowV3: boolean
   featureList: string[]
+  isWalletConnectV2Enabled: boolean
 }
 
 export interface LoginContainerDispatch {
@@ -224,4 +254,4 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
     </Main>
   )
 }
-export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer)
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(LoginContainer)

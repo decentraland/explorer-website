@@ -12,41 +12,50 @@ export function getRequiredAnalyticsContext(state: StoreType): SessionTraits {
 
 export enum FeatureFlags {
   Stream = 'stream',
-  SignInFlowV3 = 'sign_in_flow_v3_variant'
+  SignInFlowV3 = 'sign_in_flow_v3_variant',
+  WalletConnectV2 = 'wallet-connect-v2'
 }
 
 export enum VariantNames {
   New = 'new'
 }
 
-export function isFeatureEnabled(state: StoreType, key: string): boolean {
-  const name = `${FF_APPLICATION_NAME}-${key}`
+export function isFeatureEnabled(state: StoreType, key: string, appName: string = FF_APPLICATION_NAME): boolean {
+  const name = `${appName}-${key}`
   const ff = state.featureFlags || defaultFeatureFlagsState
   return !!ff.flags[name]
 }
 
-export function getFeatureVariant(state: StoreType, key: string, defaultValue: string | undefined = undefined) {
+export function getFeatureVariant(
+  state: StoreType,
+  key: string,
+  options: { defaultValue?: string; appName: string } = { appName: FF_APPLICATION_NAME }
+) {
   if (isFeatureEnabled(state, key)) {
-    const name = `${FF_APPLICATION_NAME}-${key}`
+    const name = `${options.appName}-${key}`
     const variant = state.featureFlags.variants[name]
     if (variant?.payload?.value) {
       return variant?.payload?.value
     }
   }
 
-  return defaultValue
+  return options.defaultValue
 }
 
-export function getFeatureVariantName(state: StoreType, key: string, defaultValue?: string) {
+export function getFeatureVariantName(
+  state: StoreType,
+  key: string,
+  options: { defaultValue?: string; appName: string } = { appName: FF_APPLICATION_NAME }
+) {
   if (isFeatureEnabled(state, key)) {
-    const name = `${FF_APPLICATION_NAME}-${key}`
+    const name = `${options.appName}-${key}`
     const variant = state.featureFlags.variants[name]
     if (variant && variant.enabled) {
       return variant.name
     }
   }
 
-  return defaultValue
+  return options.defaultValue
 }
 
 export function isWaitingForRenderer(state: StoreType): boolean {
