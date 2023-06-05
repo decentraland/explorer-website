@@ -9,11 +9,13 @@ import {
   SET_KERNEL_ACCOUNT_STATE,
   SET_KERNEL_ERROR,
   SET_KERNEL_LOADED,
+  SET_DESKTOP_DETECTED,
   SET_RENDERER_LOADING,
   SET_RENDERER_READY,
   SET_RENDERER_VISIBLE,
   SET_FEATURE_FLAGS,
-  SET_CATALYST_AS_TRUSTED
+  SET_CATALYST_AS_TRUSTED,
+  setDesktopDetected
 } from './actions'
 import {
   KernelState,
@@ -24,13 +26,23 @@ import {
   DownloadState,
   DownloadCurrentState,
   FeatureFlagsState,
-  CatalystState
+  CatalystState,
+  DesktopState
 } from './redux'
 import { v4 } from 'uuid'
 import { errorToString } from '../utils/errorToString'
 import { isElectron } from '../integration/desktop'
 import { defaultFeatureFlagsState } from './types'
 import { CATALYST } from '../integration/url'
+import { track } from '../utils/tracking'
+import { toFeatureList } from '@dcl/feature-flags'
+
+export function decktopReducer(state: DesktopState | undefined, action: ReturnType<typeof setDesktopDetected>): DesktopState {
+  if (action.type === SET_DESKTOP_DETECTED && action.payload) {
+    return { ...state, detected: true }
+  }
+  return state || { detected: false }
+}
 
 export function kernelReducer(state: KernelState | undefined, action: AnyAction): KernelState {
   if (action.type === SET_KERNEL_LOADED) {
@@ -175,8 +187,13 @@ export function featureFlagsReducer(
 ): FeatureFlagsState {
   if (action.type === SET_FEATURE_FLAGS) {
     const result: FeatureFlagsState = action.payload
+    queueMicrotask(async () => track('feature_flags', {
+      featureFlags: toFeatureList(result)
+    }))
+
     return {
       ...state,
+      ready: true,
       flags: {
         ...state.flags,
         ...result.flags

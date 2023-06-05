@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { useMobileResize } from '../../integration/mobile'
 import { StoreType } from '../../state/redux'
-import { FeatureFlags, getFeatureVariant } from '../../state/selectors'
+import { FeatureFlags, getFeatureVariantValue } from '../../state/selectors'
 import { BannerStream } from '../banners/BannerStream'
 import './StreamContainer.css'
 
 function mapStateToProps(state: StoreType): StreamContainerProps {
   return {
-    src: getFeatureVariant(state, FeatureFlags.Stream),
+    src: getFeatureVariantValue(state, FeatureFlags.Stream),
   }
 }
 

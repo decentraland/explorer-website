@@ -1,4 +1,6 @@
-import { KernelSeverityLevel } from '@dcl/kernel-interface'
+import * as Sentry from "@sentry/browser"
+import { BrowserTracing } from "@sentry/tracing"
+import type { KernelSeverityLevel } from '@dcl/kernel-interface'
 import { store } from '../state/redux'
 import { getRequiredAnalyticsContext } from '../state/selectors'
 import { errorToString } from '../utils/errorToString'
@@ -6,9 +8,6 @@ import { getRepositoryName, getRepositoryVersion, track } from '../utils/trackin
 import { getCurrentPosition } from './browser'
 import { isElectron } from './desktop'
 import { DEBUG_ANALYTICS, PLATFORM, RENDERER_TYPE } from './url'
-import * as Sentry from "@sentry/browser"
-import { BrowserTracing } from "@sentry/tracing"
-import { SeverityLevel } from '@sentry/browser'
 
 let analyticsDisabled = false
 
@@ -90,7 +89,7 @@ export function disableAnalytics() {
   }
 }
 
-function kernelSeverityToSentrySeverity(level: KernelSeverityLevel): SeverityLevel {
+function kernelSeverityToSentrySeverity(level: KernelSeverityLevel): Sentry.SeverityLevel {
   switch (level) {
     case 'warning':
       return 'warning'
@@ -200,12 +199,30 @@ export function internalTrackEvent(
   (window as any).analytics.track(eventName, data, options ?? defaultAnalyticsOptions)
 }
 
-export function initializeSentry() {
+function getSentryRelease() {
   const repository = getRepositoryName()
   const version = getRepositoryVersion()
+  if (repository && version) {
+    return `${repository}@${version}`
+  }
+
+  return undefined
+}
+
+function getSentryEnvironment() {
+  const repository = getRepositoryName()
+  const version = getRepositoryVersion()
+  if (repository && version) {
+    return 'production'
+  }
+
+  return 'development'
+}
+
+export function configureSentry() {
   Sentry.init({
-    release: !!repository && !!version ? `${repository}@${version}` : undefined,
-    environment: !!repository && !!version ? 'production' : 'development',
+    release: getSentryRelease(),
+    environment: getSentryEnvironment(),
     dsn: 'https://d067f6e6fc9c467ca8deb2b26b16aab1@o4504361728212992.ingest.sentry.io/4504915943489536',
     integrations: [new BrowserTracing()],
     tracesSampleRate: 0.01 // 1% of transactions

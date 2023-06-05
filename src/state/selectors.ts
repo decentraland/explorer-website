@@ -12,20 +12,25 @@ export function getRequiredAnalyticsContext(state: StoreType): SessionTraits {
 
 export enum FeatureFlags {
   Stream = 'stream',
-  SignInFlowV3 = 'sign_in_flow_v3_variant'
+  SeamlessLogin = 'seamless_login_variant',
 }
 
 export enum VariantNames {
   New = 'new'
 }
 
-export function isFeatureEnabled(state: StoreType, key: string): boolean {
+export enum ABTestingVariant {
+  Enabled = 'enabled',
+  Disabled = 'disabled',
+}
+
+export function isFeatureEnabled(state: Pick<StoreType, 'featureFlags'>, key: string): boolean {
   const name = `${FF_APPLICATION_NAME}-${key}`
   const ff = state.featureFlags || defaultFeatureFlagsState
   return !!ff.flags[name]
 }
 
-export function getFeatureVariant(state: StoreType, key: string, defaultValue: string | undefined = undefined) {
+export function getFeatureVariantValue(state: Pick<StoreType, 'featureFlags'>, key: string, defaultValue: string | undefined = undefined) {
   if (isFeatureEnabled(state, key)) {
     const name = `${FF_APPLICATION_NAME}-${key}`
     const variant = state.featureFlags.variants[name]
@@ -37,7 +42,7 @@ export function getFeatureVariant(state: StoreType, key: string, defaultValue: s
   return defaultValue
 }
 
-export function getFeatureVariantName(state: StoreType, key: string, defaultValue?: string) {
+export function getFeatureVariantName(state: Pick<StoreType, 'featureFlags'>, key: string, defaultValue?: string) {
   if (isFeatureEnabled(state, key)) {
     const name = `${FF_APPLICATION_NAME}-${key}`
     const variant = state.featureFlags.variants[name]
@@ -49,10 +54,15 @@ export function getFeatureVariantName(state: StoreType, key: string, defaultValu
   return defaultValue
 }
 
-export function isWaitingForRenderer(state: StoreType): boolean {
+export function isFeatureVariantEnabled(state: Pick<StoreType, 'featureFlags'>, key: string) {
+  const variant = getFeatureVariantName(state, key, ABTestingVariant.Disabled)
+  return  variant === ABTestingVariant.Enabled
+}
+
+export function isWaitingForRenderer(state: Pick<StoreType, 'session'>): boolean {
   return state.session?.kernelState?.loginStatus === LoginState.WAITING_RENDERER
 }
 
-export function isLoginComplete(state: StoreType): boolean {
+export function isLoginComplete(state: Pick<StoreType, 'session'>): boolean {
   return state.session?.kernelState?.loginStatus === LoginState.COMPLETED
 }
