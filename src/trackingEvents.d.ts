@@ -49,6 +49,8 @@ export type TrackingEvents = {
   automatic_relogin: {
     provider_type: string
   }
+  /** when the app loads and connects the user as gues due to seamleess feature enabled */
+  seamless_login: {}
   /** disable analytics due to a fatal error */
   disable_analytics: {}
   /** enable renderer */

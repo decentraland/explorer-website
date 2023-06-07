@@ -8,7 +8,8 @@ import {
   setKernelError,
   setRendererLoading,
   setKernelLoaded,
-  setRendererReady
+  setRendererReady,
+  setDesktopDetected
 } from '../state/actions'
 import { ErrorType, store } from '../state/redux'
 import { ChainId } from '@dcl/schemas/dist/dapps/chain-id'
@@ -18,9 +19,10 @@ import { resolveUrlFromUrn } from '@dcl/urn-resolver'
 import { defaultWebsiteErrorTracker, defaultKernelErrorTracker, track } from '../utils/tracking'
 import { injectVersions } from '../utils/rolloutVersions'
 import { KernelError, KernelResult } from '@dcl/kernel-interface'
-import { ENV, NETWORK, withOrigin, ensureOrigin, CATALYST, RENDERER_TYPE } from '../integration/url'
+import { ENV, NETWORK, withOrigin, ensureOrigin, CATALYST, RENDERER_TYPE, SHOW_WALLET_SELECTOR } from '../integration/url'
 import { isElectron, launchDesktopApp } from '../integration/desktop'
 import { setAsRecentlyLoggedIn } from '../integration/browser'
+import { FeatureFlags, isFeatureVariantEnabled } from '../state/selectors'
 
 function getWantedChainId() {
   let chainId = ChainId.ETHEREUM_MAINNET // mainnet
@@ -309,7 +311,17 @@ async function initLogin(kernel: KernelResult) {
       if (storedSession) {
         track('automatic_relogin', { provider_type: provider.providerType })
         authenticate(provider.providerType).catch(defaultWebsiteErrorTracker)
+        return
       }
+    }
+
+    if (
+      isFeatureVariantEnabled(store.getState(), FeatureFlags.SeamlessLogin) &&
+      !SHOW_WALLET_SELECTOR
+    ) {
+      track('seamless_login')
+      authenticate(null).catch(defaultWebsiteErrorTracker)
+      return
     }
   }
 }
@@ -359,6 +371,7 @@ export function startKernel() {
 
   launchDesktopApp().then((launched) => {
     if (launched) {
+      store.dispatch(setDesktopDetected(launched))
       track('desktop_launched')
     }
 

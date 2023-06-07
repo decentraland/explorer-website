@@ -12,22 +12,31 @@ export function getRequiredAnalyticsContext(state: StoreType): SessionTraits {
 
 export enum FeatureFlags {
   Stream = 'stream',
-  SignInFlowV3 = 'sign_in_flow_v3_variant',
-  WalletConnectV2 = 'wallet-connect-v2'
+  WalletConnectV2 = 'wallet-connect-v2',
+  SeamlessLogin = 'seamless_login_variant'
 }
 
 export enum VariantNames {
   New = 'new'
 }
 
-export function isFeatureEnabled(state: StoreType, key: string, appName: string = FF_APPLICATION_NAME): boolean {
+export enum ABTestingVariant {
+  Enabled = 'enabled',
+  Disabled = 'disabled'
+}
+
+export function isFeatureEnabled(
+  state: Pick<StoreType, 'featureFlags'>,
+  key: string,
+  appName = FF_APPLICATION_NAME
+): boolean {
   const name = `${appName}-${key}`
   const ff = state.featureFlags || defaultFeatureFlagsState
   return !!ff.flags[name]
 }
 
 export function getFeatureVariant(
-  state: StoreType,
+  state: Pick<StoreType, 'featureFlags'>,
   key: string,
   options: { defaultValue?: string; appName: string } = { appName: FF_APPLICATION_NAME }
 ) {
@@ -43,7 +52,7 @@ export function getFeatureVariant(
 }
 
 export function getFeatureVariantName(
-  state: StoreType,
+  state: Pick<StoreType, 'featureFlags'>,
   key: string,
   options: { defaultValue?: string; appName: string } = { appName: FF_APPLICATION_NAME }
 ) {
@@ -58,10 +67,22 @@ export function getFeatureVariantName(
   return options.defaultValue
 }
 
-export function isWaitingForRenderer(state: StoreType): boolean {
+export function isFeatureVariantEnabled(
+  state: Pick<StoreType, 'featureFlags'>,
+  key: string,
+  appName = FF_APPLICATION_NAME
+) {
+  const variant = getFeatureVariantName(state, key, {
+    appName,
+    defaultValue: ABTestingVariant.Disabled
+  })
+  return variant === ABTestingVariant.Enabled
+}
+
+export function isWaitingForRenderer(state: Pick<StoreType, 'session'>): boolean {
   return state.session?.kernelState?.loginStatus === LoginState.WAITING_RENDERER
 }
 
-export function isLoginComplete(state: StoreType): boolean {
+export function isLoginComplete(state: Pick<StoreType, 'session'>): boolean {
   return state.session?.kernelState?.loginStatus === LoginState.COMPLETED
 }
