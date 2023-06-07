@@ -1,9 +1,12 @@
 import { fetchFlags } from '@dcl/feature-flags'
 import { FeatureFlagsResult } from '@dcl/feature-flags'
+import { connection } from 'decentraland-connect/dist'
+import { ProviderType } from '@dcl/schemas'
 import { setFeatureFlags } from '../state/actions'
 import { store } from '../state/redux'
 import { FF_APPLICATION_NAME, FF_DAPPS_APPLICATION_NAME, defaultFeatureFlagsState } from '../state/types'
 import { callOnce } from '../utils/callOnce'
+import { FeatureFlags, isFeatureEnabled } from '../state/selectors'
 
 export const initializeFeatureFlags = callOnce(async () => {
   let ff = defaultFeatureFlagsState as FeatureFlagsResult
@@ -23,5 +26,30 @@ export const initializeFeatureFlags = callOnce(async () => {
 
   store.dispatch(setFeatureFlags(ff))
 
+  handleWalletConnectConnection()
+
   return ff
 })
+
+export async function handleWalletConnectConnection() {
+  const connectionData = connection.getConnectionData()
+
+  if (!connectionData) {
+    return
+  }
+
+  const isWalletConnectV2Enabled = isFeatureEnabled(
+    store.getState(),
+    FeatureFlags.WalletConnectV2,
+    FF_DAPPS_APPLICATION_NAME
+  )
+
+  const { providerType } = connectionData
+
+  if (
+    (providerType === ProviderType.WALLET_CONNECT && isWalletConnectV2Enabled) ||
+    (providerType === ProviderType.WALLET_CONNECT_V2 && !isWalletConnectV2Enabled)
+  ) {
+    await connection.disconnect()
+  }
+}
