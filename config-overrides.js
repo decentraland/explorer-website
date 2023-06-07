@@ -5,7 +5,6 @@ module.exports = override(
   babelInclude([
     path.resolve(__dirname, 'src'),
     path.resolve(__dirname, 'node_modules/decentraland-connect/node_modules/@walletconnect'),
-    path.resolve(__dirname, 'node_modules/decentraland-dapps/node_modules/@walletconnect'),
     path.resolve(__dirname, 'node_modules/@walletconnect'),
     path.resolve(__dirname, 'node_modules/@web3modal')
   ])
