@@ -17,7 +17,7 @@ import {
   isLoginComplete,
   ABTestingVariant,
   getFeatureVariantName,
-  getFeatureVariant
+  getFeatureVariantValue
 } from '../state/selectors'
 import StreamContainer from './common/StreamContainer'
 import { Audio } from './common/Audio'
@@ -32,7 +32,7 @@ function mapStateToProps(state: StoreType): AppProps {
       ? ABTestingVariant.Disabled
       : (getFeatureVariantName(state, FeatureFlags.SeamlessLogin) as ABTestingVariant | undefined)
 
-  const hasStream = !!getFeatureVariant(state, FeatureFlags.Stream)
+  const hasStream = !!getFeatureVariantValue(state, FeatureFlags.Stream)
   const hasBanner = !!state.banner.banner
   const sessionReady = !!state.session?.ready
   const waitingForRenderer = isWaitingForRenderer(state)

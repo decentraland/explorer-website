@@ -35,7 +35,7 @@ export function isFeatureEnabled(
   return !!ff.flags[name]
 }
 
-export function getFeatureVariant(
+export function getFeatureVariantValue(
   state: Pick<StoreType, 'featureFlags'>,
   key: string,
   options: { defaultValue?: string; appName: string } = { appName: FF_APPLICATION_NAME }
