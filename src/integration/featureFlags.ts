@@ -31,6 +31,9 @@ export const initializeFeatureFlags = callOnce(async () => {
   return ff
 })
 
+/**
+ * Disconnects the user when connected with a WalletConnect Version that is not the one defined in the feature flags.
+ */
 export async function handleWalletConnectConnection() {
   const connectionData = connection.getConnectionData()
 
