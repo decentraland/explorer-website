@@ -6,7 +6,7 @@
   "scripts": {
     "start": "react-app-rewired start",
     "start:linked": "NODE_ENV=development react-app-rewired start",
-    "build": "GENERATE_SOURCEMAP=true react-scripts build",
+    "build": "GENERATE_SOURCEMAP=true react-app-rewired build",
     "build:full": "npm run build && npm run copy-cdn",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
