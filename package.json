@@ -9,7 +9,7 @@
     "build": "GENERATE_SOURCEMAP=true react-app-rewired build",
     "build:full": "npm run build && npm run copy-cdn",
     "test": "react-app-rewired test",
-    "eject": "react-app-rewired eject",
+    "eject": "react-scripts eject",
     "postinstall": "node ./scripts/hash_generator.js",
     "copy-cdn": "node ./scripts/copy_cdn.js",
     "storybook": "start-storybook -p 6006 -s public",
