@@ -45,7 +45,7 @@
     "@sentry/browser": "^7.45.0",
     "@sentry/tracing": "^7.45.0",
     "@types/validator": "^13.7.3",
-    "decentraland-connect": "^4.0.3",
+    "decentraland-connect": "^4.0.4",
     "decentraland-dapps": "^13.31.3",
     "decentraland-ui": "^3.111.0",
     "detect-browser": "^5.2.0",
