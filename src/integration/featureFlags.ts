@@ -15,17 +15,7 @@ export const initializeFeatureFlags = callOnce(async () => {
   let ff = defaultFeatureFlagsState as FeatureFlagsResult
 
   try {
-    // Get explorer feature flags.
-    const ffExplorer = await fetchFlags({ applicationName: FF_APPLICATION_NAME })
-    // Get dapps feature flags.
-    const ffDapps = await fetchFlags({ applicationName: FF_DAPPS_APPLICATION_NAME })
-
-    // Merge both the explorer and dapps feature flags into a single object.
-    ff = {
-      flags: { ...ffExplorer.flags, ...ffDapps.flags },
-      variants: { ...ffExplorer.variants, ...ffDapps.variants },
-      error: ffExplorer.error || ffDapps.error
-    }
+    ff = await fetchFlags({ applicationName: [FF_APPLICATION_NAME, FF_DAPPS_APPLICATION_NAME] })
   } catch (err) {
     console.error('Error fetching feature flags', err)
   }
