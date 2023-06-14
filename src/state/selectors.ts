@@ -1,7 +1,7 @@
 import { SessionTraits } from '../trackingEvents'
 import { LoginState } from '@dcl/kernel-interface'
 import { StoreType } from './redux'
-import { defaultFeatureFlagsState, FF_APPLICATION_NAME } from './types'
+import { defaultFeatureFlagsState } from './types'
 
 // This function is used for every rollbar and segment events.
 export function getRequiredAnalyticsContext(state: StoreType): SessionTraits {
@@ -11,9 +11,9 @@ export function getRequiredAnalyticsContext(state: StoreType): SessionTraits {
 }
 
 export enum FeatureFlags {
-  Stream = 'stream',
-  WalletConnectV2 = 'wallet-connect-v2',
-  SeamlessLogin = 'seamless_login_variant'
+  Stream = 'explorer-stream',
+  WalletConnectV2 = 'dapps-wallet-connect-v2',
+  SeamlessLogin = 'explorer-seamless_login_variant'
 }
 
 export enum VariantNames {
@@ -25,58 +25,35 @@ export enum ABTestingVariant {
   Disabled = 'disabled'
 }
 
-export function isFeatureEnabled(
-  state: Pick<StoreType, 'featureFlags'>,
-  key: string,
-  appName = FF_APPLICATION_NAME
-): boolean {
-  const name = `${appName}-${key}`
+export function isFeatureEnabled(state: Pick<StoreType, 'featureFlags'>, key: string): boolean {
   const ff = state.featureFlags || defaultFeatureFlagsState
-  return !!ff.flags[name]
+  return !!ff.flags[key]
 }
 
-export function getFeatureVariantValue(
-  state: Pick<StoreType, 'featureFlags'>,
-  key: string,
-  options: { defaultValue?: string; appName: string } = { appName: FF_APPLICATION_NAME }
-) {
+export function getFeatureVariantValue(state: Pick<StoreType, 'featureFlags'>, key: string, defaultValue?: string) {
   if (isFeatureEnabled(state, key)) {
-    const name = `${options.appName}-${key}`
-    const variant = state.featureFlags.variants[name]
+    const variant = state.featureFlags.variants[key]
     if (variant?.payload?.value) {
       return variant?.payload?.value
     }
   }
 
-  return options.defaultValue
+  return defaultValue
 }
 
-export function getFeatureVariantName(
-  state: Pick<StoreType, 'featureFlags'>,
-  key: string,
-  options: { defaultValue?: string; appName: string } = { appName: FF_APPLICATION_NAME }
-) {
+export function getFeatureVariantName(state: Pick<StoreType, 'featureFlags'>, key: string, defaultValue?: string) {
   if (isFeatureEnabled(state, key)) {
-    const name = `${options.appName}-${key}`
-    const variant = state.featureFlags.variants[name]
+    const variant = state.featureFlags.variants[key]
     if (variant && variant.enabled) {
       return variant.name
     }
   }
 
-  return options.defaultValue
+  return defaultValue
 }
 
-export function isFeatureVariantEnabled(
-  state: Pick<StoreType, 'featureFlags'>,
-  key: string,
-  appName = FF_APPLICATION_NAME
-) {
-  const variant = getFeatureVariantName(state, key, {
-    appName,
-    defaultValue: ABTestingVariant.Disabled
-  })
-  return variant === ABTestingVariant.Enabled
+export function isFeatureVariantEnabled(state: Pick<StoreType, 'featureFlags'>, key: string) {
+  return getFeatureVariantName(state, key, ABTestingVariant.Disabled) === ABTestingVariant.Enabled
 }
 
 export function isWaitingForRenderer(state: Pick<StoreType, 'session'>): boolean {

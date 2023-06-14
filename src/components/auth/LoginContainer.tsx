@@ -15,7 +15,6 @@ import { isElectron } from '../../integration/desktop'
 import { disconnect } from '../../eth/provider'
 import { track } from '../../utils/tracking'
 import Main from '../common/Layout/Main'
-import { FF_DAPPS_APPLICATION_NAME } from '../../state/types'
 import { SHOW_WALLET_SELECTOR } from '../../integration/url'
 import { ABTestingVariant, FeatureFlags, getFeatureVariantName, isFeatureEnabled } from '../../state/selectors'
 import './LoginContainer.css'
@@ -27,9 +26,10 @@ const mapStateToProps = (state: StoreType): LoginContainerProps => {
   const enableProviders = new Set([ProviderType.INJECTED, ProviderType.FORTMATIC, ProviderType.WALLET_CONNECT])
   const availableProviders = connection.getAvailableProviders().filter((provider) => enableProviders.has(provider))
 
-  let seamlessLogin = isElectron() || !!state.desktop.detected || SHOW_WALLET_SELECTOR ?
-    ABTestingVariant.Disabled :
-    getFeatureVariantName(state, FeatureFlags.SeamlessLogin) as ABTestingVariant | undefined
+  let seamlessLogin =
+    isElectron() || !!state.desktop.detected || SHOW_WALLET_SELECTOR
+      ? ABTestingVariant.Disabled
+      : (getFeatureVariantName(state, FeatureFlags.SeamlessLogin) as ABTestingVariant | undefined)
 
   if (!seamlessLogin && !!state.featureFlags.ready) {
     seamlessLogin = ABTestingVariant.Disabled
@@ -43,7 +43,7 @@ const mapStateToProps = (state: StoreType): LoginContainerProps => {
     kernelReady: state.kernel.ready,
     rendererReady: state.renderer.ready,
     isGuest: state.session.kernelState ? state.session.kernelState.isGuest : undefined,
-    isWalletConnectV2Enabled: isFeatureEnabled(state, FeatureFlags.WalletConnectV2, FF_DAPPS_APPLICATION_NAME),
+    isWalletConnectV2Enabled: isFeatureEnabled(state, FeatureFlags.WalletConnectV2),
     isWallet: state.session.kernelState ? !state.session.kernelState.isGuest && !!state.session.connection : undefined
   }
 }
@@ -173,15 +173,19 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
       <Container>
         <LogoContainer loading={!seamlessLogin || seamlessLogin === ABTestingVariant.Enabled} />
         <div>
-          {seamlessLogin === ABTestingVariant.Disabled && <LoginWalletItem
-            loading={loading}
-            active={isWallet}
-            onClick={handleOpenSelector}
-            provider={providerInUse}
-            onCancelLogin={handleCancelLogin}
-            canceling={canceling}
-          />}
-          {seamlessLogin === ABTestingVariant.Disabled && <LoginGuestItem loading={loading} active={isGuest} onClick={handleGuestLogin} />}
+          {seamlessLogin === ABTestingVariant.Disabled && (
+            <LoginWalletItem
+              loading={loading}
+              active={isWallet}
+              onClick={handleOpenSelector}
+              provider={providerInUse}
+              onCancelLogin={handleCancelLogin}
+              canceling={canceling}
+            />
+          )}
+          {seamlessLogin === ABTestingVariant.Disabled && (
+            <LoginGuestItem loading={loading} active={isGuest} onClick={handleGuestLogin} />
+          )}
         </div>
         <DownloadDesktopToast />
       </Container>

@@ -4,7 +4,7 @@ import { connection } from 'decentraland-connect/dist'
 import { ProviderType } from '@dcl/schemas'
 import { setFeatureFlags } from '../state/actions'
 import { store } from '../state/redux'
-import { FF_APPLICATION_NAME, FF_DAPPS_APPLICATION_NAME, defaultFeatureFlagsState } from '../state/types'
+import { defaultFeatureFlagsState } from '../state/types'
 import { callOnce } from '../utils/callOnce'
 import { FeatureFlags, isFeatureEnabled } from '../state/selectors'
 
@@ -15,7 +15,7 @@ export const initializeFeatureFlags = callOnce(async () => {
   let ff = defaultFeatureFlagsState as FeatureFlagsResult
 
   try {
-    ff = await fetchFlags({ applicationName: [FF_APPLICATION_NAME, FF_DAPPS_APPLICATION_NAME] })
+    ff = await fetchFlags({ applicationName: ['explorer', 'dapps'] })
   } catch (err) {
     console.error('Error fetching feature flags', err)
   }
@@ -42,11 +42,7 @@ export async function handleWalletConnectConnection() {
     return
   }
 
-  const isWalletConnectV2Enabled = isFeatureEnabled(
-    store.getState(),
-    FeatureFlags.WalletConnectV2,
-    FF_DAPPS_APPLICATION_NAME
-  )
+  const isWalletConnectV2Enabled = isFeatureEnabled(store.getState(), FeatureFlags.WalletConnectV2)
 
   const { providerType } = connectionData
 
