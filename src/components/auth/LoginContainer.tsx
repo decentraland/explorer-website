@@ -16,7 +16,7 @@ import { disconnect } from '../../eth/provider'
 import { track } from '../../utils/tracking'
 import Main from '../common/Layout/Main'
 import { SHOW_WALLET_SELECTOR } from '../../integration/url'
-import { ABTestingVariant, FeatureFlags, getFeatureVariantName } from '../../state/selectors'
+import { ABTestingVariant, FeatureFlags, getFeatureVariantName, isFeatureEnabled } from '../../state/selectors'
 import './LoginContainer.css'
 
 export const defaultAvailableProviders = []
@@ -26,9 +26,10 @@ const mapStateToProps = (state: StoreType): LoginContainerProps => {
   const enableProviders = new Set([ProviderType.INJECTED, ProviderType.FORTMATIC, ProviderType.WALLET_CONNECT])
   const availableProviders = connection.getAvailableProviders().filter((provider) => enableProviders.has(provider))
 
-  let seamlessLogin = isElectron() || !!state.desktop.detected || SHOW_WALLET_SELECTOR ?
-    ABTestingVariant.Disabled :
-    getFeatureVariantName(state, FeatureFlags.SeamlessLogin) as ABTestingVariant | undefined
+  let seamlessLogin =
+    isElectron() || !!state.desktop.detected || SHOW_WALLET_SELECTOR
+      ? ABTestingVariant.Disabled
+      : (getFeatureVariantName(state, FeatureFlags.SeamlessLogin) as ABTestingVariant | undefined)
 
   if (!seamlessLogin && !!state.featureFlags.ready) {
     seamlessLogin = ABTestingVariant.Disabled
@@ -42,6 +43,7 @@ const mapStateToProps = (state: StoreType): LoginContainerProps => {
     kernelReady: state.kernel.ready,
     rendererReady: state.renderer.ready,
     isGuest: state.session.kernelState ? state.session.kernelState.isGuest : undefined,
+    isWalletConnectV2Enabled: isFeatureEnabled(state, FeatureFlags.WalletConnectV2),
     isWallet: state.session.kernelState ? !state.session.kernelState.isGuest && !!state.session.connection : undefined
   }
 }
@@ -62,6 +64,33 @@ const mapDispatchToProps = () => ({
   }
 })
 
+const mergeProps = (
+  stateProps: ReturnType<typeof mapStateToProps>,
+  dispatchProps: ReturnType<typeof mapDispatchToProps>
+) => {
+  return {
+    ...stateProps,
+    ...dispatchProps,
+    onLogin: (providerType: ProviderType | null, action_type?: TrackingActionType) => {
+      // The UI will dispatch ProviderType.WALLET_CONNECT disregarding the version required.
+      // We need to map it to the correct version to provide it to the connection library.
+      const _providerType =
+        providerType === ProviderType.WALLET_CONNECT && stateProps.isWalletConnectV2Enabled
+          ? ProviderType.WALLET_CONNECT_V2
+          : providerType
+
+      track('click_login_button', {
+        // I don't want to diff if I'm using Wallet Connect V2 in the tracking.
+        // I just care about Wallet Connect as a whole, not its version.
+        provider_type: providerType || 'guest',
+        action_type
+      })
+
+      authenticate(_providerType)
+    }
+  }
+}
+
 export interface LoginContainerProps {
   stage?: LoginState
   provider?: ProviderType
@@ -70,6 +99,7 @@ export interface LoginContainerProps {
   rendererReady: boolean
   isGuest?: boolean
   isWallet?: boolean
+  isWalletConnectV2Enabled: boolean
   seamlessLogin?: ABTestingVariant
 }
 
@@ -143,15 +173,19 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
       <Container>
         <LogoContainer loading={!seamlessLogin || seamlessLogin === ABTestingVariant.Enabled} />
         <div>
-          {seamlessLogin === ABTestingVariant.Disabled && <LoginWalletItem
-            loading={loading}
-            active={isWallet}
-            onClick={handleOpenSelector}
-            provider={providerInUse}
-            onCancelLogin={handleCancelLogin}
-            canceling={canceling}
-          />}
-          {seamlessLogin === ABTestingVariant.Disabled && <LoginGuestItem loading={loading} active={isGuest} onClick={handleGuestLogin} />}
+          {seamlessLogin === ABTestingVariant.Disabled && (
+            <LoginWalletItem
+              loading={loading}
+              active={isWallet}
+              onClick={handleOpenSelector}
+              provider={providerInUse}
+              onCancelLogin={handleCancelLogin}
+              canceling={canceling}
+            />
+          )}
+          {seamlessLogin === ABTestingVariant.Disabled && (
+            <LoginGuestItem loading={loading} active={isGuest} onClick={handleGuestLogin} />
+          )}
         </div>
         <DownloadDesktopToast />
       </Container>
@@ -171,4 +205,4 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
     </Main>
   )
 }
-export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer)
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(LoginContainer)

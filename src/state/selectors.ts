@@ -1,7 +1,7 @@
 import { SessionTraits } from '../trackingEvents'
 import { LoginState } from '@dcl/kernel-interface'
 import { StoreType } from './redux'
-import { defaultFeatureFlagsState, FF_APPLICATION_NAME } from './types'
+import { defaultFeatureFlagsState } from './types'
 
 // This function is used for every rollbar and segment events.
 export function getRequiredAnalyticsContext(state: StoreType): SessionTraits {
@@ -11,8 +11,9 @@ export function getRequiredAnalyticsContext(state: StoreType): SessionTraits {
 }
 
 export enum FeatureFlags {
-  Stream = 'stream',
-  SeamlessLogin = 'seamless_login_variant',
+  Stream = 'explorer-stream',
+  WalletConnectV2 = 'dapps-wallet-connect-v2',
+  SeamlessLogin = 'explorer-seamless_login_variant'
 }
 
 export enum VariantNames {
@@ -21,19 +22,17 @@ export enum VariantNames {
 
 export enum ABTestingVariant {
   Enabled = 'enabled',
-  Disabled = 'disabled',
+  Disabled = 'disabled'
 }
 
 export function isFeatureEnabled(state: Pick<StoreType, 'featureFlags'>, key: string): boolean {
-  const name = `${FF_APPLICATION_NAME}-${key}`
   const ff = state.featureFlags || defaultFeatureFlagsState
-  return !!ff.flags[name]
+  return !!ff.flags[key]
 }
 
-export function getFeatureVariantValue(state: Pick<StoreType, 'featureFlags'>, key: string, defaultValue: string | undefined = undefined) {
+export function getFeatureVariantValue(state: Pick<StoreType, 'featureFlags'>, key: string, defaultValue?: string) {
   if (isFeatureEnabled(state, key)) {
-    const name = `${FF_APPLICATION_NAME}-${key}`
-    const variant = state.featureFlags.variants[name]
+    const variant = state.featureFlags.variants[key]
     if (variant?.payload?.value) {
       return variant?.payload?.value
     }
@@ -44,8 +43,7 @@ export function getFeatureVariantValue(state: Pick<StoreType, 'featureFlags'>, k
 
 export function getFeatureVariantName(state: Pick<StoreType, 'featureFlags'>, key: string, defaultValue?: string) {
   if (isFeatureEnabled(state, key)) {
-    const name = `${FF_APPLICATION_NAME}-${key}`
-    const variant = state.featureFlags.variants[name]
+    const variant = state.featureFlags.variants[key]
     if (variant && variant.enabled) {
       return variant.name
     }
@@ -55,8 +53,7 @@ export function getFeatureVariantName(state: Pick<StoreType, 'featureFlags'>, ke
 }
 
 export function isFeatureVariantEnabled(state: Pick<StoreType, 'featureFlags'>, key: string) {
-  const variant = getFeatureVariantName(state, key, ABTestingVariant.Disabled)
-  return  variant === ABTestingVariant.Enabled
+  return getFeatureVariantName(state, key, ABTestingVariant.Disabled) === ABTestingVariant.Enabled
 }
 
 export function isWaitingForRenderer(state: Pick<StoreType, 'session'>): boolean {
