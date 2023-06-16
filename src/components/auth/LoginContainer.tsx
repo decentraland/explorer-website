@@ -80,9 +80,7 @@ const mergeProps = (
           : providerType
 
       track('click_login_button', {
-        // I don't want to diff if I'm using Wallet Connect V2 in the tracking.
-        // I just care about Wallet Connect as a whole, not its version.
-        provider_type: providerType || 'guest',
+        provider_type: _providerType || 'guest',
         action_type
       })
 
