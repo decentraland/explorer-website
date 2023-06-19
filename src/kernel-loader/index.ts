@@ -23,6 +23,7 @@ import { ENV, NETWORK, withOrigin, ensureOrigin, CATALYST, RENDERER_TYPE, SHOW_W
 import { isElectron, launchDesktopApp } from '../integration/desktop'
 import { setAsRecentlyLoggedIn } from '../integration/browser'
 import { FeatureFlags, isFeatureVariantEnabled } from '../state/selectors'
+import { connection } from 'decentraland-connect'
 
 function getWantedChainId() {
   let chainId = ChainId.ETHEREUM_MAINNET // mainnet
@@ -88,7 +89,7 @@ export async function authenticate(providerType: ProviderType | null) {
     // Track that the users wallet has connected.
     // Only when the user has not connected as guest.
     if (providerType && account) {
-      trackConnectWallet({ providerType, address: account })
+      trackConnectWallet({ providerType, address: account, walletName: connection.getWalletName() })
     }
   } catch (err) {
     if (
