@@ -1,5 +1,6 @@
 import { trackConnectWallet } from 'decentraland-dapps/dist/modules/analytics/utils'
 import { getProviderChainId } from 'decentraland-dapps/dist/modules/wallet/utils/getProviderChainId'
+import { connection } from 'decentraland-connect'
 import { disconnect, getEthereumProvider, restoreConnection } from '../eth/provider'
 import { internalTrackEvent, identifyUser, disableAnalytics } from '../integration/analytics'
 import { injectKernel } from './injector'
@@ -88,7 +89,7 @@ export async function authenticate(providerType: ProviderType | null) {
     // Track that the users wallet has connected.
     // Only when the user has not connected as guest.
     if (providerType && account) {
-      trackConnectWallet({ providerType, address: account })
+      trackConnectWallet({ providerType, address: account, walletName: connection.getWalletName() })
     }
   } catch (err) {
     if (
