@@ -1,5 +1,6 @@
 import { trackConnectWallet } from 'decentraland-dapps/dist/modules/analytics/utils'
 import { getProviderChainId } from 'decentraland-dapps/dist/modules/wallet/utils/getProviderChainId'
+import { connection } from 'decentraland-connect'
 import { disconnect, getEthereumProvider, restoreConnection } from '../eth/provider'
 import { internalTrackEvent, identifyUser, disableAnalytics } from '../integration/analytics'
 import { injectKernel } from './injector'
@@ -23,7 +24,6 @@ import { ENV, NETWORK, withOrigin, ensureOrigin, CATALYST, RENDERER_TYPE, SHOW_W
 import { isElectron, launchDesktopApp } from '../integration/desktop'
 import { setAsRecentlyLoggedIn } from '../integration/browser'
 import { FeatureFlags, isFeatureVariantEnabled } from '../state/selectors'
-import { connection } from 'decentraland-connect'
 
 function getWantedChainId() {
   let chainId = ChainId.ETHEREUM_MAINNET // mainnet
