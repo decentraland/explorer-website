@@ -6,6 +6,7 @@ import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import { LoginModal, LoginModalOptionType } from 'decentraland-ui/dist/components/LoginModal/LoginModal'
 import { isElectron } from '../../integration/desktop'
 import { EthConnectAdvice } from './EthConnectAdvice'
+import { WalletConnectModalStylesHandler } from './WalletConnectModalStylesHandler'
 
 export interface WalletSelectorProps {
   open: boolean
@@ -77,25 +78,9 @@ export const EthWalletSelector: React.FC<WalletSelectorProps> = React.memo(({
         <LoginModal.Option
           type={LoginModalOptionType.METAMASK}
           onClick={() => {
-            const html = document.documentElement
-
-            // This is a hack to change the styles of the Wallet Connect v2 QR modal so it does not give to many Wallet Connect vibes.
-            // Users are being confused when clicking on the metamask option and seeing the QR code surrounded by Wallet Connect stuff.
-            // Version 1 of WC did not have so much branding to arouse this confusion.
-            //
-            // A mutation observer is required because the modal and the wc2 styles are added after the click event.
-            // We use the observer to check that the styles were added and update them afterwards.
-            const observer = new MutationObserver(() => {
-              observer.disconnect()
-
-              html.style.setProperty('--wcm-accent-color', '#f6851b')
-              html.style.setProperty('--wcm-accent-fill-color', '#f6851b')
-              html.style.setProperty('--wcm-background-color', '#f6851b')
-            })
-
-            observer.observe(html, { attributeFilter: ['style'] })
-
             handleLoginWalletConnect()
+            
+            WalletConnectModalStylesHandler.instance().changeToMetaMaskStyle()
           }}
           i18n={{
             // Decentraland ui picks the label depending on the type, METAMASK displays the browser_extension label.
@@ -111,7 +96,11 @@ export const EthWalletSelector: React.FC<WalletSelectorProps> = React.memo(({
       {!isElectron() && <LoginModal.Option type={LoginModalOptionType.FORTMATIC} onClick={handleLoginFortmatic} />}
 
       {/* WALLET_CONNECT */}
-      <LoginModal.Option type={LoginModalOptionType.WALLET_CONNECT} onClick={handleLoginWalletConnect}  />
+      <LoginModal.Option type={LoginModalOptionType.WALLET_CONNECT} onClick={() => {
+        handleLoginWalletConnect()
+        
+        WalletConnectModalStylesHandler.instance().changeToOriginalStyle()
+      }}  />
 
       {/* WALLET_LINK */}
       {!isElectron() ? (
