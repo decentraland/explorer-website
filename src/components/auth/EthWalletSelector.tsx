@@ -6,6 +6,7 @@ import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import { LoginModal, LoginModalOptionType } from 'decentraland-ui/dist/components/LoginModal/LoginModal'
 import { isElectron } from '../../integration/desktop'
 import { EthConnectAdvice } from './EthConnectAdvice'
+import { WalletConnectModalStylesHandler } from './WalletConnectModalStylesHandler'
 
 export interface WalletSelectorProps {
   open: boolean
@@ -76,7 +77,11 @@ export const EthWalletSelector: React.FC<WalletSelectorProps> = React.memo(({
         // Workaround to show metamask option on desktop that shows the wallet connect QR.
         <LoginModal.Option
           type={LoginModalOptionType.METAMASK}
-          onClick={handleLoginWalletConnect}
+          onClick={() => {
+            handleLoginWalletConnect()
+            
+            WalletConnectModalStylesHandler.instance().changeToMetaMaskStyle()
+          }}
           i18n={{
             // Decentraland ui picks the label depending on the type, METAMASK displays the browser_extension label.
             browser_extension: 'Using your mobile wallet',
@@ -91,7 +96,11 @@ export const EthWalletSelector: React.FC<WalletSelectorProps> = React.memo(({
       {!isElectron() && <LoginModal.Option type={LoginModalOptionType.FORTMATIC} onClick={handleLoginFortmatic} />}
 
       {/* WALLET_CONNECT */}
-      <LoginModal.Option type={LoginModalOptionType.WALLET_CONNECT} onClick={handleLoginWalletConnect}  />
+      <LoginModal.Option type={LoginModalOptionType.WALLET_CONNECT} onClick={() => {
+        handleLoginWalletConnect()
+        
+        WalletConnectModalStylesHandler.instance().changeToOriginalStyle()
+      }}  />
 
       {/* WALLET_LINK */}
       {!isElectron() ? (
