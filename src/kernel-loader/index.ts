@@ -28,8 +28,8 @@ import { FeatureFlags, isFeatureVariantEnabled } from '../state/selectors'
 function getWantedChainId() {
   let chainId = ChainId.ETHEREUM_MAINNET // mainnet
 
-  if (NETWORK === 'sepolia') {
-    chainId = ChainId.ETHEREUM_SEPOLIA
+  if (NETWORK === 'goerli') {
+    chainId = ChainId.ETHEREUM_GOERLI
   }
 
   return chainId
@@ -328,10 +328,10 @@ async function initLogin(kernel: KernelResult) {
 }
 
 export function startKernel() {
-  if (NETWORK && NETWORK !== 'mainnet' && NETWORK !== 'sepolia') {
+  if (NETWORK && NETWORK !== 'mainnet' && NETWORK !== 'goerli') {
     store.dispatch(
       setKernelError({
-        error: new Error(`Invalid NETWORK url param, valid options are 'sepolia' and 'mainnet'`),
+        error: new Error(`Invalid NETWORK url param, valid options are 'goerli' and 'mainnet'`),
         code: ErrorType.FATAL
       })
     )
@@ -342,7 +342,7 @@ export function startKernel() {
     store.dispatch(
       setKernelError({
         error: new Error(
-          `The "ENV" URL parameter is no longer supported. Please use NETWORK=sepolia in the cases where ENV=zone was used`
+          `The "ENV" URL parameter is no longer supported. Please use NETWORK=goerli in the cases where ENV=zone was used`
         ),
         code: ErrorType.FATAL
       })

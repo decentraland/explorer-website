@@ -12,7 +12,7 @@ export const CONNECTION_TIMEOUT_IN_MILLIS = 10 * SECONDS_IN_MILLIS
 
 export const chainIdRpc = new Map<number, string>([
   [1, 'wss://rpc.decentraland.org/mainnet'],
-  [11155111, 'wss://rpc.decentraland.org/sepolia']
+  [5, 'wss://rpc.decentraland.org/goerli']
 ])
 
 export async function getEthereumProvider(

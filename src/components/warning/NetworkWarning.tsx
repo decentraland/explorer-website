@@ -12,7 +12,7 @@ export const NetworkWarning: React.FC<NetworkWarningProps> = ({ onClose }) => (
     </div>
     <div className="network-warning-description">
       Blockchain transactions in this network have a cost and real consequences. We recommend you use the{' '}
-      <strong>Sepolia</strong> test network instead.
+      <strong>Goerli</strong> test network instead.
     </div>
     <button className="network-warning-button" onClick={onClose}>
       ⨯
