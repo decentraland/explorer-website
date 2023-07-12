@@ -16,7 +16,7 @@ import { disconnect } from '../../eth/provider'
 import { track } from '../../utils/tracking'
 import Main from '../common/Layout/Main'
 import { SHOW_WALLET_SELECTOR } from '../../integration/url'
-import { ABTestingVariant, FeatureFlags, getFeatureVariantName, isFeatureEnabled } from '../../state/selectors'
+import { ABTestingVariant, FeatureFlags, getFeatureVariantName } from '../../state/selectors'
 import './LoginContainer.css'
 
 export const defaultAvailableProviders = []
@@ -43,7 +43,6 @@ const mapStateToProps = (state: StoreType): LoginContainerProps => {
     kernelReady: state.kernel.ready,
     rendererReady: state.renderer.ready,
     isGuest: state.session.kernelState ? state.session.kernelState.isGuest : undefined,
-    isWalletConnectV2Enabled: isFeatureEnabled(state, FeatureFlags.WalletConnectV2),
     isWallet: state.session.kernelState ? !state.session.kernelState.isGuest && !!state.session.connection : undefined
   }
 }
@@ -74,10 +73,7 @@ const mergeProps = (
     onLogin: (providerType: ProviderType | null, action_type?: TrackingActionType) => {
       // The UI will dispatch ProviderType.WALLET_CONNECT disregarding the version required.
       // We need to map it to the correct version to provide it to the connection library.
-      const _providerType =
-        providerType === ProviderType.WALLET_CONNECT && stateProps.isWalletConnectV2Enabled
-          ? ProviderType.WALLET_CONNECT_V2
-          : providerType
+      const _providerType = providerType === ProviderType.WALLET_CONNECT ? ProviderType.WALLET_CONNECT_V2 : providerType
 
       track('click_login_button', {
         provider_type: _providerType || 'guest',
@@ -97,7 +93,6 @@ export interface LoginContainerProps {
   rendererReady: boolean
   isGuest?: boolean
   isWallet?: boolean
-  isWalletConnectV2Enabled: boolean
   seamlessLogin?: ABTestingVariant
 }
 
