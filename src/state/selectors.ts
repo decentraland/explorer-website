@@ -12,7 +12,6 @@ export function getRequiredAnalyticsContext(state: StoreType): SessionTraits {
 
 export enum FeatureFlags {
   Stream = 'explorer-stream',
-  WalletConnectV2 = 'dapps-wallet-connect-v2',
   SeamlessLogin = 'explorer-seamless_login_variant'
 }
 
