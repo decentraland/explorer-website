@@ -26,10 +26,17 @@ import { setAsRecentlyLoggedIn } from '../integration/browser'
 import { FeatureFlags, isFeatureVariantEnabled } from '../state/selectors'
 
 function getWantedChainId() {
-  let chainId = ChainId.ETHEREUM_MAINNET // mainnet
+  let chainId: ChainId
 
-  if (NETWORK === 'sepolia') {
-    chainId = ChainId.ETHEREUM_SEPOLIA
+  switch(NETWORK) {
+    case 'goerli':
+      chainId = ChainId.ETHEREUM_GOERLI
+      break
+    case 'sepolia':
+      chainId = ChainId.ETHEREUM_SEPOLIA
+      break
+    default:
+      chainId = ChainId.ETHEREUM_MAINNET
   }
 
   return chainId
@@ -328,10 +335,10 @@ async function initLogin(kernel: KernelResult) {
 }
 
 export function startKernel() {
-  if (NETWORK && NETWORK !== 'mainnet' && NETWORK !== 'sepolia') {
+  if (NETWORK && NETWORK !== 'mainnet' && NETWORK !== 'goerli' && NETWORK !== 'sepolia') {
     store.dispatch(
       setKernelError({
-        error: new Error(`Invalid NETWORK url param, valid options are 'sepolia' and 'mainnet'`),
+        error: new Error(`Invalid NETWORK url param, valid options are 'mainnet', 'goerli' and 'sepolia'`),
         code: ErrorType.FATAL
       })
     )
@@ -342,7 +349,7 @@ export function startKernel() {
     store.dispatch(
       setKernelError({
         error: new Error(
-          `The "ENV" URL parameter is no longer supported. Please use NETWORK=sepolia in the cases where ENV=zone was used`
+          `The "ENV" URL parameter is no longer supported. Please use NETWORK=goerli or NETWORK=sepolia in the cases where ENV=zone was used`
         ),
         code: ErrorType.FATAL
       })

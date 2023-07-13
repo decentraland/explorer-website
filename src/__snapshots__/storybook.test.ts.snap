@@ -21,7 +21,11 @@ exports[`Storyshots Explorer/Warnings Network Warning 1`] = `
     <strong>
       Sepolia
     </strong>
-     test network instead.
+     or 
+    <strong>
+      Goerli
+    </strong>
+     test networks instead.
   </div>
   <button
     className="network-warning-button"
