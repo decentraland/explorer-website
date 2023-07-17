@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { useMobileMediaQuery } from 'decentraland-ui/dist/components/Media'
 import ErrorContainer from './errors/ErrorContainer'
@@ -22,8 +22,9 @@ import {
 import StreamContainer from './common/StreamContainer'
 import { Audio } from './common/Audio'
 import { isMobile } from '../integration/browser'
-import MobileContainer from './common/MobileContainer'
-import CatalystWarningContainer from './warning/CatalystWarningContainer'
+// import StreamContainer from './common/StreamContainer'
+// import MobileContainer from './common/MobileContainer'
+// import CatalystWarningContainer from './warning/CatalystWarningContainer'
 import './App.css'
 
 function mapStateToProps(state: StoreType): AppProps {
@@ -69,20 +70,30 @@ export interface AppProps {
   sound: boolean
 }
 
+const DeferredStreamContainer = React.lazy(() => import('./common/StreamContainer'))
+const DeferredMobileContainer = React.lazy(() => import('./common/MobileContainer'))
+const DeferredCatalystWarningContainer = React.lazy(() => import('./warning/CatalystWarningContainer'))
+
 const App: React.FC<AppProps> = (props) => {
   const mobile = useMemo(() => isMobile(), [])
   const small = useMobileMediaQuery()
 
   if (!props.trustedCatalyst) {
-    return <CatalystWarningContainer />
+    return <Suspense fallback={null}>
+      <DeferredCatalystWarningContainer />
+    </Suspense>
   }
 
   if (props.hasStream && (small || mobile)) {
-    return <StreamContainer />
+    return <Suspense fallback={null}>
+      <DeferredStreamContainer />
+    </Suspense>
   }
 
   if (small || mobile) {
-    return <MobileContainer />
+    return <Suspense fallback={null}>
+      <DeferredMobileContainer />
+    </Suspense>
   }
 
   if (props.error) {
