@@ -19,9 +19,13 @@ exports[`Storyshots Explorer/Warnings Network Warning 1`] = `
     Blockchain transactions in this network have a cost and real consequences. We recommend you use the
      
     <strong>
+      Sepolia
+    </strong>
+     or 
+    <strong>
       Goerli
     </strong>
-     test network instead.
+     test networks instead.
   </div>
   <button
     className="network-warning-button"
