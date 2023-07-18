@@ -22,7 +22,7 @@ import { injectVersions } from '../utils/rolloutVersions'
 import { KernelError, KernelResult } from '@dcl/kernel-interface'
 import { ENV, NETWORK, withOrigin, ensureOrigin, CATALYST, RENDERER_TYPE, SHOW_WALLET_SELECTOR } from '../integration/url'
 import { isElectron, launchDesktopApp } from '../integration/desktop'
-import { setAsRecentlyLoggedIn } from '../integration/browser'
+import { isMobile, setAsRecentlyLoggedIn } from '../integration/browser'
 import { FeatureFlags, isFeatureVariantEnabled } from '../state/selectors'
 
 function getWantedChainId() {
@@ -370,22 +370,24 @@ export function startKernel() {
 
   track('initialize_versions', injectVersions({}))
 
-  launchDesktopApp().then((launched) => {
-    if (launched) {
-      store.dispatch(setDesktopDetected(launched))
-      track('desktop_launched')
-    }
+  if (!isMobile()) {
+    launchDesktopApp().then((launched) => {
+      if (launched) {
+        store.dispatch(setDesktopDetected(launched))
+        track('desktop_launched')
+      }
 
-    return initKernel()
-      .then((kernel) => {
-        store.dispatch(setKernelLoaded(kernel))
-        if (!launched) {
-          return initLogin(kernel)
-        }
-      })
-      .catch((error) => {
-        store.dispatch(setKernelError({ error }))
-        defaultWebsiteErrorTracker(error)
-      })
-  })
+      return initKernel()
+        .then((kernel) => {
+          store.dispatch(setKernelLoaded(kernel))
+          if (!launched) {
+            return initLogin(kernel)
+          }
+        })
+        .catch((error) => {
+          store.dispatch(setKernelError({ error }))
+          defaultWebsiteErrorTracker(error)
+        })
+    })
+  }
 }
