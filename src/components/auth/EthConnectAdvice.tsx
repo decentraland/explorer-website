@@ -25,7 +25,7 @@ export const EthConnectAdvice = React.memo((props: EthWalletSelectorAdviceProps)
     case ProviderType.WALLET_CONNECT_V2:
       return (
         <span className="EthConnectAdvice" style={props.style}>
-          Please, follow the instructions of your mobile wallet provider to continue.
+          Please follow the instructions from your wallet provider's app on your mobile device to continue.
         </span>
       )
 
