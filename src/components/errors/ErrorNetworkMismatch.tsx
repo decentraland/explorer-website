@@ -13,24 +13,23 @@ export interface ErrorNetworkMismatchProps {
   providerType: ProviderType
 }
 
-export const ErrorNetworkMismatch = React.memo(function (props: ErrorNetworkMismatchProps)  {
+export const ErrorNetworkMismatch = React.memo(function (props: ErrorNetworkMismatchProps) {
   const providerChainName = getChainName(props.providerChainId)
   const wantedChainName = getChainName(props.wantedChainId)
 
-  const handleSwitchTo = useCallback(async function () {
-    // Switch to the wanted network if injected
-    if (props.providerType === ProviderType.INJECTED) {
-      return switchToChainId(props.wantedChainId, props.providerChainId)
-    }
+  const handleSwitchTo = useCallback(
+    async function () {
+      // Switch to the wanted network if injected or WC
+      if (props.providerType === ProviderType.INJECTED || props.providerType === ProviderType.WALLET_CONNECT_V2) {
+        return switchToChainId(props.wantedChainId, props.providerChainId)
+      }
 
-    // Otherwise, disconnect and reload the page
-    await disconnect()
-    window.location.reload()
-  }, [
-    props.wantedChainId,
-    props.providerChainId,
-    props.providerType
-  ])
+      // Otherwise, disconnect and reload the page
+      await disconnect()
+      window.location.reload()
+    },
+    [props.wantedChainId, props.providerChainId, props.providerType]
+  )
 
   return (
     <ErrorContainer id="error-network-mismatch">
