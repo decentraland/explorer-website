@@ -225,6 +225,6 @@ export function configureSentry() {
     environment: getSentryEnvironment(),
     dsn: 'https://d067f6e6fc9c467ca8deb2b26b16aab1@o4504361728212992.ingest.sentry.io/4504915943489536',
     integrations: [new BrowserTracing()],
-    tracesSampleRate: 0.01 // 1% of transactions
+    tracesSampleRate: 0.001 // 0.1% of transactions
   })
 }
