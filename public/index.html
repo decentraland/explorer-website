@@ -184,7 +184,7 @@
 
       console.log('rollouts', injectVersions({}))
 
-      var _explorerVersion = window.ROLLOUTS["@dcl/explorer"].version
+      var _explorerVersion = window.ROLLOUTS && window.ROLLOUTS["@dcl/explorer"] && window.ROLLOUTS["@dcl/explorer"].version || 'no-version'
       // prettier-ignore
       var _rollbarConfig = {
         accessToken: "44963d3f89db4e5cbf552faba06c6ec0",

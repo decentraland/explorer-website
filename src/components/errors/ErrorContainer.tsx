@@ -50,8 +50,8 @@ export const ErrorContainer = React.memo(function (props: ErrorContainerProps) {
   if (props.error.type === ErrorType.NOT_MOBILE) return <ErrorNoMobile />
   if (props.error.type === ErrorType.NOT_SUPPORTED) return <ErrorNotSupported />
   if (props.error.type === ErrorType.NET_MISMATCH) {
-    const { wantedChainId, providerChainId } = props.error.extra!
-    return <ErrorNetworkMismatch wantedChainId={wantedChainId} providerChainId={providerChainId} />}
+    const { wantedChainId, providerChainId, providerType } = props.error.extra!
+    return <ErrorNetworkMismatch wantedChainId={wantedChainId} providerChainId={providerChainId} providerType={providerType} />}
   if (props.error.type === ErrorType.AVATAR_ERROR) return <ErrorAvatarLoading />
 
   return (

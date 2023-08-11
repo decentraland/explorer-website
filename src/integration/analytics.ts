@@ -1,3 +1,6 @@
+import * as Sentry from "@sentry/browser"
+import { BrowserTracing } from "@sentry/tracing"
+import type { KernelSeverityLevel } from '@dcl/kernel-interface'
 import { store } from '../state/redux'
 import { getRequiredAnalyticsContext } from '../state/selectors'
 import { errorToString } from '../utils/errorToString'
@@ -5,8 +8,6 @@ import { getRepositoryName, getRepositoryVersion, track } from '../utils/trackin
 import { getCurrentPosition } from './browser'
 import { isElectron } from './desktop'
 import { DEBUG_ANALYTICS, PLATFORM, RENDERER_TYPE } from './url'
-import * as Sentry from "@sentry/browser"
-import { BrowserTracing } from "@sentry/tracing"
 
 let analyticsDisabled = false
 
@@ -62,7 +63,7 @@ export function configureRollbar() {
   }
 
   const Rollbar = (window as any).Rollbar
-  const accessToken  = isElectron() ? RollbarAccount.Desktop : RollbarAccount.Web
+  const accessToken = isElectron() ? RollbarAccount.Desktop : RollbarAccount.Web
 
   if (Rollbar) {
     Rollbar.configure({
@@ -88,30 +89,56 @@ export function disableAnalytics() {
   }
 }
 
-export function trackError(error: string | Error, payload?: Record<string, any>) {
+function kernelSeverityToSentrySeverity(level: KernelSeverityLevel): Sentry.SeverityLevel {
+  switch (level) {
+    case 'warning':
+      return 'warning'
+    case 'critical':
+      return 'fatal'
+    case 'fatal':
+      return 'fatal'
+    case 'serious':
+      return 'error'
+    default:
+      return 'fatal'
+  }
+}
+
+export function reportRollbar(level: KernelSeverityLevel, ...payload: any[]) {
+  if ((window as any).Rollbar) {
+    switch(level) {
+      case 'warning':
+        ;(window as any).Rollbar.warning(...payload)
+        break
+      default:
+        ;(window as any).Rollbar.critical(...payload)
+        break
+    }
+  }
+}
+
+export function trackError(error: string | Error, payload?: Record<string, any>, level: KernelSeverityLevel = 'critical') {
   if (analyticsDisabled) return
 
   if (DEBUG_ANALYTICS) {
-    console.info('explorer-website: DEBUG_ANALYTICS trackCriticalError ', error)
+    console.info('explorer-website: DEBUG_ANALYTICS level: ', level, ' trackError ', error)
   }
 
-  if ((window as any).Rollbar) {
-    if (typeof error === 'string') {
-      ; (window as any).Rollbar.critical(errorToString(error), payload)
-    } else if (error && error instanceof Error) {
-      ; (window as any).Rollbar.critical(
-        errorToString(error),
-        Object.assign(error, payload, { fullErrorStack: error.toString() })
-      )
-    } else {
-      ; (window as any).Rollbar.critical(errorToString(error), payload)
-    }
+  if (typeof error === 'string') {
+    reportRollbar(level, errorToString(error), payload)
+  } else if (error && error instanceof Error) {
+    reportRollbar(level,
+      errorToString(error),
+      Object.assign(error, payload, { fullErrorStack: error.toString() })
+    )
+  } else {
+    reportRollbar(level, errorToString(error), payload)
   }
 
-  Sentry.withScope(function(scope) {
+  Sentry.withScope(function (scope) {
     payload = payload || {}
     injectTrackingMetadata(payload);
-    scope.setLevel("error");
+    scope.setLevel(kernelSeverityToSentrySeverity(level));
     scope.setExtras(payload || {})
     let err = typeof error === 'string' ? new Error(error) :
       error && error instanceof Error ? error : new Error(errorToString(error));
@@ -128,6 +155,7 @@ export function identifyUser(ethAddress: string, isGuest: boolean, email?: strin
     const userTraits = {
       sessionId: getRequiredAnalyticsContext(store.getState()).sessionId,
       ethAddress,
+      isGuest,
       email
     }
 
@@ -142,11 +170,11 @@ export function identifyUser(ethAddress: string, isGuest: boolean, email?: strin
 async function initialize(segmentKey: string): Promise<void> {
   if ((window as any).analytics.load) {
     // loading client for the first time
-    ;(window as any).analytics.load(segmentKey)
-    ;(window as any).analytics.page()
-    ;(window as any).analytics.ready(() => {
-      (window as any).analytics.timeout(1000)
-    })
+    ; (window as any).analytics.load(segmentKey)
+      ; (window as any).analytics.page()
+      ; (window as any).analytics.ready(() => {
+        (window as any).analytics.timeout(1000)
+      })
   }
 }
 
@@ -171,12 +199,30 @@ export function internalTrackEvent(
   (window as any).analytics.track(eventName, data, options ?? defaultAnalyticsOptions)
 }
 
-export function initializeSentry() {
+function getSentryRelease() {
   const repository = getRepositoryName()
   const version = getRepositoryVersion()
+  if (repository && version) {
+    return `${repository}@${version}`
+  }
+
+  return undefined
+}
+
+function getSentryEnvironment() {
+  const repository = getRepositoryName()
+  const version = getRepositoryVersion()
+  if (repository && version) {
+    return 'production'
+  }
+
+  return 'development'
+}
+
+export function configureSentry() {
   Sentry.init({
-    release: !!repository && !!version ? `${repository}@${version}` : undefined,
-    environment: !!repository && !!version ? 'production' : 'development',
+    release: getSentryRelease(),
+    environment: getSentryEnvironment(),
     dsn: 'https://d067f6e6fc9c467ca8deb2b26b16aab1@o4504361728212992.ingest.sentry.io/4504915943489536',
     integrations: [new BrowserTracing()],
     tracesSampleRate: 0.01 // 1% of transactions

@@ -1,25 +1,23 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { LoginState } from '@dcl/kernel-interface'
 import { ProviderType } from '@dcl/schemas/dist/dapps/provider-type'
-import { toFeatureList } from '@dcl/feature-flags'
 import { connect } from 'react-redux'
 import { connection } from 'decentraland-connect/dist/index'
 import { Container } from '../common/Layout/Container'
 import { StoreType } from '../../state/redux'
-import { FeatureFlags, getFeatureVariantName, VariantNames } from '../../state/selectors'
 import { authenticate } from '../../kernel-loader'
 import { EthWalletSelector } from './EthWalletSelector'
-import { EthWalletNewSelector } from './EthWalletNewSelector'
 import { LoginGuestItem, LoginWalletItem } from './LoginItemContainer'
-import { LoginGuestItemNew, LoginWalletItemNew } from './LoginItemNewContainer'
 import LogoContainer from './LogoContainer'
 import { DownloadDesktopToast } from '../download/DownloadDesktopToast'
 import { DownloadModal } from '../download/DownloadModal'
 import { isElectron } from '../../integration/desktop'
 import { disconnect } from '../../eth/provider'
 import { track } from '../../utils/tracking'
-import './LoginContainer.css'
 import Main from '../common/Layout/Main'
+import { SHOW_WALLET_SELECTOR } from '../../integration/url'
+import { ABTestingVariant, FeatureFlags, getFeatureVariantName } from '../../state/selectors'
+import './LoginContainer.css'
 
 export const defaultAvailableProviders = []
 
@@ -27,16 +25,25 @@ const mapStateToProps = (state: StoreType): LoginContainerProps => {
   // test all connectors
   const enableProviders = new Set([ProviderType.INJECTED, ProviderType.FORTMATIC, ProviderType.WALLET_CONNECT])
   const availableProviders = connection.getAvailableProviders().filter((provider) => enableProviders.has(provider))
+
+  let seamlessLogin =
+    isElectron() || !!state.desktop.detected || SHOW_WALLET_SELECTOR
+      ? ABTestingVariant.Disabled
+      : (getFeatureVariantName(state, FeatureFlags.SeamlessLogin) as ABTestingVariant | undefined)
+
+  if (!seamlessLogin && !!state.featureFlags.ready) {
+    seamlessLogin = ABTestingVariant.Disabled
+  }
+
   return {
     availableProviders,
+    seamlessLogin,
     stage: state.session.kernelState?.loginStatus,
     provider: state.session.connection?.providerType,
     kernelReady: state.kernel.ready,
     rendererReady: state.renderer.ready,
     isGuest: state.session.kernelState ? state.session.kernelState.isGuest : undefined,
-    isWallet: state.session.kernelState ? !state.session.kernelState.isGuest && !!state.session.connection : undefined,
-    isSignInFlowV3: getFeatureVariantName(state, FeatureFlags.SignInFlowV3) === VariantNames.New && !isElectron(),
-    featureList: toFeatureList(state.featureFlags)
+    isWallet: state.session.kernelState ? !state.session.kernelState.isGuest && !!state.session.connection : undefined
   }
 }
 
@@ -45,7 +52,7 @@ enum TrackingActionType {
   CreateAccount = 'create_account'
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = () => ({
   onLogin: (providerType: ProviderType | null, action_type?: TrackingActionType) => {
     track('click_login_button', { provider_type: providerType || 'guest', action_type })
     authenticate(providerType)
@@ -56,6 +63,28 @@ const mapDispatchToProps = (dispatch: any) => ({
   }
 })
 
+const mergeProps = (
+  stateProps: ReturnType<typeof mapStateToProps>,
+  dispatchProps: ReturnType<typeof mapDispatchToProps>
+) => {
+  return {
+    ...stateProps,
+    ...dispatchProps,
+    onLogin: (providerType: ProviderType | null, action_type?: TrackingActionType) => {
+      // The UI will dispatch ProviderType.WALLET_CONNECT disregarding the version required.
+      // We need to map it to the correct version to provide it to the connection library.
+      const _providerType = providerType === ProviderType.WALLET_CONNECT ? ProviderType.WALLET_CONNECT_V2 : providerType
+
+      track('click_login_button', {
+        provider_type: _providerType || 'guest',
+        action_type
+      })
+
+      authenticate(_providerType)
+    }
+  }
+}
+
 export interface LoginContainerProps {
   stage?: LoginState
   provider?: ProviderType
@@ -64,8 +93,7 @@ export interface LoginContainerProps {
   rendererReady: boolean
   isGuest?: boolean
   isWallet?: boolean
-  isSignInFlowV3: boolean
-  featureList: string[]
+  seamlessLogin?: ABTestingVariant
 }
 
 export interface LoginContainerDispatch {
@@ -82,32 +110,15 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
   provider,
   kernelReady,
   availableProviders,
-  isSignInFlowV3,
-  featureList
+  seamlessLogin
 }) => {
-  useEffect(() => {
-    track('feature_flags', {
-      featureFlags: featureList
-    })
-  }, [featureList])
-
   const [showWalletSelector, setShowWalletSelector] = useState<{
     open: boolean
     action_type?: TrackingActionType
-  }>({ open: false })
+  }>({ open: SHOW_WALLET_SELECTOR })
   const handleOpenSelector = useCallback(() => {
     track('open_login_popup')
     setShowWalletSelector({ open: true })
-  }, [])
-
-  const handleSignIn = useCallback(() => {
-    track('open_login_popup', { action_type: TrackingActionType.SignIn })
-    setShowWalletSelector({ open: true, action_type: TrackingActionType.SignIn })
-  }, [])
-
-  const handleCreateAccount = useCallback(() => {
-    track('open_login_popup', { action_type: TrackingActionType.CreateAccount })
-    setShowWalletSelector({ open: true, action_type: TrackingActionType.CreateAccount })
   }, [])
 
   const handleCloseSelector = useCallback(() => {
@@ -124,15 +135,6 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
   }, [onCancelLogin, setCanceling])
 
   const handleGuestLogin = useCallback(() => onLogin && onLogin(null), [onLogin])
-
-  const handleLogin = useCallback(
-    (provider_type: ProviderType) => {
-      if (onLogin) {
-        onLogin(provider_type, showWalletSelector.action_type)
-      }
-    },
-    [onLogin, showWalletSelector]
-  )
 
   const loading = useMemo(() => {
     return (
@@ -157,33 +159,14 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
   }
 
   return (
-    <Main withDarkLayer={isSignInFlowV3}>
+    <Main>
       {/* {stage === LoginState.CONNECT_ADVICE && <EthConnectAdvice onLogin={onLogin} />} */}
       {/* {stage === LoginState.SIGN_ADVICE && <EthSignAdvice />} */}
 
-      {isSignInFlowV3 && (
-        <Container>
-          <LogoContainer />
-          <div>
-            <LoginWalletItemNew
-              loading={loading}
-              active={isWallet}
-              onClick={handleSignIn}
-              onCreateAccount={handleCreateAccount}
-              provider={providerInUse}
-              onCancelLogin={handleCancelLogin}
-              canceling={canceling}
-            />
-            <LoginGuestItemNew loading={loading} active={isGuest} onClick={handleGuestLogin} />
-          </div>
-          <DownloadDesktopToast />
-        </Container>
-      )}
-
-      {!isSignInFlowV3 && (
-        <Container>
-          <LogoContainer />
-          <div>
+      <Container>
+        <LogoContainer loading={!seamlessLogin || seamlessLogin === ABTestingVariant.Enabled} />
+        <div>
+          {seamlessLogin === ABTestingVariant.Disabled && (
             <LoginWalletItem
               loading={loading}
               active={isWallet}
@@ -192,14 +175,16 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
               onCancelLogin={handleCancelLogin}
               canceling={canceling}
             />
+          )}
+          {seamlessLogin === ABTestingVariant.Disabled && (
             <LoginGuestItem loading={loading} active={isGuest} onClick={handleGuestLogin} />
-          </div>
-          <DownloadDesktopToast />
-        </Container>
-      )}
+          )}
+        </div>
+        <DownloadDesktopToast />
+      </Container>
 
       <EthWalletSelector
-        open={showWalletSelector.open && !isSignInFlowV3}
+        open={showWalletSelector.open}
         loading={loading}
         availableProviders={availableProviders || defaultAvailableProviders}
         provider={providerInUse}
@@ -209,19 +194,8 @@ export const LoginContainer: React.FC<LoginContainerProps & LoginContainerDispat
         onClose={handleCloseSelector}
       />
 
-      <EthWalletNewSelector
-        open={showWalletSelector.open && isSignInFlowV3}
-        loading={loading}
-        availableProviders={availableProviders || defaultAvailableProviders}
-        provider={providerInUse}
-        onLogin={handleLogin}
-        canceling={canceling}
-        onCancelLogin={handleCancelLogin}
-        onClose={handleCloseSelector}
-      />
-
       {!isElectron() && <DownloadModal />}
     </Main>
   )
 }
-export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer)
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(LoginContainer)

@@ -1,10 +1,23 @@
 import { fetchFlags } from '@dcl/feature-flags'
+import { FeatureFlagsResult } from '@dcl/feature-flags'
 import { setFeatureFlags } from '../state/actions'
 import { store } from '../state/redux'
-import { FF_APPLICATION_NAME } from '../state/types'
-import { callOnce } from "../utils/callOnce"
+import { defaultFeatureFlagsState } from '../state/types'
+import { callOnce } from '../utils/callOnce'
 
+/**
+ * Fetches feature flags from the server and stores them in the redux store.
+ */
 export const initializeFeatureFlags = callOnce(async () => {
-  const ff = await fetchFlags({ applicationName: FF_APPLICATION_NAME })
+  let ff = defaultFeatureFlagsState as FeatureFlagsResult
+
+  try {
+    ff = await fetchFlags({ applicationName: ['explorer'] })
+  } catch (err) {
+    console.error('Error fetching feature flags', err)
+  }
+
   store.dispatch(setFeatureFlags(ff))
+
+  return ff
 })
