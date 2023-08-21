@@ -15,7 +15,7 @@ import 'balloon-css/balloon.min.css'
 import 'decentraland-ui/dist/themes/base-theme.css'
 import 'decentraland-ui/dist/themes/alternative/light-theme.css'
 
-import { configureRollbar, configureSegment, configureSentry } from './integration/analytics'
+import { configureSegment, configureSentry } from './integration/analytics'
 import { store } from './state/redux'
 import { configureKernel, initializeKernel } from './integration/kernel'
 import { initializeBrowserRecommendation } from './integration/browser'
@@ -24,7 +24,6 @@ import { initializeFeatureFlags } from './integration/featureFlags'
 import App from './components/App'
 
 configureSegment()
-configureRollbar()
 configureSentry()
 configureKernel(store)
 

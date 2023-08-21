@@ -3,7 +3,7 @@ import { LoginState } from '@dcl/kernel-interface'
 import { StoreType } from './redux'
 import { defaultFeatureFlagsState } from './types'
 
-// This function is used for every rollbar and segment events.
+// This function is used for every segment event.
 export function getRequiredAnalyticsContext(state: StoreType): SessionTraits {
   return {
     sessionId: state.session.sessionId
