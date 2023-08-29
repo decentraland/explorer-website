@@ -1,12 +1,11 @@
-import * as Sentry from "@sentry/browser"
-import { BrowserTracing } from "@sentry/tracing"
+import * as Sentry from '@sentry/browser'
+import { BrowserTracing } from '@sentry/tracing'
 import type { KernelSeverityLevel } from '@dcl/kernel-interface'
 import { store } from '../state/redux'
 import { getRequiredAnalyticsContext } from '../state/selectors'
 import { errorToString } from '../utils/errorToString'
 import { getRepositoryName, getRepositoryVersion, track } from '../utils/tracking'
 import { getCurrentPosition } from './browser'
-import { isElectron } from './desktop'
 import { DEBUG_ANALYTICS, PLATFORM, RENDERER_TYPE } from './url'
 
 let analyticsDisabled = false
@@ -16,23 +15,18 @@ enum AnalyticsAccount {
   DEV = 'a4h4BC4dL1v7FhIQKKuPHEdZIiNRDVhc'
 }
 
-enum RollbarAccount {
-  Web = '44963d3f89db4e5cbf552faba06c6ec0',
-  Desktop = '73e7ead7a15d4de3b26cecdda99b63c2'
-}
-
 const authFlags = {
   isAuthenticated: false,
   isGuest: false,
   afterFatalError: false,
-  ethAddress: null as null | string,
+  ethAddress: null as null | string
 }
 
 export type AnalyticsOptions = { integrations?: Record<string, boolean> }
 
 export const defaultAnalyticsOptions: AnalyticsOptions = {
   integrations: {
-    'All': true,
+    All: true,
     'Google AdWords New': false
   }
 }
@@ -57,32 +51,12 @@ function injectTrackingMetadata(payload: Record<string, any>): void {
   payload.dcl_eth_address = authFlags.ethAddress
 }
 
-export function configureRollbar() {
-  function rollbarTransformer(payload: Record<string, any>): void {
-    injectTrackingMetadata(payload)
-  }
-
-  const Rollbar = (window as any).Rollbar
-  const accessToken = isElectron() ? RollbarAccount.Desktop : RollbarAccount.Web
-
-  if (Rollbar) {
-    Rollbar.configure({
-      accessToken,
-      transform: rollbarTransformer
-    })
-  }
-}
-
-// once this function is called, no more errors will be tracked neither reported to rollbar
+// once this function is called, no more errors will be tracked
 export function disableAnalytics() {
   track('disable_analytics', {})
 
   authFlags.afterFatalError = true
   analyticsDisabled = true
-
-  if ((window as any).Rollbar) {
-    ; (window as any).Rollbar.configure({ enabled: false })
-  }
 
   if (DEBUG_ANALYTICS) {
     console.info('explorer-website: DEBUG_ANALYTICS disableAnalytics')
@@ -104,45 +78,29 @@ function kernelSeverityToSentrySeverity(level: KernelSeverityLevel): Sentry.Seve
   }
 }
 
-export function reportRollbar(level: KernelSeverityLevel, ...payload: any[]) {
-  if ((window as any).Rollbar) {
-    switch(level) {
-      case 'warning':
-        ;(window as any).Rollbar.warning(...payload)
-        break
-      default:
-        ;(window as any).Rollbar.critical(...payload)
-        break
-    }
-  }
-}
-
-export function trackError(error: string | Error, payload?: Record<string, any>, level: KernelSeverityLevel = 'critical') {
+export function trackError(
+  error: string | Error,
+  payload?: Record<string, any>,
+  level: KernelSeverityLevel = 'critical'
+) {
   if (analyticsDisabled) return
 
   if (DEBUG_ANALYTICS) {
     console.info('explorer-website: DEBUG_ANALYTICS level: ', level, ' trackError ', error)
   }
 
-  if (typeof error === 'string') {
-    reportRollbar(level, errorToString(error), payload)
-  } else if (error && error instanceof Error) {
-    reportRollbar(level,
-      errorToString(error),
-      Object.assign(error, payload, { fullErrorStack: error.toString() })
-    )
-  } else {
-    reportRollbar(level, errorToString(error), payload)
-  }
-
   Sentry.withScope(function (scope) {
     payload = payload || {}
-    injectTrackingMetadata(payload);
-    scope.setLevel(kernelSeverityToSentrySeverity(level));
+    injectTrackingMetadata(payload)
+    scope.setLevel(kernelSeverityToSentrySeverity(level))
     scope.setExtras(payload || {})
-    let err = typeof error === 'string' ? new Error(error) :
-      error && error instanceof Error ? error : new Error(errorToString(error));
-    Sentry.captureException(err);
+    let err =
+      typeof error === 'string'
+        ? new Error(error)
+        : error && error instanceof Error
+        ? error
+        : new Error(errorToString(error))
+    Sentry.captureException(err)
   })
 }
 
@@ -163,18 +121,18 @@ export function identifyUser(ethAddress: string, isGuest: boolean, email?: strin
       console.info('explorer-website: DEBUG_ANALYTICS identifyUser', ethAddress, userTraits)
     }
 
-    (window as any).analytics.identify(userTraits)
+    ;(window as any).analytics.identify(userTraits)
   }
 }
 
 async function initialize(segmentKey: string): Promise<void> {
   if ((window as any).analytics.load) {
     // loading client for the first time
-    ; (window as any).analytics.load(segmentKey)
-      ; (window as any).analytics.page()
-      ; (window as any).analytics.ready(() => {
-        (window as any).analytics.timeout(1000)
-      })
+    ;(window as any).analytics.load(segmentKey)
+    ;(window as any).analytics.page()
+    ;(window as any).analytics.ready(() => {
+      ;(window as any).analytics.timeout(1000)
+    })
   }
 }
 
@@ -196,7 +154,7 @@ export function internalTrackEvent(
     console.info('explorer-website: DEBUG_ANALYTICS trackEvent', eventName, data, options)
   }
 
-  (window as any).analytics.track(eventName, data, options ?? defaultAnalyticsOptions)
+  ;(window as any).analytics.track(eventName, data, options ?? defaultAnalyticsOptions)
 }
 
 function getSentryRelease() {
