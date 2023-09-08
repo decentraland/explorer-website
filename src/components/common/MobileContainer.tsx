@@ -25,12 +25,16 @@ export default React.memo(function MobileContainer() {
         </div>
       </main>
 
-      <iframe
-        title='subscribe'
-        className='MobileSubscribe'
-        src="https://embeds.beehiiv.com/d7d652da-adc8-422f-9176-4b653a244020"
-        data-test-id="beehiiv-embed"
-      ></iframe>
+      <section>
+        <h2>Get a reminder</h2>
+        <p>Get an email reminder to jump into Decentraland the next time you are back at a computer. You will also be added to the Decentraland Weekly newsletter to receive the latest news and events.</p>
+        <iframe
+          title='subscribe'
+          className='MobileSubscribe'
+          src="https://embeds.beehiiv.com/d7d652da-adc8-422f-9176-4b653a244020?slim=true"
+          data-test-id="beehiiv-embed"
+        ></iframe>
+      </section>
 
       <section>
         <div className="grid">
