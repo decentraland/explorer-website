@@ -24,14 +24,13 @@ export default React.memo(function MobileContainer() {
           </p>
         </div>
       </main>
-      <section>
-        <iframe
-          title='subscribe'
-          className='MobileSubscribe'
-          src="https://embeds.beehiiv.com/d7d652da-adc8-422f-9176-4b653a244020"
-          data-test-id="beehiiv-embed"
-        ></iframe>
-      </section>
+
+      <iframe
+        title='subscribe'
+        className='MobileSubscribe'
+        src="https://embeds.beehiiv.com/d7d652da-adc8-422f-9176-4b653a244020"
+        data-test-id="beehiiv-embed"
+      ></iframe>
 
       <section>
         <div className="grid">
