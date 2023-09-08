@@ -242,6 +242,15 @@
   height: 100%;
 }
 
+.MobileContainer .MobileSubscribe {
+  position: relative;
+  width: 480px;
+  height: 400px;
+  border: none;
+  margin: 0;
+  background-color: transparent;
+}
+
 @media screen and (min-width: 480px) {
   .MobileContainer .grid .item {
     flex: 0 0 50%;
