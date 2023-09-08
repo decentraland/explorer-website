@@ -20,7 +20,7 @@ export default React.memo(function MobileContainer() {
           <h1>Play Decentraland on Desktop</h1>
           <p>Decentraland is not available on mobile.</p>
           <p>
-            Visit <strong>dcl.gg/play</strong> in your desktop browser to access Decentraland.
+            Visit <strong>play.decentraland.org</strong> in your desktop browser to access Decentraland.
           </p>
         </div>
       </main>
