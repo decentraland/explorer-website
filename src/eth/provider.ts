@@ -12,7 +12,6 @@ export const CONNECTION_TIMEOUT_IN_MILLIS = 10 * SECONDS_IN_MILLIS
 
 export const chainIdRpc = new Map<number, string>([
   [1, 'wss://rpc.decentraland.org/mainnet'],
-  [5, 'wss://rpc.decentraland.org/goerli'],
   [11155111, 'wss://rpc.decentraland.org/sepolia']
 ])
 
@@ -43,10 +42,7 @@ export async function getEthereumProvider(
 }
 
 export async function restoreConnection(): Promise<ConnectionResponse | null> {
-  return await Promise.race([
-    connection.tryPreviousConnection().catch(() => null),
-    delay(CONNECTION_TIMEOUT_IN_MILLIS)
-  ])
+  return await Promise.race([connection.tryPreviousConnection().catch(() => null), delay(CONNECTION_TIMEOUT_IN_MILLIS)])
 }
 
 export async function disconnect(): Promise<void> {
@@ -77,7 +73,7 @@ export async function switchToChainId(wantedChainId: ChainId, providerChainId: C
 }
 
 function delay(millis: number): Promise<null> {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(() => resolve(null), millis)
   })
 }
