@@ -25,6 +25,7 @@ import { isMobile } from '../integration/browser'
 import MobileContainer from './common/MobileContainer'
 import CatalystWarningContainer from './warning/CatalystWarningContainer'
 import './App.css'
+import { LoginWithAuthServerPage } from './auth/LoginWithAuthServerPage'
 
 function mapStateToProps(state: StoreType): AppProps {
   const seamlessLogin =
@@ -97,6 +98,10 @@ const App: React.FC<AppProps> = (props) => {
     return <LoadingRender />
   }
 
+  if (isElectron()) {
+    return <LoginWithAuthServerPage />
+  }
+
   return (
     <div className={`WebsiteApp ${props.hasBanner ? 'withBanner' : ''}`}>
       <BannerContainer />
@@ -105,11 +110,11 @@ const App: React.FC<AppProps> = (props) => {
        * @see https://github.com/decentraland/explorer-website/pull/333#discussion_r1084094994
        * @see https://github.com/eordano/background-throttle
        */}
-      {!isElectron() && props.sound && <Audio track={`${process.env.PUBLIC_URL}/tone4.mp3`} play />}
-      {!isElectron() && <Navbar />}
+      {props.sound && <Audio track={`${process.env.PUBLIC_URL}/tone4.mp3`} play />}
+      <Navbar />
       <LoginContainer />
-      {!isElectron() && <BeginnersGuide />}
-      {!isElectron() && <BigFooter />}
+      <BeginnersGuide />
+      <BigFooter />
     </div>
   )
 }
