@@ -12,7 +12,9 @@ if (process.env.NODE_ENV === 'development') {
       path.resolve(__dirname, 'src'),
       // WalletConnectV2 modules that need to be transpiled.
       path.resolve(__dirname, 'node_modules/decentraland-connect/node_modules/@walletconnect'),
-      path.resolve(__dirname, 'node_modules/@walletconnect')
+      path.resolve(__dirname, 'node_modules/@walletconnect'),
+      path.resolve(__dirname, 'node_modules/unstorage'),
+      path.resolve()
     ])
   )
 }

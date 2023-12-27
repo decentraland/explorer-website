@@ -2,11 +2,12 @@ const qs = new URLSearchParams(document.location.search || '')
 export const DEBUG_ANALYTICS = qs.has('DEBUG_ANALYTICS')
 export const SHOW_WALLET_SELECTOR = qs.has('show_wallet')
 export const ENV = qs.get('ENV')
-export const NETWORK = qs.get('NETWORK')
+export const NETWORK = qs.get('NETWORK') || qs.get('network')
 export const RENDERER_TYPE = qs.get('ws') ? 'native' : 'web'
 export const CATALYST = addHttpsIfNoProtocolIsSet(qs.get('CATALYST'))
 export const PLATFORM = (navigator as any)?.userAgentData?.platform || navigator?.platform || 'unknown'
 export const HOSTNAME = document.location.hostname
+export const SKIP_SETUP = qs.has('skipSetup')
 
 function addHttpsIfNoProtocolIsSet(domain: string | null) {
   if (!domain) return null
