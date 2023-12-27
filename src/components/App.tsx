@@ -17,7 +17,8 @@ import {
   isLoginComplete,
   ABTestingVariant,
   getFeatureVariantName,
-  getFeatureVariantValue
+  getFeatureVariantValue,
+  isFeatureEnabled
 } from '../state/selectors'
 import StreamContainer from './common/StreamContainer'
 import { Audio } from './common/Audio'
@@ -42,6 +43,7 @@ function mapStateToProps(state: StoreType): AppProps {
   const trustedCatalyst = !!state.catalyst?.trusted
   const error = !!state.error.error
   const sound = true // TODO: sound must be true after the first click
+  const isDesktopClientSignInWithAuthDappEnabled = isFeatureEnabled(state, FeatureFlags.DesktopClientSignInWithAuthDapp)
 
   return {
     seamlessLogin,
@@ -53,7 +55,8 @@ function mapStateToProps(state: StoreType): AppProps {
     rendererReady,
     trustedCatalyst,
     error,
-    sound
+    sound,
+    isDesktopClientSignInWithAuthDappEnabled
   }
 }
 
@@ -68,6 +71,7 @@ export interface AppProps {
   trustedCatalyst: boolean
   error: boolean
   sound: boolean
+  isDesktopClientSignInWithAuthDappEnabled: boolean
 }
 
 const App: React.FC<AppProps> = (props) => {
@@ -98,7 +102,7 @@ const App: React.FC<AppProps> = (props) => {
     return <LoadingRender />
   }
 
-  if (isElectron()) {
+  if (isElectron() && props.isDesktopClientSignInWithAuthDappEnabled) {
     return <LoginWithAuthServerPage />
   }
 
@@ -110,11 +114,11 @@ const App: React.FC<AppProps> = (props) => {
        * @see https://github.com/decentraland/explorer-website/pull/333#discussion_r1084094994
        * @see https://github.com/eordano/background-throttle
        */}
-      {props.sound && <Audio track={`${process.env.PUBLIC_URL}/tone4.mp3`} play />}
-      <Navbar />
+      {!isElectron() && props.sound && <Audio track={`${process.env.PUBLIC_URL}/tone4.mp3`} play />}
+      {!isElectron() && <Navbar />}
       <LoginContainer />
-      <BeginnersGuide />
-      <BigFooter />
+      {!isElectron() && <BeginnersGuide />}
+      {!isElectron() && <BigFooter />}
     </div>
   )
 }
