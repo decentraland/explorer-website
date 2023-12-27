@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ProviderType } from '@dcl/schemas'
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import './LoginWithAuthServerPage.css'
@@ -13,6 +13,11 @@ enum View {
 export const LoginWithAuthServerPage = () => {
   const [view, setView] = useState<View>(View.WELCOME)
   const initSignInResultRef = useRef<any>()
+
+  useEffect(() => {
+    AuthServerProvider.setAuthServerUrl('https://auth-api.decentraland.zone')
+    AuthServerProvider.setAuthDappUrl('https://decentraland.zone/auth')
+  }, [])
 
   if (view === View.WELCOME) {
     return (
