@@ -1,7 +1,9 @@
+import { useRef, useState } from 'react'
+import { ProviderType } from '@dcl/schemas'
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import './LoginWithAuthServerPage.css'
 import { AuthServerProvider } from 'decentraland-connect'
-import { useRef, useState } from 'react'
+import { authenticate } from '../../kernel-loader'
 
 enum View {
   WELCOME,
@@ -58,9 +60,8 @@ export const LoginWithAuthServerPage = () => {
             className="button"
             primary
             onClick={async () => {
-              const initSignInResult = await AuthServerProvider.initSignIn()
-              initSignInResultRef.current = initSignInResult
-              setView(View.SIGN_IN_CODE)
+              await AuthServerProvider.finishSignIn(initSignInResultRef.current!)
+              authenticate(ProviderType.AUTH_SERVER)
             }}
           >
             Continue to sign in
