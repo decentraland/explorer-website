@@ -31,10 +31,8 @@ export const LoginWithAuthServerPage = () => {
         AuthServerProvider.setAuthDappUrl('https://decentraland.today/auth')
         break
       default:
-        // AuthServerProvider.setAuthServerUrl('https://auth-api.decentraland.zone')
-        // AuthServerProvider.setAuthDappUrl('https://decentraland.zone/auth')
-        AuthServerProvider.setAuthServerUrl('http://localhost:8080')
-        AuthServerProvider.setAuthDappUrl('http://localhost:5173')
+        AuthServerProvider.setAuthServerUrl('https://auth-api.decentraland.zone')
+        AuthServerProvider.setAuthDappUrl('https://decentraland.zone/auth')
     }
 
     return () => {
