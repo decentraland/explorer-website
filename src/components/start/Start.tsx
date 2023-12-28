@@ -5,7 +5,7 @@ import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import { Loader } from 'decentraland-ui/dist/components/Loader/Loader'
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon/Icon'
 import { localStorageGetIdentity } from '@dcl/single-sign-on-client'
-import { SKIP_SETUP } from '../../integration/url'
+import { LOGIN_AS_GUEST, SKIP_SETUP } from '../../integration/url'
 import { initializeKernel } from '../../integration/kernel'
 import { getWantedChainId } from '../../kernel-loader'
 import logo from '../../images/simple-logo.svg'
@@ -53,12 +53,12 @@ export default function Start(props: Props) {
   }, [])
 
   useEffect(() => {
-    if (SKIP_SETUP) {
+    if (SKIP_SETUP || LOGIN_AS_GUEST) {
       handleJumpIn()
     }
   }, [handleJumpIn])
 
-  if (SKIP_SETUP) {
+  if (SKIP_SETUP || LOGIN_AS_GUEST) {
     return null
   }
 

@@ -8,6 +8,7 @@ export const CATALYST = addHttpsIfNoProtocolIsSet(qs.get('CATALYST'))
 export const PLATFORM = (navigator as any)?.userAgentData?.platform || navigator?.platform || 'unknown'
 export const HOSTNAME = document.location.hostname
 export const SKIP_SETUP = qs.has('skipSetup')
+export const LOGIN_AS_GUEST = qs.get('guest') === 'true'
 
 function addHttpsIfNoProtocolIsSet(domain: string | null) {
   if (!domain) return null
