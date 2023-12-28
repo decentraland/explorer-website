@@ -1,16 +1,9 @@
 import React, { useMemo } from 'react'
 import { connect } from 'react-redux'
 import { useMobileMediaQuery } from 'decentraland-ui/dist/components/Media'
-import ErrorContainer from './errors/ErrorContainer'
-import LoginContainer from './auth/LoginContainer'
+import { isMobile } from '../integration/browser'
 import { StoreType } from '../state/redux'
 import { isElectron } from '../integration/desktop'
-import { SHOW_WALLET_SELECTOR } from '../integration/url'
-import { BeginnersGuide } from './auth/BeginnersGuide'
-import { BigFooter } from './common/Layout/BigFooter'
-import BannerContainer from './banners/BannerContainer'
-import { LoadingRender } from './common/Loading/LoadingRender'
-import { Navbar } from './common/Layout/Navbar'
 import {
   FeatureFlags,
   isWaitingForRenderer,
@@ -20,13 +13,20 @@ import {
   getFeatureVariantValue,
   isFeatureEnabled
 } from '../state/selectors'
+import { SHOW_WALLET_SELECTOR } from '../integration/url'
+import ErrorContainer from './errors/ErrorContainer'
+import LoginContainer from './auth/LoginContainer'
+import { BeginnersGuide } from './auth/BeginnersGuide'
+import { BigFooter } from './common/Layout/BigFooter'
+import BannerContainer from './banners/BannerContainer'
+import { LoadingRender } from './common/Loading/LoadingRender'
+import { Navbar } from './common/Layout/Navbar'
 import StreamContainer from './common/StreamContainer'
 import { Audio } from './common/Audio'
-import { isMobile } from '../integration/browser'
 import MobileContainer from './common/MobileContainer'
 import CatalystWarningContainer from './warning/CatalystWarningContainer'
-import './App.css'
 import { LoginWithAuthServerPage } from './auth/LoginWithAuthServerPage'
+import './App.css'
 
 function mapStateToProps(state: StoreType): AppProps {
   const seamlessLogin =

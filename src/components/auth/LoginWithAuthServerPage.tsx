@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { ProviderType } from '@dcl/schemas'
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
-import './LoginWithAuthServerPage.css'
 import { AuthServerProvider, connection } from 'decentraland-connect'
 import { authenticate } from '../../kernel-loader'
+import './LoginWithAuthServerPage.css'
 
 enum View {
   WELCOME,
@@ -31,8 +31,10 @@ export const LoginWithAuthServerPage = () => {
         AuthServerProvider.setAuthDappUrl('https://decentraland.today/auth')
         break
       default:
-        AuthServerProvider.setAuthServerUrl('https://auth-api.decentraland.zone')
-        AuthServerProvider.setAuthDappUrl('https://decentraland.zone/auth')
+        // AuthServerProvider.setAuthServerUrl('https://auth-api.decentraland.zone')
+        // AuthServerProvider.setAuthDappUrl('https://decentraland.zone/auth')
+        AuthServerProvider.setAuthServerUrl('http://localhost:8080')
+        AuthServerProvider.setAuthDappUrl('http://localhost:5173')
     }
 
     return () => {
