@@ -57,6 +57,7 @@ function mapStateToProps(state: StoreType): AppProps {
     trustedCatalyst,
     error,
     sound,
+    featureFlagsLoaded: !!state.featureFlags.ready,
     isAuthDappEnabled: isFeatureEnabled(state, `${ApplicationName.DAPPS}-${FeatureFlags.AuthDapp}`)
   }
 }
@@ -73,6 +74,7 @@ export interface AppProps {
   error: boolean
   sound: boolean
   isAuthDappEnabled: boolean
+  featureFlagsLoaded: boolean
 }
 
 const App: React.FC<AppProps> = (props) => {
@@ -80,10 +82,10 @@ const App: React.FC<AppProps> = (props) => {
   const small = useMobileMediaQuery()
 
   useEffect(() => {
-    if (!isElectron() && props.isAuthDappEnabled) {
+    if (isElectron() || (props.featureFlagsLoaded && !props.isAuthDappEnabled)) {
       initializeKernel()
     }
-  }, [props.isAuthDappEnabled])
+  }, [props.isAuthDappEnabled, props.featureFlagsLoaded])
 
   if (!props.trustedCatalyst) {
     return <CatalystWarningContainer />

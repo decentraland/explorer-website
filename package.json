@@ -59,6 +59,7 @@
     "react-scripts": "^4.0.3",
     "react-virtualized": "^9.22.5",
     "redux": "^4.0.5",
+    "redux-saga": "^1.2.3",
     "validator": "^13.7.0"
   },
   "devDependencies": {
