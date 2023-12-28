@@ -69,8 +69,6 @@ export const LoginWithAuthServerPage = () => {
   const onSignInCodeContinue = useCallback(async () => {
     setDisabled(true)
 
-    console.log(initSignInResultRef.current)
-
     if (!initSignInResultRef.current) {
       throw new Error('No init sign in result found.')
     }
