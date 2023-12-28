@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { ProviderType } from '@dcl/schemas'
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import './LoginWithAuthServerPage.css'
-import { AuthServerProvider } from 'decentraland-connect'
+import { AuthServerProvider, connection } from 'decentraland-connect'
 import { authenticate } from '../../kernel-loader'
 
 enum View {
@@ -13,6 +13,8 @@ enum View {
 
 export const LoginWithAuthServerPage = () => {
   const [view, setView] = useState<View>(View.WELCOME)
+  const [disabled, setDisabled] = useState(false)
+
   const initSignInResultRef = useRef<any>()
   const expirationTimeoutRef = useRef<NodeJS.Timeout>()
 
@@ -25,18 +27,33 @@ export const LoginWithAuthServerPage = () => {
     }
   }, [])
 
+  useEffect(() => {
+    setDisabled(false)
+  }, [view])
+
   if (view === View.WELCOME) {
     return (
       <div className="LoginWithAuthServerPage">
         <div className="background"></div>
         <div className="main">
           <div className="logo"></div>
-          <div className="title">Unlock Your Virtual World.</div>
-          <div className="subtitle">Access and start exploring.</div>
+          <div className="title">Discover a virtual social world</div>
+          <div className="subtitle">shaped by its community of creators & explorers.</div>
           <Button
+            disabled={disabled}
             className="button"
             primary
             onClick={async () => {
+              setDisabled(true)
+
+              try {
+                await connection.tryPreviousConnection()
+                await authenticate(ProviderType.AUTH_SERVER)
+              } catch (e) {
+                // No previous connection.
+                // Continue with auth server login.
+              }
+
               const initSignInResult = await AuthServerProvider.initSignIn()
               initSignInResultRef.current = initSignInResult
 
@@ -73,11 +90,13 @@ export const LoginWithAuthServerPage = () => {
           </div>
           <div className="code">{initSignInResultRef.current!.requestResponse.code}</div>
           <Button
+            disabled={disabled}
             className="button"
             primary
             onClick={async () => {
+              setDisabled(true)
               await AuthServerProvider.finishSignIn(initSignInResultRef.current!)
-              authenticate(ProviderType.AUTH_SERVER)
+              await authenticate(ProviderType.AUTH_SERVER)
             }}
           >
             Continue to sign in

@@ -18,6 +18,7 @@ if (process.env.NODE_ENV === 'development') {
       path.resolve(__dirname, 'node_modules/decentraland-connect/node_modules/ethers'),
       path.resolve(__dirname, 'node_modules/@noble'),
       path.resolve(__dirname, 'node_modules/@dcl/single-sign-on-client'),
+      path.resolve(__dirname, 'node_modules/decentraland-dapps/node_modules/decentraland-connect/node_modules/ethers'),
     ])
   )
 }
