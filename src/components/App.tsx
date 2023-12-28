@@ -1,31 +1,29 @@
 import React, { useMemo } from 'react'
 import { connect } from 'react-redux'
 import { useMobileMediaQuery } from 'decentraland-ui/dist/components/Media'
-import { isMobile } from '../integration/browser'
+import ErrorContainer from './errors/ErrorContainer'
+import LoginContainer from './auth/LoginContainer'
 import { StoreType } from '../state/redux'
 import { isElectron } from '../integration/desktop'
+import { SHOW_WALLET_SELECTOR } from '../integration/url'
+import { BeginnersGuide } from './auth/BeginnersGuide'
+import { BigFooter } from './common/Layout/BigFooter'
+import BannerContainer from './banners/BannerContainer'
+import { LoadingRender } from './common/Loading/LoadingRender'
+import { Navbar } from './common/Layout/Navbar'
 import {
   FeatureFlags,
   isWaitingForRenderer,
   isLoginComplete,
   ABTestingVariant,
   getFeatureVariantName,
-  getFeatureVariantValue,
-  isFeatureEnabled
+  getFeatureVariantValue
 } from '../state/selectors'
-import { SHOW_WALLET_SELECTOR } from '../integration/url'
-import ErrorContainer from './errors/ErrorContainer'
-import LoginContainer from './auth/LoginContainer'
-import { BeginnersGuide } from './auth/BeginnersGuide'
-import { BigFooter } from './common/Layout/BigFooter'
-import BannerContainer from './banners/BannerContainer'
-import { LoadingRender } from './common/Loading/LoadingRender'
-import { Navbar } from './common/Layout/Navbar'
 import StreamContainer from './common/StreamContainer'
 import { Audio } from './common/Audio'
+import { isMobile } from '../integration/browser'
 import MobileContainer from './common/MobileContainer'
 import CatalystWarningContainer from './warning/CatalystWarningContainer'
-import { LoginWithAuthServerPage } from './auth/LoginWithAuthServerPage'
 import './App.css'
 
 function mapStateToProps(state: StoreType): AppProps {
@@ -43,7 +41,6 @@ function mapStateToProps(state: StoreType): AppProps {
   const trustedCatalyst = !!state.catalyst?.trusted
   const error = !!state.error.error
   const sound = true // TODO: sound must be true after the first click
-  const isDesktopClientSignInWithAuthDappEnabled = isFeatureEnabled(state, FeatureFlags.DesktopClientSignInWithAuthDapp)
 
   return {
     seamlessLogin,
@@ -55,8 +52,7 @@ function mapStateToProps(state: StoreType): AppProps {
     rendererReady,
     trustedCatalyst,
     error,
-    sound,
-    isDesktopClientSignInWithAuthDappEnabled
+    sound
   }
 }
 
@@ -71,7 +67,6 @@ export interface AppProps {
   trustedCatalyst: boolean
   error: boolean
   sound: boolean
-  isDesktopClientSignInWithAuthDappEnabled: boolean
 }
 
 const App: React.FC<AppProps> = (props) => {
@@ -100,10 +95,6 @@ const App: React.FC<AppProps> = (props) => {
 
   if (props.waitingForRenderer || props.sessionReady || props.seamlessLogin === ABTestingVariant.Enabled) {
     return <LoadingRender />
-  }
-
-  if (isElectron() && props.isDesktopClientSignInWithAuthDappEnabled) {
-    return <LoginWithAuthServerPage />
   }
 
   return (

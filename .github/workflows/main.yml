@@ -34,8 +34,6 @@ jobs:
 
       - name: build
         run: npm run build
-        env:
-          CI: false
 
       - name: test
         run: npm run test
@@ -89,7 +87,6 @@ jobs:
       - name: build for deployment
         run: npm run build:full
         env:
-          CI: false
           GEN_STATIC_LOCAL: true
 
       - uses: actions/upload-artifact@v2
