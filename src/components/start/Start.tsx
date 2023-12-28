@@ -13,7 +13,9 @@ import { Props } from './Start.types'
 import './Start.css'
 
 function getAuthURL() {
-  return `/auth/login?redirectTo=${encodeURIComponent(window.location.href + '&skipSetup')}`
+  var url = new URL(window.location.href);
+  url.searchParams.append('skipSetup', 'true')
+  return `/auth/login?redirectTo=${encodeURIComponent(url.toString())}`
 }
 
 export default function Start(props: Props) {
