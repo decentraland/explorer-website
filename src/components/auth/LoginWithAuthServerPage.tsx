@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { ProviderType } from '@dcl/schemas'
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import { AuthServerProvider, connection } from 'decentraland-connect'
@@ -44,6 +44,46 @@ export const LoginWithAuthServerPage = () => {
     setDisabled(false)
   }, [view])
 
+  const onWelcomeStart = useCallback(async () => {
+    setDisabled(true)
+
+    try {
+      await connection.tryPreviousConnection()
+      await authenticate(ProviderType.AUTH_SERVER)
+    } catch (e) {
+      // No previous connection.
+      // Continue with auth server login.
+    }
+
+    const initSignInResult = await AuthServerProvider.initSignIn()
+    initSignInResultRef.current = initSignInResult
+
+    // Start the timer that will render the expired view once the request expires.
+    expirationTimeoutRef.current = setTimeout(() => {
+      setView(View.EXPIRED)
+    }, new Date(initSignInResult.requestResponse.expiration).getTime() - Date.now())
+
+    setView(View.SIGN_IN_CODE)
+  }, [])
+
+  const onSignInCodeContinue = useCallback(async () => {
+    setDisabled(true)
+
+    console.log(initSignInResultRef.current)
+
+    if (!initSignInResultRef.current) {
+      throw new Error('No init sign in result found.')
+    }
+
+    await AuthServerProvider.finishSignIn(initSignInResultRef.current)
+    await authenticate(ProviderType.AUTH_SERVER)
+  }, [])
+
+  const onBack = useCallback(() => {
+    initSignInResultRef.current = null
+    setView(View.WELCOME)
+  }, [])
+
   if (view === View.WELCOME) {
     return (
       <div className="LoginWithAuthServerPage">
@@ -52,31 +92,7 @@ export const LoginWithAuthServerPage = () => {
           <div className="logo"></div>
           <div className="title">Discover a virtual social world</div>
           <div className="subtitle">shaped by its community of creators & explorers.</div>
-          <Button
-            disabled={disabled}
-            className="button"
-            primary
-            onClick={async () => {
-              setDisabled(true)
-
-              try {
-                await connection.tryPreviousConnection()
-                await authenticate(ProviderType.AUTH_SERVER)
-              } catch (e) {
-                // No previous connection.
-                // Continue with auth server login.
-              }
-
-              const initSignInResult = await AuthServerProvider.initSignIn()
-              initSignInResultRef.current = initSignInResult
-
-              expirationTimeoutRef.current = setTimeout(() => {
-                setView(View.EXPIRED)
-              }, new Date(initSignInResult.requestResponse.expiration).getTime() - Date.now())
-
-              setView(View.SIGN_IN_CODE)
-            }}
-          >
+          <Button disabled={disabled} className="button" primary onClick={onWelcomeStart}>
             Start
           </Button>
         </div>
@@ -89,29 +105,14 @@ export const LoginWithAuthServerPage = () => {
       <div className="LoginWithAuthServerPage">
         <div className="background"></div>
         <div className="main">
-          <div
-            className="back"
-            onClick={() => {
-              initSignInResultRef.current = null
-              setView(View.WELCOME)
-            }}
-          ></div>
+          <div className="back" onClick={onBack}></div>
           <div className="title">Secure sign-in step</div>
           <div className="subtitle-sign-in-code">
             Remember the verification number below. You'll be prompted to confirm it in your web browser to securely
             link your sign in.
           </div>
           <div className="code">{initSignInResultRef.current!.requestResponse.code}</div>
-          <Button
-            disabled={disabled}
-            className="button"
-            primary
-            onClick={async () => {
-              setDisabled(true)
-              await AuthServerProvider.finishSignIn(initSignInResultRef.current!)
-              await authenticate(ProviderType.AUTH_SERVER)
-            }}
-          >
+          <Button disabled={disabled} className="button" primary onClick={onSignInCodeContinue}>
             Continue to sign in
           </Button>
         </div>
@@ -124,13 +125,7 @@ export const LoginWithAuthServerPage = () => {
       <div className="LoginWithAuthServerPage">
         <div className="background"></div>
         <div className="main">
-          <div
-            className="back"
-            onClick={() => {
-              initSignInResultRef.current = null
-              setView(View.WELCOME)
-            }}
-          ></div>
+          <div className="back" onClick={onBack}></div>
           <div className="title">Looks like you took too long and the session expired.</div>
           <div className="subtitle-sign-in-code">Please go back and try again.</div>
         </div>
