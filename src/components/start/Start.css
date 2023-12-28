@@ -1,13 +1,5 @@
-#gameContainer {
-  display: none;
-}
-
 #root {
   position: fixed;
-}
-
-#root-loading {
-  display: none;
 }
 
 .explorer-website-start {

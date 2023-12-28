@@ -23,6 +23,11 @@ export default function Start(props: Props) {
   const [initialized, setInitialized] = useState(false)
 
   useEffect(() => {
+    // remove loading component
+    const loadingElement = document.getElementById('root-loading')
+    if (loadingElement) {
+      loadingElement.style.display = 'none'
+    }
     if (isConnecting) {
       setInitialized(true)
     }
