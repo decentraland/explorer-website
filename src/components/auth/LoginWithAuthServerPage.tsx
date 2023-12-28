@@ -19,8 +19,21 @@ export const LoginWithAuthServerPage = () => {
   const expirationTimeoutRef = useRef<NodeJS.Timeout>()
 
   useEffect(() => {
-    AuthServerProvider.setAuthServerUrl('http://localhost:8080')
-    AuthServerProvider.setAuthDappUrl('http://localhost:5173/auth')
+    const url = new URL(window.location.href)
+
+    switch (url.origin) {
+      case 'https://decentraland.org':
+        AuthServerProvider.setAuthServerUrl('https://auth-api.decentraland.org')
+        AuthServerProvider.setAuthDappUrl('https://decentraland.org/auth')
+        break
+      case 'https://decentraland.today':
+        AuthServerProvider.setAuthServerUrl('https://auth-api.decentraland.today')
+        AuthServerProvider.setAuthDappUrl('https://decentraland.today/auth')
+        break
+      default:
+        AuthServerProvider.setAuthServerUrl('https://auth-api.decentraland.zone')
+        AuthServerProvider.setAuthDappUrl('https://decentraland.zone/auth')
+    }
 
     return () => {
       clearTimeout(expirationTimeoutRef.current)
