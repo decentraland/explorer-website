@@ -7,16 +7,22 @@ import { authenticate } from '../../kernel-loader'
 
 enum View {
   WELCOME,
-  SIGN_IN_CODE
+  SIGN_IN_CODE,
+  EXPIRED
 }
 
 export const LoginWithAuthServerPage = () => {
   const [view, setView] = useState<View>(View.WELCOME)
   const initSignInResultRef = useRef<any>()
+  const expirationTimeoutRef = useRef<NodeJS.Timeout>()
 
   useEffect(() => {
-    AuthServerProvider.setAuthServerUrl('https://auth-api.decentraland.zone')
-    AuthServerProvider.setAuthDappUrl('https://decentraland.zone/auth')
+    AuthServerProvider.setAuthServerUrl('http://localhost:8080')
+    AuthServerProvider.setAuthDappUrl('http://localhost:5173/auth')
+
+    return () => {
+      clearTimeout(expirationTimeoutRef.current)
+    }
   }, [])
 
   if (view === View.WELCOME) {
@@ -33,6 +39,11 @@ export const LoginWithAuthServerPage = () => {
             onClick={async () => {
               const initSignInResult = await AuthServerProvider.initSignIn()
               initSignInResultRef.current = initSignInResult
+
+              expirationTimeoutRef.current = setTimeout(() => {
+                setView(View.EXPIRED)
+              }, new Date(initSignInResult.requestResponse.expiration).getTime() - Date.now())
+
               setView(View.SIGN_IN_CODE)
             }}
           >
@@ -71,6 +82,25 @@ export const LoginWithAuthServerPage = () => {
           >
             Continue to sign in
           </Button>
+        </div>
+      </div>
+    )
+  }
+
+  if (view === View.EXPIRED) {
+    return (
+      <div className="LoginWithAuthServerPage">
+        <div className="background"></div>
+        <div className="main">
+          <div
+            className="back"
+            onClick={() => {
+              initSignInResultRef.current = null
+              setView(View.WELCOME)
+            }}
+          ></div>
+          <div className="title">Looks like you took too long and the session expired.</div>
+          <div className="subtitle-sign-in-code">Please go back and try again.</div>
         </div>
       </div>
     )
