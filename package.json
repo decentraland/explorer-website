@@ -2,7 +2,7 @@
   "name": "@dcl/explorer-website",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://decentraland.org/",
+  "homepage": "",
   "scripts": {
     "start": "react-app-rewired start",
     "start:linked": "NODE_ENV=development react-app-rewired start",
@@ -26,9 +26,11 @@
   },
   "browserslist": {
     "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+      "chrome >= 67",
+      "edge >= 79",
+      "firefox >= 68",
+      "opera >= 54",
+      "safari >= 14"
     ],
     "development": [
       "last 1 chrome version",
