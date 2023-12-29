@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { ProviderType } from '@dcl/schemas'
+import { ChainId, ProviderType } from '@dcl/schemas'
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import { AuthServerProvider, connection } from 'decentraland-connect'
-import { authenticate } from '../../kernel-loader'
+import { authenticate, getWantedChainId } from '../../kernel-loader'
 import './LoginWithAuthServerPage.css'
+import { WearablePreview } from 'decentraland-ui/dist/components/WearablePreview/WearablePreview'
 
 enum View {
   WELCOME,
+  WELCOME_CONNECTED,
   SIGN_IN_CODE,
   EXPIRED
 }
@@ -17,25 +19,46 @@ export const LoginWithAuthServerPage = () => {
 
   const initSignInResultRef = useRef<any>()
   const expirationTimeoutRef = useRef<NodeJS.Timeout>()
+  const connectedAccountRef = useRef<string>()
+  const connectedNameRef = useRef<string>()
 
   useEffect(() => {
-    const url = new URL(window.location.href)
+    ;(async () => {
+      const url = new URL(window.location.href)
 
-    switch (url.origin) {
-      case 'https://decentraland.org':
-      case 'https://play.decentraland.org':
-        AuthServerProvider.setAuthServerUrl('https://auth-api.decentraland.org')
-        AuthServerProvider.setAuthDappUrl('https://decentraland.org/auth')
-        break
-      case 'https://decentraland.today':
-      case 'https://play.decentraland.today':
-        AuthServerProvider.setAuthServerUrl('https://auth-api.decentraland.today')
-        AuthServerProvider.setAuthDappUrl('https://decentraland.today/auth')
-        break
-      default:
-        AuthServerProvider.setAuthServerUrl('https://auth-api.decentraland.zone')
-        AuthServerProvider.setAuthDappUrl('https://decentraland.zone/auth')
-    }
+      switch (url.origin) {
+        case 'https://decentraland.org':
+        case 'https://play.decentraland.org':
+          AuthServerProvider.setAuthServerUrl('https://auth-api.decentraland.org')
+          AuthServerProvider.setAuthDappUrl('https://decentraland.org/auth')
+          break
+        case 'https://decentraland.today':
+        case 'https://play.decentraland.today':
+          AuthServerProvider.setAuthServerUrl('https://auth-api.decentraland.today')
+          AuthServerProvider.setAuthDappUrl('https://decentraland.today/auth')
+          break
+        default:
+          // AuthServerProvider.setAuthServerUrl('https://auth-api.decentraland.zone')
+          // AuthServerProvider.setAuthDappUrl('https://decentraland.zone/auth')
+          AuthServerProvider.setAuthServerUrl('http://localhost:8080')
+          AuthServerProvider.setAuthDappUrl('http://127.0.0.1:5173/auth')
+      }
+
+      const connectedAccount = AuthServerProvider.getAccount()
+
+      if (connectedAccount) {
+        connectedAccountRef.current = connectedAccount
+
+        const env = getWantedChainId() === ChainId.ETHEREUM_SEPOLIA ? 'zone' : 'org'
+        const fetchProfileUrl = `https://peer.decentraland.${env}/lambdas/profiles/`
+
+        const fetchResult = await fetch(fetchProfileUrl + connectedAccount)
+        const profile = await fetchResult.json()
+        connectedNameRef.current = profile.avatars[0].name
+
+        setView(View.WELCOME_CONNECTED)
+      }
+    })()
 
     return () => {
       clearTimeout(expirationTimeoutRef.current)
@@ -100,6 +123,36 @@ export const LoginWithAuthServerPage = () => {
     )
   }
 
+  if (view === View.WELCOME_CONNECTED && connectedAccountRef.current && connectedNameRef.current) {
+    return (
+      <div className="LoginWithAuthServerPage">
+        <div className="background"></div>
+        <div className="main-welcome-connected">
+          <div className="left">
+            <div className="logo"></div>
+            <div className="title">Welcome {connectedNameRef.current}!</div>
+            <div className="subtitle">Ready to explore?</div>
+            <Button disabled={disabled} className="button" primary onClick={onWelcomeStart}>
+              Start
+            </Button>
+            <Button disabled={disabled} className="button" primary onClick={onWelcomeStart}>
+              Use a different account
+            </Button>
+          </div>
+          <div className="right">
+            <WearablePreview
+              lockBeta={true}
+              disableBackground={true}
+              disableDefaultWearables
+              profile={connectedAccountRef.current}
+              dev={getWantedChainId() === ChainId.ETHEREUM_SEPOLIA}
+            />
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   if (view === View.SIGN_IN_CODE) {
     return (
       <div className="LoginWithAuthServerPage">
@@ -133,5 +186,5 @@ export const LoginWithAuthServerPage = () => {
     )
   }
 
-  return <div>asd</div>
+  return null
 }
