@@ -28,6 +28,7 @@ import { Audio } from './common/Audio'
 import Start from './start'
 import MobileContainer from './common/MobileContainer'
 import CatalystWarningContainer from './warning/CatalystWarningContainer'
+import { LoginWithAuthServerPage } from './auth/LoginWithAuthServerPage'
 import './App.css'
 
 function mapStateToProps(state: StoreType): AppProps {
@@ -45,6 +46,7 @@ function mapStateToProps(state: StoreType): AppProps {
   const trustedCatalyst = !!state.catalyst?.trusted
   const error = !!state.error.error
   const sound = true // TODO: sound must be true after the first click
+  const isDesktopClientSignInWithAuthDappEnabled = isFeatureEnabled(state, FeatureFlags.DesktopClientSignInWithAuthDapp)
 
   return {
     seamlessLogin,
@@ -58,7 +60,8 @@ function mapStateToProps(state: StoreType): AppProps {
     error,
     sound,
     featureFlagsLoaded: !!state.featureFlags.ready,
-    isAuthDappEnabled: isFeatureEnabled(state, `${ApplicationName.DAPPS}-${FeatureFlags.AuthDapp}`)
+    isAuthDappEnabled: isFeatureEnabled(state, `${ApplicationName.DAPPS}-${FeatureFlags.AuthDapp}`),
+    isDesktopClientSignInWithAuthDappEnabled
   }
 }
 
@@ -75,6 +78,7 @@ export interface AppProps {
   sound: boolean
   isAuthDappEnabled: boolean
   featureFlagsLoaded: boolean
+  isDesktopClientSignInWithAuthDappEnabled: boolean
 }
 
 const App: React.FC<AppProps> = (props) => {
@@ -113,6 +117,10 @@ const App: React.FC<AppProps> = (props) => {
 
   if (props.isAuthDappEnabled && !isElectron()) {
     return <Start />
+  }
+
+  if (isElectron() && props.isDesktopClientSignInWithAuthDappEnabled) {
+    return <LoginWithAuthServerPage />
   }
 
   return (
