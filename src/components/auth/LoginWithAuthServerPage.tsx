@@ -79,12 +79,10 @@ export const LoginWithAuthServerPage = () => {
   const onWelcomeStart = useCallback(async () => {
     setDisabled(true)
 
-    try {
-      await connection.tryPreviousConnection()
+    // If there is an account already connected, authenticate to start the app.
+    if (connectedAccountRef.current) {
       await authenticate(ProviderType.AUTH_SERVER)
-    } catch (e) {
-      // No previous connection.
-      // Continue with auth server login.
+      return
     }
 
     const initSignInResult = await AuthServerProvider.initSignIn()
@@ -105,8 +103,12 @@ export const LoginWithAuthServerPage = () => {
       throw new Error('No init sign in result found.')
     }
 
-    await AuthServerProvider.finishSignIn(initSignInResultRef.current)
-    await authenticate(ProviderType.AUTH_SERVER)
+    try {
+      await AuthServerProvider.finishSignIn(initSignInResultRef.current)
+      window.location.reload()
+    } catch (e) {
+      // This failure is probably due to the request expiring. Which is already handled by the expiration timer.
+    }
   }, [])
 
   const onBack = useCallback(() => {
