@@ -40,6 +40,8 @@
 
 .LoginWithAuthServerPage .WearablePreview {
   background-color: unset;
+  width: 100vh;
+  transform: translateX(-40%);
 }
 
 .LoginWithAuthServerPage .logo {
