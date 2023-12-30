@@ -1,12 +1,14 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import { ChainId, ProviderType } from '@dcl/schemas'
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
+import { WearablePreview } from 'decentraland-ui/dist/components/WearablePreview/WearablePreview'
+import { Loader } from 'decentraland-ui/dist/components/Loader/Loader'
 import { AuthServerProvider, connection } from 'decentraland-connect'
 import { authenticate, getWantedChainId } from '../../kernel-loader'
 import './LoginWithAuthServerPage.css'
-import { WearablePreview } from 'decentraland-ui/dist/components/WearablePreview/WearablePreview'
 
 enum View {
+  LOADING,
   WELCOME,
   WELCOME_CONNECTED,
   SIGN_IN_CODE,
@@ -14,7 +16,7 @@ enum View {
 }
 
 export const LoginWithAuthServerPage = () => {
-  const [view, setView] = useState<View>(View.WELCOME)
+  const [view, setView] = useState<View>(View.LOADING)
   const [disabled, setDisabled] = useState(false)
 
   const initSignInResultRef = useRef<any>()
@@ -57,6 +59,8 @@ export const LoginWithAuthServerPage = () => {
         connectedNameRef.current = profile.avatars[0].name
 
         setView(View.WELCOME_CONNECTED)
+      } else {
+        setView(View.WELCOME)
       }
     })()
 
@@ -107,84 +111,112 @@ export const LoginWithAuthServerPage = () => {
     setView(View.WELCOME)
   }, [])
 
+  const onChangeAccount = useCallback(() => {
+    AuthServerProvider.deactivate()
+    window.location.reload()
+  }, [])
+
+  if (view === View.LOADING) {
+    return <Container left={<Loader active size="huge" />} />
+  }
+
   if (view === View.WELCOME) {
     return (
-      <div className="LoginWithAuthServerPage">
-        <div className="background"></div>
-        <div className="main">
-          <div className="logo"></div>
-          <div className="title">Discover a virtual social world</div>
-          <div className="subtitle">shaped by its community of creators & explorers.</div>
-          <Button disabled={disabled} className="button" primary onClick={onWelcomeStart}>
-            Start
-          </Button>
-        </div>
-      </div>
+      <Container
+        left={
+          <>
+            <div className="logo"></div>
+            <div className="title">Discover a virtual social world</div>
+            <div className="subtitle">shaped by its community of creators & explorers.</div>
+            <Button disabled={disabled} className="button" primary onClick={onWelcomeStart}>
+              Start
+            </Button>
+          </>
+        }
+      />
     )
   }
 
   if (view === View.WELCOME_CONNECTED && connectedAccountRef.current && connectedNameRef.current) {
     return (
-      <div className="LoginWithAuthServerPage">
-        <div className="background"></div>
-        <div className="main-welcome-connected">
-          <div className="left">
+      <Container
+        left={
+          <>
             <div className="logo"></div>
             <div className="title">Welcome {connectedNameRef.current}!</div>
             <div className="subtitle">Ready to explore?</div>
-            <Button disabled={disabled} className="button" primary onClick={onWelcomeStart}>
-              Start
-            </Button>
-            <Button disabled={disabled} className="button" primary onClick={onWelcomeStart}>
-              Use a different account
-            </Button>
-          </div>
-          <div className="right">
+            <div className="button-container">
+              <Button disabled={disabled} className="button" primary onClick={onWelcomeStart}>
+                Start
+              </Button>
+              <Button disabled={disabled} className="button button-secondary" inverted onClick={onChangeAccount}>
+                Use a different account
+              </Button>
+            </div>
+          </>
+        }
+        right={
+          <>
             <WearablePreview
               lockBeta={true}
+              panning={false}
               disableBackground={true}
               disableDefaultWearables
               profile={connectedAccountRef.current}
               dev={getWantedChainId() === ChainId.ETHEREUM_SEPOLIA}
             />
-          </div>
-        </div>
-      </div>
+          </>
+        }
+      />
     )
   }
 
   if (view === View.SIGN_IN_CODE) {
     return (
-      <div className="LoginWithAuthServerPage">
-        <div className="background"></div>
-        <div className="main">
-          <div className="back" onClick={onBack}></div>
-          <div className="title">Secure sign-in step</div>
-          <div className="subtitle-sign-in-code">
-            Remember the verification number below. You'll be prompted to confirm it in your web browser to securely
-            link your sign in.
-          </div>
-          <div className="code">{initSignInResultRef.current!.requestResponse.code}</div>
-          <Button disabled={disabled} className="button" primary onClick={onSignInCodeContinue}>
-            Continue to sign in
-          </Button>
-        </div>
-      </div>
+      <Container
+        left={
+          <>
+            <div className="back" onClick={onBack}></div>
+            <div className="title">Secure sign-in step</div>
+            <div className="subtitle-sign-in-code">
+              Remember the verification number below. You'll be prompted to confirm it in your web browser to securely
+              link your sign in.
+            </div>
+            <div className="code">{initSignInResultRef.current!.requestResponse.code}</div>
+            <Button disabled={disabled} className="button" primary onClick={onSignInCodeContinue}>
+              Continue to sign in
+            </Button>
+          </>
+        }
+      />
     )
   }
 
   if (view === View.EXPIRED) {
     return (
-      <div className="LoginWithAuthServerPage">
-        <div className="background"></div>
-        <div className="main">
-          <div className="back" onClick={onBack}></div>
-          <div className="title">Looks like you took too long and the session expired.</div>
-          <div className="subtitle-sign-in-code">Please go back and try again.</div>
-        </div>
-      </div>
+      <Container
+        left={
+          <>
+            <div className="back" onClick={onBack}></div>
+            <div className="title">Looks like you took too long and the session expired.</div>
+            <div className="subtitle-sign-in-code">Please go back and try again.</div>
+          </>
+        }
+      />
     )
   }
 
   return null
+}
+
+const Container = (props: { left: ReactNode; right?: ReactNode }) => {
+  return (
+    <div className="LoginWithAuthServerPage">
+      <div className="background"></div>
+      <div className="main">
+        <div className="left">{props.left}</div>
+        <div className="right">{props.right}</div>
+      </div>
+    </div>
+  )
 }

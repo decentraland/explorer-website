@@ -20,12 +20,21 @@
 .LoginWithAuthServerPage .main {
   position: absolute;
   display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.LoginWithAuthServerPage .left {
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   height: 100%;
-  margin-left: 80px;
-  max-width: 500px;
+  max-width: 50%;
+}
+
+.LoginWithAuthServerPage .right {
 }
 
 .LoginWithAuthServerPage .logo {
@@ -49,8 +58,18 @@
   line-height: 44px;
 }
 
+.LoginWithAuthServerPage .button-container {
+  display: flex;
+  gap: 1rem;
+}
+
 .LoginWithAuthServerPage .button {
   margin-top: 48px;
+}
+
+.LoginWithAuthServerPage .button-secondary {
+  border-color: var(--text-on-primary) !important;
+  color: var(--text-on-primary) !important;
 }
 
 .LoginWithAuthServerPage .back {
@@ -75,25 +94,6 @@
   font-weight: 700;
   line-height: 121px;
   margin-top: 16px;
-}
-
-.LoginWithAuthServerPage .main-welcome-connected {
-  position: absolute;
-  display: flex;
-  height: 100%;
-  width: 100%;
-  justify-content: space-evenly;
-}
-
-.LoginWithAuthServerPage .left {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  height: 100%;
-}
-
-.LoginWithAuthServerPage .right {
 }
 
 .LoginWithAuthServerPage .WearablePreview {
