@@ -52,9 +52,14 @@ export const LoginWithAuthServerPage = () => {
         const env = getWantedChainId() === ChainId.ETHEREUM_SEPOLIA ? 'zone' : 'org'
         const fetchProfileUrl = `https://peer.decentraland.${env}/lambdas/profiles/`
 
-        const fetchResult = await fetch(fetchProfileUrl + connectedAccount)
-        const profile = await fetchResult.json()
-        connectedNameRef.current = profile.avatars[0].name
+        try {
+          const fetchResult = await fetch(fetchProfileUrl + connectedAccount)
+          const profile = await fetchResult.json()
+          connectedNameRef.current = profile.avatars[0].name
+        } catch (e) {
+          // Could not obtain the profile.
+          // Maybe because it is a newly created account and it doesn't have a profile yet.
+        }
 
         setView(View.WELCOME_CONNECTED)
       } else {
@@ -135,13 +140,13 @@ export const LoginWithAuthServerPage = () => {
     )
   }
 
-  if (view === View.WELCOME_CONNECTED && connectedAccountRef.current && connectedNameRef.current) {
+  if (view === View.WELCOME_CONNECTED && connectedAccountRef.current) {
     return (
       <Container
         left={
           <>
             <div className="logo"></div>
-            <div className="title">Welcome {connectedNameRef.current}!</div>
+            <div className="title">Welcome{connectedNameRef.current ? ` ${connectedNameRef.current}` : ''}!</div>
             <div className="subtitle">Ready to explore?</div>
             <div className="button-container">
               <Button disabled={disabled} className="button" primary onClick={onWelcomeStart}>
@@ -158,7 +163,6 @@ export const LoginWithAuthServerPage = () => {
             lockBeta={true}
             panning={false}
             disableBackground={true}
-            disableDefaultWearables
             profile={connectedAccountRef.current}
             dev={getWantedChainId() === ChainId.ETHEREUM_SEPOLIA}
           />
