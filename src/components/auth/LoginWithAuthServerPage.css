@@ -35,15 +35,11 @@
 }
 
 .LoginWithAuthServerPage .right {
-  position: relative;
   width: 25%;
 }
 
 .LoginWithAuthServerPage .WearablePreview {
-  position: absolute;
   background-color: unset;
-  width: 100vh;
-  transform: translateX(-35%);
 }
 
 .LoginWithAuthServerPage .logo {
