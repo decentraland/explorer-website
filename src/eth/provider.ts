@@ -68,7 +68,7 @@ export async function switchToChainId(wantedChainId: ChainId, providerChainId: C
     const provider = await connection.getProvider()
 
     await switchProviderChainId(provider, wantedChainId)
-    window.location.reload()
+    
     return
   } catch (error: any) {
     defaultWebsiteErrorTracker(error)
