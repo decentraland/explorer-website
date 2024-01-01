@@ -60,7 +60,7 @@ function mapStateToProps(state: StoreType): AppProps {
     error,
     sound,
     featureFlagsLoaded: !!state.featureFlags.ready,
-    isAuthDappEnabled: isFeatureEnabled(state, `${ApplicationName.DAPPS}-${FeatureFlags.AuthDapp}`),
+    isAuthDappEnabled: isFeatureEnabled(state, FeatureFlags.AuthDapp),
     isDesktopClientSignInWithAuthDappEnabled
   }
 }
