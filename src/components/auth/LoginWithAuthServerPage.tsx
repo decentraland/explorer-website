@@ -3,7 +3,7 @@ import { ChainId, ProviderType } from '@dcl/schemas'
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import { WearablePreview } from 'decentraland-ui/dist/components/WearablePreview/WearablePreview'
 import { Loader } from 'decentraland-ui/dist/components/Loader/Loader'
-import { AuthServerProvider, connection } from 'decentraland-connect'
+import { AuthServerProvider } from 'decentraland-connect'
 import { authenticate, getWantedChainId } from '../../kernel-loader'
 import './LoginWithAuthServerPage.css'
 
