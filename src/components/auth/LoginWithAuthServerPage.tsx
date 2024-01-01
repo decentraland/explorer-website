@@ -166,7 +166,7 @@ export const LoginWithAuthServerPage = () => {
             panning={false}
             disableBackground={true}
             profile={connectedAccountRef.current}
-            dev={getWantedChainId() === ChainId.ETHEREUM_SEPOLIA}
+            dev={getWantedChainId() !== ChainId.ETHEREUM_MAINNET}
           />
         }
       />
