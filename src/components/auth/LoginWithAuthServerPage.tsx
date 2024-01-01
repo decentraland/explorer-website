@@ -49,7 +49,7 @@ export const LoginWithAuthServerPage = () => {
       if (connectedAccount) {
         connectedAccountRef.current = connectedAccount
 
-        const env = getWantedChainId() === ChainId.ETHEREUM_SEPOLIA ? 'zone' : 'org'
+        const env = getWantedChainId() === ChainId.ETHEREUM_MAINNET ? 'org' : 'zone'
         const fetchProfileUrl = `https://peer.decentraland.${env}/lambdas/profiles/`
 
         try {
