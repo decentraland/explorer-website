@@ -162,9 +162,9 @@ export const LoginWithAuthServerPage = () => {
         }
         right={
           <WearablePreview
-            lockBeta={true}
+            lockBeta
             panning={false}
-            disableBackground={true}
+            disableBackground
             profile={connectedAccountRef.current}
             dev={getWantedChainId() !== ChainId.ETHEREUM_MAINNET}
           />
