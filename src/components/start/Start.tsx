@@ -21,6 +21,7 @@ function getAuthURL() {
 export default function Start(props: Props) {
   const { isConnected, isConnecting, wallet } = props
   const [initialized, setInitialized] = useState(false)
+  const [isLoadingExplorer, setIsLoadingExplorer] = useState(false)
 
   useEffect(() => {
     // remove loading component
@@ -50,6 +51,7 @@ export default function Start(props: Props) {
 
   const handleJumpIn = useCallback(() => {
     initializeKernel()
+    setIsLoadingExplorer(true)
   }, [])
 
   useEffect(() => {
@@ -81,11 +83,11 @@ export default function Start(props: Props) {
             </span>
             <span>Are you ready to explore?</span>
           </div>
-          <Button primary onClick={handleJumpIn}>
+          <Button primary onClick={handleJumpIn} disabled={isLoadingExplorer} loading={isLoadingExplorer}>
             jump into decentrland
             <Icon name="arrow alternate circle right outline" />
           </Button>
-          <Button inverted as="a" href={getAuthURL()}>
+          <Button inverted as="a" href={getAuthURL()} disabled={isLoadingExplorer}>
             use another account
           </Button>
         </div>
