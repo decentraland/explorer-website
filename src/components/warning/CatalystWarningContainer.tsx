@@ -8,7 +8,6 @@ import { track } from '../../utils/tracking'
 import { CatalystWarning } from '../common/Icon/CatalystWarning'
 import { Container } from '../common/Layout/Container'
 import Main from '../common/Layout/Main'
-import { Navbar } from '../common/Layout/Navbar'
 
 import './CatalystWarningContainer.css'
 
@@ -45,7 +44,6 @@ export const CatalystWarningContainer = React.memo((props: CatalystWarningProps)
   }, [ props.catalyst ])
 
   return <Main withDarkLayer>
-    <Navbar />
     <Container>
       <div className="catalyst-warning-container">
         <div className="catalyst-warning-content">

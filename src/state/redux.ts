@@ -1,9 +1,22 @@
-import { combineReducers, createStore } from 'redux'
+import { applyMiddleware, combineReducers, createStore } from 'redux'
+import createSagasMiddleware from 'redux-saga'
 import type { KernelAccountState, KernelResult, KernelLoadingProgress } from '@dcl/kernel-interface'
 import type { FeatureFlagsResult } from '@dcl/feature-flags'
-import { kernelReducer, sessionReducer, rendererReducer, errorReducer, bannerReducer, downloadReducer, featureFlagsReducer, catalystReducer, decktopReducer } from './reducers'
+import { WalletState, walletReducer } from 'decentraland-dapps/dist/modules/wallet/reducer'
+import {
+  kernelReducer,
+  sessionReducer,
+  rendererReducer,
+  errorReducer,
+  bannerReducer,
+  downloadReducer,
+  featureFlagsReducer,
+  catalystReducer,
+  decktopReducer
+} from './reducers'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { ConnectionData } from 'decentraland-connect/dist/types'
+import { rootSaga } from './sagas'
 
 export type DesktopState = {
   detected: boolean
@@ -60,7 +73,7 @@ export type BannerState = {
 }
 
 export enum BannerType {
-  NOT_RECOMMENDED = 'notrecommended',
+  NOT_RECOMMENDED = 'notrecommended'
 }
 
 export enum DownloadCurrentState {
@@ -92,6 +105,7 @@ export type StoreType = {
   banner: BannerState
   download: DownloadState
   featureFlags: FeatureFlagsState
+  wallet: WalletState
 }
 
 const reducers = combineReducers<StoreType>({
@@ -104,9 +118,13 @@ const reducers = combineReducers<StoreType>({
   banner: bannerReducer,
   download: downloadReducer,
   featureFlags: featureFlagsReducer,
+  wallet: walletReducer
 })
+
+const sagasMiddleware = createSagasMiddleware()
 
 const middleware: typeof composeWithDevTools =
   process.env.NODE_ENV !== 'production' ? composeWithDevTools : (x: any) => x
 
-export const store = createStore(reducers, {}, middleware())
+export const store = createStore(reducers, {}, middleware(applyMiddleware(sagasMiddleware)))
+sagasMiddleware.run(rootSaga)
