@@ -20,40 +20,67 @@
 .LoginWithAuthServerPage .main {
   position: absolute;
   display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.LoginWithAuthServerPage .left {
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   height: 100%;
-  margin-left: 80px;
-  max-width: 500px;
+  max-width: 50%;
 }
 
-.LoginWithAuthServerPage .main .logo {
+.LoginWithAuthServerPage .right {
+  width: 25%;
+}
+
+.LoginWithAuthServerPage .WearablePreview {
+  background-color: unset;
+  width: 100vh;
+  transform: translateX(-40%);
+}
+
+.LoginWithAuthServerPage .logo {
   width: 256px;
   height: 128px;
   background: url('/src/images/logo-white.svg') no-repeat center;
   background-size: contain;
 }
 
-.LoginWithAuthServerPage .main .title {
+.LoginWithAuthServerPage .title {
   color: var(--text-on-primary);
   font-size: 36px;
   font-weight: 600;
   line-height: 44px;
 }
 
-.LoginWithAuthServerPage .main .subtitle {
+.LoginWithAuthServerPage .subtitle {
   color: var(--text-on-primary);
   font-size: 36px;
   font-weight: 400;
   line-height: 44px;
 }
 
-.LoginWithAuthServerPage .main .button {
-  margin-top: 48px;
+.LoginWithAuthServerPage .button-container {
+  display: flex;
+  gap: 1rem;
 }
 
-.LoginWithAuthServerPage .main .back {
+.LoginWithAuthServerPage .button {
+  margin-top: 48px;
+  z-index: 1;
+}
+
+.LoginWithAuthServerPage .button-secondary {
+  border-color: var(--text-on-primary) !important;
+  color: var(--text-on-primary) !important;
+}
+
+.LoginWithAuthServerPage .back {
   width: 32px;
   height: 32px;
   cursor: pointer;
@@ -61,7 +88,7 @@
   margin-bottom: 16px;
 }
 
-.LoginWithAuthServerPage .main .subtitle-sign-in-code {
+.LoginWithAuthServerPage .subtitle-sign-in-code {
   color: var(--text-on-primary);
   font-size: 20px;
   font-weight: 400;
@@ -69,10 +96,11 @@
   margin-top: 16px;
 }
 
-.LoginWithAuthServerPage .main .code {
+.LoginWithAuthServerPage .code {
   color: var(--text-on-primary);
   font-size: 100px;
   font-weight: 700;
   line-height: 121px;
   margin-top: 16px;
 }
+

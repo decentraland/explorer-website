@@ -102,7 +102,7 @@ export default function Start(props: Props) {
         <WearablePreview
           profile={wallet?.address}
           disableBackground
-          dev={getWantedChainId() === ChainId.ETHEREUM_SEPOLIA}
+          dev={getWantedChainId() !== ChainId.ETHEREUM_MAINNET}
         />
       </div>
       <a className="discord-link-button" href="https://decentraland.org/discord" target="about:blank">
