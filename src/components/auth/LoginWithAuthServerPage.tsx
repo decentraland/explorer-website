@@ -41,7 +41,7 @@ export const LoginWithAuthServerPage = () => {
           break
         default:
           AuthServerProvider.setAuthServerUrl('https://auth-api.decentraland.zone')
-          AuthServerProvider.setAuthDappUrl('https://decentraland.zone/auth')
+          AuthServerProvider.setAuthDappUrl('http://127.0.0.1:5173/auth')
       }
 
       const connectedAccount = AuthServerProvider.getAccount()
@@ -181,8 +181,9 @@ export const LoginWithAuthServerPage = () => {
             <div className="back" onClick={onBack}></div>
             <div className="title">Secure sign-in step</div>
             <div className="subtitle-sign-in-code">
-              Remember the verification number below. You'll be prompted to confirm it in your web browser to securely
-              link your sign in.
+              Remember the verification number below.
+              <br />
+              You'll be prompted to confirm it in your web browser to securely link your sign in.
             </div>
             <div className="code">{initSignInResultRef.current!.requestResponse.code}</div>
             <Button disabled={disabled} className="button" primary onClick={onSignInCodeContinue}>
