@@ -104,3 +104,10 @@
   margin-top: 16px;
 }
 
+.LoginWithAuthServerPage .code-expiration {
+  color: #f6c1ff;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16.94px;
+  margin-top: 12px;
+}
