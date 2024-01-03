@@ -8,13 +8,15 @@ import { localStorageGetIdentity } from '@dcl/single-sign-on-client'
 import { LOGIN_AS_GUEST, SKIP_SETUP } from '../../integration/url'
 import { initializeKernel } from '../../integration/kernel'
 import platformImg from '../../images/Platform.webp'
+import manDefault from '../../images/ManDefault.webp'
+import BannerContainer from '../banners/BannerContainer'
 import { getWantedChainId } from '../../kernel-loader'
 import logo from '../../images/simple-logo.svg'
 import { Props } from './Start.types'
 import './Start.css'
 
 function getAuthURL() {
-  var url = new URL(window.location.href);
+  var url = new URL(window.location.href)
   url.searchParams.append('skipSetup', 'true')
   return `/auth/login?redirectTo=${encodeURIComponent(url.toString())}`
 }
@@ -23,6 +25,7 @@ export default function Start(props: Props) {
   const { isConnected, isConnecting, wallet, profile } = props
   const [initialized, setInitialized] = useState(false)
   const [isLoadingExplorer, setIsLoadingExplorer] = useState(false)
+  const [isLoadingAvatar, setIsLoadingAvatar] = useState(true)
 
   const name = profile?.avatars[0].name
 
@@ -57,6 +60,13 @@ export default function Start(props: Props) {
     setIsLoadingExplorer(true)
   }, [])
 
+  const handleWearablePreviewLoad = useCallback(
+    (params) => {
+      if (wallet?.address && params.profile === wallet.address) setIsLoadingAvatar(false)
+    },
+    [wallet?.address]
+  )
+
   useEffect(() => {
     if (SKIP_SETUP || LOGIN_AS_GUEST) {
       handleJumpIn()
@@ -77,6 +87,7 @@ export default function Start(props: Props) {
 
   return (
     <div className="explorer-website-start">
+      <BannerContainer />
       <div className="start-info">
         <div className="start-links">
           <img alt="decentraland" src={logo} height="40" width="40" />
@@ -101,14 +112,16 @@ export default function Start(props: Props) {
           </a>
         </div>
       </div>
-      <div className="start-wearable-preview">
+      <div className={`start-wearable-preview ${isLoadingAvatar ? 'loading' : ''}`}>
+        <img src={manDefault} className="wearable-default-img" />
         <WearablePreview
           profile={wallet?.address}
           disableBackground
           lockBeta
+          onUpdate={handleWearablePreviewLoad}
           dev={getWantedChainId() !== ChainId.ETHEREUM_MAINNET}
         />
-        <img src={platformImg} alt="platform" className='wearable-platform'/>
+        <img src={platformImg} alt="platform" className="wearable-platform" />
       </div>
       <a className="discord-link-button" href="https://decentraland.org/discord" target="about:blank">
         <Icon name="discord" className="discord-icon" />
