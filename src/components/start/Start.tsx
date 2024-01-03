@@ -7,6 +7,7 @@ import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon/Icon'
 import { localStorageGetIdentity } from '@dcl/single-sign-on-client'
 import { LOGIN_AS_GUEST, SKIP_SETUP } from '../../integration/url'
 import { initializeKernel } from '../../integration/kernel'
+import platformImg from '../../images/Platform.webp'
 import { getWantedChainId } from '../../kernel-loader'
 import logo from '../../images/simple-logo.svg'
 import { Props } from './Start.types'
@@ -19,9 +20,11 @@ function getAuthURL() {
 }
 
 export default function Start(props: Props) {
-  const { isConnected, isConnecting, wallet } = props
+  const { isConnected, isConnecting, wallet, profile } = props
   const [initialized, setInitialized] = useState(false)
   const [isLoadingExplorer, setIsLoadingExplorer] = useState(false)
+
+  const name = profile?.avatars[0].name
 
   useEffect(() => {
     // remove loading component
@@ -79,7 +82,7 @@ export default function Start(props: Props) {
           <img alt="decentraland" src={logo} height="40" width="40" />
           <div className="start-title">
             <span>
-              <strong>Welcome back</strong>
+              <strong>{`Welcome back ${name || ''}`}</strong>
             </span>
             <span>Are you ready to explore?</span>
           </div>
@@ -102,8 +105,10 @@ export default function Start(props: Props) {
         <WearablePreview
           profile={wallet?.address}
           disableBackground
+          lockBeta
           dev={getWantedChainId() !== ChainId.ETHEREUM_MAINNET}
         />
+        <img src={platformImg} alt="platform" className='wearable-platform'/>
       </div>
       <a className="discord-link-button" href="https://decentraland.org/discord" target="about:blank">
         <Icon name="discord" className="discord-icon" />
