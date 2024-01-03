@@ -102,6 +102,23 @@
   font-weight: 700;
   line-height: 121px;
   margin-top: 16px;
+  display: flex;
+  flex-direction: row;
+}
+
+.LoginWithAuthServerPage .tooltip {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.LoginWithAuthServerPage .tooltip .dui-info-tooltip__trigger {
+  color: white;
+  background-size: cover;
+  background-repeat: no-repeat;
+  filter: brightness(0) invert(1);
+  height: 24px;
+  width: 24px;
 }
 
 .LoginWithAuthServerPage .code-expiration {
