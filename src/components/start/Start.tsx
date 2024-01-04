@@ -113,7 +113,7 @@ export default function Start(props: Props) {
         </div>
       </div>
       <div className={`start-wearable-preview ${isLoadingAvatar ? 'loading' : ''}`}>
-        <img src={manDefault} className="wearable-default-img" />
+        <img src={manDefault} alt="Avatar" className="wearable-default-img" />
         <WearablePreview
           profile={wallet?.address}
           disableBackground
