@@ -1,4 +1,4 @@
-name: Set rollout by path - Manual
+name: Set rollout - Manual
 
 on:
   workflow_dispatch:
