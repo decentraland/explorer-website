@@ -11,7 +11,7 @@ const mapStateToProps = (state: StoreType): Props => {
     wallet,
     isConnecting: isConnecting(state),
     isConnected: isConnected(state),
-    profile: wallet?.address && getProfileOfAddress(state, wallet?.address) || null
+    profile: (wallet?.address && getProfileOfAddress(state, wallet?.address)) || null
   }
 }
 

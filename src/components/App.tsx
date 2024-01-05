@@ -110,7 +110,7 @@ const App: React.FC<AppProps> = (props) => {
     return <React.Fragment />
   }
 
-  if (props.waitingForRenderer || props.sessionReady || props.seamlessLogin === ABTestingVariant.Enabled) {
+  if (props.waitingForRenderer || props.sessionReady || props.seamlessLogin === ABTestingVariant.Enabled || !props.featureFlagsLoaded) {
     return <LoadingRender />
   }
 
