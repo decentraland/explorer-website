@@ -23,12 +23,10 @@ export const LoginWithAuthServerPage = () => {
 
     switch (url.origin) {
       case 'https://decentraland.org':
-      case 'https://play.decentraland.org':
         AuthServerProvider.setAuthServerUrl('https://auth-api.decentraland.org')
         AuthServerProvider.setAuthDappUrl('https://decentraland.org/auth')
         break
       case 'https://decentraland.today':
-      case 'https://play.decentraland.today':
         AuthServerProvider.setAuthServerUrl('https://auth-api.decentraland.today')
         AuthServerProvider.setAuthDappUrl('https://decentraland.today/auth')
         break
