@@ -2,7 +2,6 @@ import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import { ChainId, ProviderType } from '@dcl/schemas'
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import { WearablePreview } from 'decentraland-ui/dist/components/WearablePreview/WearablePreview'
-import { InfoTooltip } from 'decentraland-ui/dist/components/InfoTooltip/InfoTooltip'
 import { Loader } from 'decentraland-ui/dist/components/Loader/Loader'
 import { AuthServerProvider } from 'decentraland-connect'
 import { authenticate, getWantedChainId } from '../../kernel-loader'
@@ -18,7 +17,6 @@ enum View {
 
 export const LoginWithAuthServerPage = () => {
   const [view, setView] = useState<View>(View.LOADING)
-  const [isLoading, setIsLoading] = useState(false)
   const [disabled, setDisabled] = useState(false)
   const [expirationCountdown, setExpirationCountdown] = useState({ minutes: '0', seconds: '00' })
 
@@ -85,7 +83,7 @@ export const LoginWithAuthServerPage = () => {
   }, [view])
 
   const onWelcomeStart = useCallback(async () => {
-    setIsLoading(true)
+    setDisabled(true)
 
     // If there is an account already connected, authenticate to start the app.
     if (connectedAccountRef.current) {
@@ -119,7 +117,6 @@ export const LoginWithAuthServerPage = () => {
       calculateAndSetExpirationCountdown()
     }, 1000)
 
-    setIsLoading(false)
     setView(View.SIGN_IN_CODE)
   }, [])
 
@@ -160,7 +157,7 @@ export const LoginWithAuthServerPage = () => {
             <div className="logo"></div>
             <div className="title">Discover a virtual social world</div>
             <div className="subtitle">shaped by its community of creators & explorers.</div>
-            <Button disabled={isLoading} className="button" primary loading={isLoading} onClick={onWelcomeStart}>
+            <Button disabled={disabled} className="button" primary onClick={onWelcomeStart}>
               Start
             </Button>
           </>
@@ -212,9 +209,7 @@ export const LoginWithAuthServerPage = () => {
               <br />
               You'll be prompted to confirm it in your web browser to securely link your sign in.
             </div>
-            <div className="code"><span>{initSignInResultRef.current!.requestResponse.code}</span>
-              <div className='tooltip'><InfoTooltip position="right center" content="Keep this number private. It ensures that your sign-in is secure and unique to you."/></div>
-            </div>
+            <div className="code">{initSignInResultRef.current!.requestResponse.code}</div>
             <div className="code-expiration">
               Verification number will expire in {expirationCountdown.minutes}:{expirationCountdown.seconds} minutes
             </div>
