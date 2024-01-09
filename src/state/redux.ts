@@ -3,7 +3,6 @@ import createSagasMiddleware from 'redux-saga'
 import type { KernelAccountState, KernelResult, KernelLoadingProgress } from '@dcl/kernel-interface'
 import type { FeatureFlagsResult } from '@dcl/feature-flags'
 import { WalletState, walletReducer } from 'decentraland-dapps/dist/modules/wallet/reducer'
-import { ProfileState, profileReducer } from 'decentraland-dapps/dist/modules/profile/reducer'
 import {
   kernelReducer,
   sessionReducer,
@@ -107,7 +106,6 @@ export type StoreType = {
   download: DownloadState
   featureFlags: FeatureFlagsState
   wallet: WalletState
-  profile: ProfileState
 }
 
 const reducers = combineReducers<StoreType>({
@@ -120,8 +118,7 @@ const reducers = combineReducers<StoreType>({
   banner: bannerReducer,
   download: downloadReducer,
   featureFlags: featureFlagsReducer,
-  wallet: walletReducer,
-  profile: profileReducer
+  wallet: walletReducer
 })
 
 const sagasMiddleware = createSagasMiddleware()

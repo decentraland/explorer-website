@@ -126,10 +126,3 @@
 .explorer-website-start .discord-icon {
   font-size: 28px;
 }
-
-.explorer-website-start .wearable-platform {
-  bottom: 0;
-  left: calc(50% - 250px);
-  position: absolute;
-  z-index: -1;
-}
