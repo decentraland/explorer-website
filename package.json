@@ -2,7 +2,7 @@
   "name": "@dcl/explorer-website",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://decentraland.org/",
+  "homepage": "",
   "scripts": {
     "start": "react-app-rewired start",
     "start:linked": "NODE_ENV=development react-app-rewired start",
