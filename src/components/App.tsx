@@ -1,10 +1,9 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { connect } from 'react-redux'
-import { ApplicationName } from 'decentraland-dapps/dist/modules/features/types'
 import { useMobileMediaQuery } from 'decentraland-ui/dist/components/Media'
+import { isMobile } from '../integration/browser'
 import { StoreType } from '../state/redux'
 import { isElectron } from '../integration/desktop'
-import { SHOW_WALLET_SELECTOR } from '../integration/url'
 import {
   FeatureFlags,
   isWaitingForRenderer,
@@ -14,18 +13,16 @@ import {
   getFeatureVariantValue,
   isFeatureEnabled
 } from '../state/selectors'
-import { isMobile } from '../integration/browser'
-import { BeginnersGuide } from './auth/BeginnersGuide'
-import { BigFooter } from './common/Layout/BigFooter'
-import { Navbar } from './common/Layout/Navbar'
-import BannerContainer from './banners/BannerContainer'
-import { LoadingRender } from './common/Loading/LoadingRender'
-import { initializeKernel } from '../integration/kernel'
-import StreamContainer from './common/StreamContainer'
+import { SHOW_WALLET_SELECTOR } from '../integration/url'
 import ErrorContainer from './errors/ErrorContainer'
 import LoginContainer from './auth/LoginContainer'
+import { BeginnersGuide } from './auth/BeginnersGuide'
+import { BigFooter } from './common/Layout/BigFooter'
+import BannerContainer from './banners/BannerContainer'
+import { LoadingRender } from './common/Loading/LoadingRender'
+import { Navbar } from './common/Layout/Navbar'
+import StreamContainer from './common/StreamContainer'
 import { Audio } from './common/Audio'
-import Start from './start'
 import MobileContainer from './common/MobileContainer'
 import CatalystWarningContainer from './warning/CatalystWarningContainer'
 import { LoginWithAuthServerPage } from './auth/LoginWithAuthServerPage'
@@ -59,8 +56,6 @@ function mapStateToProps(state: StoreType): AppProps {
     trustedCatalyst,
     error,
     sound,
-    featureFlagsLoaded: !!state.featureFlags.ready,
-    isAuthDappEnabled: isFeatureEnabled(state, FeatureFlags.AuthDapp),
     isDesktopClientSignInWithAuthDappEnabled
   }
 }
@@ -76,20 +71,12 @@ export interface AppProps {
   trustedCatalyst: boolean
   error: boolean
   sound: boolean
-  isAuthDappEnabled: boolean
-  featureFlagsLoaded: boolean
   isDesktopClientSignInWithAuthDappEnabled: boolean
 }
 
 const App: React.FC<AppProps> = (props) => {
   const mobile = useMemo(() => isMobile(), [])
   const small = useMobileMediaQuery()
-
-  useEffect(() => {
-    if (isElectron() || (props.featureFlagsLoaded && !props.isAuthDappEnabled)) {
-      initializeKernel()
-    }
-  }, [props.isAuthDappEnabled, props.featureFlagsLoaded])
 
   if (!props.trustedCatalyst) {
     return <CatalystWarningContainer />
@@ -113,10 +100,6 @@ const App: React.FC<AppProps> = (props) => {
 
   if (props.waitingForRenderer || props.sessionReady || props.seamlessLogin === ABTestingVariant.Enabled) {
     return <LoadingRender />
-  }
-
-  if (props.isAuthDappEnabled && !isElectron()) {
-    return <Start />
   }
 
   if (isElectron() && props.isDesktopClientSignInWithAuthDappEnabled) {

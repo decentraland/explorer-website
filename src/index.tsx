@@ -1,8 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import WalletProvider from 'decentraland-dapps/dist/providers/WalletProvider'
-import 'semantic-ui-css/semantic.min.css'
+// import 'semantic-ui-css/semantic.min.css'
 import './index.css'
 import 'semantic-ui-css/components/site.min.css'
 import 'semantic-ui-css/components/modal.min.css'
@@ -18,7 +17,7 @@ import 'decentraland-ui/dist/themes/alternative/light-theme.css'
 
 import { configureSegment, configureSentry } from './integration/analytics'
 import { store } from './state/redux'
-import { configureKernel } from './integration/kernel'
+import { configureKernel, initializeKernel } from './integration/kernel'
 import { initializeBrowserRecommendation } from './integration/browser'
 import { initializeDesktopApp } from './integration/desktop'
 import { initializeFeatureFlags } from './integration/featureFlags'
@@ -31,13 +30,12 @@ configureKernel(store)
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <WalletProvider>
-        <App />
-      </WalletProvider>
+      <App />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')!,
   () => {
+    initializeKernel()
     initializeBrowserRecommendation()
     initializeFeatureFlags()
     initializeDesktopApp()
