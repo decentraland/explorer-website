@@ -46,7 +46,7 @@
     "@dcl/urn-resolver": "^1.4.0",
     "@sentry/browser": "^7.45.0",
     "@sentry/tracing": "^7.45.0",
-    "decentraland-connect": "^5.3.4",
+    "decentraland-connect": "^5.3.3",
     "decentraland-dapps": "^16.21.4",
     "decentraland-ui": "^4.31.0",
     "detect-browser": "^5.2.0",
