@@ -13,7 +13,7 @@ import { Props } from './Start.types'
 import './Start.css'
 
 function getAuthURL() {
-  var url = new URL(window.location.href);
+  var url = new URL(window.location.href)
   url.searchParams.append('skipSetup', 'true')
   return `/auth/login?redirectTo=${encodeURIComponent(url.toString())}`
 }
@@ -22,6 +22,7 @@ export default function Start(props: Props) {
   const { isConnected, isConnecting, wallet } = props
   const [initialized, setInitialized] = useState(false)
   const [isLoadingExplorer, setIsLoadingExplorer] = useState(false)
+  const [isLoadingAvatar, setIsLoadingAvatar] = useState(true)
 
   useEffect(() => {
     // remove loading component
@@ -54,6 +55,13 @@ export default function Start(props: Props) {
     setIsLoadingExplorer(true)
   }, [])
 
+  const handleWearablePreviewLoad = useCallback(
+    (params) => {
+      if (wallet?.address && params.profile === wallet.address) setIsLoadingAvatar(false)
+    },
+    [wallet?.address]
+  )
+
   useEffect(() => {
     if (SKIP_SETUP || LOGIN_AS_GUEST) {
       handleJumpIn()
@@ -74,6 +82,7 @@ export default function Start(props: Props) {
 
   return (
     <div className="explorer-website-start">
+      <BannerContainer />
       <div className="start-info">
         <div className="start-links">
           <img alt="decentraland" src={logo} height="40" width="40" />
@@ -98,7 +107,7 @@ export default function Start(props: Props) {
           </a>
         </div>
       </div>
-      <div className="start-wearable-preview">
+      <div className={`start-wearable-preview ${isLoadingAvatar ? 'loading' : ''}`}>
         <WearablePreview
           profile={wallet?.address}
           disableBackground
