@@ -25,7 +25,7 @@ import { isElectron, launchDesktopApp } from '../integration/desktop'
 import { isMobile, setAsRecentlyLoggedIn } from '../integration/browser'
 import { FeatureFlags, isFeatureVariantEnabled } from '../state/selectors'
 
-export function getWantedChainId() {
+function getWantedChainId() {
   let chainId: ChainId
 
   switch(NETWORK) {
