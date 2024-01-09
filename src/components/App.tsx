@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
 import { connect } from 'react-redux'
+import { ApplicationName } from 'decentraland-dapps/dist/modules/features/types'
 import { useMobileMediaQuery } from 'decentraland-ui/dist/components/Media'
 import { StoreType } from '../state/redux'
 import { isElectron } from '../integration/desktop'

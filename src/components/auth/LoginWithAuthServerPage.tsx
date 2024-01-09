@@ -18,11 +18,9 @@ enum View {
 export const LoginWithAuthServerPage = () => {
   const [view, setView] = useState<View>(View.LOADING)
   const [disabled, setDisabled] = useState(false)
-  const [expirationCountdown, setExpirationCountdown] = useState({ minutes: '0', seconds: '00' })
 
   const initSignInResultRef = useRef<any>()
   const expirationTimeoutRef = useRef<NodeJS.Timeout>()
-  const updateExpirationIntervalRef = useRef<NodeJS.Timeout>()
   const connectedAccountRef = useRef<string>()
   const connectedNameRef = useRef<string>()
 
@@ -68,18 +66,14 @@ export const LoginWithAuthServerPage = () => {
         setView(View.WELCOME)
       }
     })()
+
+    return () => {
+      clearTimeout(expirationTimeoutRef.current)
+    }
   }, [])
 
-  // Handle things when the view changes.
   useEffect(() => {
-    // Reenable all buttons.
     setDisabled(false)
-
-    // Clear timeouts and intervals when the view is not 'sign in code'.
-    if (view !== View.SIGN_IN_CODE) {
-      clearTimeout(expirationTimeoutRef.current)
-      clearInterval(updateExpirationIntervalRef.current)
-    }
   }, [view])
 
   const onWelcomeStart = useCallback(async () => {
@@ -98,24 +92,6 @@ export const LoginWithAuthServerPage = () => {
     expirationTimeoutRef.current = setTimeout(() => {
       setView(View.EXPIRED)
     }, new Date(initSignInResult.requestResponse.expiration).getTime() - Date.now())
-
-    const calculateAndSetExpirationCountdown = () => {
-      const diff = new Date(initSignInResult.requestResponse.expiration).getTime() - Date.now()
-
-      setExpirationCountdown({
-        minutes: Math.floor(diff / 1000 / 60).toString(),
-        seconds: Math.floor((diff / 1000) % 60)
-          .toString()
-          .padStart(2, '0')
-      })
-    }
-
-    calculateAndSetExpirationCountdown()
-
-    // Start the interval that will update each second, how much time until the request expires.
-    updateExpirationIntervalRef.current = setInterval(() => {
-      calculateAndSetExpirationCountdown()
-    }, 1000)
 
     setView(View.SIGN_IN_CODE)
   }, [])
@@ -205,14 +181,10 @@ export const LoginWithAuthServerPage = () => {
             <div className="back" onClick={onBack}></div>
             <div className="title">Secure sign-in step</div>
             <div className="subtitle-sign-in-code">
-              Remember the verification number below.
-              <br />
-              You'll be prompted to confirm it in your web browser to securely link your sign in.
+              Remember the verification number below. You'll be prompted to confirm it in your web browser to securely
+              link your sign in.
             </div>
             <div className="code">{initSignInResultRef.current!.requestResponse.code}</div>
-            <div className="code-expiration">
-              Verification number will expire in {expirationCountdown.minutes}:{expirationCountdown.seconds} minutes
-            </div>
             <Button disabled={disabled} className="button" primary onClick={onSignInCodeContinue}>
               Continue to sign in
             </Button>
