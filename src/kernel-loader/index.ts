@@ -20,12 +20,12 @@ import { resolveUrlFromUrn } from '@dcl/urn-resolver'
 import { defaultWebsiteErrorTracker, defaultKernelErrorTracker, track } from '../utils/tracking'
 import { injectVersions } from '../utils/rolloutVersions'
 import { KernelError, KernelResult } from '@dcl/kernel-interface'
-import { ENV, NETWORK, withOrigin, ensureOrigin, CATALYST, RENDERER_TYPE, SHOW_WALLET_SELECTOR } from '../integration/url'
+import { ENV, NETWORK, withOrigin, ensureOrigin, CATALYST, RENDERER_TYPE, SHOW_WALLET_SELECTOR, LOGIN_AS_GUEST } from '../integration/url'
 import { isElectron, launchDesktopApp } from '../integration/desktop'
 import { isMobile, setAsRecentlyLoggedIn } from '../integration/browser'
 import { FeatureFlags, isFeatureVariantEnabled } from '../state/selectors'
 
-function getWantedChainId() {
+export function getWantedChainId() {
   let chainId: ChainId
 
   switch(NETWORK) {
@@ -308,6 +308,11 @@ async function initKernel() {
 
 async function initLogin(kernel: KernelResult) {
   if (!isElectron()) {
+    if (LOGIN_AS_GUEST) {
+      authenticate(null).catch(defaultWebsiteErrorTracker)
+      return
+    }
+
     const provider = await restoreConnection()
     if (provider && provider.account) {
       const providerChainId = await getProviderChainId(provider.provider)

@@ -12,7 +12,9 @@ export function getRequiredAnalyticsContext(state: StoreType): SessionTraits {
 
 export enum FeatureFlags {
   Stream = 'explorer-stream',
-  SeamlessLogin = 'explorer-seamless_login_variant'
+  AuthDapp = 'dapps-auth-dapp',  
+  SeamlessLogin = 'explorer-seamless_login_variant',
+  DesktopClientSignInWithAuthDapp = 'dapps-desktop-client-with-auth-dapp'
 }
 
 export enum VariantNames {
