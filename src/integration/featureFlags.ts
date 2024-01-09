@@ -12,7 +12,7 @@ export const initializeFeatureFlags = callOnce(async () => {
   let ff = defaultFeatureFlagsState as FeatureFlagsResult
 
   try {
-    ff = await fetchFlags({ applicationName: ['explorer'] })
+    ff = await fetchFlags({ applicationName: ['explorer', 'dapps'] })
   } catch (err) {
     console.error('Error fetching feature flags', err)
   }

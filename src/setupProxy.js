@@ -1,13 +1,23 @@
 const path = require('path')
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 /**
  * This module set ups routes to serve static content directly from NPM modules.
  * It aims to imitate the production environment, but on the local machine, for the preview mode.
  */
 module.exports = function (app) {
+  app.use(
+    '/auth',
+    createProxyMiddleware({
+      target: 'https://decentraland.zone/auth',
+      changeOrigin: true,
+      followRedirects: true,
+      secure: false
+    })
+  );
   createStaticRoutes(app, '/cdn/packages/website/:version/*', `./public`)
   createStaticRoutes(app, '/cdn/packages/explorer/:version/*', `./node_modules/@dcl/explorer`)
-  //createStaticRoutes(app, '/cdn/packages/explorer/:version/*', path.resolve(process.env.EXPLORER_PATH))
+  // createStaticRoutes(app, '/cdn/packages/explorer/:version/*', path.resolve(process.env.EXPLORER_PATH))
 }
 
 function createStaticRoutes(app, route, localFolder) {

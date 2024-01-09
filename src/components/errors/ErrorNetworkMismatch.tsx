@@ -19,13 +19,19 @@ export const ErrorNetworkMismatch = React.memo(function (props: ErrorNetworkMism
 
   const handleSwitchTo = useCallback(
     async function () {
-      // Switch to the wanted network if injected or WC
-      if (props.providerType === ProviderType.INJECTED || props.providerType === ProviderType.WALLET_CONNECT_V2) {
-        return switchToChainId(props.wantedChainId, props.providerChainId)
+      // Switch to the wanted network if using certain providers.
+      if (
+        [ProviderType.INJECTED, ProviderType.WALLET_CONNECT_V2, ProviderType.AUTH_SERVER].includes(props.providerType)
+      ) {
+        try {
+          await switchToChainId(props.wantedChainId, props.providerChainId)
+        } catch (e) {
+          console.warn('Error switching chain')
+        }
+      } else {
+        await disconnect()
       }
 
-      // Otherwise, disconnect and reload the page
-      await disconnect()
       window.location.reload()
     },
     [props.wantedChainId, props.providerChainId, props.providerType]
