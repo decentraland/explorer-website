@@ -19,6 +19,7 @@ enum View {
 export const LoginWithAuthServerPage = () => {
   const [view, setView] = useState<View>(View.LOADING)
   const [isLoading, setIsLoading] = useState(false)
+  const [disabled, setDisabled] = useState(false)
   const [expirationCountdown, setExpirationCountdown] = useState({ minutes: '0', seconds: '00' })
 
   const initSignInResultRef = useRef<any>()
@@ -73,6 +74,9 @@ export const LoginWithAuthServerPage = () => {
 
   // Handle things when the view changes.
   useEffect(() => {
+    // Reenable all buttons.
+    setDisabled(false)
+
     // Clear timeouts and intervals when the view is not 'sign in code'.
     if (view !== View.SIGN_IN_CODE) {
       clearTimeout(expirationTimeoutRef.current)
@@ -117,9 +121,21 @@ export const LoginWithAuthServerPage = () => {
 
     setIsLoading(false)
     setView(View.SIGN_IN_CODE)
+  }, [])
 
-    await AuthServerProvider.finishSignIn(initSignInResultRef.current)
-    window.location.reload()
+  const onSignInCodeContinue = useCallback(async () => {
+    setDisabled(true)
+
+    if (!initSignInResultRef.current) {
+      throw new Error('No init sign in result found.')
+    }
+
+    try {
+      await AuthServerProvider.finishSignIn(initSignInResultRef.current)
+      window.location.reload()
+    } catch (e) {
+      // This failure is probably due to the request expiring. Which is already handled by the expiration timer.
+    }
   }, [])
 
   const onBack = useCallback(() => {
@@ -162,10 +178,10 @@ export const LoginWithAuthServerPage = () => {
             <div className="title">Welcome{connectedNameRef.current ? ` ${connectedNameRef.current}` : ''}!</div>
             <div className="subtitle">Ready to explore?</div>
             <div className="button-container">
-              <Button className="button" primary onClick={onWelcomeStart}>
+              <Button disabled={disabled} className="button" primary onClick={onWelcomeStart}>
                 Start
               </Button>
-              <Button className="button button-secondary" inverted onClick={onChangeAccount}>
+              <Button disabled={disabled} className="button button-secondary" inverted onClick={onChangeAccount}>
                 Use a different account
               </Button>
             </div>
@@ -202,6 +218,9 @@ export const LoginWithAuthServerPage = () => {
             <div className="code-expiration">
               Verification number will expire in {expirationCountdown.minutes}:{expirationCountdown.seconds} minutes
             </div>
+            <Button disabled={disabled} className="button" primary onClick={onSignInCodeContinue}>
+              Continue to sign in
+            </Button>
           </>
         }
       />
