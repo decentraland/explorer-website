@@ -33,6 +33,7 @@ export const defaultAnalyticsOptions: AnalyticsOptions = {
 
 // TODO fill with segment keys and integrate identity server
 export function configureSegment() {
+  console.info('explorer-website: DEBUG_ANALYTICS', 'Host:', globalThis.location.host, 'Path:', globalThis.location.pathname);
   // all decentraland.org domains are considered PRD
   if (globalThis.location.host.endsWith('.decentraland.org')) {
     return initialize(AnalyticsAccount.PRD)
