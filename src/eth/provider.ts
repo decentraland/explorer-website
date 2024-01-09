@@ -1,7 +1,7 @@
 import type { ConnectionResponse, Provider } from 'decentraland-connect/dist/types'
 import { connection } from 'decentraland-connect/dist/ConnectionManager'
 import { ProviderAdapter } from 'decentraland-connect/dist/ProviderAdapter'
-import { WebSocketProvider } from 'eth-connect'
+import { WebSocketProvider } from 'eth-connect/providers/WebSocketProvider'
 import { ChainId } from '@dcl/schemas/dist/dapps/chain-id'
 import { ProviderType } from '@dcl/schemas/dist/dapps/provider-type'
 import { switchProviderChainId } from 'decentraland-dapps/dist/modules/wallet/utils/switchProviderChainId'
@@ -68,7 +68,7 @@ export async function switchToChainId(wantedChainId: ChainId, providerChainId: C
     const provider = await connection.getProvider()
 
     await switchProviderChainId(provider, wantedChainId)
-    
+    window.location.reload()
     return
   } catch (error: any) {
     defaultWebsiteErrorTracker(error)
