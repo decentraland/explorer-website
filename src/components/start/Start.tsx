@@ -4,7 +4,6 @@ import { WearablePreview } from 'decentraland-ui/dist/components/WearablePreview
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import { Loader } from 'decentraland-ui/dist/components/Loader/Loader'
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon/Icon'
-import { localStorageGetIdentity } from '@dcl/single-sign-on-client'
 import { LOGIN_AS_GUEST, SKIP_SETUP } from '../../integration/url'
 import { initializeKernel } from '../../integration/kernel'
 import { getWantedChainId } from '../../kernel-loader'
@@ -22,7 +21,6 @@ export default function Start(props: Props) {
   const { isConnected, isConnecting, wallet } = props
   const [initialized, setInitialized] = useState(false)
   const [isLoadingExplorer, setIsLoadingExplorer] = useState(false)
-  const [isLoadingAvatar, setIsLoadingAvatar] = useState(true)
 
   useEffect(() => {
     // remove loading component
@@ -55,13 +53,6 @@ export default function Start(props: Props) {
     setIsLoadingExplorer(true)
   }, [])
 
-  const handleWearablePreviewLoad = useCallback(
-    (params) => {
-      if (wallet?.address && params.profile === wallet.address) setIsLoadingAvatar(false)
-    },
-    [wallet?.address]
-  )
-
   useEffect(() => {
     if (SKIP_SETUP || LOGIN_AS_GUEST) {
       handleJumpIn()
@@ -82,7 +73,6 @@ export default function Start(props: Props) {
 
   return (
     <div className="explorer-website-start">
-      <BannerContainer />
       <div className="start-info">
         <div className="start-links">
           <img alt="decentraland" src={logo} height="40" width="40" />
@@ -107,7 +97,7 @@ export default function Start(props: Props) {
           </a>
         </div>
       </div>
-      <div className={`start-wearable-preview ${isLoadingAvatar ? 'loading' : ''}`}>
+      <div className={`start-wearable-preview`}>
         <WearablePreview
           profile={wallet?.address}
           disableBackground
