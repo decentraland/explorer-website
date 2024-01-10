@@ -1,4 +1,4 @@
-// this file creates the /build/cdn folder containing the @dcl/explorer package
+// this file creates the /dist/cdn folder containing the @dcl/explorer package
 
 const path = require('path')
 const fs = require('fs')
@@ -9,7 +9,7 @@ const { cdnFolder } = require('./utils.cjs')
 dotenv.config({ path: path.resolve(__dirname, '../.env') })
 
 function distFolderRelative(folder) {
-  return path.resolve(__dirname, '../build' + folder)
+  return path.resolve(__dirname, '../dist' + folder)
 }
 
 function copyPackage(packageName, envValueToCheck) {

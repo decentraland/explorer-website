@@ -38,13 +38,12 @@ jobs:
         run: npm run build
         env:
           CI: false
-
       - name: publish npm package
         uses: menduz/oddish-action@master
         with:
           registry-url: "https://registry.npmjs.org"
           access: public
-          cwd: ./build
+          # cwd: ./dist
           ## use action runId instead of current date to generate snapshot numbers
           deterministic-snapshot: true
           ## inform gitlab after publishing to proceed with CDN propagation
@@ -63,7 +62,7 @@ jobs:
         run: |
           npx @dcl/cdn-uploader@next \
             --bucket $EXPLORER_WEB_BUCKET \
-            --local-folder build \
+            --local-folder dist \
             --bucket-folder "${{ steps.install.outputs.public_path }}"
 
   build-static:
@@ -94,7 +93,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: static-site-build
-          path: build
+          path: dist
           if-no-files-found: error
 
   notify_deployment:
