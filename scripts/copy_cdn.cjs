@@ -4,7 +4,7 @@ const path = require('path')
 const fs = require('fs')
 const fse = require('fs-extra')
 const dotenv = require('dotenv')
-const { cdnFolder } = require('./utils')
+const { cdnFolder } = require('./utils.cjs')
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') })
 
@@ -34,6 +34,6 @@ function copyPackage(packageName, envValueToCheck) {
   console.log('\n')
 }
 
-copyPackage('@dcl/explorer', import.meta.env.VITE_APP_EXPLORER_BASE_URL)
+copyPackage('@dcl/explorer', process.env.VITE_APP_EXPLORER_BASE_URL)
 
 console.log('copy-cdn SUCCEED')
