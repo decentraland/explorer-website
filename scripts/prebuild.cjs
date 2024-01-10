@@ -50,6 +50,7 @@ fs.writeFileSync(
 
 // public url logic
 function getPublicUrls() {
+  console.log({ process: process.env })
   if (!process.env.GEN_STATIC_LOCAL) {
     if (process.env.GITHUB_BASE_REF) {
       // Pull request
