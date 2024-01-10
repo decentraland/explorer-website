@@ -18,11 +18,11 @@ jobs:
       CI: false
     steps:
       - uses: actions/checkout@master
-      - name: Use Node.js 14.x
-        uses: actions/setup-node@v2
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v4.0.1
         with:
-          node-version: 14.x
-          cache: npm
+          node-version: 18.x
+          cache: 'npm'
 
       - name: set package.json version
         uses: menduz/oddish-action@master
@@ -43,6 +43,7 @@ jobs:
         with:
           registry-url: "https://registry.npmjs.org"
           access: public
+          cwd: ./dist
           ## use action runId instead of current date to generate snapshot numbers
           deterministic-snapshot: true
           ## inform gitlab after publishing to proceed with CDN propagation
