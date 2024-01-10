@@ -2,10 +2,10 @@
   "name": "@dcl/explorer-website",
   "version": "0.1.0",
   "private": true,
-  "homepage": "",
   "type": "module",
   "scripts": {
     "start": "vite",
+    "prebuild": "node ./scripts/prebuild.cjs",
     "build": "tsc && vite build",
     "build:full": "npm run build && npm run copy-cdn",
     "postinstall": "node ./scripts/hash_generator.cjs",

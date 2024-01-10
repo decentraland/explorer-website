@@ -9,6 +9,7 @@ import fs from 'fs'
 
 export default defineConfig(({ command, mode }) => {
   const envVariables = loadEnv(mode, process.cwd())
+  console.log({ envVariables })
   return {
     // depending on your application, base can also be "/"
     base: '',

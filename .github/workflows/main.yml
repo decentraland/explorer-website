@@ -36,8 +36,7 @@ jobs:
 
       - name: build
         run: npm run build
-        env:
-          CI: false
+
       - name: publish npm package
         uses: menduz/oddish-action@master
         with:
@@ -87,7 +86,6 @@ jobs:
       - name: build for deployment
         run: npm run build:full
         env:
-          CI: false
           GEN_STATIC_LOCAL: true
 
       - uses: actions/upload-artifact@v2
