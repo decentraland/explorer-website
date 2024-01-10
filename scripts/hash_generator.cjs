@@ -13,8 +13,8 @@ const publicPackageJson = JSON.parse(fs.readFileSync('./public/package.json').to
 
 const explorerVersion = JSON.parse(fs.readFileSync(require.resolve('@dcl/explorer/package.json'))).version
 
-ENV_CONTENT['REACT_APP_WEBSITE_VERSION'] = packageJson.version
-ENV_CONTENT['REACT_APP_EXPLORER_VERSION'] = explorerVersion
+ENV_CONTENT['VITE_APP_WEBSITE_VERSION'] = packageJson.version
+ENV_CONTENT['VITE_APP_EXPLORER_VERSION'] = explorerVersion
 
 Object.assign(ENV_CONTENT, getPublicUrls())
 
@@ -46,20 +46,20 @@ function getPublicUrls() {
     if (process.env.GITHUB_BASE_REF) {
       // Pull request
       return {
-        PUBLIC_URL: `https://explorer-artifacts.decentraland.org/${packageJson.name}/branch/${process.env.GITHUB_HEAD_REF}`,
+        VITE_PUBLIC_URL: `https://explorer-artifacts.decentraland.org/${packageJson.name}/branch/${process.env.GITHUB_HEAD_REF}`,
         VITE_APP_EXPLORER_BASE_URL: ``,
       }
     } else if (process.env.CI) {
       // master/main branch, also releases
       return {
-        PUBLIC_URL: `https://cdn.decentraland.org/${packageJson.name}/${packageJson.version}`,
+        VITE_PUBLIC_URL: `https://cdn.decentraland.org/${packageJson.name}/${packageJson.version}`,
         VITE_APP_EXPLORER_BASE_URL: ``,
       }
     }
   }
   // localhost
   return {
-    PUBLIC_URL: ``,
+    VITE_PUBLIC_URL: ``,
     VITE_APP_EXPLORER_BASE_URL: cdnFolder('@dcl/explorer', explorerVersion) + `/`,
   }
 }

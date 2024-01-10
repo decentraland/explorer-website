@@ -71,7 +71,7 @@ export default defineConfig(({ command, mode }) => {
     },
     ...(command === 'build'
       ? {
-          base: envVariables.PUBLIC_URL,
+          base: envVariables.VITE_PUBLIC_URL,
           optimizeDeps: {
             esbuildOptions: {
               // Node.js global to browser globalThis
