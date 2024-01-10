@@ -10,6 +10,8 @@ on:
 name: build-deploy
 jobs:
   build:
+    permissions:
+      id-token: write
     runs-on: ubuntu-latest
     outputs:
       public_url: ${{ steps.install.outputs.public_url }}
