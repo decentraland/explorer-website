@@ -1,6 +1,6 @@
 const fs = require('fs')
 const dotenv = require('dotenv')
-const { cdnFolder } = require('./utils')
+const { cdnFolder } = require('./utils.cjs')
 
 let ENV_CONTENT = {}
 
@@ -47,19 +47,19 @@ function getPublicUrls() {
       // Pull request
       return {
         PUBLIC_URL: `https://explorer-artifacts.decentraland.org/${packageJson.name}/branch/${process.env.GITHUB_HEAD_REF}`,
-        REACT_APP_EXPLORER_BASE_URL: ``,
+        VITE_APP_EXPLORER_BASE_URL: ``,
       }
     } else if (process.env.CI) {
       // master/main branch, also releases
       return {
         PUBLIC_URL: `https://cdn.decentraland.org/${packageJson.name}/${packageJson.version}`,
-        REACT_APP_EXPLORER_BASE_URL: ``,
+        VITE_APP_EXPLORER_BASE_URL: ``,
       }
     }
   }
   // localhost
   return {
     PUBLIC_URL: ``,
-    REACT_APP_EXPLORER_BASE_URL: cdnFolder('@dcl/explorer', explorerVersion) + `/`,
+    VITE_APP_EXPLORER_BASE_URL: cdnFolder('@dcl/explorer', explorerVersion) + `/`,
   }
 }
