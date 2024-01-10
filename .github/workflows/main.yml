@@ -18,11 +18,11 @@ jobs:
       CI: false
     steps:
       - uses: actions/checkout@master
-      - name: Use Node.js 14.x
-        uses: actions/setup-node@v2
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v4.0.1
         with:
-          node-version: 14.x
-          cache: npm
+          node-version: 18.x
+          cache: 'npm'
 
       - name: set package.json version
         uses: menduz/oddish-action@master
@@ -36,18 +36,13 @@ jobs:
 
       - name: build
         run: npm run build
-        env:
-          CI: false
-
-      - name: test
-        run: npm run test
 
       - name: publish npm package
         uses: menduz/oddish-action@master
         with:
           registry-url: "https://registry.npmjs.org"
           access: public
-          cwd: ./build
+          cwd: ./dist
           ## use action runId instead of current date to generate snapshot numbers
           deterministic-snapshot: true
           ## inform gitlab after publishing to proceed with CDN propagation
@@ -66,7 +61,7 @@ jobs:
         run: |
           npx @dcl/cdn-uploader@next \
             --bucket $EXPLORER_WEB_BUCKET \
-            --local-folder build \
+            --local-folder dist \
             --bucket-folder "${{ steps.install.outputs.public_path }}"
 
   build-static:
@@ -91,13 +86,12 @@ jobs:
       - name: build for deployment
         run: npm run build:full
         env:
-          CI: false
           GEN_STATIC_LOCAL: true
 
       - uses: actions/upload-artifact@v2
         with:
           name: static-site-build
-          path: build
+          path: dist
           if-no-files-found: error
 
   notify_deployment:

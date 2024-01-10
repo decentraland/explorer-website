@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1,minimal-ui" />
     <link rel="shortcut icon" type="image/x-icon" href="https://decentraland.org/images/icons/favicon-32x32.png" />
-    <link rel="preload" href="%PUBLIC_URL%/images/background-v3@blur.jpg" as="image" />
+    <link rel="preload" href="%VITE_PUBLIC_URL%/images/background-v3@blur.jpg" as="image" />
     <link rel="preconnect" href="https://cdn.decentraland.org" />
     <link rel="preconnect" href="https://api.thegraph.com" />
     <title>Decentraland</title>
@@ -17,7 +17,7 @@
       property="og:description"
       content="Decentraland is a virtual social platform built and governed by its users. Every day, users enter the world to meet up, play games, attend live events, trade in the marketplace, engage with brands, visit galleries and much more"
     />
-    <meta property="og:image" content="%PUBLIC_URL%/images/background-v3@1x.jpg" />
+    <meta property="og:image" content="%VITE_PUBLIC_URL%/images/background-v3@1x.jpg" />
     <style type="text/css">
       html,
       body {
@@ -111,7 +111,7 @@
         background-position: bottom center;
         background-repeat: no-repeat;
         background-color: #230b61;
-        background-image: url('%PUBLIC_URL%/images/background-v3@blur.jpg');
+        background-image: url('%VITE_PUBLIC_URL%/images/background-v3@blur.jpg');
         position: absolute;
         top: 0;
         left: 0;
@@ -136,7 +136,7 @@
       }
     </style>
     <script>
-      window.REACT_APP_WEBSITE_VERSION = '%REACT_APP_WEBSITE_VERSION%'
+      window.VITE_APP_WEBSITE_VERSION = '%VITE_APP_WEBSITE_VERSION%'
     </script>
   </head>
   <body class="dcl-loading">
@@ -196,5 +196,6 @@
       data-cf-beacon='{"token": "529363954dff44d8b036b8fb8879bcc5"}'
     ></script>
     <!-- End Cloudflare Web Analytics -->
+	  <script type="module" src="/src/index.tsx"></script>
   </body>
 </html>

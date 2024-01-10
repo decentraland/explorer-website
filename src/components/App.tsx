@@ -130,7 +130,7 @@ const App: React.FC<AppProps> = (props) => {
        * @see https://github.com/decentraland/explorer-website/pull/333#discussion_r1084094994
        * @see https://github.com/eordano/background-throttle
        */}
-      {!isElectron() && props.sound && <Audio track={`${process.env.PUBLIC_URL}/tone4.mp3`} play />}
+      {!isElectron() && props.sound && <Audio track={`${(import.meta as any).env.VITE_PUBLIC_URL}/tone4.mp3`} play />}
       {!isElectron() && <Navbar />}
       <LoginContainer />
       {!isElectron() && <BeginnersGuide />}
