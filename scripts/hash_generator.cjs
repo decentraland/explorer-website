@@ -18,7 +18,7 @@ ENV_CONTENT['VITE_APP_EXPLORER_VERSION'] = explorerVersion
 
 Object.assign(ENV_CONTENT, getPublicUrls())
 
-packageJson.homepage = ENV_CONTENT['PUBLIC_URL']
+packageJson.homepage = ENV_CONTENT['VITE_PUBLIC_URL']
 
 if (packageJson.homepage) {
   // github action outputs. Do not touch.
