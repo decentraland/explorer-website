@@ -43,7 +43,6 @@ jobs:
         with:
           registry-url: "https://registry.npmjs.org"
           access: public
-          # cwd: ./dist
           ## use action runId instead of current date to generate snapshot numbers
           deterministic-snapshot: true
           ## inform gitlab after publishing to proceed with CDN propagation
