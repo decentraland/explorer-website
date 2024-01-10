@@ -1,4 +1,4 @@
-// this file creates the /dist/cdn folder containing the @dcl/explorer package
+// // this file creates the /dist/cdn folder containing the @dcl/explorer package
 
 const path = require('path')
 const fs = require('fs')

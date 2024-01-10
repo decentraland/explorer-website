@@ -42,24 +42,31 @@ fs.writeFileSync('./package.json', JSON.stringify(packageJson, null, 2))
 fs.writeFileSync('./public/package.json', JSON.stringify(publicPackageJson, null, 2))
 
 function getPublicUrls() {
-  if (!process.env.GEN_STATIC_LOCAL) {
+  if (process.env.GEN_STATIC_LOCAL) {
+    return {
+      VITE_PUBLIC_URL: process.env.GITHUB_BASE_REF
+        ? `https://explorer-artifacts.decentraland.org/${packageJson.name}/branch/${process.env.GITHUB_HEAD_REF}`
+        : '',
+      VITE_APP_EXPLORER_BASE_URL: cdnFolder('@dcl/explorer', explorerVersion) + `/`
+    }
+  } else {
     if (process.env.GITHUB_BASE_REF) {
       // Pull request
       return {
         VITE_PUBLIC_URL: `https://explorer-artifacts.decentraland.org/${packageJson.name}/branch/${process.env.GITHUB_HEAD_REF}`,
-        VITE_APP_EXPLORER_BASE_URL: ``,
+        VITE_APP_EXPLORER_BASE_URL: ``
       }
     } else if (process.env.CI) {
       // master/main branch, also releases
       return {
         VITE_PUBLIC_URL: `https://cdn.decentraland.org/${packageJson.name}/${packageJson.version}`,
-        VITE_APP_EXPLORER_BASE_URL: ``,
+        VITE_APP_EXPLORER_BASE_URL: ``
       }
     }
   }
-  // localhost
+
   return {
-    VITE_PUBLIC_URL: ``,
-    VITE_APP_EXPLORER_BASE_URL: cdnFolder('@dcl/explorer', explorerVersion) + `/`,
+    VITE_PUBLIC_URL: '',
+    VITE_APP_EXPLORER_BASE_URL: cdnFolder('@dcl/explorer', explorerVersion) + `/`
   }
 }
