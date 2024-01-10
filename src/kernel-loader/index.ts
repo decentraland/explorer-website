@@ -147,7 +147,7 @@ declare var globalThis: {
   ROLLOUTS?: Record<string, RolloutRecord>
 }
 
-globalThis.EXPLORER_BASE_URL = import.meta.env.VITE_APP_EXPLORER_BASE_URL
+globalThis.EXPLORER_BASE_URL = (import.meta as any).env.VITE_APP_EXPLORER_BASE_URL
 
 async function resolveBaseUrl(urn: string): Promise<string> {
   if (urn.startsWith('urn:')) {

@@ -127,7 +127,7 @@ const reducers = combineReducers<StoreType>({
 const sagasMiddleware = createSagasMiddleware()
 
 const middleware: typeof composeWithDevTools =
-  import.meta.env.NODE_ENV !== 'production' ? composeWithDevTools : (x: any) => x
+  (import.meta as any).env.NODE_ENV !== 'production' ? composeWithDevTools : (x: any) => x
 
 export const store = createStore(reducers, {}, middleware(applyMiddleware(sagasMiddleware)))
 sagasMiddleware.run(rootSaga)
