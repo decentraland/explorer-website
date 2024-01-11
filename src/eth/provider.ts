@@ -1,6 +1,7 @@
 import type { ConnectionResponse, Provider } from 'decentraland-connect/dist/types'
 import { localStorageClearIdentity } from '@dcl/single-sign-on-client'
 import { connection } from 'decentraland-connect/dist/ConnectionManager'
+import { AuthServerProvider } from 'decentraland-connect'
 import { ProviderAdapter } from 'decentraland-connect/dist/ProviderAdapter'
 import { WebSocketProvider, RequestManager } from 'eth-connect'
 import { ChainId } from '@dcl/schemas/dist/dapps/chain-id'
@@ -52,6 +53,7 @@ export async function disconnect(): Promise<void> {
     const requestManager = new RequestManager(await connection.getProvider())
     const account = (await requestManager.eth_accounts())[0]
     await connection.disconnect()
+    AuthServerProvider.deactivate()
     if (account) {
       localStorageClearIdentity(account)
     }

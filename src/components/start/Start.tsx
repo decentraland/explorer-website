@@ -14,6 +14,7 @@ import { getWantedChainId } from '../../kernel-loader'
 import logo from '../../images/simple-logo.svg'
 import { Props } from './Start.types'
 import './Start.css'
+import React from 'react'
 
 function getAuthURL() {
   var url = new URL(window.location.href)
@@ -23,11 +24,26 @@ function getAuthURL() {
   return `/auth/login?redirectTo=${encodeURIComponent(url.toString())}`
 }
 
+const useLocalStorageListener = (key: string) => {
+  const [value, setValue] = useState(localStorage.getItem(key))
+  useEffect(() => {
+    const callback = (event: any) => {
+      if (event.key === key) {
+        setValue(event.newValue)
+      }
+    }
+    window.addEventListener('storage', callback)
+    return () => window.removeEventListener('storage', callback)
+  }, [])
+  return value
+}
+
 export default function Start(props: Props) {
   const { isConnected, isConnecting, wallet, profile } = props
   const [initialized, setInitialized] = useState(false)
   const [isLoadingExplorer, setIsLoadingExplorer] = useState(false)
   const [isLoadingAvatar, setIsLoadingAvatar] = useState(true)
+  const decentralandConnectStorage = useLocalStorageListener('decentraland-connect-storage-key')
 
   const name = profile?.avatars[0].name
 
@@ -43,10 +59,7 @@ export default function Start(props: Props) {
   }, [isConnecting])
 
   useEffect(() => {
-    if (
-      (!isConnected && !isConnecting && initialized) ||
-      localStorage.getItem('decentraland-connect-storage-key') === null
-    ) {
+    if ((!isConnected && !isConnecting && initialized) || decentralandConnectStorage === null) {
       window.location.replace(getAuthURL())
       return
     }
@@ -58,7 +71,7 @@ export default function Start(props: Props) {
         return
       }
     }
-  }, [isConnected, isConnecting, wallet, initialized])
+  }, [isConnected, isConnecting, wallet, initialized, decentralandConnectStorage])
 
   const handleJumpIn = useCallback(() => {
     initializeKernel()
