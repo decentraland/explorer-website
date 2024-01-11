@@ -14,7 +14,6 @@ import { getWantedChainId } from '../../kernel-loader'
 import logo from '../../images/simple-logo.svg'
 import { Props } from './Start.types'
 import './Start.css'
-import React from 'react'
 
 function getAuthURL() {
   var url = new URL(window.location.href)
