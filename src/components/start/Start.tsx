@@ -17,7 +17,9 @@ import './Start.css'
 
 function getAuthURL() {
   var url = new URL(window.location.href)
-  url.searchParams.append('skipSetup', 'true')
+  if (!url.searchParams.has('skipSetup')) {
+    url.searchParams.append('skipSetup', 'true')
+  }
   return `/auth/login?redirectTo=${encodeURIComponent(url.toString())}`
 }
 
@@ -41,7 +43,10 @@ export default function Start(props: Props) {
   }, [isConnecting])
 
   useEffect(() => {
-    if (!isConnected && !isConnecting && initialized) {
+    if (
+      (!isConnected && !isConnecting && initialized) ||
+      localStorage.getItem('decentraland-connect-storage-key') === null
+    ) {
       window.location.replace(getAuthURL())
       return
     }
