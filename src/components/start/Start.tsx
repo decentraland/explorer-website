@@ -98,7 +98,7 @@ export default function Start(props: Props) {
             <span>Are you ready to explore?</span>
           </div>
           <Button primary onClick={handleJumpIn} disabled={isLoadingExplorer} loading={isLoadingExplorer}>
-            jump into decentrland
+            jump into decentraland
             <Icon name="arrow alternate circle right outline" />
           </Button>
           <Button inverted as="a" href={getAuthURL()} disabled={isLoadingExplorer}>
