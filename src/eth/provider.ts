@@ -1,7 +1,8 @@
 import type { ConnectionResponse, Provider } from 'decentraland-connect/dist/types'
+import { localStorageClearIdentity } from '@dcl/single-sign-on-client'
 import { connection } from 'decentraland-connect/dist/ConnectionManager'
 import { ProviderAdapter } from 'decentraland-connect/dist/ProviderAdapter'
-import { WebSocketProvider } from 'eth-connect'
+import { WebSocketProvider, RequestManager } from 'eth-connect'
 import { ChainId } from '@dcl/schemas/dist/dapps/chain-id'
 import { ProviderType } from '@dcl/schemas/dist/dapps/provider-type'
 import { switchProviderChainId } from 'decentraland-dapps/dist/modules/wallet/utils/switchProviderChainId'
@@ -43,15 +44,18 @@ export async function getEthereumProvider(
 }
 
 export async function restoreConnection(): Promise<ConnectionResponse | null> {
-  return await Promise.race([
-    connection.tryPreviousConnection().catch(() => null),
-    delay(CONNECTION_TIMEOUT_IN_MILLIS)
-  ])
+  return await Promise.race([connection.tryPreviousConnection().catch(() => null), delay(CONNECTION_TIMEOUT_IN_MILLIS)])
 }
 
 export async function disconnect(): Promise<void> {
   try {
-    return await connection.disconnect()
+    const requestManager = new RequestManager(await connection.getProvider())
+    const account = (await requestManager.eth_accounts())[0]
+    await connection.disconnect()
+    if (account) {
+      localStorageClearIdentity(account)
+    }
+    window.location.reload()
   } catch (err) {
     defaultWebsiteErrorTracker(err)
     return
@@ -68,7 +72,7 @@ export async function switchToChainId(wantedChainId: ChainId, providerChainId: C
     const provider = await connection.getProvider()
 
     await switchProviderChainId(provider, wantedChainId)
-    
+
     return
   } catch (error: any) {
     defaultWebsiteErrorTracker(error)
@@ -77,7 +81,7 @@ export async function switchToChainId(wantedChainId: ChainId, providerChainId: C
 }
 
 function delay(millis: number): Promise<null> {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(() => resolve(null), millis)
   })
 }
