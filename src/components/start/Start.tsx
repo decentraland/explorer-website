@@ -17,7 +17,9 @@ import './Start.css'
 
 function getAuthURL() {
   var url = new URL(window.location.href)
-  url.searchParams.append('skipSetup', 'true')
+  if (!url.searchParams.has('skipSetup')) {
+    url.searchParams.append('skipSetup', 'true')
+  }
   return `/auth/login?redirectTo=${encodeURIComponent(url.toString())}`
 }
 
