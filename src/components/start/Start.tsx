@@ -41,7 +41,10 @@ export default function Start(props: Props) {
   }, [isConnecting])
 
   useEffect(() => {
-    if (!isConnected && !isConnecting && initialized) {
+    if (
+      (!isConnected && !isConnecting && initialized) ||
+      localStorage.getItem('decentraland-connect-storage-key') === null
+    ) {
       window.location.replace(getAuthURL())
       return
     }
