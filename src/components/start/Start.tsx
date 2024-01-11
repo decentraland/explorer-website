@@ -58,7 +58,7 @@ export default function Start(props: Props) {
   }, [isConnecting])
 
   useEffect(() => {
-    if ((!isConnected && !isConnecting && initialized) || decentralandConnectStorage === null) {
+    if (!LOGIN_AS_GUEST && ((!isConnected && !isConnecting && initialized) || decentralandConnectStorage === null)) {
       window.location.replace(getAuthURL())
       return
     }
