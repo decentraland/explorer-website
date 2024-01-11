@@ -20,7 +20,16 @@ import { resolveUrlFromUrn } from '@dcl/urn-resolver'
 import { defaultWebsiteErrorTracker, defaultKernelErrorTracker, track } from '../utils/tracking'
 import { injectVersions } from '../utils/rolloutVersions'
 import { KernelError, KernelResult } from '@dcl/kernel-interface'
-import { ENV, NETWORK, withOrigin, ensureOrigin, CATALYST, RENDERER_TYPE, SHOW_WALLET_SELECTOR, LOGIN_AS_GUEST } from '../integration/url'
+import {
+  ENV,
+  NETWORK,
+  withOrigin,
+  ensureOrigin,
+  CATALYST,
+  RENDERER_TYPE,
+  SHOW_WALLET_SELECTOR,
+  LOGIN_AS_GUEST
+} from '../integration/url'
 import { isElectron, launchDesktopApp } from '../integration/desktop'
 import { isMobile, setAsRecentlyLoggedIn } from '../integration/browser'
 import { FeatureFlags, isFeatureVariantEnabled } from '../state/selectors'
@@ -28,7 +37,7 @@ import { FeatureFlags, isFeatureVariantEnabled } from '../state/selectors'
 export function getWantedChainId() {
   let chainId: ChainId
 
-  switch(NETWORK) {
+  switch (NETWORK) {
     case 'goerli':
       chainId = ChainId.ETHEREUM_GOERLI
       break
@@ -58,7 +67,7 @@ export async function authenticate(providerType: ProviderType | null) {
           extra: {
             providerType,
             providerChainId: providerChainId,
-            wantedChainId: wantedChainId,
+            wantedChainId: wantedChainId
           }
         })
       )
@@ -111,7 +120,8 @@ export async function authenticate(providerType: ProviderType | null) {
       err &&
       typeof err === 'object' &&
       typeof (err as Error)?.message == 'string' &&
-      ((err as Error)?.message.includes('Already processing eth_requestAccounts.') || (err as Error)?.message.includes('Please wait.'))
+      ((err as Error)?.message.includes('Already processing eth_requestAccounts.') ||
+        (err as Error)?.message.includes('Please wait.'))
     ) {
       // https://github.com/decentraland/explorer-website/issues/46
       store.dispatch(
@@ -221,14 +231,14 @@ async function initKernel() {
 
   const kernel = await injectKernel({
     kernelOptions: {
-      baseUrl: await resolveBaseUrl(globalThis.EXPLORER_BASE_URL || `https://cdn.decentraland.org/@dcl/explorer/latest`),
+      baseUrl: await resolveBaseUrl(
+        globalThis.EXPLORER_BASE_URL || `https://cdn.decentraland.org/@dcl/explorer/latest`
+      ),
       configurations: {}
     },
     rendererOptions: {
       container,
-      baseUrl: await resolveBaseUrl(
-        globalThis.EXPLORER_BASE_URL || `https://cdn.decentraland.org/@dcl/explorer/latest`
-      )
+      baseUrl: await resolveBaseUrl(globalThis.EXPLORER_BASE_URL || `https://cdn.decentraland.org/@dcl/explorer/latest`)
     }
   })
 
@@ -328,10 +338,7 @@ async function initLogin(kernel: KernelResult) {
       }
     }
 
-    if (
-      isFeatureVariantEnabled(store.getState(), FeatureFlags.SeamlessLogin) &&
-      !SHOW_WALLET_SELECTOR
-    ) {
+    if (isFeatureVariantEnabled(store.getState(), FeatureFlags.SeamlessLogin) && !SHOW_WALLET_SELECTOR) {
       track('seamless_login')
       authenticate(null).catch(defaultWebsiteErrorTracker)
       return
