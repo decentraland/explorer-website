@@ -53,7 +53,6 @@ export async function disconnect(): Promise<void> {
     const requestManager = new RequestManager(await connection.getProvider())
     const account = (await requestManager.eth_accounts())[0]
     await connection.disconnect()
-    AuthServerProvider.deactivate()
     if (account) {
       localStorageClearIdentity(account)
     }
