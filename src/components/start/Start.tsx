@@ -38,7 +38,7 @@ const useLocalStorageListener = (key: string) => {
 }
 
 export default function Start(props: Props) {
-  const { isConnected, isConnecting, wallet, profile } = props
+  const { isConnected, isConnecting, wallet, profile, isLoadingProfile } = props
   const [initialized, setInitialized] = useState(false)
   const [isLoadingExplorer, setIsLoadingExplorer] = useState(false)
   const [isLoadingAvatar, setIsLoadingAvatar] = useState(true)
@@ -94,7 +94,7 @@ export default function Start(props: Props) {
     return null
   }
 
-  if (isConnecting && !initialized) {
+  if (!initialized || isLoadingProfile || isConnecting) {
     return (
       <div className="explorer-website-start">
         <Loader active size="massive" />
