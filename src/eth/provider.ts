@@ -49,9 +49,9 @@ export async function restoreConnection(): Promise<ConnectionResponse | null> {
 
 export async function disconnect(): Promise<void> {
   try {
+    await connection.disconnect()
     const requestManager = new RequestManager(await connection.getProvider())
     const account = (await requestManager.eth_accounts())[0]
-    await connection.disconnect()
     if (account) {
       localStorageClearIdentity(account)
     }
