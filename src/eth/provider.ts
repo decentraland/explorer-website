@@ -49,12 +49,17 @@ export async function restoreConnection(): Promise<ConnectionResponse | null> {
 
 export async function disconnect(): Promise<void> {
   try {
-    const requestManager = new RequestManager(await connection.getProvider())
-    const account = (await requestManager.eth_accounts())[0]
-    await connection.disconnect()
-    if (account) {
-      localStorageClearIdentity(account)
+    try {
+      const requestManager = new RequestManager(await connection.getProvider())
+      const account = (await requestManager.eth_accounts())[0]
+      if (account) {
+        localStorageClearIdentity(account)
+      }
+    } catch (err) {
+      // Ignore the error if for some reason the account could not be obtained.
     }
+
+    await connection.disconnect()
     window.location.reload()
   } catch (err) {
     defaultWebsiteErrorTracker(err)

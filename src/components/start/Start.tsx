@@ -38,7 +38,7 @@ const useLocalStorageListener = (key: string) => {
 }
 
 export default function Start(props: Props) {
-  const { isConnected, isConnecting, wallet, profile } = props
+  const { isConnected, isConnecting, wallet, profile, isLoadingProfile } = props
   const [initialized, setInitialized] = useState(false)
   const [isLoadingExplorer, setIsLoadingExplorer] = useState(false)
   const [isLoadingAvatar, setIsLoadingAvatar] = useState(true)
@@ -94,7 +94,7 @@ export default function Start(props: Props) {
     return null
   }
 
-  if (isConnecting && !initialized) {
+  if (!initialized || isLoadingProfile || isConnecting) {
     return (
       <div className="explorer-website-start">
         <Loader active size="massive" />
@@ -112,20 +112,20 @@ export default function Start(props: Props) {
             <span>
               <strong>{`Welcome back ${name || ''}`}</strong>
             </span>
-            <span>Are you ready to explore?</span>
+            <span>Ready to explore?</span>
           </div>
           <Button primary onClick={handleJumpIn} disabled={isLoadingExplorer} loading={isLoadingExplorer}>
             jump into decentraland
             <Icon name="arrow alternate circle right outline" />
           </Button>
           <Button inverted as="a" href={getAuthURL()} disabled={isLoadingExplorer}>
-            use another account
+            use a different account
           </Button>
         </div>
         <div className="start-desktop-download">
-          <span>Want better graphics and faster speed?</span>
+          <span>Want better performance?</span>
           <a href="https://decentraland.org/download/" target="_blank" rel="noreferrer noopener">
-            👉 <span>Download desktop client</span>
+            👉 <span>Download Desktop Client</span>
           </a>
         </div>
       </div>
@@ -145,7 +145,7 @@ export default function Start(props: Props) {
         <Icon name="discord" className="discord-icon" />
         <p className="discord-info">
           <span>Need guidance?</span>
-          <span>MEET THE COMMUNITY</span>
+          <span>Ask the community</span>
         </p>
       </a>
     </div>
