@@ -130,11 +130,17 @@ export default function Start(props: Props) {
         </div>
       </div>
       <div className={`start-wearable-preview ${isLoadingAvatar ? 'loading' : ''}`}>
-        <img src={manDefault} alt="Avatar" className="wearable-default-img" />
+        <img
+          src={manDefault}
+          alt="Avatar"
+          className="wearable-default-img"
+          style={{ display: isLoadingAvatar ? 'inline' : 'none' }}
+        />
         <WearablePreview
           profile={wallet?.address}
           disableBackground
           lockBeta
+          disableAutoRotate={true}
           onUpdate={handleWearablePreviewLoad}
           emote={PreviewEmote.WAVE}
           dev={getWantedChainId() !== ChainId.ETHEREUM_MAINNET}
