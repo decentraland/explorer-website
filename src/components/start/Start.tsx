@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { ChainId } from '@dcl/schemas'
+import { ChainId, PreviewEmote } from '@dcl/schemas'
 import { WearablePreview } from 'decentraland-ui/dist/components/WearablePreview/WearablePreview'
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import { Loader } from 'decentraland-ui/dist/components/Loader/Loader'
@@ -136,6 +136,7 @@ export default function Start(props: Props) {
           disableBackground
           lockBeta
           onUpdate={handleWearablePreviewLoad}
+          emote={PreviewEmote.WAVE}
           dev={getWantedChainId() !== ChainId.ETHEREUM_MAINNET}
         />
         <img src={platformImg} alt="platform" className="wearable-platform" />
