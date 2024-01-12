@@ -390,23 +390,14 @@ export function startKernel() {
   track('initialize_versions', injectVersions({}))
 
   if (!isMobile()) {
-    launchDesktopApp().then((launched) => {
-      if (launched) {
-        store.dispatch(setDesktopDetected(launched))
-        track('desktop_launched')
-      }
-
-      return initKernel()
-        .then((kernel) => {
-          store.dispatch(setKernelLoaded(kernel))
-          if (!launched) {
-            return initLogin(kernel)
-          }
-        })
-        .catch((error) => {
-          store.dispatch(setKernelError({ error }))
-          defaultWebsiteErrorTracker(error)
-        })
-    })
+    return initKernel()
+      .then((kernel) => {
+        store.dispatch(setKernelLoaded(kernel))
+        return initLogin(kernel)
+      })
+      .catch((error) => {
+        store.dispatch(setKernelError({ error }))
+        defaultWebsiteErrorTracker(error)
+      })
   }
 }
