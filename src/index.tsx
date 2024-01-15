@@ -1,7 +1,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import WalletProvider from 'decentraland-dapps/dist/providers/WalletProvider'
 import 'semantic-ui-css/semantic.min.css'
 import './index.css'
 import 'semantic-ui-css/components/site.min.css'
@@ -31,9 +30,7 @@ configureKernel(store)
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <WalletProvider>
-        <App />
-      </WalletProvider>
+      <App />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')!,

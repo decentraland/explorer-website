@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo } from 'react'
 import { connect } from 'react-redux'
 import { useMobileMediaQuery } from 'decentraland-ui/dist/components/Media'
+import WalletProvider from 'decentraland-dapps/dist/providers/WalletProvider'
 import { StoreType } from '../state/redux'
 import { isElectron } from '../integration/desktop'
-import { SHOW_WALLET_SELECTOR } from '../integration/url'
+import { LOGIN_AS_GUEST, SHOW_WALLET_SELECTOR } from '../integration/url'
 import {
   FeatureFlags,
   isWaitingForRenderer,
@@ -110,12 +111,26 @@ const App: React.FC<AppProps> = (props) => {
     return <React.Fragment />
   }
 
-  if (props.waitingForRenderer || props.sessionReady || props.seamlessLogin === ABTestingVariant.Enabled || !props.featureFlagsLoaded) {
+  if (
+    props.waitingForRenderer ||
+    props.sessionReady ||
+    props.seamlessLogin === ABTestingVariant.Enabled ||
+    !props.featureFlagsLoaded
+  ) {
+    return <LoadingRender />
+  }
+
+  if (LOGIN_AS_GUEST) {
+    initializeKernel()
     return <LoadingRender />
   }
 
   if (props.isAuthDappEnabled && !isElectron()) {
-    return <Start />
+    return (
+      <WalletProvider>
+        <Start initializeKernel={initializeKernel} />
+      </WalletProvider>
+    )
   }
 
   if (isElectron() && props.isDesktopClientSignInWithAuthDappEnabled) {

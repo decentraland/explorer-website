@@ -26,13 +26,11 @@
         height: 100%;
         overflow: hidden;
         touch-action: none;
-        background: #74a4d5;
-        background-size: 115%;
-        background-repeat: no-repeat;
-        background-position: right -90px bottom 25px;
+        background: radial-gradient(70% 108% at 90% 50%, #ff00f5 0%, #540880 100%);
       }
 
       #gameContainer {
+        background-color: black;
         width: 100vw;
         height: 100vh;
         position: relative;
@@ -44,25 +42,9 @@
         margin: auto;
       }
 
-      #gameContainer.loaded,
-      body {
+      #gameContainer.loaded {
         background: #090909 no-repeat 50% 5% !important;
         background-size: 170px 32px !important;
-      }
-
-      @media screen and (min-height: 500px) {
-        body {
-          background: #090909 no-repeat 50% 5% !important;
-          background-size: 170px 32px !important;
-        }
-      }
-
-      @media screen and (min-height: 800px) {
-        #gameContainer.loaded,
-        body {
-          background: #090909 no-repeat 50% 25% !important;
-          background-size: 170px 32px !important;
-        }
       }
 
       /* Without this, some of wallet link modal component backgrounds are being overwriten by other body styles */
@@ -94,38 +76,6 @@
         background: black none !important;
       }
 
-      #root-loading {
-        background-color: #f1f1f1;
-        position: fixed;
-        opacity: 1;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 10000;
-        transition: opacity 0.3s ease-out;
-      }
-
-      #root-loading > div {
-        background-size: cover;
-        background-position: bottom center;
-        background-repeat: no-repeat;
-        background-color: #230b61;
-        background-image: url('%VITE_PUBLIC_URL%/images/background-v3@blur.jpg');
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        min-height: 790px;
-      }
-
-      @media only screen and (max-width: 991px) {
-        #root-loading > div {
-          background-size: cover;
-        }
-      }
-
       @font-face {
         font-family: sfregular;
         src: url(images/decentraland-connect/SF-UI-Text-Regular.otf);
@@ -142,10 +92,9 @@
   <body class="dcl-loading">
     <div id="gameContainer"></div>
     <div id="root"></div>
-    <div id="root-loading"><div></div></div>
     <audio autoplay id="voice-chat-audio"></audio>
     <!-- span.progress is to avoid a error on DCLUnityLoader  -->
-    <div class="progress" style="display: none;"></div>
+    <div class="progress" style="display: none"></div>
     <noscript>
       <div id="error-notsupported" class="hidden-error">
         <div class="errormessage">
@@ -196,6 +145,6 @@
       data-cf-beacon='{"token": "529363954dff44d8b036b8fb8879bcc5"}'
     ></script>
     <!-- End Cloudflare Web Analytics -->
-	  <script type="module" src="/src/index.tsx"></script>
+    <script type="module" src="/src/index.tsx"></script>
   </body>
 </html>
