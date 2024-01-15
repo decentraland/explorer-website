@@ -5,8 +5,7 @@ import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import { Loader } from 'decentraland-ui/dist/components/Loader/Loader'
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon/Icon'
 import { localStorageGetIdentity } from '@dcl/single-sign-on-client'
-import { LOGIN_AS_GUEST, SKIP_SETUP } from '../../integration/url'
-import { initializeKernel } from '../../integration/kernel'
+import { SKIP_SETUP } from '../../integration/url'
 import platformImg from '../../images/Platform.webp'
 import manDefault from '../../images/ManDefault.webp'
 import BannerContainer from '../banners/BannerContainer'
@@ -38,27 +37,15 @@ const useLocalStorageListener = (key: string) => {
 }
 
 export default function Start(props: Props) {
-  const { isConnected, isConnecting, wallet, profile, isLoadingProfile } = props
-  const [initialized, setInitialized] = useState(false)
+  const { isConnected, isConnecting, wallet, profile, initializeKernel, isLoadingProfile, hasInitializedConnection } =
+    props
   const [isLoadingExplorer, setIsLoadingExplorer] = useState(false)
   const [isLoadingAvatar, setIsLoadingAvatar] = useState(true)
   const decentralandConnectStorage = useLocalStorageListener('decentraland-connect-storage-key')
-
   const name = profile?.avatars[0].name
 
   useEffect(() => {
-    // remove loading component
-    const loadingElement = document.getElementById('root-loading')
-    if (loadingElement) {
-      loadingElement.style.display = 'none'
-    }
-    if (isConnecting) {
-      setInitialized(true)
-    }
-  }, [isConnecting])
-
-  useEffect(() => {
-    if (!LOGIN_AS_GUEST && ((!isConnected && !isConnecting && initialized) || decentralandConnectStorage === null)) {
+    if ((!isConnected && !isConnecting && hasInitializedConnection) || decentralandConnectStorage === null) {
       window.location.replace(getAuthURL())
       return
     }
@@ -70,7 +57,7 @@ export default function Start(props: Props) {
         return
       }
     }
-  }, [isConnected, isConnecting, wallet, initialized, decentralandConnectStorage])
+  }, [isConnected, isConnecting, wallet, hasInitializedConnection, decentralandConnectStorage])
 
   const handleJumpIn = useCallback(() => {
     initializeKernel()
@@ -85,16 +72,16 @@ export default function Start(props: Props) {
   )
 
   useEffect(() => {
-    if (SKIP_SETUP || LOGIN_AS_GUEST) {
+    if (SKIP_SETUP) {
       handleJumpIn()
     }
   }, [handleJumpIn])
 
-  if (SKIP_SETUP || LOGIN_AS_GUEST) {
+  if (SKIP_SETUP) {
     return null
   }
 
-  if (!initialized || isLoadingProfile || isConnecting) {
+  if (!hasInitializedConnection || isLoadingProfile || isConnecting) {
     return (
       <div className="explorer-website-start">
         <Loader active size="massive" />
@@ -151,7 +138,7 @@ export default function Start(props: Props) {
         <Icon name="discord" className="discord-icon" />
         <p className="discord-info">
           <span>Need guidance?</span>
-          <span>Ask the community</span>
+          <span>ASK THE COMMUNITY</span>
         </p>
       </a>
     </div>

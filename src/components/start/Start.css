@@ -64,7 +64,7 @@
   opacity: 0;
   position: absolute;
   transition: ease-out 2s;
-} 
+}
 
 .start-wearable-preview.loading .wearable-default-img {
   opacity: 0.9;
