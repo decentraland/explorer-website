@@ -34,7 +34,7 @@ jobs:
 
       - id: install
         name: install
-        run: npm ci
+        run: npm install
 
       - name: build
         run: npm run build
@@ -74,14 +74,14 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Use Node.js 18.x
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4.0.1
         with:
           node-version: 18.x
-          cache: npm
+          cache: 'npm'
 
       - id: install
         name: install
-        run: npm ci
+        run: npm install
         env:
           GEN_STATIC_LOCAL: true
 
