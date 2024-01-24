@@ -46,7 +46,7 @@
     "@sentry/tracing": "^7.91.0",
     "decentraland-connect": "^5.5.0",
     "decentraland-dapps": "^17.0.0",
-    "decentraland-ui": "^5.2.0",
+    "decentraland-ui": "^5.4.4",
     "detect-browser": "^5.2.0",
     "dotenv": "^16.3.1",
     "eth-connect": "^6.2.4",
