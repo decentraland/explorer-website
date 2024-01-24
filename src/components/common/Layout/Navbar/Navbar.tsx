@@ -11,15 +11,7 @@ const Navbar = (props: any) => {
     props.onSignOut()
   }, [props.onSignOut])
 
-  return (
-    <Base
-      onClickSignIn={handleSignIn}
-      onClickSignOut={handleSignOut}
-      onClickSignOut={handleSignOut}
-      activePage="play"
-      {...props}
-    />
-  )
+  return <Base onClickSignIn={handleSignIn} onClickSignOut={handleSignOut} activePage="play" {...props} />
 }
 
 export default Navbar
