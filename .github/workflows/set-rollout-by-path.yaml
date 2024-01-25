@@ -1,4 +1,4 @@
-name: Set rollout by path
+name: Set rollout
 
 on: [deployment_status]
 
