@@ -2,7 +2,6 @@ import { defineConfig, loadEnv } from 'vite'
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
 import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill'
 import react from '@vitejs/plugin-react-swc'
-import basicSsl from '@vitejs/plugin-basic-ssl'
 import rollupNodePolyFill from 'rollup-plugin-polyfill-node'
 import mime from 'mime-types'
 import fs from 'fs'
@@ -13,13 +12,12 @@ export default defineConfig(({ command, mode }) => {
   return {
     // depending on your application, base can also be "/"
     base: '',
-    plugins: [react(), basicSsl()],
+    plugins: [react()],
     define: {
       'process.env': {},
       global: 'globalThis'
     },
     server: {
-      https: {},
       // this ensures that the browser opens upon server start
       open: true,
       // this sets a default port to 3000

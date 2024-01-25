@@ -89,7 +89,11 @@ const App: React.FC<AppProps> = (props) => {
   }
 
   if (small || mobile) {
-    return <MobileContainer />
+    return (
+      <WalletProvider>
+        <MobileContainer />
+      </WalletProvider>
+    )
   }
 
   if (props.error) {

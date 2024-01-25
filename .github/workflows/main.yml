@@ -34,7 +34,7 @@ jobs:
 
       - id: install
         name: install
-        run: npm ci
+        run: npm install
 
       - name: build
         run: npm run build
@@ -42,7 +42,7 @@ jobs:
       - name: publish npm package
         uses: menduz/oddish-action@master
         with:
-          registry-url: "https://registry.npmjs.org"
+          registry-url: 'https://registry.npmjs.org'
           access: public
           cwd: ./dist
           ## use action runId instead of current date to generate snapshot numbers
@@ -73,15 +73,15 @@ jobs:
       public_path: ${{ steps.install.outputs.public_path }}
     steps:
       - uses: actions/checkout@master
-      - name: Use Node.js 14.x
-        uses: actions/setup-node@v2
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v4.0.1
         with:
-          node-version: 14.x
-          cache: npm
+          node-version: 18.x
+          cache: 'npm'
 
       - id: install
         name: install
-        run: npm ci
+        run: npm install
         env:
           GEN_STATIC_LOCAL: true
 
@@ -107,7 +107,7 @@ jobs:
         id: fc
         with:
           issue-number: ${{ github.event.pull_request.number }}
-          comment-author: "github-actions[bot]"
+          comment-author: 'github-actions[bot]'
           body-includes: Test this pull request
 
       - name: Create or update comment

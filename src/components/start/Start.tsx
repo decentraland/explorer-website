@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { ChainId, PreviewEmote } from '@dcl/schemas'
 import { WearablePreview } from 'decentraland-ui/dist/components/WearablePreview/WearablePreview'
+import { CommunityBubble } from 'decentraland-ui/dist/components/CommunityBubble'
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import { Loader } from 'decentraland-ui/dist/components/Loader/Loader'
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon/Icon'
@@ -134,13 +135,7 @@ export default function Start(props: Props) {
         />
         <img src={platformImg} alt="platform" className="wearable-platform" />
       </div>
-      <a className="discord-link-button" href="https://decentraland.org/discord" target="about:blank">
-        <Icon name="discord" className="discord-icon" />
-        <p className="discord-info">
-          <span>Need guidance?</span>
-          <span>ASK THE COMMUNITY</span>
-        </p>
-      </a>
+      <CommunityBubble className="start-community-bubble" />
     </div>
   )
 }

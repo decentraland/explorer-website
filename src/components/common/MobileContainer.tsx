@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import { useMobileResize } from '../../integration/mobile'
-import { Navbar } from './Layout/Navbar'
+import Navbar from './Layout/Navbar'
 import { track } from '../../utils/tracking'
 import './MobileContainer.css'
 
@@ -14,13 +14,13 @@ export default React.memo(function MobileContainer() {
 
   return (
     <div className="MobileContainer">
-      <Navbar rightMenu={false} />
+      <Navbar />
       <main className="MobileHero">
         <div>
           <h1>Play Decentraland on Desktop</h1>
           <p>Decentraland is not available on mobile.</p>
           <p>
-            Visit <strong>play.decentraland.org</strong> in your desktop browser to access Decentraland.
+            Visit <strong>decentraland.org/play</strong> in your desktop browser to access Decentraland.
           </p>
         </div>
       </main>

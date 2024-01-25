@@ -125,27 +125,10 @@
   opacity: 1;
 }
 
-.explorer-website-start .discord-link-button {
+.start-community-bubble {
   position: absolute;
   bottom: 20px;
   right: 20px;
-  display: flex;
-  color: white;
-  border-radius: 12px;
-  padding: 14px;
-  background: #161518;
-  align-items: flex-end;
-  gap: 5px;
-}
-
-.explorer-website-start .discord-info {
-  display: flex;
-  flex-direction: column;
-  color: white;
-}
-
-.explorer-website-start .discord-icon {
-  font-size: 28px;
 }
 
 .explorer-website-start .wearable-platform {
