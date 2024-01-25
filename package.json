@@ -34,8 +34,6 @@
     ]
   },
   "dependencies": {
-    "@0xsquid/sdk": "^2.8.9",
-    "@0xsquid/squid-types": "^0.1.51",
     "@dcl/explorer": "^1.0.158859-20240110140315.commit-19935b0",
     "@dcl/feature-flags": "^1.2.0",
     "@dcl/kernel-interface": "^2.0.0-20230512115658.commit-b582e05",
@@ -45,8 +43,8 @@
     "@sentry/browser": "^7.91.0",
     "@sentry/tracing": "^7.91.0",
     "decentraland-connect": "^5.5.0",
-    "decentraland-dapps": "^17.0.0",
-    "decentraland-ui": "^5.4.4",
+    "decentraland-dapps": "^17.4.0",
+    "decentraland-ui": "^5.4.6",
     "detect-browser": "^5.2.0",
     "dotenv": "^16.3.1",
     "eth-connect": "^6.2.4",
