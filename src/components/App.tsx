@@ -113,7 +113,7 @@ const App: React.FC<AppProps> = (props) => {
     return <LoadingRender />
   }
 
-  if (LOGIN_AS_GUEST) {
+  if (LOGIN_AS_GUEST && !SHOW_WALLET_SELECTOR) {
     initializeKernel()
     return <LoadingRender />
   }
