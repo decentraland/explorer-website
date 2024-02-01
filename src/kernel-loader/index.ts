@@ -318,7 +318,7 @@ async function initKernel() {
 
 async function initLogin(kernel: KernelResult) {
   if (!isElectron()) {
-    if (LOGIN_AS_GUEST) {
+    if (LOGIN_AS_GUEST && !SHOW_WALLET_SELECTOR) {
       authenticate(null).catch(defaultWebsiteErrorTracker)
       return
     }
