@@ -8,7 +8,6 @@ import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon/Icon'
 import { localStorageGetIdentity } from '@dcl/single-sign-on-client'
 import { SKIP_SETUP } from '../../integration/url'
 import platformImg from '../../images/Platform.webp'
-import manDefault from '../../images/ManDefault.webp'
 import BannerContainer from '../banners/BannerContainer'
 import { getWantedChainId } from '../../kernel-loader'
 import logo from '../../images/simple-logo.svg'
@@ -118,12 +117,6 @@ export default function Start(props: Props) {
         </div>
       </div>
       <div className={`start-wearable-preview ${isLoadingAvatar ? 'loading' : ''}`}>
-        <img
-          src={manDefault}
-          alt="Avatar"
-          className="wearable-default-img"
-          style={{ display: isLoadingAvatar ? 'inline' : 'none' }}
-        />
         <WearablePreview
           profile={wallet?.address}
           disableBackground
