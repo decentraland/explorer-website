@@ -1,15 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
-import { ChainId, PreviewEmote } from '@dcl/schemas'
-import { WearablePreview } from 'decentraland-ui/dist/components/WearablePreview/WearablePreview'
 import { CommunityBubble } from 'decentraland-ui/dist/components/CommunityBubble'
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import { Loader } from 'decentraland-ui/dist/components/Loader/Loader'
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon/Icon'
 import { localStorageGetIdentity } from '@dcl/single-sign-on-client'
 import { SKIP_SETUP } from '../../integration/url'
-import platformImg from '../../images/Platform.webp'
+import { CustomWearablePreview } from '../common/CustomWearablePreview'
 import BannerContainer from '../banners/BannerContainer'
-import { getWantedChainId } from '../../kernel-loader'
 import logo from '../../images/simple-logo.svg'
 import { Props } from './Start.types'
 import './Start.css'
@@ -40,7 +37,6 @@ export default function Start(props: Props) {
   const { isConnected, isConnecting, wallet, profile, initializeKernel, isLoadingProfile, hasInitializedConnection } =
     props
   const [isLoadingExplorer, setIsLoadingExplorer] = useState(false)
-  const [isLoadingAvatar, setIsLoadingAvatar] = useState(true)
   const decentralandConnectStorage = useLocalStorageListener('decentraland-connect-storage-key')
   const name = profile?.avatars[0].name
 
@@ -63,13 +59,6 @@ export default function Start(props: Props) {
     initializeKernel()
     setIsLoadingExplorer(true)
   }, [])
-
-  const handleWearablePreviewLoad = useCallback(
-    (params) => {
-      if (wallet?.address && params.profile === wallet.address) setIsLoadingAvatar(false)
-    },
-    [wallet?.address]
-  )
 
   useEffect(() => {
     if (SKIP_SETUP) {
@@ -116,17 +105,8 @@ export default function Start(props: Props) {
           </a>
         </div>
       </div>
-      <div className={`start-wearable-preview ${isLoadingAvatar ? 'loading' : ''}`}>
-        <WearablePreview
-          profile={wallet?.address}
-          disableBackground
-          lockBeta
-          disableAutoRotate={true}
-          onUpdate={handleWearablePreviewLoad}
-          emote={PreviewEmote.WAVE}
-          dev={getWantedChainId() !== ChainId.ETHEREUM_MAINNET}
-        />
-        <img src={platformImg} alt="platform" className="wearable-platform" />
+      <div className={`start-wearable-preview`}>
+        <CustomWearablePreview profile={wallet?.address ?? ''} />
       </div>
       <CommunityBubble className="start-community-bubble" />
     </div>
