@@ -1,0 +1,55 @@
+{
+  "id": "urn:decentraland:matic:collections-v2:0xe793801829e0e0f9aa5baf9877320059d9f4a654:0",
+  "name": "Wacky Alien Bucket Hat",
+  "description": "Slimy Hair is a fixed colour...",
+  "collectionAddress": "0xe793801829e0e0f9aa5baf9877320059d9f4a654",
+  "rarity": "legendary",
+  "i18n": [
+    {
+      "code": "en",
+      "text": "Wacky Alien Bucket Hat"
+    }
+  ],
+  "data": {
+    "replaces": [],
+    "hides": [],
+    "tags": ["wackyalien", "wacky", "alien", "buckethat", "slime", "1620", "judasjudas"],
+    "category": "extra",
+    "representations": [
+      {
+        "bodyShapes": ["urn:decentraland:off-chain:base-avatars:BaseMale"],
+        "mainFile": "male/frogglyMALE_base.glb",
+        "contents": [
+          {
+            "key": "male/frogglyMALE_base.glb",
+            "url": "http://localhost:5173/misc/platform/platform.glb"
+          }
+        ],
+        "overrideHides": ["hair"],
+        "overrideReplaces": []
+      },
+      {
+        "bodyShapes": ["urn:decentraland:off-chain:base-avatars:BaseFemale"],
+        "mainFile": "female/frogglyFEMALE_base.glb",
+        "contents": [
+          {
+            "key": "female/frogglyFEMALE_base.glb",
+            "url": "http://localhost:5173/misc/platform/platform.glb"
+          }
+        ],
+        "overrideHides": ["hair"],
+        "overrideReplaces": []
+      }
+    ]
+  },
+  "image": "https://peer-ec1.decentraland.org/content/contents/QmWPG3cJaVc1hEBkKiga65kUxb3gh4pZzD3wcJVoYZGEpB",
+  "thumbnail": "https://peer-ec1.decentraland.org/content/contents/QmYF79vY6CEjerRQD9MGwMVY5t5beZ69R9D2d9SKJDSP75",
+  "metrics": {
+    "triangles": 1487,
+    "materials": 2,
+    "textures": 2,
+    "meshes": 2,
+    "bodies": 2,
+    "entities": 1
+  }
+}
