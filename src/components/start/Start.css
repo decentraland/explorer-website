@@ -6,7 +6,10 @@
   position: fixed;
   width: 100vw;
   height: 100vh;
-  background: radial-gradient(70% 108% at 90% 50%, #ff00f5 0%, #540880 100%);
+  background-image: url('../../images/background-v4.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   display: flex;
   align-items: center;
 }
