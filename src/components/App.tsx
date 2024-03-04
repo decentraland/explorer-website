@@ -11,8 +11,7 @@ import {
   isLoginComplete,
   ABTestingVariant,
   getFeatureVariantName,
-  getFeatureVariantValue,
-  isFeatureEnabled
+  getFeatureVariantValue
 } from '../state/selectors'
 import { isMobile } from '../integration/browser'
 import { LoadingRender } from './common/Loading/LoadingRender'
