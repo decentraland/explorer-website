@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ChainId, ProviderType } from '@dcl/schemas'
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
 import { WearablePreview } from 'decentraland-ui/dist/components/WearablePreview/WearablePreview'
@@ -122,6 +122,12 @@ export const LoginWithAuthServerPage = () => {
     window.location.reload()
   }, [])
 
+  const handleGuestLogIn = useCallback((event) => {
+    setView(View.LOADING)
+    event.preventDefault()
+    return authenticate(null)
+  }, [])
+
   const onBack = useCallback(() => {
     initSignInResultRef.current = null
     setView(View.WELCOME)
@@ -147,6 +153,12 @@ export const LoginWithAuthServerPage = () => {
             <Button disabled={isLoading} className="button" primary loading={isLoading} onClick={onWelcomeStart}>
               Start
             </Button>
+            <div className="guestInfo">
+              Quick dive?{' '}
+              <a href="#" onClick={handleGuestLogIn}>
+                Explore as a guest
+              </a>
+            </div>
           </>
         }
       />
@@ -196,8 +208,14 @@ export const LoginWithAuthServerPage = () => {
               <br />
               You'll be prompted to confirm it in your web browser to securely link your sign in.
             </div>
-            <div className="code"><span>{initSignInResultRef.current!.requestResponse.code}</span>
-              <div className='tooltip'><InfoTooltip position="right center" content="Keep this number private. It ensures that your sign-in is secure and unique to you."/></div>
+            <div className="code">
+              <span>{initSignInResultRef.current!.requestResponse.code}</span>
+              <div className="tooltip">
+                <InfoTooltip
+                  position="right center"
+                  content="Keep this number private. It ensures that your sign-in is secure and unique to you."
+                />
+              </div>
             </div>
             <div className="code-expiration">
               Verification number will expire in {expirationCountdown.minutes}:{expirationCountdown.seconds} minutes
