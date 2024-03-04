@@ -13,13 +13,15 @@ export const CustomWearablePreview = (props: Props) => {
   const platformDefinition = useMemo(() => {
     const getRepresentation = (bodyShape: 'BaseMale' | 'BaseFemale') => {
       const mainFile = 'platform.glb'
+      const baseUrl = import.meta.env.VITE_PUBLIC_URL || window.location.origin
+      
       return {
         bodyShapes: [`urn:decentraland:off-chain:base-avatars:${bodyShape}`],
         mainFile,
         contents: [
           {
             key: mainFile,
-            url: `${window.location.origin}/misc/platform/${mainFile}`
+            url: `${baseUrl}/misc/platform/${mainFile}`
           }
         ]
       }
