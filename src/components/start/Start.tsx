@@ -105,7 +105,7 @@ export default function Start(props: Props) {
           </a>
         </div>
       </div>
-      <div className={`start-wearable-preview`}>
+      <div className="start-wearable-preview">
         <CustomWearablePreview profile={wallet?.address ?? ''} />
       </div>
       <CommunityBubble className="start-community-bubble" />
