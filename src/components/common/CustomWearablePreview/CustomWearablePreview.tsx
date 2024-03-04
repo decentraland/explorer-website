@@ -19,7 +19,7 @@ export const CustomWearablePreview = (props: Props) => {
         contents: [
           {
             key: mainFile,
-            url: `${window.location.origin}/misc/platform/platform.glb`
+            url: `${window.location.origin}/misc/platform/${mainFile}`
           }
         ]
       }
