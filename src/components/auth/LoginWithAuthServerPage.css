@@ -128,3 +128,21 @@
   line-height: 16.94px;
   margin-top: 12px;
 }
+
+.LoginWithAuthServerPage .guestInfo,
+.LoginWithAuthServerPage .guestInfo a {
+  color: white;
+  font-size: 16px;
+}
+
+.LoginWithAuthServerPage .guestInfo {
+  border-top: 1px solid white;
+  padding-top: 15px;
+  display: flex;
+  gap: 5px;
+  margin-top: 50px;
+}
+
+.LoginWithAuthServerPage .guestInfo a {
+  text-decoration: underline;
+}
