@@ -50,6 +50,7 @@ export const LoginWithAuthServerPage = () => {
       const connectedAccount = AuthServerProvider.getAccount()
       const hasValidIdentity = AuthServerProvider.hasValidIdentity()
 
+      // Checks if there is a persisted account and unexpired identity to show the user as connected.
       if (connectedAccount && hasValidIdentity) {
         connectedAccountRef.current = connectedAccount
 
