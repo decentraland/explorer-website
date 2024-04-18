@@ -48,8 +48,9 @@ export const LoginWithAuthServerPage = () => {
       }
 
       const connectedAccount = AuthServerProvider.getAccount()
+      const hasValidIdentity = AuthServerProvider.hasValidIdentity()
 
-      if (connectedAccount) {
+      if (connectedAccount && hasValidIdentity) {
         connectedAccountRef.current = connectedAccount
 
         const env = getWantedChainId() === ChainId.ETHEREUM_MAINNET ? 'org' : 'zone'
