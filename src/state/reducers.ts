@@ -1,5 +1,7 @@
 import { AnyAction } from 'redux'
-import { connection } from 'decentraland-connect/dist/ConnectionManager'
+import { v4 } from 'uuid'
+import { connection } from 'decentraland-connect'
+import { toFeatureList } from '@dcl/feature-flags'
 import { KernelResult, KernelError, LoginState, KernelAccountState } from '@dcl/kernel-interface'
 import {
   SET_BANNER,
@@ -29,13 +31,11 @@ import {
   CatalystState,
   DesktopState
 } from './redux'
-import { v4 } from 'uuid'
 import { errorToString } from '../utils/errorToString'
 import { isElectron } from '../integration/desktop'
 import { defaultFeatureFlagsState } from './types'
 import { CATALYST } from '../integration/url'
 import { track } from '../utils/tracking'
-import { toFeatureList } from '@dcl/feature-flags'
 
 export function decktopReducer(state: DesktopState | undefined, action: ReturnType<typeof setDesktopDetected>): DesktopState {
   if (action.type === SET_DESKTOP_DETECTED && action.payload) {

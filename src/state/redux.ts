@@ -16,7 +16,7 @@ import {
   decktopReducer
 } from './reducers'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import { ConnectionData } from 'decentraland-connect/dist/types'
+import { ConnectionData } from 'decentraland-connect'
 import { rootSaga } from './sagas'
 
 export type DesktopState = {
