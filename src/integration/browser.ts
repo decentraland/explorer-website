@@ -38,6 +38,7 @@ export const isRecommendedBrowser = callOnce(() => {
     case 'chromium-webview':
     case 'edge-chromium':
     case 'firefox':
+    case 'opera':
       return true
 
     default:
