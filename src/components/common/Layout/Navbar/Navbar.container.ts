@@ -6,7 +6,7 @@ import {
   getAddress,
   getManaBalances
 } from 'decentraland-dapps/dist/modules/wallet/selectors'
-import { disconnectWallet } from 'decentraland-dapps/dist/modules/wallet/actions'
+import { disconnectWalletRequest } from 'decentraland-dapps/dist/modules/wallet/actions'
 import { getData as getProfiles } from 'decentraland-dapps/dist/modules/profile/selectors'
 import { StoreType } from '../../../../state/redux'
 import { MapStateProps, MapDispatchProps } from './Navbar.types'
@@ -25,7 +25,7 @@ const mapState = (state: StoreType): MapStateProps => {
 }
 
 const mapDispatch = (dispatch: Dispatch): MapDispatchProps => ({
-  onSignOut: () => dispatch(disconnectWallet())
+  onSignOut: () => dispatch(disconnectWalletRequest())
 })
 
 export default connect(mapState, mapDispatch)(Navbar)
