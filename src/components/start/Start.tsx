@@ -80,7 +80,9 @@ export default function Start(props: Props) {
 
   return (
     <div className="explorer-website-start">
-      <BannerContainer />
+      <div className="start-banner-container">
+        <BannerContainer />
+      </div>
       <div className="start-info">
         <div className="start-links">
           <img alt="decentraland" src={logo} height="40" width="40" />

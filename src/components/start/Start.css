@@ -14,6 +14,12 @@
   align-items: center;
 }
 
+.explorer-website-start .start-banner-container {
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
 .explorer-website-start .ui.loader:after {
   border-color: #540880 transparent transparent !important;
 }
