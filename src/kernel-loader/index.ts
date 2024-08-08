@@ -105,12 +105,7 @@ export async function authenticate(providerType: ProviderType | null) {
     // Track that the users wallet has connected.
     // Only when the user has not connected as guest.
     if (providerType && account) {
-      trackConnectWallet({
-        providerType,
-        chainId: providerChainId,
-        address: account,
-        walletName: connection.getWalletName()
-      })
+      trackConnectWallet({ providerType, address: account, walletName: connection.getWalletName() })
     }
   } catch (err) {
     if (
