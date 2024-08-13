@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux'
-import { DisconnectWalletAction } from 'decentraland-dapps/dist/modules/wallet/actions'
+import { DisconnectWalletRequestAction } from 'decentraland-dapps/dist/modules/wallet/actions'
 import { NavbarProps } from 'decentraland-ui/dist/components/Navbar/Navbar.types'
 
 export type Props = Pick<NavbarProps, 'avatar' | 'manaBalances' | 'address' | 'isSignedIn' | 'isSigningIn'> & {
@@ -8,4 +8,4 @@ export type Props = Pick<NavbarProps, 'avatar' | 'manaBalances' | 'address' | 'i
 
 export type MapStateProps = Pick<Props, 'avatar' | 'manaBalances' | 'address' | 'isSignedIn' | 'isSigningIn'>
 export type MapDispatchProps = Pick<Props, 'onSignOut'>
-export type MapDispatch = Dispatch<DisconnectWalletAction>
+export type MapDispatch = Dispatch<DisconnectWalletRequestAction>

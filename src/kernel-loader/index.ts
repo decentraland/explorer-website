@@ -1,7 +1,8 @@
 import { trackConnectWallet } from 'decentraland-dapps/dist/modules/analytics/utils'
 import { getProviderChainId } from 'decentraland-dapps/dist/modules/wallet/utils/getProviderChainId'
 import { connection } from 'decentraland-connect'
-import { disconnect, getEthereumProvider, restoreConnection } from '../eth/provider'
+import { getConnectedProvider, getSigner } from 'decentraland-dapps/dist/lib/eth'
+import { disconnect, restoreConnection } from '../eth/provider'
 import { internalTrackEvent, identifyUser, disableAnalytics } from '../integration/analytics'
 import { injectKernel } from './injector'
 import {
@@ -9,8 +10,7 @@ import {
   setKernelError,
   setRendererLoading,
   setKernelLoaded,
-  setRendererReady,
-  setDesktopDetected
+  setRendererReady
 } from '../state/actions'
 import { ErrorType, store } from '../state/redux'
 import { ChainId } from '@dcl/schemas/dist/dapps/chain-id'
@@ -30,7 +30,7 @@ import {
   SHOW_WALLET_SELECTOR,
   LOGIN_AS_GUEST
 } from '../integration/url'
-import { isElectron, launchDesktopApp } from '../integration/desktop'
+import { isElectron } from '../integration/desktop'
 import { isMobile, setAsRecentlyLoggedIn } from '../integration/browser'
 import { FeatureFlags, isFeatureVariantEnabled } from '../state/selectors'
 
@@ -38,9 +38,6 @@ export function getWantedChainId() {
   let chainId: ChainId
 
   switch (NETWORK) {
-    case 'goerli':
-      chainId = ChainId.ETHEREUM_GOERLI
-      break
     case 'sepolia':
       chainId = ChainId.ETHEREUM_SEPOLIA
       break
@@ -54,8 +51,21 @@ export function getWantedChainId() {
 export async function authenticate(providerType: ProviderType | null) {
   try {
     const wantedChainId = getWantedChainId()
+    const provider = await getConnectedProvider()
 
-    const { provider, chainId: providerChainId, account } = await getEthereumProvider(providerType, wantedChainId)
+    if (!provider) {
+      store.dispatch(
+        setKernelError({
+          error: new Error('Not connected provider, E01)'),
+          code: ErrorType.NOT_SUPPORTED
+        })
+      )
+      return
+    }
+
+    const providerChainId = await getProviderChainId(provider)
+    const account = await getSigner()
+    const address = await account.getAddress()
 
     if (providerChainId !== wantedChainId) {
       store.dispatch(
@@ -74,26 +84,6 @@ export async function authenticate(providerType: ProviderType | null) {
       return
     }
 
-    {
-      const providerChainId = await getProviderChainId(provider)
-      if (providerChainId !== wantedChainId) {
-        store.dispatch(
-          setKernelError({
-            error: new Error(
-              `Network mismatch NETWORK url param is not equal to the provided by Ethereum Provider (wanted: ${wantedChainId} actual: ${providerChainId}, E02)`
-            ),
-            code: ErrorType.NET_MISMATCH,
-            extra: {
-              providerType,
-              providerChainId: providerChainId,
-              wantedChainId: wantedChainId
-            }
-          })
-        )
-        return
-      }
-    }
-
     const kernel = store.getState().kernel.kernel
 
     if (!kernel) throw new Error('Kernel did not load yet')
@@ -104,8 +94,13 @@ export async function authenticate(providerType: ProviderType | null) {
 
     // Track that the users wallet has connected.
     // Only when the user has not connected as guest.
-    if (providerType && account) {
-      trackConnectWallet({ providerType, address: account, walletName: connection.getWalletName() })
+    if (providerType && address) {
+      trackConnectWallet({
+        providerType,
+        chainId: providerChainId,
+        address: address,
+        walletName: connection.getWalletName()
+      })
     }
   } catch (err) {
     if (

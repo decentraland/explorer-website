@@ -21,7 +21,9 @@ export const ErrorNetworkMismatch = React.memo(function (props: ErrorNetworkMism
     async function () {
       // Switch to the wanted network if using certain providers.
       if (
-        [ProviderType.INJECTED, ProviderType.WALLET_CONNECT_V2, ProviderType.AUTH_SERVER].includes(props.providerType)
+        [ProviderType.INJECTED, ProviderType.WALLET_CONNECT_V2, ProviderType.AUTH_SERVER, ProviderType.MAGIC].includes(
+          props.providerType
+        )
       ) {
         try {
           await switchToChainId(props.wantedChainId, props.providerChainId)
