@@ -1,8 +1,7 @@
 import { trackConnectWallet } from 'decentraland-dapps/dist/modules/analytics/utils'
 import { getProviderChainId } from 'decentraland-dapps/dist/modules/wallet/utils/getProviderChainId'
 import { connection } from 'decentraland-connect'
-import { getConnectedProvider, getSigner } from 'decentraland-dapps/dist/lib/eth'
-import { disconnect, restoreConnection } from '../eth/provider'
+import { disconnect, getEthereumProvider, restoreConnection } from '../eth/provider'
 import { internalTrackEvent, identifyUser, disableAnalytics } from '../integration/analytics'
 import { injectKernel } from './injector'
 import {
@@ -51,21 +50,8 @@ export function getWantedChainId() {
 export async function authenticate(providerType: ProviderType | null) {
   try {
     const wantedChainId = getWantedChainId()
-    const provider = await getConnectedProvider()
 
-    if (!provider) {
-      store.dispatch(
-        setKernelError({
-          error: new Error('Not connected provider, E01)'),
-          code: ErrorType.NOT_SUPPORTED
-        })
-      )
-      return
-    }
-
-    const providerChainId = await getProviderChainId(provider)
-    const account = await getSigner()
-    const address = await account.getAddress()
+    const { provider, chainId: providerChainId, account } = await getEthereumProvider(providerType, wantedChainId)
 
     if (providerChainId !== wantedChainId) {
       store.dispatch(
@@ -84,6 +70,26 @@ export async function authenticate(providerType: ProviderType | null) {
       return
     }
 
+    {
+      const providerChainId = await getProviderChainId(provider)
+      if (providerChainId !== wantedChainId) {
+        store.dispatch(
+          setKernelError({
+            error: new Error(
+              `Network mismatch NETWORK url param is not equal to the provided by Ethereum Provider (wanted: ${wantedChainId} actual: ${providerChainId}, E02)`
+            ),
+            code: ErrorType.NET_MISMATCH,
+            extra: {
+              providerType,
+              providerChainId: providerChainId,
+              wantedChainId: wantedChainId
+            }
+          })
+        )
+        return
+      }
+    }
+
     const kernel = store.getState().kernel.kernel
 
     if (!kernel) throw new Error('Kernel did not load yet')
@@ -94,11 +100,11 @@ export async function authenticate(providerType: ProviderType | null) {
 
     // Track that the users wallet has connected.
     // Only when the user has not connected as guest.
-    if (providerType && address) {
+    if (providerType && account) {
       trackConnectWallet({
         providerType,
         chainId: providerChainId,
-        address: address,
+        address: account,
         walletName: connection.getWalletName()
       })
     }
@@ -342,10 +348,10 @@ async function initLogin(kernel: KernelResult) {
 }
 
 export function startKernel() {
-  if (NETWORK && NETWORK !== 'mainnet' && NETWORK !== 'goerli' && NETWORK !== 'sepolia') {
+  if (NETWORK && NETWORK !== 'mainnet' && NETWORK !== 'sepolia') {
     store.dispatch(
       setKernelError({
-        error: new Error(`Invalid NETWORK url param, valid options are 'mainnet', 'goerli' and 'sepolia'`),
+        error: new Error(`Invalid NETWORK url param, valid options are 'mainnet' and 'sepolia'`),
         code: ErrorType.FATAL
       })
     )
@@ -356,7 +362,7 @@ export function startKernel() {
     store.dispatch(
       setKernelError({
         error: new Error(
-          `The "ENV" URL parameter is no longer supported. Please use NETWORK=goerli or NETWORK=sepolia in the cases where ENV=zone was used`
+          `The "ENV" URL parameter is no longer supported. Please use NETWORK=sepolia in the cases where ENV=zone was used`
         ),
         code: ErrorType.FATAL
       })
