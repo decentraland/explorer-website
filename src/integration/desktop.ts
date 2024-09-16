@@ -35,7 +35,7 @@ export const initializeDesktopApp = callOnce(() => {
   if (isElectron() && (window as any).electron) {
     const ipcRenderer = (window as any).electron.ipcRenderer
 
-    ipcRenderer.on('downloadState', (event: any, payload: any): any => {
+    ipcRenderer.on('downloadState', (_event: any, payload: any): any => {
       switch (payload.type) {
         case 'ERROR':
           store.dispatch(
@@ -46,7 +46,7 @@ export const initializeDesktopApp = callOnce(() => {
           break
         case 'NEW_VERSION':
           store.dispatch(setDownloadNewVersion())
-          event.sender.send('download')
+          ipcRenderer.send('download')
           break
         case 'READY':
           store.dispatch(setDownloadReady())
