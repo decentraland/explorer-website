@@ -20,8 +20,8 @@ export default defineConfig(({ command, mode }) => {
     server: {
       // this ensures that the browser opens upon server start
       open: true,
-      // this sets a default port to 3000
-      port: 3000,
+      // this sets a default port to 5173
+      port: 5173,
       proxy: {
         '/cdn/packages/website': {
           selfHandleResponse: true,
