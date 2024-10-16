@@ -101,3 +101,71 @@
   bottom: 20px;
   right: 20px;
 }
+
+.ui.dimmer.explorer-alpha-notice-dimmer {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.ui.modal.explorer-alpha-notice {
+  width: 480px;
+}
+
+.ui.modal.explorer-alpha-notice .content {
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  margin: 0px;
+  align-items: stretch;
+}
+
+.ui.modal.explorer-alpha-notice .content .header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.ui.modal.explorer-alpha-notice .content .header .icon {
+  background-image: url('./images/launch-desktop.svg');
+  width: 225px;
+  height: 150px;
+  margin-bottom: 12px;
+}
+
+.ui.modal.explorer-alpha-notice .content .header .title {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 39.52px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.ui.modal.explorer-alpha-notice .content .header .text {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  text-align: center;
+  color: #5d5b67;
+  margin-bottom: 24px;
+}
+
+.ui.modal.explorer-alpha-notice .content .actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ui.modal.explorer-alpha-notice .content .actions .ui.button + .ui.button {
+  margin: 0px;
+}
+.ui.modal.explorer-alpha-notice .content .actions .ui.button:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.ui.modal.explorer-alpha-notice .content .actions .ui.button:not(.primary) {
+  background-color: transparent;
+  color: var(--primary);
+}
+
+.ui.modal.explorer-alpha-notice .content .actions .ui.button:not(.primary):hover {
+  background-color: rgba(var(--summer-red-raw), 0.1);
+}

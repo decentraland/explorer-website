@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useState } from 'react'
 import { CommunityBubble } from 'decentraland-ui/dist/components/CommunityBubble'
 import { Button } from 'decentraland-ui/dist/components/Button/Button'
+import { Modal } from 'decentraland-ui/dist/components/Modal/Modal'
+import { ModalNavigation } from 'decentraland-ui/dist/components/ModalNavigation/ModalNavigation'
 import { Loader } from 'decentraland-ui/dist/components/Loader/Loader'
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon/Icon'
 import { localStorageGetIdentity } from '@dcl/single-sign-on-client'
 import { SKIP_SETUP } from '../../integration/url'
+import { launchDesktopApp } from '../../integration/desktop'
 import { CustomWearablePreview } from '../common/CustomWearablePreview'
 import BannerContainer from '../banners/BannerContainer'
 import logo from '../../images/simple-logo.svg'
@@ -37,6 +40,7 @@ export default function Start(props: Props) {
   const { isConnected, isConnecting, wallet, profile, initializeKernel, isLoadingProfile, hasInitializedConnection } =
     props
   const [isLoadingExplorer, setIsLoadingExplorer] = useState(false)
+  const [showExplorerAlphaNotice, setShowExplorerAlphaNotice] = useState(false)
   const decentralandConnectStorage = useLocalStorageListener('decentraland-connect-storage-key')
   const name = profile?.avatars[0].name
 
@@ -56,6 +60,20 @@ export default function Start(props: Props) {
   }, [isConnected, isConnecting, wallet, hasInitializedConnection, decentralandConnectStorage])
 
   const handleJumpIn = useCallback(() => {
+    setShowExplorerAlphaNotice(true)
+  }, [])
+
+  const handleContinueOnDesktop = useCallback(() => {
+    setShowExplorerAlphaNotice(false)
+    launchDesktopApp(true).then((isInstalled) => {
+      if (!isInstalled) {
+        window.location.href = 'https://decentraland.org/download'
+      }
+    })
+  }, [launchDesktopApp])
+
+  const handleContinueOnWeb = useCallback(() => {
+    setShowExplorerAlphaNotice(false)
     initializeKernel()
     setIsLoadingExplorer(true)
   }, [])
@@ -111,6 +129,31 @@ export default function Start(props: Props) {
         <CustomWearablePreview profile={wallet?.address ?? ''} />
       </div>
       <CommunityBubble className="start-community-bubble" />
+      <Modal
+        open={showExplorerAlphaNotice}
+        size="tiny"
+        onClose={() => setShowExplorerAlphaNotice(false)}
+        className="explorer-alpha-notice"
+        dimmer={{ className: 'explorer-alpha-notice-dimmer' }}
+      >
+        <ModalNavigation title="" onClose={() => setShowExplorerAlphaNotice(false)} />
+        <div className="content">
+          <div className="header">
+            <i className="icon" />
+            <p className="title">This is An Outdated Version of Decentraland</p>
+            <p className="text">
+              Decentraland has been re-released as a desktop app offering a completely new experience. Download and
+              discover improved performance, better graphics, and lots of new features!
+            </p>
+          </div>
+          <div className="actions">
+            <Button primary onClick={handleContinueOnDesktop}>
+              Continue on Desktop
+            </Button>
+            <Button onClick={handleContinueOnWeb}>Continue on Web</Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   )
 }
