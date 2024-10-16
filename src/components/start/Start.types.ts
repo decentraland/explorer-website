@@ -9,9 +9,16 @@ export type Props = {
   isConnecting: boolean
   isLoadingProfile: boolean
   profile: Profile | null
+  isDiscoverExplorerAlphaEnabled: boolean
 }
 
 export type MapStateProps = Pick<
   Props,
-  'wallet' | 'isConnected' | 'hasInitializedConnection' | 'isConnecting' | 'isLoadingProfile' | 'profile'
+  | 'wallet'
+  | 'isConnected'
+  | 'hasInitializedConnection'
+  | 'isConnecting'
+  | 'isLoadingProfile'
+  | 'profile'
+  | 'isDiscoverExplorerAlphaEnabled'
 >

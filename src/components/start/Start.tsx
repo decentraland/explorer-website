@@ -37,8 +37,16 @@ const useLocalStorageListener = (key: string) => {
 }
 
 export default function Start(props: Props) {
-  const { isConnected, isConnecting, wallet, profile, initializeKernel, isLoadingProfile, hasInitializedConnection } =
-    props
+  const {
+    isConnected,
+    isConnecting,
+    wallet,
+    profile,
+    initializeKernel,
+    isLoadingProfile,
+    hasInitializedConnection,
+    isDiscoverExplorerAlphaEnabled
+  } = props
   const [isLoadingExplorer, setIsLoadingExplorer] = useState(false)
   const [showExplorerAlphaNotice, setShowExplorerAlphaNotice] = useState(false)
   const decentralandConnectStorage = useLocalStorageListener('decentraland-connect-storage-key')
@@ -59,10 +67,6 @@ export default function Start(props: Props) {
     }
   }, [isConnected, isConnecting, wallet, hasInitializedConnection, decentralandConnectStorage])
 
-  const handleJumpIn = useCallback(() => {
-    setShowExplorerAlphaNotice(true)
-  }, [])
-
   const handleContinueOnDesktop = useCallback(() => {
     setShowExplorerAlphaNotice(false)
     launchDesktopApp(true).then((isInstalled) => {
@@ -70,13 +74,21 @@ export default function Start(props: Props) {
         window.location.href = 'https://decentraland.org/download'
       }
     })
-  }, [launchDesktopApp])
+  }, [launchDesktopApp, setShowExplorerAlphaNotice])
 
   const handleContinueOnWeb = useCallback(() => {
     setShowExplorerAlphaNotice(false)
     initializeKernel()
     setIsLoadingExplorer(true)
-  }, [])
+  }, [setShowExplorerAlphaNotice, initializeKernel, setIsLoadingExplorer])
+
+  const handleJumpIn = useCallback(() => {
+    if (isDiscoverExplorerAlphaEnabled) {
+      setShowExplorerAlphaNotice(true)
+    } else {
+      handleContinueOnWeb()
+    }
+  }, [isDiscoverExplorerAlphaEnabled, setShowExplorerAlphaNotice, handleContinueOnWeb])
 
   useEffect(() => {
     if (SKIP_SETUP) {
