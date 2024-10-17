@@ -27,6 +27,10 @@ export enum ABTestingVariant {
   Disabled = 'disabled'
 }
 
+export function areFeatureFlagsReady(state: Pick<StoreType, 'featureFlags'>): boolean {
+  return !!state.featureFlags.ready
+}
+
 export function isFeatureEnabled(state: Pick<StoreType, 'featureFlags'>, key: string): boolean {
   const ff = state.featureFlags || defaultFeatureFlagsState
   return !!ff.flags[key]

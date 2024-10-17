@@ -10,6 +10,7 @@ export type Props = {
   isLoadingProfile: boolean
   profile: Profile | null
   isDiscoverExplorerAlphaEnabled: boolean
+  areFeatureFlagsReady: boolean
 }
 
 export type MapStateProps = Pick<
@@ -21,4 +22,5 @@ export type MapStateProps = Pick<
   | 'isLoadingProfile'
   | 'profile'
   | 'isDiscoverExplorerAlphaEnabled'
+  | 'areFeatureFlagsReady'
 >

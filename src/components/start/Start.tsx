@@ -14,10 +14,16 @@ import logo from '../../images/simple-logo.svg'
 import { Props } from './Start.types'
 import './Start.css'
 
-function getAuthURL() {
+function getAuthURL(skipSetup: boolean) {
   var url = new URL(window.location.href)
-  if (!url.searchParams.has('skipSetup')) {
-    url.searchParams.append('skipSetup', 'true')
+  if (skipSetup) {
+    if (!url.searchParams.has('skipSetup')) {
+      url.searchParams.append('skipSetup', 'true')
+    }
+  } else {
+    if (url.searchParams.has('skipSetup')) {
+      url.searchParams.delete('skipSetup')
+    }
   }
   return `/auth/login?redirectTo=${encodeURIComponent(url.toString())}`
 }
@@ -45,62 +51,91 @@ export default function Start(props: Props) {
     initializeKernel,
     isLoadingProfile,
     hasInitializedConnection,
-    isDiscoverExplorerAlphaEnabled
+    isDiscoverExplorerAlphaEnabled,
+    areFeatureFlagsReady
   } = props
   const [isLoadingExplorer, setIsLoadingExplorer] = useState(false)
   const [showExplorerAlphaNotice, setShowExplorerAlphaNotice] = useState(false)
+  const [isExplorerAlphaInstalled, setIsExplorerAlphaInstalled] = useState(false)
+  const [isLaunchingExplorerAlpha, setIsLaunchingExplorerAlpha] = useState(false)
   const decentralandConnectStorage = useLocalStorageListener('decentraland-connect-storage-key')
   const name = profile?.avatars[0].name
 
   useEffect(() => {
+    if (!areFeatureFlagsReady) {
+      return
+    }
+
     if ((!isConnected && !isConnecting && hasInitializedConnection) || decentralandConnectStorage === null) {
-      window.location.replace(getAuthURL())
+      window.location.replace(getAuthURL(!isDiscoverExplorerAlphaEnabled))
       return
     }
 
     if (isConnected && wallet) {
       const identity = localStorageGetIdentity(wallet.address)
       if (!identity) {
-        window.location.replace(getAuthURL())
+        window.location.replace(getAuthURL(!isDiscoverExplorerAlphaEnabled))
         return
       }
     }
-  }, [isConnected, isConnecting, wallet, hasInitializedConnection, decentralandConnectStorage])
+  }, [
+    isConnected,
+    isConnecting,
+    wallet,
+    hasInitializedConnection,
+    decentralandConnectStorage,
+    isDiscoverExplorerAlphaEnabled,
+    areFeatureFlagsReady
+  ])
 
-  const handleContinueOnDesktop = useCallback(() => {
+  const handleReLaunch = useCallback(() => {
+    void launchDesktopApp(true)
+  }, [launchDesktopApp])
+
+  const handleContinueWithWebVersion = useCallback(() => {
     setShowExplorerAlphaNotice(false)
-    launchDesktopApp(true).then((isInstalled) => {
-      if (!isInstalled) {
-        window.location.href = 'https://decentraland.org/download'
-      }
-    })
-  }, [launchDesktopApp, setShowExplorerAlphaNotice])
+  }, [setShowExplorerAlphaNotice])
 
-  const handleContinueOnWeb = useCallback(() => {
+  const handleJumpIn = useCallback(() => {
     setShowExplorerAlphaNotice(false)
     initializeKernel()
     setIsLoadingExplorer(true)
   }, [setShowExplorerAlphaNotice, initializeKernel, setIsLoadingExplorer])
 
-  const handleJumpIn = useCallback(() => {
-    if (isDiscoverExplorerAlphaEnabled) {
-      setShowExplorerAlphaNotice(true)
-    } else {
-      handleContinueOnWeb()
-    }
-  }, [isDiscoverExplorerAlphaEnabled, setShowExplorerAlphaNotice, handleContinueOnWeb])
-
   useEffect(() => {
     if (SKIP_SETUP) {
       handleJumpIn()
+    } else if (wallet && isDiscoverExplorerAlphaEnabled) {
+      const identity = localStorageGetIdentity(wallet.address)
+      if (identity) {
+        setIsLaunchingExplorerAlpha(true)
+        launchDesktopApp(true).then((isInstalled) => {
+          setIsExplorerAlphaInstalled(isInstalled)
+          setShowExplorerAlphaNotice(true)
+          setIsLaunchingExplorerAlpha(false)
+        })
+      }
     }
-  }, [handleJumpIn])
+  }, [
+    handleJumpIn,
+    isDiscoverExplorerAlphaEnabled,
+    setIsExplorerAlphaInstalled,
+    setShowExplorerAlphaNotice,
+    setIsLaunchingExplorerAlpha,
+    wallet
+  ])
 
   if (SKIP_SETUP) {
     return null
   }
 
-  if (!hasInitializedConnection || isLoadingProfile || isConnecting) {
+  if (
+    !hasInitializedConnection ||
+    isLoadingProfile ||
+    isConnecting ||
+    isLaunchingExplorerAlpha ||
+    !areFeatureFlagsReady
+  ) {
     return (
       <div className="explorer-website-start">
         <Loader active size="massive" />
@@ -126,7 +161,7 @@ export default function Start(props: Props) {
             jump into decentraland
             <Icon name="arrow alternate circle right outline" />
           </Button>
-          <Button inverted as="a" href={getAuthURL()} disabled={isLoadingExplorer}>
+          <Button inverted as="a" href={getAuthURL(isDiscoverExplorerAlphaEnabled)} disabled={isLoadingExplorer}>
             use a different account
           </Button>
         </div>
@@ -150,20 +185,38 @@ export default function Start(props: Props) {
       >
         <ModalNavigation title="" onClose={() => setShowExplorerAlphaNotice(false)} />
         <div className="content">
-          <div className="header">
-            <i className="icon" />
-            <p className="title">This is An Outdated Version of Decentraland</p>
-            <p className="text">
-              Decentraland has been re-released as a desktop app offering a completely new experience. Download and
-              discover improved performance, better graphics, and lots of new features!
-            </p>
-          </div>
-          <div className="actions">
-            <Button primary onClick={handleContinueOnDesktop}>
-              Continue on Desktop
-            </Button>
-            <Button onClick={handleContinueOnWeb}>Continue on Web</Button>
-          </div>
+          {!isExplorerAlphaInstalled ? (
+            <>
+              <div className="header">
+                <i className="icon" />
+                <p className="title">This is An Outdated Version of Decentraland</p>
+                <p className="text">
+                  Decentraland has been re-released as a desktop app offering a completely new experience. Download and
+                  discover improved performance, better graphics, and lots of new features!
+                </p>
+              </div>
+              <div className="actions">
+                <Button primary href="https://decentraland.org/download">
+                  Download Decentraland
+                </Button>
+                <Button onClick={handleContinueWithWebVersion}>Continue with outdated web version</Button>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="header">
+                <i className="icon" />
+                <p className="title">Continue on Desktop</p>
+                <p className="text">For a better experience, we suggest you use the desktop explorer.</p>
+              </div>
+              <div className="actions">
+                <Button primary onClick={handleReLaunch}>
+                  Re-Launch
+                </Button>
+                <Button onClick={handleContinueWithWebVersion}>Continue with outdated web version</Button>
+              </div>
+            </>
+          )}
         </div>
       </Modal>
     </div>
