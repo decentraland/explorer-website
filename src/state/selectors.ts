@@ -12,9 +12,10 @@ export function getRequiredAnalyticsContext(state: StoreType): SessionTraits {
 
 export enum FeatureFlags {
   Stream = 'explorer-stream',
-  AuthDapp = 'dapps-auth-dapp',  
+  AuthDapp = 'dapps-auth-dapp',
   SeamlessLogin = 'explorer-seamless_login_variant',
-  DesktopClientSignInWithAuthDapp = 'dapps-desktop-client-with-auth-dapp'
+  DesktopClientSignInWithAuthDapp = 'dapps-desktop-client-with-auth-dapp',
+  DiscoverExplorerAlpha = 'explorer-discover-alpha'
 }
 
 export enum VariantNames {
@@ -24,6 +25,10 @@ export enum VariantNames {
 export enum ABTestingVariant {
   Enabled = 'enabled',
   Disabled = 'disabled'
+}
+
+export function areFeatureFlagsReady(state: Pick<StoreType, 'featureFlags'>): boolean {
+  return !!state.featureFlags.ready
 }
 
 export function isFeatureEnabled(state: Pick<StoreType, 'featureFlags'>, key: string): boolean {
