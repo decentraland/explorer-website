@@ -179,7 +179,6 @@ export default function Start(props: Props) {
       <Modal
         open={showExplorerAlphaNotice}
         size="tiny"
-        onClose={() => setShowExplorerAlphaNotice(false)}
         className="explorer-alpha-notice"
         dimmer={{ className: 'explorer-alpha-notice-dimmer' }}
       >
