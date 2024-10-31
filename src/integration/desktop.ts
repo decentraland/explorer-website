@@ -89,7 +89,7 @@ export const launchDesktopApp = async (force = false) => {
     customProtocolParams.push(`realm=${data.realm}`)
   }
 
-  const customProtocolTarget = `decentraland://${customProtocolParams.join('&')}`
+  const customProtocolTarget = `decentraland://?${customProtocolParams.join('&')}`
 
   // assume that the desktop version is installed only if
   // we detect a loss of focus on window
