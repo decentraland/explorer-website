@@ -5,7 +5,7 @@ import { store } from '../state/redux'
 import { getRequiredAnalyticsContext } from '../state/selectors'
 import { errorToString } from '../utils/errorToString'
 import { getRepositoryName, getRepositoryVersion, track } from '../utils/tracking'
-import { getCurrentPosition } from './browser'
+import { getExplorerLaunchParameters } from './browser'
 import { DEBUG_ANALYTICS, PLATFORM, RENDERER_TYPE } from './url'
 
 let analyticsDisabled = false
@@ -42,7 +42,7 @@ export function configureSegment() {
 }
 
 function injectTrackingMetadata(payload: Record<string, any>): void {
-  Object.assign(payload, getCurrentPosition())
+  Object.assign(payload, getExplorerLaunchParameters())
   payload.dcl_is_authenticated = authFlags.isAuthenticated
   payload.dcl_is_guest = authFlags.isGuest
   payload.dcl_disabled_analytics = authFlags.afterFatalError
