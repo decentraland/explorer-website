@@ -1,7 +1,7 @@
 import { setDownloadNewVersion, setDownloadProgress, setDownloadReady, setKernelError } from '../state/actions'
 import { store } from '../state/redux'
 import { callOnce } from '../utils/callOnce'
-import { getCurrentPosition, hasRecentlyLoggedIn, isMobile } from './browser'
+import { getExplorerLaunchParameters, hasRecentlyLoggedIn, isMobile } from './browser'
 import { SKIP_SETUP } from './url'
 
 export const isElectron = callOnce((): boolean => {
@@ -79,15 +79,8 @@ export const launchDesktopApp = async (force = false) => {
   }
 
   // build custom protocol target using current url `position` and `realm`
-  const data = getCurrentPosition()
-  let customProtocolParams: string[] = []
-  if (data.position) {
-    customProtocolParams.push(`position=${data.position}`)
-  }
-
-  if (data.realm) {
-    customProtocolParams.push(`realm=${data.realm}`)
-  }
+  const data = getExplorerLaunchParameters()
+  let customProtocolParams: string[] = Object.entries(data).map(([key, value]) => `${key}=${value}`)
 
   const customProtocolTarget = `decentraland://?${customProtocolParams.join('&')}`
 

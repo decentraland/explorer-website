@@ -104,23 +104,36 @@ export function isMacOS() {
   return false
 }
 
-export type UserPosition = Partial<{
-  realm: string
-  position: string
+export type ExplorerLaunchParameters = Partial<{
+  realm: string | undefined
+  position: string | undefined
+  'self-preview-builder-collections': string | undefined
+  dclenv: string | undefined
 }>
 
-export function getCurrentPosition() {
-  const data: UserPosition = {}
+export function getExplorerLaunchParameters() {
+  const data: ExplorerLaunchParameters = {}
   const qs = new URLSearchParams(globalThis.location.search || '')
 
-  // inject realm
-  if (qs.has('realm')) {
-    data.realm = qs.get('realm')!
+  const realm = qs.get('realm')
+  const position = qs.get('position')
+  const selfPreviewBuilderCollections = qs.get('self-preview-builder-collections')
+  const dclenv = qs.get('dclenv')
+
+  if (realm) {
+    data.realm = realm
   }
 
-  // inject position
-  if (qs.has('position')) {
-    data.position = qs.get('position')!
+  if (position) {
+    data.position = position
+  }
+
+  if (selfPreviewBuilderCollections) {
+    data['self-preview-builder-collections'] = selfPreviewBuilderCollections
+  }
+
+  if (dclenv) {
+    data.dclenv = dclenv
   }
 
   return data
