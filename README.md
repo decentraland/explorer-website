@@ -19,7 +19,7 @@ npm ci
 npm run start
 ```
 
-You must test that the application works both in http://localhost:3000 and in http://localhost:3000/cdn/packages/website/index.html since it provides a CDN-like environment.
+You must test that the application works both in <http://localhost:3000> and in <http://localhost:3000/cdn/packages/website/index.html> since it provides a CDN-like environment.
 
 ## How to test with local Explorer
 
