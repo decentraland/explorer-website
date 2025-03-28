@@ -27,7 +27,7 @@ jobs:
           cache: 'npm'
 
       - name: set package.json version
-        uses: menduz/oddish-action@master
+        uses: decentraland/oddish-action@master
         with:
           deterministic-snapshot: true
           only-update-versions: true
@@ -40,7 +40,7 @@ jobs:
         run: npm run build
 
       - name: publish npm package
-        uses: menduz/oddish-action@master
+        uses: decentraland/oddish-action@master
         with:
           registry-url: 'https://registry.npmjs.org'
           access: public
@@ -52,73 +52,3 @@ jobs:
           gitlab-pipeline-url: ${{ secrets.GITLAB_URL }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: deploy preview
-        env:
-          AWS_DEFAULT_REGION: ${{ secrets.EXPLORER_TEAM_AWS_DEFAULT_REGION }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.EXPLORER_TEAM_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.EXPLORER_TEAM_AWS_SECRET_ACCESS_KEY }}
-          EXPLORER_TEAM_S3_BUCKET: ${{ secrets.EXPLORER_TEAM_S3_BUCKET }}
-        if: ${{ steps.install.outputs.public_path }}
-        run: |
-          npx @dcl/cdn-uploader@next \
-            --bucket $EXPLORER_TEAM_S3_BUCKET \
-            --local-folder dist \
-            --bucket-folder "${{ steps.install.outputs.public_path }}"
-
-  build-static:
-    runs-on: ubuntu-latest
-    outputs:
-      public_url: ${{ steps.install.outputs.public_url }}
-      public_path: ${{ steps.install.outputs.public_path }}
-    steps:
-      - uses: actions/checkout@master
-      - name: Use Node.js 20.x
-        uses: actions/setup-node@v4.0.1
-        with:
-          node-version: 20.x
-          cache: 'npm'
-
-      - id: install
-        name: install
-        run: npm install
-        env:
-          GEN_STATIC_LOCAL: true
-
-      - name: build for deployment
-        run: npm run build:full
-        env:
-          GEN_STATIC_LOCAL: true
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: static-site-build
-          path: dist
-          if-no-files-found: error
-
-  notify_deployment:
-    needs: [build]
-    if: ${{ github.event.pull_request.number }}
-    runs-on: ubuntu-latest
-    name: Deployment Notification
-    steps:
-      - name: Find Comment
-        uses: peter-evans/find-comment@v1
-        id: fc
-        with:
-          issue-number: ${{ github.event.pull_request.number }}
-          comment-author: 'github-actions[bot]'
-          body-includes: Test this pull request
-
-      - name: Create or update comment
-        uses: peter-evans/create-or-update-comment@v1
-        with:
-          comment-id: ${{ steps.fc.outputs.comment-id }}
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            # Test this pull request
-            This branch can be previewed at
-            - [`stable` explorer](${{ needs.build.outputs.public_url }}/)
-            - [`development` explorer](${{ needs.build.outputs.public_url }}/?explorer-branch=dev)
-
-          edit-mode: replace
