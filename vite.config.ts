@@ -113,7 +113,12 @@ export default defineConfig(({ command, mode }) => {
             rollupOptions: {
               plugins: [rollupNodePolyFill()]
             },
-            sourcemap: true
+            // Sourcemaps were doubling the publish tarball (one .map per chunk) and the wallet
+            // stack added thousands of chunks — the GitHub Actions runner was killed mid-`npm
+            // publish` while emitting the per-file `npm notice` listing. Disabling regenerates a
+            // smaller, publishable dist. Re-enable as 'hidden' if Sentry source-map upload is
+            // wired up later (would need a separate strip-from-publish step).
+            sourcemap: false
           }
         }
       : undefined)
