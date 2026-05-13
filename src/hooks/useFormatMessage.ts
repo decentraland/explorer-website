@@ -1,15 +1,15 @@
-import { type ReactNode, useCallback } from 'react'
+import { useCallback } from 'react'
 import { useTranslation } from '@dcl/hooks'
 
 function useFormatMessage() {
   const { t } = useTranslation()
 
   return useCallback(
-    function format(id?: string | null, values?: Record<string, ReactNode>): string {
+    function format(id?: string | null, values?: Record<string, string | number>): string {
       if (!id) {
         return ''
       }
-      return t(id, values as Record<string, string | number>)
+      return t(id, values)
     },
     [t]
   )

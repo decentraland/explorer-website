@@ -26,7 +26,7 @@ export const ErrorContainer = React.memo(function ({
 })
 
 export type DetailsProps = React.HTMLProps<HTMLDivElement> & {
-  header?: React.ReactNode
+  header: React.ReactNode
   backgroundHeader?: React.ReactNode
   description?: React.ReactNode
 }
@@ -43,7 +43,7 @@ export const ErrorDetails = React.memo(function ({
   return (
     <ErrorDetailsEl {...props} className={className}>
       {backgroundHeader && <ErrorBackgroundTitle>{backgroundHeader}</ErrorBackgroundTitle>}
-      <ErrorTitle>{header || 'Something went wrong'}</ErrorTitle>
+      <ErrorTitle>{header}</ErrorTitle>
       {description && <ErrorDescription>{description}</ErrorDescription>}
       {children && <ErrorCta>{children}</ErrorCta>}
     </ErrorDetailsEl>

@@ -35,7 +35,14 @@ function cdnPackagesPlugin(): Plugin {
         const filePath = match && match[2]
         if (!filePath) return next()
 
-        const fullPath = path.join(handler.rootDir, filePath)
+        // Containment check: resolve and reject anything that escapes the root.
+        const rootAbs = path.resolve(handler.rootDir)
+        const fullPath = path.resolve(rootAbs, filePath)
+        if (!fullPath.startsWith(rootAbs + path.sep) && fullPath !== rootAbs) {
+          res.statusCode = 403
+          res.end()
+          return
+        }
         fs.stat(fullPath, (err, stat) => {
           if (err || !stat.isFile()) return next()
           const mimeType = mime.lookup(filePath)

@@ -15,8 +15,8 @@ export interface ErrorNetworkMismatchProps {
 
 export const ErrorNetworkMismatch = React.memo(function (props: ErrorNetworkMismatchProps) {
   const l = useFormatMessage()
-  const providerChainName = getChainName(props.providerChainId)
-  const wantedChainName = getChainName(props.wantedChainId)
+  const providerChainName = getChainName(props.providerChainId) ?? String(props.providerChainId)
+  const wantedChainName = getChainName(props.wantedChainId) ?? String(props.wantedChainId)
 
   const handleSwitchTo = useCallback(
     async function () {

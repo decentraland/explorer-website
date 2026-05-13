@@ -332,8 +332,16 @@ async function initLogin(kernel: KernelResult) {
 
     if (storedSession) {
       track('automatic_relogin', { provider_type: provider.providerType })
-      // decentraland-connect@12 ships its own @dcl/schemas, so its ProviderType is nominally distinct here.
-      authenticate(provider.providerType as unknown as ProviderType).catch(defaultWebsiteErrorTracker)
+      // decentraland-connect@12 ships its own @dcl/schemas, so its ProviderType is nominally distinct
+      // from ours. Runtime values are identical strings — verify before the cast in case a future
+      // connect version introduces a value our schemas doesn't know about.
+      const incomingType = provider.providerType as unknown as string
+      const known = (Object.values(ProviderType) as string[]).includes(incomingType)
+      if (!known) {
+        defaultWebsiteErrorTracker(new Error(`Unknown ProviderType from decentraland-connect: ${incomingType}`))
+        return
+      }
+      authenticate(incomingType as ProviderType).catch(defaultWebsiteErrorTracker)
       return
     }
   }

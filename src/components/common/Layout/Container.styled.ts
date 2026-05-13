@@ -1,7 +1,5 @@
 import { styled } from 'decentraland-ui2'
-
-const SYSTEM_FONT_STACK =
-  "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif"
+import { SYSTEM_FONT_STACK } from '../../../theme/constants'
 
 export const ContainerEl = styled('div')({
   width: '100%',

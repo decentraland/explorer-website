@@ -1,16 +1,20 @@
 /**
  * Stub for @0xsquid/sdk. Mapped via vite.config.ts resolve.alias.
  * Only AxelarProvider in decentraland-transactions imports this, and the
- * explorer-website never instantiates AxelarProvider — so the class body
- * here is never reached at runtime.
+ * explorer-website never instantiates AxelarProvider. Throwing in the
+ * constructor surfaces an obvious error if that assumption ever breaks.
  */
 
 export class Squid {
   initialized = false
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  constructor(_opts?: unknown) {}
+  constructor() {
+    throw new Error(
+      '@0xsquid/sdk is stubbed in explorer-website. Cross-chain (AxelarProvider) is not supported here. ' +
+        'Remove the vite.config.ts resolve.alias if cross-chain becomes a real requirement.'
+    )
+  }
   async init(): Promise<void> {
-    /* noop */
+    /* unreachable — constructor throws first */
   }
 }
 

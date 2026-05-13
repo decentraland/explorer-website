@@ -4,9 +4,7 @@ import bgV3_2x from '../../images/background-v3@2x.jpg'
 import bgV3_3x from '../../images/background-v3@3x.jpg'
 import bgV3_4x from '../../images/background-v3@4x.jpg'
 import discordSvg from '../../images/discord.svg'
-
-const SYSTEM_FONT_STACK =
-  "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif"
+import { SYSTEM_FONT_STACK } from '../../theme/constants'
 
 export const Container = styled('div')({
   width: '100vw',
