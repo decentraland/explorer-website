@@ -4,11 +4,11 @@ import { useMobileResize } from '../../integration/mobile'
 import { StoreType } from '../../state/redux'
 import { FeatureFlags, getFeatureVariantValue } from '../../state/selectors'
 import { BannerStream } from '../banners/BannerStream'
-import './StreamContainer.css'
+import { StreamRoot } from './StreamContainer.styled'
 
 function mapStateToProps(state: StoreType): StreamContainerProps {
   return {
-    src: getFeatureVariantValue(state, FeatureFlags.Stream),
+    src: getFeatureVariantValue(state, FeatureFlags.Stream)
   }
 }
 
@@ -17,17 +17,19 @@ export interface StreamContainerProps {
 }
 
 const StreamContainer: React.FC<StreamContainerProps> = (props: StreamContainerProps) => {
-  const [ banner, setBanner ] = useState(true)
+  const [banner, setBanner] = useState(true)
   const size = useMobileResize()
 
   if (!props.src || size.height === 0 || size.width === 0) {
     return null
   }
 
-  return <div className="StreamContainer">
-    {banner && <BannerStream onClose={() => setBanner(false)} />}
-    <iframe title="Decentraland Stream" src={props.src} width={size.width} height={size.height} allowFullScreen />
-  </div>
+  return (
+    <StreamRoot>
+      {banner && <BannerStream onClose={() => setBanner(false)} />}
+      <iframe title="Decentraland Stream" src={props.src} width={size.width} height={size.height} allowFullScreen />
+    </StreamRoot>
+  )
 }
 
 export default connect(mapStateToProps)(StreamContainer)

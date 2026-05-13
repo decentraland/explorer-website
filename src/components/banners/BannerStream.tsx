@@ -1,15 +1,20 @@
 import React from 'react'
 import { BannerContainerProps } from './BannerContainer.types'
+import { BannerWrap, BannerCloseButton, BannerText } from './banners.styled'
+import { useFormatMessage } from '../../hooks/useFormatMessage'
 
-import './banners.css'
-
-export const BannerStream: React.FC<Pick<BannerContainerProps, 'onClose'>> = (props) => (
-  <div id="banner-stream" className="banner-container">
-    <div className="banner-close-button" onClick={props.onClose} />
-    <div className="banner-text">
-        You are viewing a stream because Decentraland is only available on desktop.
+export const BannerStream: React.FC<Pick<BannerContainerProps, 'onClose'>> = (props) => {
+  const l = useFormatMessage()
+  return (
+    <BannerWrap id="banner-stream">
+      <BannerCloseButton onClick={props.onClose} />
+      <BannerText>
+        {l('banner.stream')}
         <br />
-        <a href="https://decentraland.org" rel="noreferrer noopener" target="_blank">Learn more</a>
-    </div>
-  </div>
-)
+        <a href="https://decentraland.org" rel="noreferrer noopener" target="_blank">
+          {l('banner.stream_learn_more')}
+        </a>
+      </BannerText>
+    </BannerWrap>
+  )
+}

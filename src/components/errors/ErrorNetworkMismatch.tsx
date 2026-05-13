@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react'
-import { Button } from 'decentraland-ui/dist/components/Button/Button'
+import { Button } from 'decentraland-ui2'
 import { ChainId, getChainName } from '@dcl/schemas/dist/dapps/chain-id'
 import { ProviderType } from '@dcl/schemas/dist/dapps/provider-type'
 import { ErrorContainer, ErrorDetails, ErrorImage } from './Error'
 import errorImage from '../../images/errors/robotsmiling.png'
 import { disconnect, switchToChainId } from '../../eth/provider'
-import './errors.css'
+import { useFormatMessage } from '../../hooks/useFormatMessage'
 
 export interface ErrorNetworkMismatchProps {
   wantedChainId: ChainId
@@ -14,6 +14,7 @@ export interface ErrorNetworkMismatchProps {
 }
 
 export const ErrorNetworkMismatch = React.memo(function (props: ErrorNetworkMismatchProps) {
+  const l = useFormatMessage()
   const providerChainName = getChainName(props.providerChainId)
   const wantedChainName = getChainName(props.wantedChainId)
 
@@ -47,17 +48,12 @@ export const ErrorNetworkMismatch = React.memo(function (props: ErrorNetworkMism
   return (
     <ErrorContainer id="error-network-mismatch">
       <ErrorDetails
-        backgroundHeader="Oops!"
-        header="Wrong network"
-        description={
-          <>
-            You need to be connected to <strong>{wantedChainName}</strong> network to use this app, but you are
-            currently connected to <strong>{providerChainName}</strong>
-          </>
-        }
+        backgroundHeader={l('errors.oops')}
+        header={l('errors.network_mismatch_title')}
+        description={l('errors.network_mismatch_description', { wanted: wantedChainName, current: providerChainName })}
       >
-        <Button primary onClick={handleSwitchTo}>
-          Switch to <strong>{wantedChainName}</strong>
+        <Button variant="contained" color="primary" onClick={handleSwitchTo}>
+          {l('errors.network_mismatch_cta', { wanted: wantedChainName })}
         </Button>
       </ErrorDetails>
       <ErrorImage alt="error-smiling-robot" src={errorImage} />

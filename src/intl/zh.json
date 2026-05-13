@@ -1,0 +1,96 @@
+{
+  "mobile": {
+    "hero_title": "在手机上畅玩 Decentraland",
+    "hero_subtitle": "在{os}上下载 Decentraland 应用。",
+    "os_android": "Android",
+    "os_ios": "iOS",
+    "app_store_alt": "在 App Store 下载",
+    "google_play_alt": "在 Google Play 获取",
+    "what_title": "什么是 Decentraland?",
+    "what_text": "Decentraland 是首个由用户所拥有的虚拟世界。",
+    "take_part": "加入我们",
+    "discord_title": "在 Discord 加入我们",
+    "discord_text": "Decentraland 是首个由用户所拥有的虚拟世界。",
+    "discord_cta": "加入 DISCORD"
+  },
+  "start": {
+    "welcome_back": "欢迎回来 {name}",
+    "ready": "准备好探索了吗?",
+    "jump_in": "进入 decentraland",
+    "different_account": "使用其他账户",
+    "performance_pitch": "想要更好的性能?",
+    "download_desktop_cta": "下载桌面客户端",
+    "alpha": {
+      "outdated_title": "这是 Decentraland 的旧版本",
+      "outdated_text": "Decentraland 已作为桌面应用重新发布,带来全新体验。下载并发现改进的性能、更好的画面和大量新功能!",
+      "download_cta": "下载 Decentraland",
+      "continue_web_cta": "继续使用旧版网页版",
+      "continue_desktop_title": "在桌面端继续",
+      "continue_desktop_text": "为获得更好的体验,我们建议您使用桌面浏览器。",
+      "relaunch_cta": "重新启动"
+    }
+  },
+  "errors": {
+    "oops": "哎呀!",
+    "error_label": "错误",
+    "new_login_title": "检测到另一个会话",
+    "new_login_description_part1": "浏览器似乎已在其他设备、浏览器或标签页中使用您的账户打开。",
+    "new_login_description_part2": "请关闭之前的会话并点击「重新加载」,在此窗口中探索世界。",
+    "reload": "重新加载",
+    "fatal_title": "出现了问题",
+    "fatal_default_line1": "如果您有任何广告拦截扩展,",
+    "fatal_default_line2": "请尝试为此网站关闭它们。",
+    "fatal_default_line3": "加载时间通常不应超过 2-3 分钟。",
+    "fatal_default_line4": "如果您似乎卡住了,请确保已启用硬件加速。",
+    "fatal_learn_more": "了解更多",
+    "no_mobile_title": "目前客户端仅在桌面端可用。",
+    "no_mobile_cta": "了解更多关于 Decentraland",
+    "metamask_locked_title": "继续之前",
+    "metamask_locked_cta": "重试",
+    "comms_title_part1": "无法与其他对等节点",
+    "comms_title_part2": "建立通信链接",
+    "comms_description_part1": "这可能是因为您处于限制性网络防火墙之后,或所选 catalyst 存在临时问题。",
+    "comms_description_part2": "如果您有任何广告拦截扩展,请尝试为此网站关闭它们,然后重新加载。",
+    "comms_description_part3": "您也可以尝试其他 catalyst。",
+    "network_mismatch_title": "网络错误",
+    "network_mismatch_description": "您需要连接到 {wanted} 网络才能使用此应用,但当前已连接到 {current}",
+    "network_mismatch_cta": "切换到 {wanted}",
+    "avatar_title": "发生技术问题,无法获取您的虚拟形象信息",
+    "avatar_description": "请稍后重试,如果问题仍然存在,您可以通过 Discord 频道或以下邮箱与我们联系",
+    "avatar_email": "hello@decentraland.org",
+    "not_supported_title": "您的浏览器或设备不受支持",
+    "not_supported_description": "Explorer 仅在 Windows、Linux 和 macOS 上的 Chrome 或 Firefox 中可用。"
+  },
+  "catalyst_warning": {
+    "title": "您即将使用自定义 Catalyst",
+    "risk_line": "使用自定义 catalyst 可能存在风险,因为场景代码可能被篡改。",
+    "trust_question": "您确定信任 {catalyst} 吗?",
+    "trust_cta": "信任 {catalyst}",
+    "cancel_cta": "带我离开"
+  },
+  "banner": {
+    "not_supported_prefix": "您的浏览器不在推荐选项中,无法获得 Decentraland 的最佳体验。我们建议您使用基于以下浏览器:",
+    "not_supported_or": "或",
+    "chromium": "Chromium",
+    "firefox": "Firefox",
+    "stream": "由于 Decentraland 仅在桌面端可用,您正在观看视频流。",
+    "stream_learn_more": "了解更多"
+  },
+  "network_warning": {
+    "label": "警告:",
+    "title": "您正在以太坊主网上运行。",
+    "description": "此网络上的区块链交易具有真实的成本和后果。我们建议您改用 {network} 测试网络。",
+    "sepolia": "Sepolia"
+  },
+  "loading": {
+    "downloading": "正在下载最新版本的 Decentraland。几秒钟后即可使用!"
+  },
+  "logo": {
+    "sign_in": "登录或创建账户",
+    "loading": "加载中..."
+  },
+  "community_bubble": {
+    "title": "需要帮助?",
+    "subtitle": "向社区提问"
+  }
+}

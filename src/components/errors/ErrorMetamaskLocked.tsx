@@ -1,9 +1,9 @@
 import React from 'react'
+import { Button } from 'decentraland-ui2'
 import { ErrorContainer, ErrorDetails, ErrorImage } from './Error'
-import { Button } from 'decentraland-ui/dist/components/Button/Button'
+import { useFormatMessage } from '../../hooks/useFormatMessage'
 
 import errorImage from '../../images/errors/robotsmiling.png'
-import './errors.css'
 
 export interface ErrorNetworkMismatchProps {
   details: string | null
@@ -11,12 +11,15 @@ export interface ErrorNetworkMismatchProps {
 }
 
 export const ErrorMetamaskLocked = React.memo(function (props: ErrorNetworkMismatchProps) {
-  return <ErrorContainer id="error-metamask-locked">
-    <ErrorDetails
-      header="Before we continue"
-      description={props.details}>
-        <Button primary onClick={props.closeError}>Retry</Button>
+  const l = useFormatMessage()
+  return (
+    <ErrorContainer id="error-metamask-locked">
+      <ErrorDetails header={l('errors.metamask_locked_title')} description={props.details}>
+        <Button variant="contained" color="primary" onClick={props.closeError}>
+          {l('errors.metamask_locked_cta')}
+        </Button>
       </ErrorDetails>
-    <ErrorImage alt="error-smiling-robot" src={errorImage} />
-  </ErrorContainer>
+      <ErrorImage alt="error-smiling-robot" src={errorImage} />
+    </ErrorContainer>
+  )
 })

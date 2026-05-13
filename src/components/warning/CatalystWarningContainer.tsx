@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { connect } from 'react-redux'
-import { Button } from 'decentraland-ui/dist/components/Button/Button'
+import { Button } from 'decentraland-ui2'
 import { withoutCatalyst } from '../../integration/url'
 import { setCatalystAsTrusted } from '../../state/actions'
 import { CatalystState, StoreType } from '../../state/redux'
@@ -8,8 +8,8 @@ import { track } from '../../utils/tracking'
 import { CatalystWarning } from '../common/Icon/CatalystWarning'
 import { Container } from '../common/Layout/Container'
 import Main from '../common/Layout/Main'
-
-import './CatalystWarningContainer.css'
+import { WarningWrap, WarningCard } from './CatalystWarningContainer.styled'
+import { useFormatMessage } from '../../hooks/useFormatMessage'
 
 export type CatalystWarningProps = CatalystState & {
   onConfirm: () => void
@@ -34,6 +34,7 @@ const mapDispatchToProps = (dispatch: any) => ({
 })
 
 export const CatalystWarningContainer = React.memo((props: CatalystWarningProps) => {
+  const l = useFormatMessage()
   const catalyst = useMemo(() => {
     try {
       const url = new URL(props.catalyst!)
@@ -41,25 +42,37 @@ export const CatalystWarningContainer = React.memo((props: CatalystWarningProps)
     } catch (err) {
       return props.catalyst
     }
-  }, [ props.catalyst ])
+  }, [props.catalyst])
 
-  return <Main withDarkLayer>
-    <Container>
-      <div className="catalyst-warning-container">
-        <div className="catalyst-warning-content">
-          <div><CatalystWarning /></div>
-          <h2>You are about to use a custom Catalyst</h2>
-          <p>Using a custom catalyst can be risky as scenes code can be altered.<br />Are you sure you trust <strong><i>{catalyst}</i></strong>?</p>
-          <div>
-            <Button secondary onClick={props.onConfirm}>trust {catalyst}</Button>
-          </div>
-          <div>
-            <Button primary onClick={props.onCancel}>take me out</Button>
-          </div>
-        </div>
-      </div>
-    </Container>
-  </Main>
+  return (
+    <Main withDarkLayer>
+      <Container>
+        <WarningWrap>
+          <WarningCard>
+            <div>
+              <CatalystWarning />
+            </div>
+            <h2>{l('catalyst_warning.title')}</h2>
+            <p>
+              {l('catalyst_warning.risk_line')}
+              <br />
+              {l('catalyst_warning.trust_question', { catalyst: catalyst || '' })}
+            </p>
+            <div>
+              <Button variant="contained" color="secondary" onClick={props.onConfirm}>
+                {l('catalyst_warning.trust_cta', { catalyst: catalyst || '' })}
+              </Button>
+            </div>
+            <div>
+              <Button variant="contained" color="primary" onClick={props.onCancel}>
+                {l('catalyst_warning.cancel_cta')}
+              </Button>
+            </div>
+          </WarningCard>
+        </WarningWrap>
+      </Container>
+    </Main>
+  )
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CatalystWarningContainer)
