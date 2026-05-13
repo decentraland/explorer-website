@@ -10,18 +10,12 @@ import {
   rendererReducer,
   errorReducer,
   bannerReducer,
-  downloadReducer,
   featureFlagsReducer,
-  catalystReducer,
-  decktopReducer
+  catalystReducer
 } from './reducers'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { ConnectionData } from 'decentraland-connect'
 import { rootSaga } from './sagas'
-
-export type DesktopState = {
-  detected: boolean
-}
 
 export type KernelState = {
   ready: boolean
@@ -77,48 +71,29 @@ export enum BannerType {
   NOT_RECOMMENDED = 'notrecommended'
 }
 
-export enum DownloadCurrentState {
-  NONE = 'none',
-  NEW_VERSION = 'new_version',
-  DOWNLOADING = 'downloading',
-  READY = 'ready',
-  EXECUTED = 'executed'
-}
-
-export type DownloadState = {
-  currentState: DownloadCurrentState
-  progress: number
-  authCompleted: boolean
-  ready: boolean
-}
-
 export type FeatureFlagsState = FeatureFlagsResult & {
   ready: boolean
 }
 
 export type StoreType = {
-  desktop: DesktopState
   kernel: KernelState
   renderer: RendererState
   catalyst: CatalystState
   session: SessionState
   error: ErrorState
   banner: BannerState
-  download: DownloadState
   featureFlags: FeatureFlagsState
   wallet: WalletState
   profile: ProfileState
 }
 
 const reducers = combineReducers<StoreType>({
-  desktop: decktopReducer,
   kernel: kernelReducer,
   session: sessionReducer,
   renderer: rendererReducer,
   catalyst: catalystReducer,
   error: errorReducer,
   banner: bannerReducer,
-  download: downloadReducer,
   featureFlags: featureFlagsReducer,
   wallet: walletReducer,
   profile: profileReducer

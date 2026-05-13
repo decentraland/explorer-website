@@ -1,138 +1,115 @@
-import React, { useEffect } from 'react'
-import { Button } from 'decentraland-ui/dist/components/Button/Button'
+import React, { useEffect, useRef } from 'react'
 import { useMobileResize } from '../../integration/mobile'
+import { DOWNLOAD_URLS, detectDownloadOS } from '../../integration/downloadConstants'
+import { useFormatMessage } from '../../hooks/useFormatMessage'
 import Navbar from './Layout/Navbar'
 import { track } from '../../utils/tracking'
-import './MobileContainer.css'
+import appStoreBadge from '../../images/download-on-the-app-store.svg'
+import googlePlayBadge from '../../images/google_play_cta.svg'
+import {
+  Container,
+  Hero,
+  HeroInner,
+  HeroHeading,
+  HeroSubtitle,
+  BadgeRow,
+  BadgeLink,
+  BadgeImage,
+  Section,
+  Grid,
+  VideoThumb,
+  VideoEmbed,
+  Card,
+  CardImage,
+  CardContent,
+  CardCta
+} from './MobileContainer.styled'
 
 export default React.memo(function MobileContainer() {
   useMobileResize()
+  const l = useFormatMessage()
+  // StrictMode double-invokes effects in dev; ref ensures the screen event fires once.
+  const tracked = useRef(false)
 
   useEffect(() => {
+    if (tracked.current) return
+    tracked.current = true
     track('explorer_website_mobile_screen')
   }, [])
 
+  const isAndroid = detectDownloadOS() === 'android'
+  const osLabel = l(isAndroid ? 'mobile.os_android' : 'mobile.os_ios')
+
   return (
-    <div className="MobileContainer">
+    <Container>
       <Navbar />
-      <main className="MobileHero">
-        <div>
-          <h1>Play Decentraland on Desktop</h1>
-          <p>Decentraland is not available on mobile.</p>
-          <p>
-            Visit <strong>decentraland.org/play</strong> in your desktop browser to access Decentraland.
-          </p>
-        </div>
-      </main>
+      <Hero>
+        <HeroInner>
+          <HeroHeading>{l('mobile.hero_title')}</HeroHeading>
+          <HeroSubtitle>{l('mobile.hero_subtitle', { os: osLabel })}</HeroSubtitle>
+          <BadgeRow>
+            {isAndroid ? (
+              <BadgeLink
+                href={DOWNLOAD_URLS.googlePlay}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => track('explorer_website_mobile_google_play_click', {})}
+              >
+                <BadgeImage src={googlePlayBadge} alt={l('mobile.google_play_alt')} />
+              </BadgeLink>
+            ) : (
+              <BadgeLink
+                href={DOWNLOAD_URLS.appStore}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => track('explorer_website_mobile_app_store_click', {})}
+              >
+                <BadgeImage src={appStoreBadge} alt={l('mobile.app_store_alt')} />
+              </BadgeLink>
+            )}
+          </BadgeRow>
+        </HeroInner>
+      </Hero>
 
-      <section>
-        <h2>Get a reminder</h2>
-        <p>
-          Get an email reminder to jump into Decentraland the next time you are back at a computer. You will also be
-          added to the Decentraland Weekly newsletter to receive the latest news and events.
-        </p>
-        <iframe
-          title="subscribe"
-          className="MobileSubscribe"
-          src="https://embeds.beehiiv.com/d7d652da-adc8-422f-9176-4b653a244020?slim=true"
-          data-test-id="beehiiv-embed"
-        ></iframe>
-      </section>
-
-      <section>
-        <div className="grid">
+      <Section>
+        <Grid>
           <div className="item">
-            <h2>What is Decentraland?</h2>
-            <p>Decentraland is the first ever virtual world owned by its users.</p>
+            <h2>{l('mobile.what_title')}</h2>
+            <p>{l('mobile.what_text')}</p>
           </div>
           <div className="item">
-            <svg
+            <VideoThumb
               width="480"
               height="276"
               style={{ backgroundImage: `url('https://img.youtube.com/vi/thkDaebUaDQ/mqdefault.jpg')` }}
             />
-            <iframe
+            <VideoEmbed
               width="480"
               height="276"
               src="https://www.youtube.com/embed/thkDaebUaDQ"
               title="YouTube video player"
-              frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-            ></iframe>
+            />
           </div>
-        </div>
-      </section>
+        </Grid>
+      </Section>
 
-      <section>
-        <h2>Take Part</h2>
-        <div className="grid padded">
+      <Section>
+        <h2>{l('mobile.take_part')}</h2>
+        <Grid padded>
           <div className="item">
-            <a className="card" href="https://market.decentraland.org" target="_blank" rel="noreferrer">
-              <svg
-                width="328"
-                height="200"
-                style={{ backgroundImage: `url('https://decentraland.org/images/jacket.jpg')` }}
-              />
-              <span className="card-content">
-                <h3>Buy and sell on the Marketplace</h3>
-                <p>Decentraland is the first ever virtual world owned by its users.</p>
-                <Button as="span" primary>
-                  Marketplace
-                </Button>
-              </span>
-            </a>
+            <Card href="https://dcl.gg/discord" target="_blank" rel="noreferrer">
+              <CardImage width="328" height="200" />
+              <CardContent>
+                <h3>{l('mobile.discord_title')}</h3>
+                <p>{l('mobile.discord_text')}</p>
+                <CardCta>{l('mobile.discord_cta')}</CardCta>
+              </CardContent>
+            </Card>
           </div>
-          <div className="item">
-            <a className="card" href="https://events.decentraland.org" target="_blank" rel="noreferrer">
-              <svg
-                width="328"
-                height="200"
-                style={{
-                  backgroundImage: `url('https://decentraland.org/blog/images/static/images/2020-recap-banner-500487ea620de46b53e5cb0783f231a0.png')`
-                }}
-              />
-              <span className="card-content">
-                <h3>Find an event</h3>
-                <p>Decentraland is the first ever virtual world owned by its users.</p>
-                <Button as="span" primary>
-                  Events
-                </Button>
-              </span>
-            </a>
-          </div>
-          <div className="item">
-            <a className="card" href="https://governance.decentraland.org" target="_blank" rel="noreferrer">
-              <svg
-                width="328"
-                height="200"
-                style={{
-                  backgroundImage: `url('https://decentraland.org/blog/images/static/images/governance-517ddb1597c85fa0efd1f5cfe765fe45.jpg')`
-                }}
-              />
-              <span className="card-content">
-                <h3>Contribute to Decentraland</h3>
-                <p>Decentraland is the first ever virtual world owned by its users.</p>
-                <Button as="span" primary>
-                  DAO
-                </Button>
-              </span>
-            </a>
-          </div>
-          <div className="item">
-            <a className="card" href="https://dcl.gg/discord" target="_blank" rel="noreferrer">
-              <svg width="328" height="200" className="discord" />
-              <span className="card-content">
-                <h3>Join us on Discord</h3>
-                <p>Decentraland is the first ever virtual world owned by its users.</p>
-                <Button as="span" primary>
-                  JOIN DISCORD
-                </Button>
-              </span>
-            </a>
-          </div>
-        </div>
-      </section>
-    </div>
+        </Grid>
+      </Section>
+    </Container>
   )
 })

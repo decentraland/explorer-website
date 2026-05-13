@@ -1,24 +1,36 @@
 import React from 'react'
-import { Button } from 'decentraland-ui/dist/components/Button/Button'
+import { Button } from 'decentraland-ui2'
 import errorImage from '../../images/errors/error-robotdown.png'
 import { ErrorContainer, ErrorDetails, ErrorImage } from './Error'
-import { reload } from "./utils"
-import './errors.css'
+import { reload } from './utils'
+import { useFormatMessage } from '../../hooks/useFormatMessage'
 
 export const ErrorComms = React.memo(function () {
-  return <ErrorContainer id="error-comms">
-    <ErrorDetails
-      backgroundHeader="Oops!"
-      header={<> A communication link could not be <br /> established with other peers</>}
-      description={<>
-        This might be because you are behind a restrictive network firewall, or a temporary problem with the selected realm. <br />
-        <br />
-        If you have any ad blocking extensions try turning them off for this site, and then reload.
-        <br />
-        You can also try a different realm.
-      </>}>
-      <Button primary onClick={reload}>Reload</Button>
-    </ErrorDetails>
-    <ErrorImage alt="error-down-robot" src={errorImage} />
-  </ErrorContainer>
+  const l = useFormatMessage()
+  return (
+    <ErrorContainer id="error-comms">
+      <ErrorDetails
+        backgroundHeader={l('errors.oops')}
+        header={
+          <>
+            {l('errors.comms_title_part1')} <br /> {l('errors.comms_title_part2')}
+          </>
+        }
+        description={
+          <>
+            {l('errors.comms_description_part1')} <br />
+            <br />
+            {l('errors.comms_description_part2')}
+            <br />
+            {l('errors.comms_description_part3')}
+          </>
+        }
+      >
+        <Button variant="contained" color="primary" onClick={reload}>
+          {l('errors.reload')}
+        </Button>
+      </ErrorDetails>
+      <ErrorImage alt="error-down-robot" src={errorImage} />
+    </ErrorContainer>
+  )
 })

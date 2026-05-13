@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux'
 import { DisconnectWalletRequestAction } from 'decentraland-dapps/dist/modules/wallet/actions'
-import { NavbarProps } from 'decentraland-ui/dist/components/Navbar/Navbar.types'
+import { NavbarProps } from 'decentraland-ui2'
 
 export type Props = Pick<NavbarProps, 'avatar' | 'manaBalances' | 'address' | 'isSignedIn' | 'isSigningIn'> & {
   onSignOut: () => void

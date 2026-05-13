@@ -1,0 +1,96 @@
+{
+  "mobile": {
+    "hero_title": "スマートフォンでDecentralandをプレイ",
+    "hero_subtitle": "{os}でDecentralandアプリをダウンロード。",
+    "os_android": "Android",
+    "os_ios": "iOS",
+    "app_store_alt": "App Storeでダウンロード",
+    "google_play_alt": "Google Playで手に入れよう",
+    "what_title": "Decentralandとは?",
+    "what_text": "Decentralandは、ユーザーが所有する史上初のバーチャルワールドです。",
+    "take_part": "参加する",
+    "discord_title": "Discordで参加しよう",
+    "discord_text": "Decentralandは、ユーザーが所有する史上初のバーチャルワールドです。",
+    "discord_cta": "DISCORDに参加"
+  },
+  "start": {
+    "welcome_back": "お帰りなさい {name}",
+    "ready": "探検の準備はできましたか?",
+    "jump_in": "decentralandへ入る",
+    "different_account": "別のアカウントを使用",
+    "performance_pitch": "より良いパフォーマンスをお求めですか?",
+    "download_desktop_cta": "デスクトップクライアントをダウンロード",
+    "alpha": {
+      "outdated_title": "これはDecentralandの古いバージョンです",
+      "outdated_text": "Decentralandは、まったく新しい体験を提供するデスクトップアプリとして再リリースされました。ダウンロードして、改善されたパフォーマンス、より美しいグラフィック、たくさんの新機能を体験してください!",
+      "download_cta": "Decentralandをダウンロード",
+      "continue_web_cta": "古いWeb版で続行",
+      "continue_desktop_title": "デスクトップで続行",
+      "continue_desktop_text": "より良い体験のために、デスクトップエクスプローラーの使用をおすすめします。",
+      "relaunch_cta": "再起動"
+    }
+  },
+  "errors": {
+    "oops": "おっと!",
+    "error_label": "エラー",
+    "new_login_title": "別のセッションが検出されました",
+    "new_login_description_part1": "エクスプローラーが別のデバイス、ブラウザ、またはタブからあなたのアカウントで開かれているようです。",
+    "new_login_description_part2": "前のセッションを閉じて「再読み込み」をクリックし、このウィンドウで世界を探検してください。",
+    "reload": "再読み込み",
+    "fatal_title": "問題が発生しました",
+    "fatal_default_line1": "広告ブロック拡張機能がある場合、",
+    "fatal_default_line2": "このサイトでオフにしてみてください。",
+    "fatal_default_line3": "読み込みには通常2〜3分以上かかりません。",
+    "fatal_default_line4": "停止しているようでしたら、ハードウェアアクセラレーションが有効になっていることを確認してください。",
+    "fatal_learn_more": "詳細を見る",
+    "no_mobile_title": "現在、クライアントはデスクトップでのみご利用いただけます。",
+    "no_mobile_cta": "Decentralandについてもっと知る",
+    "metamask_locked_title": "続行する前に",
+    "metamask_locked_cta": "再試行",
+    "comms_title_part1": "他のピアとの通信リンクを",
+    "comms_title_part2": "確立できませんでした",
+    "comms_description_part1": "制限の厳しいネットワークファイアウォールの背後にいる、または選択されたcatalystの一時的な問題が原因の可能性があります。",
+    "comms_description_part2": "広告ブロック拡張機能がある場合は、このサイトでオフにしてから再読み込みしてください。",
+    "comms_description_part3": "別のcatalystを試すこともできます。",
+    "network_mismatch_title": "ネットワークが間違っています",
+    "network_mismatch_description": "このアプリを使用するには{wanted}ネットワークに接続する必要がありますが、現在{current}に接続されています",
+    "network_mismatch_cta": "{wanted}に切り替える",
+    "avatar_title": "技術的な問題が発生し、あなたのアバター情報を取得できませんでした",
+    "avatar_description": "後でもう一度お試しください。問題が解決しない場合は、Discordチャンネルまたは以下のメールでお問い合わせください",
+    "avatar_email": "hello@decentraland.org",
+    "not_supported_title": "お使いのブラウザまたはデバイスはサポートされていません",
+    "not_supported_description": "Explorerは、Windows、Linux、macOS用のChromeまたはFirefoxでのみ動作します。"
+  },
+  "catalyst_warning": {
+    "title": "カスタムCatalystを使用しようとしています",
+    "risk_line": "カスタムcatalystの使用は、シーンのコードが改変されている可能性があるため危険です。",
+    "trust_question": "{catalyst}を信頼してもよろしいですか?",
+    "trust_cta": "{catalyst}を信頼する",
+    "cancel_cta": "戻る"
+  },
+  "banner": {
+    "not_supported_prefix": "お使いのブラウザは、Decentralandで最適な体験を得るための推奨ブラウザではありません。次のいずれかをベースにしたブラウザの使用をおすすめします:",
+    "not_supported_or": "または",
+    "chromium": "Chromium",
+    "firefox": "Firefox",
+    "stream": "Decentralandはデスクトップでのみ利用可能なため、ストリームを表示しています。",
+    "stream_learn_more": "詳細を見る"
+  },
+  "network_warning": {
+    "label": "警告:",
+    "title": "イーサリアムメインネットで実行しています。",
+    "description": "このネットワーク上のブロックチェーントランザクションにはコストと実際の影響があります。代わりに{network}テストネットの使用をおすすめします。",
+    "sepolia": "Sepolia"
+  },
+  "loading": {
+    "downloading": "Decentralandの最新バージョンをダウンロードしています。数秒で準備が整います!"
+  },
+  "logo": {
+    "sign_in": "サインインまたはアカウントを作成",
+    "loading": "読み込み中..."
+  },
+  "community_bubble": {
+    "title": "助けが必要ですか?",
+    "subtitle": "コミュニティに聞く"
+  }
+}

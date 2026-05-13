@@ -1,10 +1,6 @@
 import React from 'react'
-import './Container.css'
+import { ContainerEl } from './Container.styled'
 
 export const Container: React.FC<React.HTMLAttributes<HTMLDivElement>> = (props) => (
-  <div {...props} className={'eth-container ' + (props.className || '')} />
-)
-
-export const Content: React.FC<React.HTMLAttributes<HTMLDivElement>> = (props) => (
-  <div {...props} className={'eth-content ' + (props.className || '')} />
+  <ContainerEl {...props} className={['eth-container', props.className].filter(Boolean).join(' ')} />
 )

@@ -1,9 +1,8 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { connect } from 'react-redux'
-import { useMobileMediaQuery } from 'decentraland-ui/dist/components/Media'
+import { useMediaQuery } from 'decentraland-ui2'
 import WalletProvider from 'decentraland-dapps/dist/providers/WalletProvider'
 import { StoreType } from '../state/redux'
-import { isElectron } from '../integration/desktop'
 import { LOGIN_AS_GUEST, SHOW_WALLET_SELECTOR } from '../integration/url'
 import {
   FeatureFlags,
@@ -21,14 +20,11 @@ import ErrorContainer from './errors/ErrorContainer'
 import Start from './start'
 import MobileContainer from './common/MobileContainer'
 import CatalystWarningContainer from './warning/CatalystWarningContainer'
-import { LoginWithAuthServerPage } from './auth/LoginWithAuthServerPage'
-import './App.css'
 
 function mapStateToProps(state: StoreType): AppProps {
-  const seamlessLogin =
-    isElectron() || !!state.desktop.detected || SHOW_WALLET_SELECTOR
-      ? ABTestingVariant.Disabled
-      : (getFeatureVariantName(state, FeatureFlags.SeamlessLogin) as ABTestingVariant | undefined)
+  const seamlessLogin = SHOW_WALLET_SELECTOR
+    ? ABTestingVariant.Disabled
+    : (getFeatureVariantName(state, FeatureFlags.SeamlessLogin) as ABTestingVariant | undefined)
 
   const hasStream = !!getFeatureVariantValue(state, FeatureFlags.Stream)
   const hasBanner = !!state.banner.banner
@@ -71,13 +67,7 @@ export interface AppProps {
 
 const App: React.FC<AppProps> = (props) => {
   const mobile = useMemo(() => isMobile(), [])
-  const small = useMobileMediaQuery()
-
-  useEffect(() => {
-    if (isElectron()) {
-      initializeKernel()
-    }
-  }, [])
+  const small = useMediaQuery('(max-width: 991px)')
 
   if (!props.trustedCatalyst) {
     return <CatalystWarningContainer />
@@ -117,15 +107,11 @@ const App: React.FC<AppProps> = (props) => {
     return <LoadingRender />
   }
 
-  if (!isElectron()) {
-    return (
-      <WalletProvider>
-        <Start initializeKernel={initializeKernel} />
-      </WalletProvider>
-    )
-  } else {
-    return <LoginWithAuthServerPage />
-  }
+  return (
+    <WalletProvider>
+      <Start initializeKernel={initializeKernel} />
+    </WalletProvider>
+  )
 }
 
 export default connect(mapStateToProps)(App)

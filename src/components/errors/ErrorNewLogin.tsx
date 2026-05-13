@@ -1,22 +1,31 @@
 import React from 'react'
-import { Button } from 'decentraland-ui/dist/components/Button/Button'
+import { Button } from 'decentraland-ui2'
 import { ErrorContainer, ErrorDetails, ErrorImage } from './Error'
-import { reload } from "./utils"
+import { reload } from './utils'
+import { useFormatMessage } from '../../hooks/useFormatMessage'
 
 import errorImage from '../../images/errors/robotsmiling.png'
-import './errors.css'
 
 export const ErrorNewLogin = React.memo(function () {
-  return <ErrorContainer id="error-new-login">
-    <ErrorDetails
-      backgroundHeader="Oops!"
-      header="Another session was detected"
-      description={<>
-        It seems that the explorer was opened with your account from another device, browser, or tab.
-        <br />
-        Please, close the prior session and click "Reload" to explore the world in this window.</>}>
-      <Button primary onClick={reload}>Reload</Button>
-    </ErrorDetails>
-    <ErrorImage alt="error-smiling-robot" src={errorImage} />
-  </ErrorContainer>
+  const l = useFormatMessage()
+  return (
+    <ErrorContainer id="error-new-login">
+      <ErrorDetails
+        backgroundHeader={l('errors.oops')}
+        header={l('errors.new_login_title')}
+        description={
+          <>
+            {l('errors.new_login_description_part1')}
+            <br />
+            {l('errors.new_login_description_part2')}
+          </>
+        }
+      >
+        <Button variant="contained" color="primary" onClick={reload}>
+          {l('errors.reload')}
+        </Button>
+      </ErrorDetails>
+      <ErrorImage alt="error-smiling-robot" src={errorImage} />
+    </ErrorContainer>
+  )
 })

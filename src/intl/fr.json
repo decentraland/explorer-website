@@ -1,0 +1,96 @@
+{
+  "mobile": {
+    "hero_title": "Jouez à Decentraland sur votre téléphone",
+    "hero_subtitle": "Téléchargez l'application Decentraland sur {os}.",
+    "os_android": "Android",
+    "os_ios": "iOS",
+    "app_store_alt": "Télécharger dans l'App Store",
+    "google_play_alt": "Disponible sur Google Play",
+    "what_title": "Qu'est-ce que Decentraland ?",
+    "what_text": "Decentraland est le tout premier monde virtuel détenu par ses utilisateurs.",
+    "take_part": "Participez",
+    "discord_title": "Rejoignez-nous sur Discord",
+    "discord_text": "Decentraland est le tout premier monde virtuel détenu par ses utilisateurs.",
+    "discord_cta": "REJOINDRE DISCORD"
+  },
+  "start": {
+    "welcome_back": "Bon retour {name}",
+    "ready": "Prêt à explorer ?",
+    "jump_in": "entrer dans decentraland",
+    "different_account": "utiliser un autre compte",
+    "performance_pitch": "Vous voulez de meilleures performances ?",
+    "download_desktop_cta": "Télécharger le client de bureau",
+    "alpha": {
+      "outdated_title": "Ceci est une version obsolète de Decentraland",
+      "outdated_text": "Decentraland a été relancé en tant qu'application de bureau offrant une toute nouvelle expérience. Téléchargez et découvrez des performances améliorées, de meilleurs graphismes et de nombreuses nouvelles fonctionnalités !",
+      "download_cta": "Télécharger Decentraland",
+      "continue_web_cta": "Continuer avec la version web obsolète",
+      "continue_desktop_title": "Continuer sur le bureau",
+      "continue_desktop_text": "Pour une meilleure expérience, nous vous suggérons d'utiliser l'explorateur de bureau.",
+      "relaunch_cta": "Relancer"
+    }
+  },
+  "errors": {
+    "oops": "Oups !",
+    "error_label": "Erreur",
+    "new_login_title": "Une autre session a été détectée",
+    "new_login_description_part1": "Il semble que l'explorateur ait été ouvert avec votre compte depuis un autre appareil, navigateur ou onglet.",
+    "new_login_description_part2": "Veuillez fermer la session précédente et cliquer sur « Recharger » pour explorer le monde dans cette fenêtre.",
+    "reload": "Recharger",
+    "fatal_title": "Quelque chose s'est mal passé",
+    "fatal_default_line1": "Si vous avez des extensions de blocage de publicités,",
+    "fatal_default_line2": "essayez de les désactiver pour ce site.",
+    "fatal_default_line3": "Le chargement ne devrait pas prendre plus de 2-3 minutes.",
+    "fatal_default_line4": "Si vous semblez bloqué, assurez-vous que l'accélération matérielle est activée.",
+    "fatal_learn_more": "EN SAVOIR PLUS",
+    "no_mobile_title": "Le client n'est disponible que sur ordinateur pour le moment.",
+    "no_mobile_cta": "En savoir plus sur Decentraland",
+    "metamask_locked_title": "Avant de continuer",
+    "metamask_locked_cta": "Réessayer",
+    "comms_title_part1": "Aucune liaison de communication n'a pu être",
+    "comms_title_part2": "établie avec les autres pairs",
+    "comms_description_part1": "Cela peut être dû à un pare-feu réseau restrictif ou à un problème temporaire avec le catalyst sélectionné.",
+    "comms_description_part2": "Si vous avez des extensions de blocage de publicités, essayez de les désactiver pour ce site, puis rechargez.",
+    "comms_description_part3": "Vous pouvez également essayer un autre catalyst.",
+    "network_mismatch_title": "Mauvais réseau",
+    "network_mismatch_description": "Vous devez être connecté au réseau {wanted} pour utiliser cette application, mais vous êtes actuellement connecté à {current}",
+    "network_mismatch_cta": "Passer à {wanted}",
+    "avatar_title": "Un problème technique nous a empêché de récupérer les informations de votre avatar",
+    "avatar_description": "Veuillez réessayer plus tard, et si le problème persiste, vous pouvez nous contacter via le canal Discord ou à",
+    "avatar_email": "hello@decentraland.org",
+    "not_supported_title": "Votre navigateur ou appareil n'est pas pris en charge",
+    "not_supported_description": "L'Explorer ne fonctionne que sur Chrome ou Firefox pour Windows, Linux et macOS."
+  },
+  "catalyst_warning": {
+    "title": "Vous êtes sur le point d'utiliser un Catalyst personnalisé",
+    "risk_line": "Utiliser un catalyst personnalisé peut être risqué car le code des scènes peut être altéré.",
+    "trust_question": "Êtes-vous sûr de faire confiance à {catalyst} ?",
+    "trust_cta": "faire confiance à {catalyst}",
+    "cancel_cta": "me sortir d'ici"
+  },
+  "banner": {
+    "not_supported_prefix": "Votre navigateur ne fait pas partie des choix recommandés pour une expérience optimale dans Decentraland. Nous vous suggérons d'en utiliser un basé sur",
+    "not_supported_or": "ou",
+    "chromium": "Chromium",
+    "firefox": "Firefox",
+    "stream": "Vous regardez un flux car Decentraland n'est disponible que sur ordinateur.",
+    "stream_learn_more": "En savoir plus"
+  },
+  "network_warning": {
+    "label": "Avertissement :",
+    "title": "vous utilisez le réseau principal Ethereum.",
+    "description": "Les transactions blockchain sur ce réseau ont un coût et des conséquences réelles. Nous vous recommandons d'utiliser le réseau de test {network} à la place.",
+    "sepolia": "Sepolia"
+  },
+  "loading": {
+    "downloading": "Nous téléchargeons la dernière version de Decentraland. Vous serez prêt dans quelques secondes !"
+  },
+  "logo": {
+    "sign_in": "Connectez-vous ou créez un compte",
+    "loading": "Chargement..."
+  },
+  "community_bubble": {
+    "title": "Besoin d'aide ?",
+    "subtitle": "DEMANDEZ À LA COMMUNAUTÉ"
+  }
+}

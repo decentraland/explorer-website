@@ -57,9 +57,6 @@ export type TrackingEvents = {
   enable_renderer: {}
   /** Send kernel, website and renderer versions */
   initialize_versions: Record<string, string>
-  /** when desktop client was detected */
-  desktop_launched: {}
-
   ab_test: {
     experimentId: string
     variant: string
@@ -85,6 +82,12 @@ export type TrackingEvents = {
 
   /** when the mobile screen has been displayed */
   explorer_website_mobile_screen: {}
+
+  /** when the user clicks the App Store badge on the mobile screen */
+  explorer_website_mobile_app_store_click: {}
+
+  /** when the user clicks the Google Play badge on the mobile screen */
+  explorer_website_mobile_google_play_click: {}
 
   /** Attempt to open non-https url */
   invalid_external_url: { url: string }

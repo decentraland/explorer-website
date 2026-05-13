@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { PreviewEmote } from '@dcl/schemas'
-import { Loader } from 'decentraland-ui/dist/components/Loader/Loader'
-import { WearablePreview } from 'decentraland-ui/dist/components/WearablePreview/WearablePreview'
+import { CircularProgress, WearablePreview } from 'decentraland-ui2'
 import { Props } from './CustomWearablePreview.types'
-import './CustomWearablePreview.css'
+import { PreviewWrapper, LoaderOverlay } from './CustomWearablePreview.styled'
 
 export const CustomWearablePreview = (props: Props) => {
   const [isLoading, setIsLoading] = useState(true)
@@ -14,7 +13,7 @@ export const CustomWearablePreview = (props: Props) => {
     const getRepresentation = (bodyShape: 'BaseMale' | 'BaseFemale') => {
       const mainFile = 'platform.glb'
       const baseUrl = import.meta.env.VITE_PUBLIC_URL || window.location.origin
-      
+
       return {
         bodyShapes: [`urn:decentraland:off-chain:base-avatars:${bodyShape}`],
         mainFile,
@@ -39,7 +38,7 @@ export const CustomWearablePreview = (props: Props) => {
   const handleOnLoad = useCallback(() => setIsLoading(false), [])
 
   return (
-    <div className="CustomWearablePreview">
+    <PreviewWrapper>
       <WearablePreview
         lockBeta={true}
         panning={false}
@@ -52,7 +51,11 @@ export const CustomWearablePreview = (props: Props) => {
         base64s={[platformDefinition]}
         onLoad={handleOnLoad}
       />
-      {isLoading ? <Loader active={true} size="huge" /> : null}
-    </div>
+      {isLoading ? (
+        <LoaderOverlay>
+          <CircularProgress size={80} sx={{ color: 'white' }} />
+        </LoaderOverlay>
+      ) : null}
+    </PreviewWrapper>
   )
 }

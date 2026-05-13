@@ -1,11 +1,10 @@
 import React from 'react'
-import classNames from '../../../utils/classNames'
-import './Main.css'
+import { MainEl } from './Main.styled'
 
 export type MainProps = React.PropsWithChildren<{
   withDarkLayer?: boolean
 }>
 
 export default function Main({ withDarkLayer, ...props }: MainProps) {
-  return <main {...props} className={classNames([ 'Main', withDarkLayer && 'withDarkLayer' ])} />
+  return <MainEl {...props} $withDarkLayer={withDarkLayer} className="Main" />
 }

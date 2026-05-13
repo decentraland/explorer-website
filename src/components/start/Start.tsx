@@ -1,18 +1,36 @@
-import { useCallback, useEffect, useState } from 'react'
-import { CommunityBubble } from 'decentraland-ui/dist/components/CommunityBubble'
-import { Button } from 'decentraland-ui/dist/components/Button/Button'
-import { Modal } from 'decentraland-ui/dist/components/Modal/Modal'
-import { ModalNavigation } from 'decentraland-ui/dist/components/ModalNavigation/ModalNavigation'
-import { Loader } from 'decentraland-ui/dist/components/Loader/Loader'
-import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon/Icon'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { CircularProgress } from 'decentraland-ui2'
+import ArrowCircleRightOutlined from '@mui/icons-material/ArrowCircleRightOutlined'
+import CloseIcon from '@mui/icons-material/Close'
 import { localStorageGetIdentity } from '@dcl/single-sign-on-client'
 import { SKIP_SETUP } from '../../integration/url'
 import { launchDesktopApp } from '../../integration/desktop'
+import { useFormatMessage } from '../../hooks/useFormatMessage'
 import { CustomWearablePreview } from '../common/CustomWearablePreview'
 import BannerContainer from '../banners/BannerContainer'
 import logo from '../../images/simple-logo.svg'
 import { Props } from './Start.types'
-import './Start.css'
+import {
+  StartRoot,
+  StartLoader,
+  StartBannerContainer,
+  StartInfo,
+  StartLinks,
+  StartTitle,
+  DesktopDownload,
+  StartWearablePreview,
+  PrimaryButton,
+  InvertedButton,
+  BottomCommunityBubble,
+  AlphaDialog,
+  AlphaHeader,
+  AlphaIcon,
+  AlphaTitle,
+  AlphaText,
+  AlphaActions,
+  ModalButton,
+  AlphaCloseButton
+} from './Start.styled'
 
 function getAuthURL(skipSetup: boolean) {
   var url = new URL(window.location.href)
@@ -54,10 +72,14 @@ export default function Start(props: Props) {
     isDiscoverExplorerAlphaEnabled,
     areFeatureFlagsReady
   } = props
+  const l = useFormatMessage()
   const [isLoadingExplorer, setIsLoadingExplorer] = useState(false)
   const [showExplorerAlphaNotice, setShowExplorerAlphaNotice] = useState(false)
   const [isExplorerAlphaInstalled, setIsExplorerAlphaInstalled] = useState(false)
   const [isLaunchingExplorerAlpha, setIsLaunchingExplorerAlpha] = useState(false)
+  // Probe at most once per mount: StrictMode double-fires + wallet/flag churn could otherwise re-trigger
+  // the decentraland:// deeplink. Manual re-launch via the modal's Re-Launch button bypasses this.
+  const probedDesktopRef = useRef(false)
   const decentralandConnectStorage = useLocalStorageListener('decentraland-connect-storage-key')
   const name = profile?.avatars[0].name
 
@@ -90,7 +112,7 @@ export default function Start(props: Props) {
 
   const handleReLaunch = useCallback(() => {
     void launchDesktopApp(true)
-  }, [launchDesktopApp])
+  }, [])
 
   const handleContinueWithWebVersion = useCallback(() => {
     setShowExplorerAlphaNotice(false)
@@ -107,7 +129,8 @@ export default function Start(props: Props) {
       handleJumpIn()
     } else if (wallet && isDiscoverExplorerAlphaEnabled) {
       const identity = localStorageGetIdentity(wallet.address)
-      if (identity) {
+      if (identity && !probedDesktopRef.current) {
+        probedDesktopRef.current = true
         setIsLaunchingExplorerAlpha(true)
         launchDesktopApp(true).then((isInstalled) => {
           setIsExplorerAlphaInstalled(isInstalled)
@@ -137,87 +160,92 @@ export default function Start(props: Props) {
     !areFeatureFlagsReady
   ) {
     return (
-      <div className="explorer-website-start">
-        <Loader active size="massive" />
-      </div>
+      <StartLoader>
+        <CircularProgress size={80} sx={{ color: 'white' }} />
+      </StartLoader>
     )
   }
 
   return (
-    <div className="explorer-website-start">
-      <div className="start-banner-container">
+    <StartRoot>
+      <StartBannerContainer>
         <BannerContainer />
-      </div>
-      <div className="start-info">
-        <div className="start-links">
+      </StartBannerContainer>
+      <StartInfo>
+        <StartLinks>
           <img alt="decentraland" src={logo} height="40" width="40" />
-          <div className="start-title">
+          <StartTitle>
             <span>
-              <strong>{`Welcome back ${name || ''}`}</strong>
+              <strong>{l('start.welcome_back', { name: name || '' })}</strong>
             </span>
-            <span>Ready to explore?</span>
-          </div>
-          <Button primary onClick={handleJumpIn} disabled={isLoadingExplorer} loading={isLoadingExplorer}>
-            jump into decentraland
-            <Icon name="arrow alternate circle right outline" />
-          </Button>
-          <Button inverted as="a" href={getAuthURL(isDiscoverExplorerAlphaEnabled)} disabled={isLoadingExplorer}>
-            use a different account
-          </Button>
-        </div>
-        <div className="start-desktop-download">
-          <span>Want better performance?</span>
+            <span>{l('start.ready')}</span>
+          </StartTitle>
+          <PrimaryButton
+            variant="contained"
+            color="primary"
+            onClick={handleJumpIn}
+            disabled={isLoadingExplorer}
+            endIcon={<ArrowCircleRightOutlined />}
+          >
+            {isLoadingExplorer ? <CircularProgress size={20} color="inherit" /> : l('start.jump_in')}
+          </PrimaryButton>
+          <InvertedButton
+            variant="outlined"
+            href={getAuthURL(isDiscoverExplorerAlphaEnabled)}
+            disabled={isLoadingExplorer}
+          >
+            {l('start.different_account')}
+          </InvertedButton>
+        </StartLinks>
+        <DesktopDownload>
+          <span>{l('start.performance_pitch')}</span>
           <a href="https://decentraland.org/download/" target="_blank" rel="noreferrer noopener">
-            👉 <span>Download Desktop Client</span>
+            👉 <span>{l('start.download_desktop_cta')}</span>
           </a>
-        </div>
-      </div>
-      <div className="start-wearable-preview">
+        </DesktopDownload>
+      </StartInfo>
+      <StartWearablePreview>
         <CustomWearablePreview profile={wallet?.address ?? ''} />
-      </div>
-      <CommunityBubble className="start-community-bubble" />
-      <Modal
-        open={showExplorerAlphaNotice}
-        size="tiny"
-        className="explorer-alpha-notice"
-        dimmer={{ className: 'explorer-alpha-notice-dimmer' }}
-      >
-        <ModalNavigation title="" onClose={() => setShowExplorerAlphaNotice(false)} />
-        <div className="content">
-          {!isExplorerAlphaInstalled ? (
-            <>
-              <div className="header">
-                <i className="icon" />
-                <p className="title">This is An Outdated Version of Decentraland</p>
-                <p className="text">
-                  Decentraland has been re-released as a desktop app offering a completely new experience. Download and
-                  discover improved performance, better graphics, and lots of new features!
-                </p>
-              </div>
-              <div className="actions">
-                <Button primary href="https://decentraland.org/download">
-                  Download Decentraland
-                </Button>
-                <Button onClick={handleContinueWithWebVersion}>Continue with outdated web version</Button>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="header">
-                <i className="icon" />
-                <p className="title">Continue on Desktop</p>
-                <p className="text">For a better experience, we suggest you use the desktop explorer.</p>
-              </div>
-              <div className="actions">
-                <Button primary onClick={handleReLaunch}>
-                  Re-Launch
-                </Button>
-                <Button onClick={handleContinueWithWebVersion}>Continue with outdated web version</Button>
-              </div>
-            </>
-          )}
-        </div>
-      </Modal>
-    </div>
+      </StartWearablePreview>
+      <BottomCommunityBubble />
+      <AlphaDialog open={showExplorerAlphaNotice} onClose={() => setShowExplorerAlphaNotice(false)}>
+        <AlphaCloseButton aria-label="close" onClick={() => setShowExplorerAlphaNotice(false)}>
+          <CloseIcon />
+        </AlphaCloseButton>
+        {!isExplorerAlphaInstalled ? (
+          <>
+            <AlphaHeader>
+              <AlphaIcon />
+              <AlphaTitle>{l('start.alpha.outdated_title')}</AlphaTitle>
+              <AlphaText>{l('start.alpha.outdated_text')}</AlphaText>
+            </AlphaHeader>
+            <AlphaActions>
+              <ModalButton variant="contained" color="primary" href="https://decentraland.org/download">
+                {l('start.alpha.download_cta')}
+              </ModalButton>
+              <ModalButton variant="text" onClick={handleContinueWithWebVersion}>
+                {l('start.alpha.continue_web_cta')}
+              </ModalButton>
+            </AlphaActions>
+          </>
+        ) : (
+          <>
+            <AlphaHeader>
+              <AlphaIcon />
+              <AlphaTitle>{l('start.alpha.continue_desktop_title')}</AlphaTitle>
+              <AlphaText>{l('start.alpha.continue_desktop_text')}</AlphaText>
+            </AlphaHeader>
+            <AlphaActions>
+              <ModalButton variant="contained" color="primary" onClick={handleReLaunch}>
+                {l('start.alpha.relaunch_cta')}
+              </ModalButton>
+              <ModalButton variant="text" onClick={handleContinueWithWebVersion}>
+                {l('start.alpha.continue_web_cta')}
+              </ModalButton>
+            </AlphaActions>
+          </>
+        )}
+      </AlphaDialog>
+    </StartRoot>
   )
 }

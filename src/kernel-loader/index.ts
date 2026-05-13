@@ -29,7 +29,6 @@ import {
   SHOW_WALLET_SELECTOR,
   LOGIN_AS_GUEST
 } from '../integration/url'
-import { isElectron } from '../integration/desktop'
 import { isMobile, setAsRecentlyLoggedIn } from '../integration/browser'
 import { FeatureFlags, isFeatureVariantEnabled } from '../state/selectors'
 
@@ -318,32 +317,39 @@ async function initKernel() {
 }
 
 async function initLogin(kernel: KernelResult) {
-  if (!isElectron()) {
-    if (LOGIN_AS_GUEST && !SHOW_WALLET_SELECTOR) {
-      authenticate(null).catch(defaultWebsiteErrorTracker)
-      return
-    }
+  if (LOGIN_AS_GUEST && !SHOW_WALLET_SELECTOR) {
+    authenticate(null).catch(defaultWebsiteErrorTracker)
+    return
+  }
 
-    const provider = await restoreConnection()
-    if (provider && provider.account) {
-      const providerChainId = await getProviderChainId(provider.provider)
+  const provider = await restoreConnection()
+  if (provider && provider.account) {
+    const providerChainId = await getProviderChainId(provider.provider)
 
-      // BUG OF decentraland-connect:
-      // provider.chainId DOES NOT reflect the selected chain in the real provider
-      const storedSession = await kernel.hasStoredSession(provider.account, providerChainId /* provider.chainId */)
+    // BUG OF decentraland-connect:
+    // provider.chainId DOES NOT reflect the selected chain in the real provider
+    const storedSession = await kernel.hasStoredSession(provider.account, providerChainId /* provider.chainId */)
 
-      if (storedSession) {
-        track('automatic_relogin', { provider_type: provider.providerType })
-        authenticate(provider.providerType).catch(defaultWebsiteErrorTracker)
+    if (storedSession) {
+      track('automatic_relogin', { provider_type: provider.providerType })
+      // decentraland-connect@12 ships its own @dcl/schemas, so its ProviderType is nominally distinct
+      // from ours. Runtime values are identical strings — verify before the cast in case a future
+      // connect version introduces a value our schemas doesn't know about.
+      const incomingType = provider.providerType as unknown as string
+      const known = (Object.values(ProviderType) as string[]).includes(incomingType)
+      if (!known) {
+        defaultWebsiteErrorTracker(new Error(`Unknown ProviderType from decentraland-connect: ${incomingType}`))
         return
       }
-    }
-
-    if (isFeatureVariantEnabled(store.getState(), FeatureFlags.SeamlessLogin) && !SHOW_WALLET_SELECTOR) {
-      track('seamless_login')
-      authenticate(null).catch(defaultWebsiteErrorTracker)
+      authenticate(incomingType as ProviderType).catch(defaultWebsiteErrorTracker)
       return
     }
+  }
+
+  if (isFeatureVariantEnabled(store.getState(), FeatureFlags.SeamlessLogin) && !SHOW_WALLET_SELECTOR) {
+    track('seamless_login')
+    authenticate(null).catch(defaultWebsiteErrorTracker)
+    return
   }
 }
 
@@ -368,20 +374,6 @@ export function startKernel() {
       })
     )
     return
-  }
-
-  if (isElectron()) {
-    if ((window as any).require) {
-      store.dispatch(
-        setKernelError({
-          error: new Error(
-            `You're using an old version of Decentraland Desktop. Please update it from https://github.com/decentraland/explorer-desktop-launcher/releases`
-          ),
-          code: ErrorType.FATAL
-        })
-      )
-      return
-    }
   }
 
   if (CATALYST) {

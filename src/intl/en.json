@@ -1,0 +1,96 @@
+{
+  "mobile": {
+    "hero_title": "Play Decentraland on your phone",
+    "hero_subtitle": "Download the Decentraland app on {os}.",
+    "os_android": "Android",
+    "os_ios": "iOS",
+    "app_store_alt": "Download on the App Store",
+    "google_play_alt": "Get it on Google Play",
+    "what_title": "What is Decentraland?",
+    "what_text": "Decentraland is the first ever virtual world owned by its users.",
+    "take_part": "Take Part",
+    "discord_title": "Join us on Discord",
+    "discord_text": "Decentraland is the first ever virtual world owned by its users.",
+    "discord_cta": "JOIN DISCORD"
+  },
+  "start": {
+    "welcome_back": "Welcome back {name}",
+    "ready": "Ready to explore?",
+    "jump_in": "jump into decentraland",
+    "different_account": "use a different account",
+    "performance_pitch": "Want better performance?",
+    "download_desktop_cta": "Download Desktop Client",
+    "alpha": {
+      "outdated_title": "This is An Outdated Version of Decentraland",
+      "outdated_text": "Decentraland has been re-released as a desktop app offering a completely new experience. Download and discover improved performance, better graphics, and lots of new features!",
+      "download_cta": "Download Decentraland",
+      "continue_web_cta": "Continue with outdated web version",
+      "continue_desktop_title": "Continue on Desktop",
+      "continue_desktop_text": "For a better experience, we suggest you use the desktop explorer.",
+      "relaunch_cta": "Re-Launch"
+    }
+  },
+  "errors": {
+    "oops": "Oops!",
+    "error_label": "Error",
+    "new_login_title": "Another session was detected",
+    "new_login_description_part1": "It seems that the explorer was opened with your account from another device, browser, or tab.",
+    "new_login_description_part2": "Please, close the prior session and click \"Reload\" to explore the world in this window.",
+    "reload": "Reload",
+    "fatal_title": "Something went wrong",
+    "fatal_default_line1": "If you have any ad blocking extensions,",
+    "fatal_default_line2": "try turning them off for this site.",
+    "fatal_default_line3": "Loading should not take any longer than 2-3 minutes.",
+    "fatal_default_line4": "If you seem to be stuck, make sure hardware acceleration is on.",
+    "fatal_learn_more": "LEARN MORE",
+    "no_mobile_title": "The client is only available on desktop right now.",
+    "no_mobile_cta": "Learn more about decentraland",
+    "metamask_locked_title": "Before we continue",
+    "metamask_locked_cta": "Retry",
+    "comms_title_part1": "A communication link could not be",
+    "comms_title_part2": "established with other peers",
+    "comms_description_part1": "This might be because you are behind a restrictive network firewall, or a temporary problem with the selected realm.",
+    "comms_description_part2": "If you have any ad blocking extensions try turning them off for this site, and then reload.",
+    "comms_description_part3": "You can also try a different realm.",
+    "network_mismatch_title": "Wrong network",
+    "network_mismatch_description": "You need to be connected to {wanted} network to use this app, but you are currently connected to {current}",
+    "network_mismatch_cta": "Switch to {wanted}",
+    "avatar_title": "There was a technical issue and we were unable to retrieve your avatar information",
+    "avatar_description": "Please try again later, and if the problem persists you can contact us through the Discord channel or at",
+    "avatar_email": "hello@decentraland.org",
+    "not_supported_title": "Your browser or device is not supported",
+    "not_supported_description": "The Explorer only works on Chrome or Firefox for Windows, Linux and macOS."
+  },
+  "catalyst_warning": {
+    "title": "You are about to use a custom Catalyst",
+    "risk_line": "Using a custom catalyst can be risky as scenes code can be altered.",
+    "trust_question": "Are you sure you trust {catalyst}?",
+    "trust_cta": "trust {catalyst}",
+    "cancel_cta": "take me out"
+  },
+  "banner": {
+    "not_supported_prefix": "Your browser is not among the recommended choices for an optimal experience in Decentraland. We suggest you use one based on",
+    "not_supported_or": "or",
+    "chromium": "Chromium",
+    "firefox": "Firefox",
+    "stream": "You are viewing a stream because Decentraland is only available on desktop.",
+    "stream_learn_more": "Learn more"
+  },
+  "network_warning": {
+    "label": "Warning:",
+    "title": "you're running on the Ethereum Mainnet.",
+    "description": "Blockchain transactions in this network have a cost and real consequences. We recommend you use the {network} test network instead.",
+    "sepolia": "Sepolia"
+  },
+  "loading": {
+    "downloading": "We are downloading the latest version of Decentraland. You'll be up and running in a few seconds!"
+  },
+  "logo": {
+    "sign_in": "Sign In or Create an Account",
+    "loading": "Loading..."
+  },
+  "community_bubble": {
+    "title": "Need Guidance?",
+    "subtitle": "ASK THE COMMUNITY"
+  }
+}
