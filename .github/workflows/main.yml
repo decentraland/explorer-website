@@ -55,7 +55,7 @@ jobs:
           ## library, so we don't lose anything observable by turning it off here.
           provenance: 'false'
           ## inform gitlab after publishing to proceed with CDN propagation
-          gitlab-token: ${{ secrets.GITLAB_TOKEN }}
-          gitlab-pipeline-url: ${{ secrets.GITLAB_URL }}
+          gitlab-token: ${{ secrets.GITLAB_CDN_DEPLOYER_TOKEN }}
+          gitlab-pipeline-url: ${{ secrets.GITLAB_CDN_DEPLOYER_URL }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
