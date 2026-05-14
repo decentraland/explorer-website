@@ -47,6 +47,13 @@ jobs:
           cwd: ./dist
           ## use action runId instead of current date to generate snapshot numbers
           deterministic-snapshot: true
+          ## npm 11 (shipped with Node 24) emits `EUSAGE: Automatic provenance generation not
+          ## supported for provider: null` when invoked from inside oddish-action's spawn — the
+          ## OIDC provider detection no longer recognises the environment. Disable until either
+          ## oddish-action is updated or the OIDC plumbing is fixed upstream. Provenance is a
+          ## SLSA attestation; explorer-website is consumed as a CDN bundle, not as a
+          ## library, so we don't lose anything observable by turning it off here.
+          provenance: 'false'
           ## inform gitlab after publishing to proceed with CDN propagation
           gitlab-token: ${{ secrets.GITLAB_TOKEN }}
           gitlab-pipeline-url: ${{ secrets.GITLAB_URL }}
