@@ -19,7 +19,7 @@ jobs:
     env:
       CI: false
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # @v4.3.0
       - name: Use Node.js 24.x
         uses: actions/setup-node@v4.0.1
         with:
